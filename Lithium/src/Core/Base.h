@@ -1,5 +1,5 @@
-#include "lipch.h"
-
+#pragma once
+#include <memory>
 namespace Lithium
 {
 	template<typename T>
