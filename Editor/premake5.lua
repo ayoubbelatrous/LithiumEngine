@@ -18,6 +18,8 @@ project "Editor"
 		"%{wks.location}/Lithium/src",
 		"%{wks.location}/Lithium/vendor",
 		 "%{IncludeDir.GLFW}",
+		 "%{IncludeDir.stb_image}",
+		 "%{IncludeDir.glm}",
 
 	}
 

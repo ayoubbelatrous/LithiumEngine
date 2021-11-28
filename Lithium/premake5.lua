@@ -30,6 +30,8 @@ includedirs
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLAD}",
     "%{IncludeDir.glm}",
+    "%{IncludeDir.stb_image}",
+    
 }
 
 defines
