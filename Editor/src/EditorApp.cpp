@@ -1,29 +1,5 @@
-#include "lithium.h"
-
-class EditorLayer : public Lithium::Layer
-{
-public:
-	EditorLayer()
-		:Layer("hi")
-	{
-		
-	}
-
-
-	void OnCreate() override
-	{
-		CORE_LOG("init");
-	}
-
-	void OnUpdate() override
-	{
-		
-	}
-	void OnDestroy() override
-	{
-		CORE_LOG("hi");
-	}
-};
+#include "EditorLayer.h"
+#include "Core/Entry.h"
 
 
 
@@ -34,8 +10,9 @@ class Editor : public Lithium::Application
 		Editor()
 			:Application()
 		{
-			CORE_LOG("who");
+			CORE_LOG("INIT APP");
 			PushLayer(new EditorLayer());
+
 		}
 
 		~Editor()
