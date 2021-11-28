@@ -21,6 +21,7 @@ includedirs
 {
     "%{wks.location}/Lithium/src",
     "%{IncludeDir.GLFW}",
+    "%{IncludeDir.GLAD}",
 }
 
 defines
@@ -31,6 +32,7 @@ defines
 links
 {
 	"GLFW",
+  "GLAD",
 	"opengl32.lib"
 }
 

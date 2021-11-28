@@ -17,6 +17,7 @@ project "Editor"
 	{
 		"%{wks.location}/Lithium/src",
 		"%{wks.location}/Lithium/vendor",
+		 "%{IncludeDir.GLFW}",
 
 	}
 

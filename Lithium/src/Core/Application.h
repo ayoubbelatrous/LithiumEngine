@@ -1,6 +1,6 @@
 #pragma once
 #include "LayerStack.h"
-
+#include "Window.h"
 
 namespace Lithium
 {
@@ -8,6 +8,7 @@ namespace Lithium
 	{
 	private:
 		LayerStack _Stack;
+		Window wind;
 	public:
 		Application();
 		~Application();
