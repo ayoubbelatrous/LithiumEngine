@@ -1,6 +1,6 @@
 #include "lipch.h"
 #include "Application.h"
-
+#include "Debug/Profiler.h"
 namespace Lithium
 {
 	
@@ -8,6 +8,8 @@ namespace Lithium
 	{
 		_Window = CreateScope<Window>();
 		_Window->Init();
+	
+
 	}
 
 	Application::~Application()
@@ -16,6 +18,7 @@ namespace Lithium
 		{
 			layer->OnDestroy();
 		}
+		
 	}
 
 	void Application::PushLayer(Layer* layer)
