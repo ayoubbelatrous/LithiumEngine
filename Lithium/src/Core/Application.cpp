@@ -6,8 +6,8 @@ namespace Lithium
 	
 	Application::Application()
 	{
-		wind = CreateRef<Window>();
-		wind->Init();
+		_Window = CreateScope<Window>();
+		_Window->Init();
 	}
 
 	Application::~Application()
@@ -35,9 +35,9 @@ namespace Lithium
 				layer->OnUpdate();
 			}
 
-			wind->OnUpdate();
+			_Window->OnUpdate();
 
-			if (wind->WindowClosing())
+			if (_Window->WindowClosing())
 				_running = false;
 		}
 	}

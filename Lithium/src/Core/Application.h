@@ -8,7 +8,7 @@ namespace Lithium
 	{
 	private:
 		LayerStack _Stack;
-		Ref<Window> wind;
+		Scope<Window> _Window;
 		bool _running = true;
 	public:
 		Application();
