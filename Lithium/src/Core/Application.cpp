@@ -1,6 +1,7 @@
 #include "lipch.h"
 #include "Application.h"
 #include "Debug/Profiler.h"
+#include "glm.hpp"
 namespace Lithium
 {
 	
@@ -8,7 +9,6 @@ namespace Lithium
 	{
 		_Window = CreateScope<Window>();
 		_Window->Init();
-	
 
 	}
 

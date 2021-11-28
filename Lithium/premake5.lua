@@ -16,12 +16,20 @@ files
 {
     "src/**.h",
     "src/**.cpp",
+
+    "vendor/glm/glm/**.hpp",
+	"vendor/glm/glm/**.inl",
+
+
+    "vendor/stb_image/**.h",
+	"vendor/stb_image/**.cpp",
 }
 includedirs
 {
     "%{wks.location}/Lithium/src",
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLAD}",
+    "%{IncludeDir.glm}",
 }
 
 defines

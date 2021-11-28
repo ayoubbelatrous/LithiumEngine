@@ -17,6 +17,7 @@ workspace "Lithium"
 IncludeDir = {}
 IncludeDir["GLFW"] = "%{wks.location}/Lithium/vendor/glfw/include"
 IncludeDir["GLAD"] = "%{wks.location}/Lithium/vendor/glad/include"
+IncludeDir["glm"] = "%{wks.location}/Lithium/vendor/glm/glm"
 
 
 group "Dependencies"
