@@ -6,8 +6,8 @@ namespace Lithium
 	
 	Application::Application()
 	{
-		wind = Window();
-		wind.Init();
+		wind = CreateRef<Window>();
+		wind->Init();
 	}
 
 	Application::~Application()
@@ -26,15 +26,19 @@ namespace Lithium
 
 	void Application::Run()
 	{
-		while (true)
+		
+
+		while (_running)
 		{
 			for (Layer* layer:_Stack)
 			{
 				layer->OnUpdate();
 			}
 
-			
-			wind.OnUpdate();
+			wind->OnUpdate();
+
+			if (wind->WindowClosing())
+				_running = false;
 		}
 	}
 
