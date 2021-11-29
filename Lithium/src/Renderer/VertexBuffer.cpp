@@ -1,45 +1,48 @@
 #include "lipch.h"
-#include <glad/glad.h>
+
 #include "VertexBuffer.h"
+#include <glad/glad.h>
+
 
 namespace Lithium
 {
-	VertexBuffer::VertexBuffer(const void* data, unsigned int size)
+	
+	VertexBuffer::VertexBuffer(uint32_t size)
 	{
-
-		glGenBuffers(1, &_id);
-		glBindBuffer(GL_ARRAY_BUFFER, _id);
-		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
-	}
-
-	VertexBuffer::VertexBuffer()
-	{
-		_id = 0;
-	}
-
-	VertexBuffer::VertexBuffer(unsigned int size)
-	{
-		glGenBuffers(1, &_id);
-		glBindBuffer(GL_ARRAY_BUFFER, _id);
+		glGenBuffers(1, &_Id);
+		glBindBuffer(GL_ARRAY_BUFFER, _Id);
 		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
 	}
 
-	void VertexBuffer::Bind() const
+	VertexBuffer::VertexBuffer(const void* data, uint32_t size)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, _id);
+		glGenBuffers(1, &_Id);
+		glBindBuffer(GL_ARRAY_BUFFER, _Id);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
 	}
-	void VertexBuffer::UnBind() const
+
+	void VertexBuffer::SetData(const void* data, uint32_t size)
+	{
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+	}
+
+	void VertexBuffer::Bind()
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, _Id);
+	}
+
+	void VertexBuffer::UnBind()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
+
 	VertexBuffer::~VertexBuffer()
 	{
-		glDeleteBuffers(1, &_id);
+		glDeleteBuffers(1, &_Id);
 	}
-
-
-	void VertexBuffer::SetData(void* data, unsigned int size) {
-		Bind();
-		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+	uint32_t VertexBuffer::GetID()
+	{
+		return _Id;
 	}
 }
+

@@ -1,5 +1,8 @@
 #pragma once
 #include <GLFW/glfw3.h>
+#include "Renderer/VertexBuffer.h"
+
+#include "Base.h"
 
 
 namespace Lithium
@@ -17,5 +20,9 @@ namespace Lithium
 		}
 	private:
 		GLFWwindow* window;
+
 	};
+
+
+
 }

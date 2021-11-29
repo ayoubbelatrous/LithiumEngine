@@ -2,6 +2,7 @@
 #include "LayerStack.h"
 #include "Window.h"
 #include "Base.h"
+
 namespace Lithium
 {
 	class Application

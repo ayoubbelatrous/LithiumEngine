@@ -1,22 +1,29 @@
 #pragma once
 
-
 namespace Lithium
 {
 	class VertexBuffer
 	{
-	private:
-		unsigned int _id;
-
 	public:
-
-		VertexBuffer(const void* data, unsigned int size);
-		VertexBuffer();
-		VertexBuffer(unsigned int size);
-
+		//VertexBuffer();
+		VertexBuffer(uint32_t size);
+		VertexBuffer(const void* data, uint32_t size);
+		void SetData(const void* data,uint32_t size);
+		void Bind();
+		void UnBind();
+		uint32_t GetID();
 		~VertexBuffer();
-		void Bind() const;
-		void UnBind() const;
-		void SetData(void* data, unsigned int size);
+	private:
+		uint32_t _Id;
 	};
 }
+
+
+
+
+
+
+
+
+
+

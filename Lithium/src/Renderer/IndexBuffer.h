@@ -1,20 +1,16 @@
 #pragma once
-
-
 namespace Lithium
 {
 	class IndexBuffer
 	{
-	private:
-		unsigned int _id;
-		unsigned int _count;
 	public:
-		IndexBuffer(const unsigned int* data, unsigned int count);
-		IndexBuffer();
+		IndexBuffer(uint32_t size);
+		IndexBuffer(uint32_t size,const void* data);
 		~IndexBuffer();
-		void Bind() const;
-		void UnBind() const;
-
-		inline unsigned int GetCount() const { return _count; }
+		void Bind();
+		void UnBind();
+		void SetData(uint32_t size, const void* data);
+	private:
+		uint32_t _Id;
 	};
 }

@@ -1,34 +1,47 @@
 #include "lipch.h"
-#include <glad/glad.h>
+
 #include "IndexBuffer.h"
+#include <glad/glad.h>
+
+
 
 namespace Lithium
 {
 
-	IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
-		:_count(count)
+	IndexBuffer::IndexBuffer(uint32_t size)
 	{
-		glGenBuffers(1, &_id);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _id);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_DYNAMIC_DRAW);
+		glGenBuffers(1, &_Id);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Id);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,size,nullptr,GL_DYNAMIC_DRAW);
 	}
 
-	IndexBuffer::IndexBuffer()
+	IndexBuffer::IndexBuffer(uint32_t size, const void* data)
 	{
-		_id = 0;
+		glGenBuffers(1, &_Id);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Id);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
 	}
 
-	void IndexBuffer::Bind() const
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _id);
-	}
-	void IndexBuffer::UnBind() const
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	}
 	IndexBuffer::~IndexBuffer()
 	{
-		glDeleteBuffers(1, &_id);
+		glDeleteBuffers(1, &_Id);
+	}
+
+	void IndexBuffer::Bind()
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Id);
+	}
+
+	void IndexBuffer::UnBind()
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	}
+
+	void IndexBuffer::SetData(uint32_t size, const void* data)
+	{
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+
 	}
 
 }

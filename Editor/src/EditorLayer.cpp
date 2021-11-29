@@ -1,28 +1,41 @@
 #include "EditorLayer.h"
+
 namespace Lithium
 {
 	void EditorLayer::OnCreate()
 	{
-		tex = CreateRef<Texture>(1, 1);
-		shader = Shader::Load("assets/shaders/main.shader");
-		pos = glm::vec3(0.0);
-		quad = glm::translate(glm::mat4(1), pos);
-		Renderer2D::Init();
-		view = glm::translate(glm::mat4(1),glm::vec3(0));
-		projection = glm::ortho(-2.0f, 2.0f, -2.0f, 2.0f);
-		color = glm::vec4(1.0);
+
+		float positions[] = {
+		-0.5f, -0.5f,
+		 0.5f, -0.5f,
+		 0.5f,  0.5f,
+		-0.5f,  0.5f,
+		};
+		unsigned int index[] = {
+			0, 1, 2,
+			2, 3, 0
+		};
+
+		vb = CreateRef<VertexBuffer>(positions, sizeof(positions));
+		ibo = CreateRef<IndexBuffer>(sizeof(index), index);
+		layout = CreateRef<VertexBufferLayout>();
+		layout->Push<float>(2);
+		vao = CreateRef<VertexArray>();
+		shader = CreateRef<Shader>("assets/shaders/main.shader");
+
+		vao->AddBuffer(vb, layout);
+
 	}
 
 	void EditorLayer::OnUpdate()
 	{
-		Renderer2D::BeginScene(projection, view);
-	
+		vao->Bind();
+		ibo->Bind();
 
-		
-		Renderer2D::DrawQuad(quad, color);
+		shader->Bind();
+		shader->SetUniform4f("u_color", glm::vec4(0.5, 1.0, 1.0, 1.0));
 
-
-		Renderer2D::EndScene();
+		RendererCommand::DrawIndexed(6);
 	}
 
 	void EditorLayer::OnDestroy()

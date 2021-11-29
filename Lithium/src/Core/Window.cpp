@@ -7,7 +7,6 @@ namespace Lithium
 
 	Window::Window()
 	{
-		
 	}
 
 	Window::~Window()
@@ -18,6 +17,11 @@ namespace Lithium
 	void Window::Init()
 	{
 		glfwInit();
+
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+
 		window = glfwCreateWindow(500, 500, "Lithium", NULL, NULL);
 		glfwMakeContextCurrent(window);
 
@@ -26,14 +30,13 @@ namespace Lithium
 		}
 
 		glViewport(0, 0, 500, 500);
+		
+		CORE_LOG(glGetString(GL_VERSION));
+
 	}
 
 	void Window::OnUpdate()
 	{
-
-		glClearColor(.25,.25, .25, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT);
-		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
