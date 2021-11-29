@@ -6,3 +6,5 @@
 #include "Core/LayerStack.h"
 #include "Core/Core.h"
 #include "Core/Window.h"
+#include "Renderer/Texture.h"
+#include "Renderer/Renderer.h"

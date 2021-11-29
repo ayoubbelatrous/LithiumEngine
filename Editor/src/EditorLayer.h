@@ -1,16 +1,31 @@
 #pragma once
 #include "Lithium.h"
-class EditorLayer : public Lithium::Layer
+#include "Core/Base.h"
+#include "glm.hpp"
+#include "gtc/matrix_transform.hpp"
+#include "Renderer/Shader.h"
+
+namespace Lithium
 {
-public:
-	EditorLayer()
-		:Layer("hi")
+	class EditorLayer : public Lithium::Layer
 	{
+	public:
+		EditorLayer()
+			:Layer("hi")
+		{
+		}
+		void OnCreate() override;
+		void OnUpdate() override;
+		void OnDestroy() override;
 
-	}
-	void OnCreate() override;
-	void OnUpdate() override;
-	void OnDestroy() override;
-};
+	private:
+		Ref<Texture> tex;
+		Ref<Shader> shader;
+		glm::vec3 pos;
+		glm::vec4 color;
+		glm::mat4 quad;
+		glm::mat4 projection;
+		glm::mat4 view;
+	};
 
-
+}

@@ -1,6 +1,6 @@
+#include "Lithium.h"
 #include "EditorLayer.h"
 #include "Core/Entry.h"
-
 
 
 class Editor : public Lithium::Application
@@ -11,7 +11,7 @@ class Editor : public Lithium::Application
 			:Application()
 		{
 			CORE_LOG("INIT APP");
-			PushLayer(new EditorLayer());
+			PushLayer(new Lithium::EditorLayer());
 
 		}
 
