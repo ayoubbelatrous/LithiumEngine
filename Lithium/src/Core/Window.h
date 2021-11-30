@@ -20,7 +20,13 @@ namespace Lithium
 		}
 
 		void SetResizeCallback(const void* func);
-		GLFWwindow& GetglfwWindowptr()
+		GLFWwindow* GetglfwWindowptr()
+		{
+			return window;
+		}
+
+
+		GLFWwindow& GETWindow()
 		{
 			return *window;
 		}

@@ -12,7 +12,7 @@ namespace Lithium
 		_Window = CreateScope<Window>();
 		_Window->Init();
 		PushLayer(new GUIlayer);
-		instance = this;
+		
 	}
 
 	Application::~Application()
@@ -26,6 +26,7 @@ namespace Lithium
 
 	void Application::PushLayer(Layer* layer)
 	{
+		instance = this;
 		_Stack.PushLayer(layer);
 		layer->OnCreate();
 	}

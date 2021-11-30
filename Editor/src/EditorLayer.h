@@ -19,7 +19,7 @@ namespace Lithium
 		void OnCreate() override;
 		void OnUpdate() override;
 		void OnDestroy() override;
-
+		void RenderImgui();
 	private:
 		glm::mat4 proj;
 		glm::mat4 view;
