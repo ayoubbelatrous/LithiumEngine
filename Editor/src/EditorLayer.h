@@ -5,6 +5,7 @@
 #include "gtc/matrix_transform.hpp"
 #include "Renderer/VertexArray.h"
 #include "Renderer/Shader.h"
+#include "Renderer/Renderer2D.h"
 
 namespace Lithium
 {
@@ -20,11 +21,12 @@ namespace Lithium
 		void OnDestroy() override;
 
 	private:
-		Ref<VertexBuffer> vb;
-		Ref<VertexArray> vao;
-		Ref<IndexBuffer> ibo;
-		Ref<VertexBufferLayout> layout;
-		Ref<Shader> shader;
+		glm::mat4 proj;
+		glm::mat4 view;
+		glm::mat4 model;
+		glm::vec3 pos;
+
+		Ref<Texture> tex;
 	};
 
 }

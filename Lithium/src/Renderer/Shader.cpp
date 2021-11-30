@@ -48,9 +48,6 @@ namespace Lithium
 				ss[(int)shadertype] << line << "\n";
 			}
 		}
-		if (ss[0].str() == "" || ss[1].str() == "");
-		std::cout << "Failed to Load: " << "'" << path << "'" << std::endl;
-
 		id = CreateShader(ss[0].str(), ss[1].str());
 		std::cout << "Loaded Shader: " << "'" << path << "'" << std::endl;
 		stream.close();

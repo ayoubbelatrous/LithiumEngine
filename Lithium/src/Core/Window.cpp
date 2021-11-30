@@ -22,14 +22,14 @@ namespace Lithium
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
-		window = glfwCreateWindow(500, 500, "Lithium", NULL, NULL);
+		window = glfwCreateWindow(1280, 780, "Lithium", NULL, NULL);
 		glfwMakeContextCurrent(window);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			std::cout << "Failed to initialize OpenGL context" << std::endl;
 		}
 
-		glViewport(0, 0, 500, 500);
+		glViewport(0, 0, 1280, 780);
 		
 		CORE_LOG(glGetString(GL_VERSION));
 

@@ -8,9 +8,9 @@
 extern Lithium::Application* Lithium::CreateApp();
 int main()
 {
-	
-	auto app = Lithium::CreateApp();
 	LT_BEGIN_SESSION("render loop", "results.log");
+	auto app = Lithium::CreateApp();
+	
 	app->Run();
 	LT_END_SESSION();
 	delete app;
