@@ -88,7 +88,7 @@ namespace Lithium
 		delete[] quadIndices;
 
 		data.WhiteTexture = Texture::Create(1, 1);
-		unsigned int white = 0xfff;
+		unsigned int white = 0xffffffff;
 		data.WhiteTexture->SetData(&white);
 
 
@@ -134,13 +134,24 @@ namespace Lithium
 
 		uint32_t dataSize = (uint32_t)((uint8_t*)data.QuadVertexBufferPtr - (uint8_t*)data.QuadVertexBufferBase);
 		data.vertexBuffer->SetData(data.QuadVertexBufferBase, dataSize);
-
-		// Bind textures
-		for (uint32_t i = 0; i < data.textureIndex; i++)
-			data.slots[i]->Bind(i);
 		data.vertexArray->Bind();
 		data.textureShader->Bind();
 		data.textureShader->SetUniformMat4f("viewProjection", data.viewProjection);
+
+		// Bind textures
+		for (uint32_t i = 0; i < data.textureIndex; i++)
+		{
+			data.slots[i]->Bind(i);
+			
+		}
+		int sampler2D[data.MaxTextureSlots];
+		for (uint32_t i = 0; i < data.MaxTextureSlots; i++)
+		{
+			sampler2D[i] = i;
+		}
+
+
+			data.textureShader->SetUniformiv("u_texture",sampler2D);
 		data.quadIB->Bind();
 		RendererCommand::DrawIndexed(data.QuadIndexCount);
 	}

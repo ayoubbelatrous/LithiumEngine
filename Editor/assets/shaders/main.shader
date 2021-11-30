@@ -30,10 +30,12 @@ layout(location = 0) out vec4 col;
 in vec4 Color;
 in vec2 texcoord;
 in float texindex;
+uniform sampler2D u_texture[18];
 
 void main()
 {
 
-
-   col = Color;
+    int index = int(texindex);
+    vec4 texcolor = texture(u_texture[index], texcoord);
+    col = Color * texcolor;
 };

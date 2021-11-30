@@ -18,6 +18,9 @@ namespace Lithium
 		{
 			return glfwWindowShouldClose(window);
 		}
+
+		void SetResizeCallback(const void* func);
+		
 	private:
 		GLFWwindow* window;
 

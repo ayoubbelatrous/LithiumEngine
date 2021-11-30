@@ -23,24 +23,25 @@ namespace Lithium
 		proj = glm::ortho(-2.0,2.0,-2.0,2.0);
 		model = glm::translate(glm::mat4(1), pos);
 		tex = CreateRef<Texture>("assets/images/check.png");
+		tex2 = CreateRef<Texture>("assets/images/eda.png");
 		Renderer2D::Init();
 	}
 
 	void EditorLayer::OnUpdate()
 	{
 		LT_PROFILE_FUNCTION("update");
-		//RendererCommand::Clear();
+		RendererCommand::ClearColor(glm::vec4(0.25));
+		RendererCommand::Clear();
+		
+
 		Renderer2D::BeginScene(proj, view);
 
 		
 		//Renderer2D::DrawQuad(model, glm::vec4(1));
-		Renderer2D::DrawQuad(model, glm::vec4(0.5, 0.5, 0.5, 1.0));
-		Renderer2D::DrawQuad(model, glm::vec4(0.5, 0.5, 0.5, 1.0),tex);
-
-
-		
-
-
+		model = glm::translate(glm::mat4(1), pos);
+		Renderer2D::DrawQuad(model, glm::vec4(1.0, 1.0, 1.0, 1.0));
+		model = glm::translate(glm::mat4(1), { -1.5,0.0,0.0 });
+		Renderer2D::DrawQuad(model, glm::vec4(1.0, 1.0, 1.0, 1.0), tex);
 		Renderer2D::EndScene();
 	}
 

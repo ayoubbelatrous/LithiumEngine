@@ -27,6 +27,7 @@ namespace Lithium
 		glm::vec3 pos;
 
 		Ref<Texture> tex;
+		Ref<Texture> tex2;
 	};
 
 }
