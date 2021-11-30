@@ -49,4 +49,20 @@ namespace Lithium
 	{
 
 	}
+
+
+
+	void GUIlayer::OnCreate()
+	{
+		LT_PROFILE_FUNCTION("init GUI");
+	}
+
+	void GUIlayer::OnUpdate()
+	{
+		LT_PROFILE_FUNCTION("update GUI");
+	}
+
+	void GUIlayer::OnDestroy()
+	{
+	}
 }

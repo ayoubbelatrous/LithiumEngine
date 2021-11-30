@@ -30,4 +30,20 @@ namespace Lithium
 		Ref<Texture> tex2;
 	};
 
+
+	class GUIlayer : public Lithium::Layer
+	{
+	public:
+		GUIlayer()
+			:Layer("uilayer")
+		{
+		}
+		void OnCreate() override;
+		void OnUpdate() override;
+		void OnDestroy() override;
+
+	private:
+		
+	};
+
 }
