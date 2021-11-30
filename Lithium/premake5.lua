@@ -31,6 +31,7 @@ includedirs
     "%{IncludeDir.GLAD}",
     "%{IncludeDir.glm}",
     "%{IncludeDir.stb_image}",
+    "%{IncludeDir.imgui}",
     
 }
 
@@ -43,6 +44,7 @@ links
 {
 	"GLFW",
   "GLAD",
+  "IMGUI",
 	"opengl32.lib"
 }
 

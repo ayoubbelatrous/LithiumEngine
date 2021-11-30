@@ -1,5 +1,6 @@
 #include "EditorLayer.h"
 
+
 namespace Lithium
 {
 	void EditorLayer::OnCreate()
@@ -39,9 +40,14 @@ namespace Lithium
 		
 		//Renderer2D::DrawQuad(model, glm::vec4(1));
 		model = glm::translate(glm::mat4(1), pos);
-		Renderer2D::DrawQuad(model, glm::vec4(1.0, 1.0, 1.0, 1.0));
-		model = glm::translate(glm::mat4(1), { -1.5,0.0,0.0 });
-		Renderer2D::DrawQuad(model, glm::vec4(1.0, 1.0, 1.0, 1.0), tex);
+		
+		{
+			LT_PROFILE_SCOPE("render 300 quads");
+			model = glm::translate(glm::mat4(1), { 0.0,0.0,0.0 });
+			Renderer2D::DrawQuad(model, glm::vec4(1.0, 0.0, 0.0, 1.0));
+		}
+	
+		//Renderer2D::DrawQuad(model, glm::vec4(1.0, 1.0, 1.0, 1.0), tex);
 		Renderer2D::EndScene();
 	}
 
@@ -50,19 +56,4 @@ namespace Lithium
 
 	}
 
-
-
-	void GUIlayer::OnCreate()
-	{
-		LT_PROFILE_FUNCTION("init GUI");
-	}
-
-	void GUIlayer::OnUpdate()
-	{
-		LT_PROFILE_FUNCTION("update GUI");
-	}
-
-	void GUIlayer::OnDestroy()
-	{
-	}
 }

@@ -2,15 +2,17 @@
 #include "Application.h"
 #include "Debug/Profiler.h"
 #include "glm.hpp"
+#include "../Imgui/ImguiLayer.h"
 
 namespace Lithium
 {
-	
+	Application* Application::instance = nullptr;
 	Application::Application()
 	{
 		_Window = CreateScope<Window>();
 		_Window->Init();
-
+		PushLayer(new GUIlayer);
+		instance = this;
 	}
 
 	Application::~Application()
@@ -45,5 +47,13 @@ namespace Lithium
 				_running = false;
 		}
 	}
+
+
+	Window& Application::GetWindow()
+	{
+		return *_Window;
+	}
+
+	
 
 }

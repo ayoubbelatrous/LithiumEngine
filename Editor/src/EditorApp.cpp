@@ -12,11 +12,9 @@ class Editor : public Lithium::Application
 		{
 			CORE_LOG("INIT APP");
 			PushLayer(new Lithium::EditorLayer());
-			PushLayer(new Lithium::GUIlayer());
 		}
 
 		~Editor()
-			
 		{
 
 		}
@@ -24,7 +22,5 @@ class Editor : public Lithium::Application
 };
 
 Lithium::Application* Lithium::CreateApp() {
-
-	
 	return new Editor();
 }

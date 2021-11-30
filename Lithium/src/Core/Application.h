@@ -16,8 +16,11 @@ namespace Lithium
 		~Application();
 		void PushLayer(Layer* layer);
 		void Run();
+		Window& GetWindow();
+		static Application& GetInstance() { return *instance; };
+		static Application* instance;
 	};
-
+	
 	//gets defined in the editor
 	Application* CreateApp();
 }

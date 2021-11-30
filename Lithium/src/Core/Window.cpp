@@ -24,7 +24,7 @@ namespace Lithium
 
 		window = glfwCreateWindow(1280, 780, "Lithium", NULL, NULL);
 		glfwMakeContextCurrent(window);
-
+		
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			std::cout << "Failed to initialize OpenGL context" << std::endl;
 		}

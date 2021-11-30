@@ -31,19 +31,6 @@ namespace Lithium
 	};
 
 
-	class GUIlayer : public Lithium::Layer
-	{
-	public:
-		GUIlayer()
-			:Layer("uilayer")
-		{
-		}
-		void OnCreate() override;
-		void OnUpdate() override;
-		void OnDestroy() override;
-
-	private:
-		
-	};
+	
 
 }

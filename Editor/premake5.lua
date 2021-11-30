@@ -20,12 +20,14 @@ project "Editor"
 		 "%{IncludeDir.GLFW}",
 		 "%{IncludeDir.stb_image}",
 		 "%{IncludeDir.glm}",
+		  "%{IncludeDir.imgui}",
 
 	}
 
 	links
 	{
-		"Lithium"
+		"Lithium",
+		
 	}
 
 
