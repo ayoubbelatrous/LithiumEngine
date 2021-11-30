@@ -21,7 +21,7 @@ project "Editor"
 		 "%{IncludeDir.stb_image}",
 		 "%{IncludeDir.glm}",
 		  "%{IncludeDir.imgui}",
-
+		  "%{IncludeDir.entt}",
 	}
 
 	links

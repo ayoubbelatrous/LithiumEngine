@@ -32,6 +32,7 @@ namespace Lithium
 		tex2 = CreateRef<Texture>("assets/images/eda.png");
 		framebuffer = CreateRef<FrameBuffer>();
 		framebuffer->Bind();
+		framebuffer->resize(1280, 780);
 		Renderer2D::Init();
 	}
 
@@ -39,6 +40,8 @@ namespace Lithium
 	{
 
 		LT_PROFILE_FUNCTION("update");
+		
+
 		
 		framebuffer->Bind();
 		RendererCommand::ClearColor(glm::vec4(0.25));
