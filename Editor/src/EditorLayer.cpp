@@ -30,6 +30,8 @@ namespace Lithium
 		model = glm::translate(glm::mat4(1), pos);
 		tex = CreateRef<Texture>("assets/images/check.png");
 		tex2 = CreateRef<Texture>("assets/images/eda.png");
+		framebuffer = CreateRef<FrameBuffer>();
+		framebuffer->Bind();
 		Renderer2D::Init();
 	}
 
@@ -37,6 +39,8 @@ namespace Lithium
 	{
 
 		LT_PROFILE_FUNCTION("update");
+		
+		framebuffer->Bind();
 		RendererCommand::ClearColor(glm::vec4(0.25));
 		RendererCommand::Clear();
 
@@ -45,15 +49,11 @@ namespace Lithium
 		//Renderer2D::DrawQuad(model, glm::vec4(1));
 		model = glm::translate(glm::mat4(1), pos);
 
-		{
-			LT_PROFILE_SCOPE("render 300 quads");
-			model = glm::translate(glm::mat4(1), {0.0, 0.0, 0.0});
-			Renderer2D::DrawQuad(model, glm::vec4(1.0, 0.0, 0.0, 1.0));
-		}
-
-		//Renderer2D::DrawQuad(model, glm::vec4(1.0, 1.0, 1.0, 1.0), tex);
+	
+	    model = glm::translate(glm::mat4(1), {0.0, 0.0, 0.0});
+		Renderer2D::DrawQuad(model, glm::vec4(1.0, 0.0, 0.0, 1.0));
 		Renderer2D::EndScene();
-
+		framebuffer->UnBind();
 		RenderImgui();
 	}
 
@@ -116,6 +116,9 @@ namespace Lithium
 		ImGui::End();
 
 		ImGui::Begin("hi");
+		
+		ImGui::Image((void*)(intptr_t)framebuffer->GetColorAttachmentID(), ImGui::GetContentRegionAvail(), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
 		ImGui::End();
 
 

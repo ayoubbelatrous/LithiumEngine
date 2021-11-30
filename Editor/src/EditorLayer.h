@@ -6,6 +6,7 @@
 #include "Renderer/VertexArray.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Renderer2D.h"
+#include "Renderer/FrameBuffer.h"
 
 namespace Lithium
 {
@@ -28,6 +29,7 @@ namespace Lithium
 
 		Ref<Texture> tex;
 		Ref<Texture> tex2;
+		Ref<FrameBuffer> framebuffer;
 	};
 
 
