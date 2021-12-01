@@ -56,9 +56,17 @@ namespace Lithium
 		{
 			layer->onEvent(e);
 		}
+		
 		if (e.GetEventType() == EventType::WindowClose)
 		{
 			_running = false;
+		}
+		if (e.GetEventType() == EventType::WindowResize)
+		{
+			WindowResizeEvent& resizeevent = static_cast<WindowResizeEvent&>(e);
+			CORE_LOG(resizeevent.GetWidth());
+			CORE_LOG(resizeevent.GetHeight());
+			
 		}
 	}
 
@@ -66,7 +74,4 @@ namespace Lithium
 	{
 		return *_Window;
 	}
-
-	
-
 }
