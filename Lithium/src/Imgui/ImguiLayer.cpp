@@ -93,4 +93,27 @@ namespace Lithium
 	{
 	}
 
+	void GUIlayer::onEvent(Event& e)
+	{
+		if (e.GetEventType() == EventType::KeyPress)
+		{
+			KeyEvent& key = static_cast<KeyEvent&>(e);
+
+
+
+			if (key.GetKeyAction() == GLFW_PRESS)
+			{
+				CORE_LOG("pressed imgui");
+			}
+
+			if (key.GetKeyAction() == GLFW_RELEASE)
+			{
+				CORE_LOG("released imgui");
+			}
+
+
+			CORE_LOG(key.GetKeyMods());
+		}
+	}
+
 }

@@ -66,7 +66,36 @@ namespace Lithium
 
 	void EditorLayer::onEvent(Event& e)
 	{
-		CORE_LOG(e.GetName());
+	
+		if (e.GetEventType() == EventType::KeyPress)
+		{
+			KeyEvent& key = static_cast<KeyEvent&>(e);
+
+
+
+			if (key.GetKeyAction() == GLFW_PRESS)
+			{
+				CORE_LOG("pressed");
+			}
+
+			if (key.GetKeyAction() == GLFW_RELEASE)
+			{
+				CORE_LOG("released");
+			}
+
+			
+			CORE_LOG(key.GetKeyMods());
+			
+			EventDispatcher dispatcher(e);
+			dispatcher.Dispatch<KeyEvent>(BIND_EVENT(EditorLayer::onKeyEvent));
+		}
+
+	}
+
+	void EditorLayer::onKeyEvent(KeyEvent& e)
+	{
+		CORE_LOG(e.GetKeyCode());
+		CORE_LOG("HIHI");
 	}
 
 	void EditorLayer::RenderImgui()

@@ -16,6 +16,7 @@ namespace Lithium
 		void OnCreate() override;
 		void OnUpdate() override;
 		void OnDestroy() override;
+		void onEvent(Event& event) override;
 	private:
 
 	};

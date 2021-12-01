@@ -11,7 +11,9 @@ namespace Lithium
 
 	enum class EventType
 	{
-		WindowResize, WindowClose, WindowMove, WindowFocus
+		WindowResize, WindowClose, WindowMove, WindowFocus,
+		KeyPress,
+
 	};
 
 #define EVENT_TYPE(t) static EventType GetType() { return EventType::t; }\
@@ -20,7 +22,13 @@ namespace Lithium
 	{
 		
 	public:
+
+		virtual ~Event() = default;
+
 		virtual const char* GetName() const = 0;
 		virtual EventType GetEventType() const = 0;
 	};
 }
+
+
+

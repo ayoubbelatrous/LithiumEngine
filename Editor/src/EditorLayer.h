@@ -7,7 +7,8 @@
 #include "Renderer/Shader.h"
 #include "Renderer/Renderer2D.h"
 #include "Renderer/FrameBuffer.h"
-
+#include "Event/EventDispatcher.h"
+#include "Event/AppEvents.h"
 
 namespace Lithium
 {
@@ -22,6 +23,7 @@ namespace Lithium
 		void OnUpdate() override;
 		void OnDestroy() override;
 		void onEvent(Event& e) override;
+		void onKeyEvent(KeyEvent& e);
 		void RenderImgui();
 	private:
 		glm::mat4 proj;
@@ -32,6 +34,7 @@ namespace Lithium
 		Ref<Texture> tex;
 		Ref<Texture> tex2;
 		Ref<FrameBuffer> framebuffer;
+		
 	};
 
 

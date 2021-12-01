@@ -49,9 +49,14 @@ namespace Lithium
 			WindowData& wdata = *(WindowData*)glfwGetWindowUserPointer(win);
 			WindowResizeEvent ev(w,h);
 			wdata.callback(ev);
+			});
+		glfwSetKeyCallback(window, [](GLFWwindow* win,int key, int scancode, int action, int mods)
+		{
+			WindowData& wdata = *(WindowData*)glfwGetWindowUserPointer(win);
+			KeyEvent ev = KeyEvent(key, action, mods, scancode);
+			wdata.callback(ev);
 		});
 
-		
 	}
 
 	void Window::OnUpdate()
