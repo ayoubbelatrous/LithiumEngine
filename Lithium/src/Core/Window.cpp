@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "glad/glad.h"
 
+
 namespace Lithium
 {
 
@@ -32,7 +33,14 @@ namespace Lithium
 		glViewport(0, 0, 1280, 780);
 		
 		CORE_LOG(glGetString(GL_VERSION));
-
+		glfwSetWindowUserPointer(window, &_Data);
+		glfwSetWindowCloseCallback(window, [](GLFWwindow* win)
+		{
+			WindowData& wdata = *(WindowData*)glfwGetWindowUserPointer(win);
+			WindowCloseEvent ev;
+			wdata.callback(ev);
+		});
+		
 	}
 
 	void Window::OnUpdate()

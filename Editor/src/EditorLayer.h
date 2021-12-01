@@ -8,6 +8,7 @@
 #include "Renderer/Renderer2D.h"
 #include "Renderer/FrameBuffer.h"
 
+
 namespace Lithium
 {
 	class EditorLayer : public Lithium::Layer
@@ -20,6 +21,7 @@ namespace Lithium
 		void OnCreate() override;
 		void OnUpdate() override;
 		void OnDestroy() override;
+		void onEvent(Event& e) override;
 		void RenderImgui();
 	private:
 		glm::mat4 proj;

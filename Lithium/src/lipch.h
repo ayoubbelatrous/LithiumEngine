@@ -8,3 +8,4 @@
 #include <fstream>
 #include <sstream>
 #include "Debug/Profiler.h"
+#include <functional>

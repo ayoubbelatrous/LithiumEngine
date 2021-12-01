@@ -64,6 +64,11 @@ namespace Lithium
 	{
 	}
 
+	void EditorLayer::onEvent(Event& e)
+	{
+		CORE_LOG(e.GetName());
+	}
+
 	void EditorLayer::RenderImgui()
 	{
 		ImGui_ImplOpenGL3_NewFrame();

@@ -2,6 +2,7 @@
 #include "LayerStack.h"
 #include "Window.h"
 #include "Base.h"
+#include "Event/AppEvents.h"
 
 namespace Lithium
 {
@@ -16,6 +17,7 @@ namespace Lithium
 		~Application();
 		void PushLayer(Layer* layer);
 		void Run();
+		void OnEvent(Event& e);
 		Window& GetWindow();
 		static Application& GetInstance() { return *instance; };
 		static Application* instance;

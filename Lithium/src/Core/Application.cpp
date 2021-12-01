@@ -12,9 +12,12 @@ namespace Lithium
 		_Window = CreateScope<Window>();
 		_Window->Init();
 		PushLayer(new GUIlayer);
-		
-	}
+		_Window->SetAppEventCallback([this](auto&&... args) -> decltype(auto)
+		{ 
+				return this->Application::OnEvent(std::forward<decltype(args)>(args)...);
+		});
 
+	}
 	Application::~Application()
 	{
 		for (Layer* layer : _Stack)
@@ -43,12 +46,21 @@ namespace Lithium
 			}
 
 			_Window->OnUpdate();
-
-			if (_Window->WindowClosing())
-				_running = false;
 		}
 	}
 
+
+	void Application::OnEvent(Event& e)
+	{
+		for (Layer* layer : _Stack)
+		{
+			layer->onEvent(e);
+		}
+		if (e.GetEventType() == EventType::WindowClose)
+		{
+			_running = false;
+		}
+	}
 
 	Window& Application::GetWindow()
 	{
