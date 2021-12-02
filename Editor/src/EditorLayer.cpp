@@ -2,12 +2,15 @@
 #include "imgui.h"
 #include <../imgui/example/imgui_impl_glfw.h>
 #include <../imgui/example/imgui_impl_opengl3.h>
-
 namespace Lithium
 {
 	void EditorLayer::OnCreate()
 	{
 		LT_PROFILE_FUNCTION("init");
+
+		_MainScene = CreateRef<Scene>();
+
+
 		float positions[] = {
 			-0.5f,
 			-0.5f,
@@ -34,12 +37,19 @@ namespace Lithium
 		framebuffer->Bind();
 		framebuffer->resize(1280, 780);
 		Renderer2D::Init();
+		Entity entity = _MainScene->CreateEntity();
+		CORE_LOG(entity.HasComponent<Data>());
+		entity.AddComponent<Data>();
 	}
 
 	void EditorLayer::OnUpdate()
 	{
 		LT_PROFILE_FUNCTION("update");
-			
+	
+
+		
+
+
 		framebuffer->Bind();
 		RendererCommand::ClearColor(glm::vec4(0.25));
 		RendererCommand::Clear();
@@ -69,8 +79,26 @@ namespace Lithium
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
 	{
-		CORE_LOG(e.GetKeyCode());
-		CORE_LOG("HIHI");
+		float speed = 0.1f;
+		if(e.keycode == KEYCODE_W)
+		{
+			view = glm::translate(view, { 0,1 * speed,0 });
+		}
+
+		if (e.keycode == KEYCODE_S)
+		{
+			view = glm::translate(view, { 0,-1 * speed,0 });
+		}
+
+		if (e.keycode == KEYCODE_A)
+		{
+			view = glm::translate(view, { -1 * speed,0,0 });
+		}
+
+		if (e.keycode == KEYCODE_D)
+		{
+			view = glm::translate(view, { 1 * speed,0,0 });
+		}
 	}
 
 	void EditorLayer::RenderImgui()
@@ -127,7 +155,7 @@ namespace Lithium
 
 		ImGui::End();
 
-		ImGui::Begin("hi");
+		ImGui::Begin("Scene");
 		
 		ImGui::Image((void*)(intptr_t)framebuffer->GetColorAttachmentID(), ImGui::GetContentRegionAvail(), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 

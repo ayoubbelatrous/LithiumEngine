@@ -9,9 +9,16 @@
 #include "Renderer/FrameBuffer.h"
 #include "Event/EventDispatcher.h"
 #include "Event/AppEvents.h"
+#include "Scene/Scene.h"
+#include "entt.hpp"
+#include "Scene/Entity.h"
 
 namespace Lithium
 {
+	struct Data
+	{
+		std::string name = "entity";
+	};
 	class EditorLayer : public Lithium::Layer
 	{
 	public:
@@ -34,7 +41,7 @@ namespace Lithium
 		Ref<Texture> tex;
 		Ref<Texture> tex2;
 		Ref<FrameBuffer> framebuffer;
-		
+		Ref<Scene> _MainScene;
 	};
 
 
