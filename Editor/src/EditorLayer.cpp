@@ -9,8 +9,7 @@ namespace Lithium
 		LT_PROFILE_FUNCTION("init");
 
 		_MainScene = CreateRef<Scene>();
-
-
+		
 		float positions[] = {
 			-0.5f,
 			-0.5f,
@@ -39,7 +38,9 @@ namespace Lithium
 		Renderer2D::Init();
 		Entity entity = _MainScene->CreateEntity();
 		CORE_LOG(entity.HasComponent<Data>());
-		entity.AddComponent<Data>();
+		entity.AddComponent<NameComponent>("HI");
+		NameComponent& nc = entity.GetComponent<NameComponent>();
+		CORE_LOG(nc.GetName());
 	}
 
 	void EditorLayer::OnUpdate()

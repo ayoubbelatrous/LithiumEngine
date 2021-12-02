@@ -12,7 +12,7 @@
 #include "Scene/Scene.h"
 #include "entt.hpp"
 #include "Scene/Entity.h"
-
+#include "Scene/Components.h"
 namespace Lithium
 {
 	struct Data
