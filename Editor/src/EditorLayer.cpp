@@ -38,21 +38,18 @@ namespace Lithium
 
 	void EditorLayer::OnUpdate()
 	{
-
 		LT_PROFILE_FUNCTION("update");
-		
-
-		
+			
 		framebuffer->Bind();
 		RendererCommand::ClearColor(glm::vec4(0.25));
 		RendererCommand::Clear();
 
 		Renderer2D::BeginScene(proj, view);
 
+
 		//Renderer2D::DrawQuad(model, glm::vec4(1));
 		model = glm::translate(glm::mat4(1), pos);
-
-	
+		
 	    model = glm::translate(glm::mat4(1), {0.0, 0.0, 0.0});
 		Renderer2D::DrawQuad(model, glm::vec4(1.0, 0.0, 0.0, 1.0));
 		Renderer2D::EndScene();
@@ -66,30 +63,8 @@ namespace Lithium
 
 	void EditorLayer::onEvent(Event& e)
 	{
-	
-		if (e.GetEventType() == EventType::KeyPress)
-		{
-			KeyEvent& key = static_cast<KeyEvent&>(e);
-
-
-
-			if (key.GetKeyAction() == GLFW_PRESS)
-			{
-				CORE_LOG("pressed");
-			}
-
-			if (key.GetKeyAction() == GLFW_RELEASE)
-			{
-				CORE_LOG("released");
-			}
-
-			
-			CORE_LOG(key.GetKeyMods());
-			
-			EventDispatcher dispatcher(e);
-			dispatcher.Dispatch<KeyEvent>(BIND_EVENT(EditorLayer::onKeyEvent));
-		}
-
+	 EventDispatcher dispatcher(e);
+	 dispatcher.Dispatch<KeyEvent>(BIND_EVENT(EditorLayer::onKeyEvent));
 	}
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
@@ -158,6 +133,11 @@ namespace Lithium
 
 		ImGui::End();
 
+		ImGui::Begin("Stats");
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+		ImGui::End();
+		
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -170,5 +150,4 @@ namespace Lithium
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}
-
 }
