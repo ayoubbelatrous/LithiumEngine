@@ -22,6 +22,8 @@ project "Editor"
 		 "%{IncludeDir.glm}",
 		  "%{IncludeDir.imgui}",
 		  "%{IncludeDir.entt}",
+		  "%{IncludeDir.imguizmo}",
+		  
 	}
 
 	links

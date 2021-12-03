@@ -23,6 +23,10 @@ files
 
     "vendor/stb_image/**.h",
 	"vendor/stb_image/**.cpp",
+
+    
+    "vendor/imguizmo/**.h",
+	"vendor/imguizmo/**.cpp",
 }
 includedirs
 {
@@ -44,8 +48,8 @@ defines
 links
 {
 	"GLFW",
-  "GLAD",
-  "IMGUI",
+    "GLAD",
+    "IMGUI",
 	"opengl32.lib"
 }
 

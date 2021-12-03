@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include <../imgui/example/imgui_impl_glfw.h>
 #include <../imgui/example/imgui_impl_opengl3.h>
+#include "ImGuizmo.h"
 namespace Lithium
 {
 	void EditorLayer::OnCreate()
