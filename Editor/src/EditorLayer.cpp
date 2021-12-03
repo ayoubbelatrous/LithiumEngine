@@ -6,6 +6,7 @@ namespace Lithium
 	void EditorLayer::OnCreate()
 	{
 		_shp = CreateRef<SceneHierachyPanel>();
+		_InspectorPanel = CreateRef<InspectorPanel>();
 
 		LT_PROFILE_FUNCTION("init");
 		
@@ -16,13 +17,10 @@ namespace Lithium
 		_MainScene = CreateRef<Scene>();
 
 		Entity entity = _MainScene->CreateEntity("name");
-		Entity entity2 = _MainScene->CreateEntity("hello");
-		//entity2.AddComponent<TransformComponent>();
-
 		
 		_Selection = entity;
-		_shp->SetSelection(_MainScene);
-
+		_shp->SetScene(_MainScene);
+		_InspectorPanel->SetScene(_MainScene);
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity.AddComponent<TransformComponent>();
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
@@ -174,8 +172,18 @@ namespace Lithium
 		glm::mat4 _view = view;
 		glm::mat4 _proj = proj;
 		//_Selection = _PanelManager->_SceneTreePanel->_Selection;
+		Entity ent = {};
+		if (ent.GetHandle() == entt::null)
+		{
+			
+			CORE_LOG("YES");
+		}
+		else
+		{
+			CORE_LOG("NO");
+		}
 		_shp->OnUpdate(_Selection);
-		
+		_InspectorPanel->OnUpdate(_Selection);
 		if(_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
 		{
 			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
@@ -195,7 +203,7 @@ namespace Lithium
 		}
 		
 		ImGui::End();
-
+		
 		ImGui::Begin("Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();

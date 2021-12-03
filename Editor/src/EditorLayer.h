@@ -18,6 +18,7 @@
 #include <../imgui/example/imgui_impl_glfw.h>
 #include <../imgui/example/imgui_impl_opengl3.h>
 #include "Panels/SceneHierachyPanel.h"
+#include "Panels/InspectorPanel.h"
 
 namespace Lithium
 {
@@ -56,5 +57,6 @@ namespace Lithium
 		ImVec2 _ViewportBounds[2];
 		Entity _Selection;
 		Ref<SceneHierachyPanel> _shp;
+		Ref<InspectorPanel> _InspectorPanel;
 	};
 }

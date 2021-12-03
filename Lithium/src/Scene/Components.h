@@ -25,7 +25,7 @@ namespace Lithium
 
 		glm::vec3 Position;
 		glm::vec3 Rotation;
-		glm::vec3 Scale;	
+		glm::vec3 Scale = glm::vec3(1);	
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent& other) = default;
@@ -33,7 +33,7 @@ namespace Lithium
 		glm::mat4 GetMatrix()
 		{
 			glm::mat4 transform;
-			transform = glm::translate(glm::mat4(1),Position);
+			transform = glm::translate(glm::mat4(1), Position) * glm::scale(glm::mat4(1), Scale);
 			return transform;
 		}
 	};

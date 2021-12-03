@@ -1,16 +1,14 @@
 #pragma once
-#include "Scene/Entity.h"
 #include "Scene/Scene.h"
+#include "Scene/Entity.h"
 #include "Core/Base.h"
-
 namespace Lithium
 {
-	class SceneHierachyPanel
+	class InspectorPanel
 	{
 	public:
 		void OnCreate();
 		void OnUpdate(Entity& _Selection);
-		void DrawEntity(Entity entity,Entity& _Selection);
 		void SetScene(Ref<Scene>& scene)
 		{
 			_Scene = scene;

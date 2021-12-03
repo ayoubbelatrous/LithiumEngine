@@ -8,7 +8,11 @@ namespace Lithium
 	class Entity
 	{
 	public:
-		Entity() = default;
+		Entity()
+			:_Handle(entt::null), _Scene(nullptr)
+		{
+
+		}
 		Entity(entt::entity entity,Scene* scene)
 			:_Handle(entity),_Scene(scene)
 		{}

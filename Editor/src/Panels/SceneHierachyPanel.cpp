@@ -22,21 +22,6 @@ namespace Lithium
 				Entity entity{ entityID , _Scene.get() };
 				DrawEntity(entity,_Selection);
 			});
-
-		if (ImGui::BeginMainMenuBar())
-		{
-			if (ImGui::BeginMenu("Edit"))
-			{
-				if (ImGui::MenuItem("create entity"))
-				{
-					Entity entity = _Scene->CreateEntity("new entity");
-
-					entity.AddComponent<TransformComponent>();
-				}
-				ImGui::EndMenu();
-			}
-			ImGui::EndMainMenuBar();
-		}
 		ImGui::End();
 	}
 
@@ -67,11 +52,18 @@ namespace Lithium
 			if (ImGui::MenuItem("Delete Entity"))
 			{
 				entityDeleted = true;
-				_Scene->DeleteEntity(entity);
 			}
 
 			ImGui::EndPopup();
 		}
+
+
+		if (entityDeleted)
+		{
+			_Scene->DeleteEntity(entity);
+			_Selection = Entity();
+		}
+
 
 		if (opened)
 		{
