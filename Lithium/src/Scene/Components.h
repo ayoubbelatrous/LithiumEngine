@@ -4,6 +4,7 @@
 #include "gtc/matrix_transform.hpp"
 #include "Renderer/Texture.h"
 #include "Core/Base.h"
+#include "Entity.h"
 
 namespace Lithium
 {
@@ -53,4 +54,21 @@ namespace Lithium
 		glm::vec4 GetColor() const { return Color; }
 		Ref<Texture> GetTexture() const { return tex; }
 	};
+
+
+
+	struct ChildManagerComponent
+	{
+		std::vector<entt::entity> Children;
+		ChildManagerComponent() = default;
+		ChildManagerComponent(const ChildManagerComponent& other) = default;
+
+
+		void AddChild(Entity& entity)
+		{
+			Children.push_back(entity.GetHandle());
+		}
+
+	};
 }
+

@@ -16,6 +16,7 @@ namespace Lithium
 	{
 		Entity ent(_Registry.create(),this);
 		ent.AddComponent<NameComponent>(name);
+		ent.AddComponent<ChildManagerComponent>();
 		return ent;
 	}
 
@@ -32,7 +33,6 @@ namespace Lithium
 			auto& [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
 			Renderer2D::DrawQuad(tc.GetMatrix(), sc.GetColor());
 		}
-
 	}
 
 }

@@ -28,7 +28,11 @@ namespace Lithium
 
 	 void SceneHierachyPanel::DrawEntity(Entity entity,Entity& _Selection) {
 
-
+		/*
+		 if(entity.HasComponent<ChildManagerComponent>())
+		 if (entity.GetComponent<ChildManagerComponent>().Children.empty())
+			 return;
+		*/
 		ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.25f, 0.25f, 0.25f, 1.00f));
 		auto& tag = entity.GetComponent<NameComponent>().Name;
 		ImGuiTreeNodeFlags flags = ((_Selection.GetHandle() == entity.GetHandle()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
@@ -62,7 +66,7 @@ namespace Lithium
 			_Selection = Entity();
 		}
 
-
+		
 		if (opened)
 		{
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -73,5 +77,7 @@ namespace Lithium
 		}
 
 		ImGui::PopStyleColor();
-	}
+	 }
+
+
 }

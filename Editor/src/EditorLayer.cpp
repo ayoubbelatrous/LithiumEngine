@@ -22,15 +22,14 @@ namespace Lithium
 		_Selection = entity;
 		_shp->SetScene(_MainScene);
 		_InspectorPanel->SetScene(_MainScene);
-
-
-
+		
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity.AddComponent<TransformComponent>();
 
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity2.AddComponent<TransformComponent>();
-
+		ChildManagerComponent& childmanager = entity2.GetComponent<ChildManagerComponent>();
+		childmanager.AddChild(entity);
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
 		SpriteRendererComponent& sp = entity.GetComponent<SpriteRendererComponent>();
 		tc.Position = glm::vec3(-3, 0, 0);
@@ -63,7 +62,7 @@ namespace Lithium
 
 
 		framebuffer->Bind();
-		RendererCommand::ClearColor(glm::vec4(0.25));
+		RendererCommand::ClearColor(glm::vec4(0.005));
 		RendererCommand::Clear();
 		Renderer2D::BeginScene(proj, view);
 
