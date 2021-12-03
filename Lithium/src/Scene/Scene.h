@@ -13,6 +13,8 @@ namespace Lithium
 		Entity CreateEntity(const std::string& name);
 		
 		entt::registry& GetRegistry() { return _Registry; }
+
+		void onEditorUpdate();
 	private:
 		entt::registry _Registry;
 

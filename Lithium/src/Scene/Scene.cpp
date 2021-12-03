@@ -2,7 +2,7 @@
 #include "Components.h"
 #include "Scene.h"
 #include "Entity.h"
-
+#include "Renderer/Renderer2D.h"
 namespace Lithium
 {
 
@@ -17,6 +17,17 @@ namespace Lithium
 		Entity ent(_Registry.create(),this);
 		ent.AddComponent<NameComponent>(name);
 		return ent;
+	}
+
+	void Scene::onEditorUpdate()
+	{
+		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
+		for (auto entity : view)
+		{
+			auto& [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
+			Renderer2D::DrawQuad(tc.GetMatrix(), sc.GetColor());
+		}
+
 	}
 
 }
