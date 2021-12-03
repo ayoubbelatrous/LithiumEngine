@@ -11,6 +11,7 @@ namespace Lithium
 		Scene();
 
 		Entity CreateEntity(const std::string& name);
+		void DeleteEntity(Entity entity);
 		
 		entt::registry& GetRegistry() { return _Registry; }
 

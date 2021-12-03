@@ -17,7 +17,7 @@
 #include "imgui.h"
 #include <../imgui/example/imgui_impl_glfw.h>
 #include <../imgui/example/imgui_impl_opengl3.h>
-
+#include "Panels/SceneHierachyPanel.h"
 
 namespace Lithium
 {
@@ -55,5 +55,6 @@ namespace Lithium
 		float orthosize = 5;
 		ImVec2 _ViewportBounds[2];
 		Entity _Selection;
+		Ref<SceneHierachyPanel> _shp;
 	};
 }

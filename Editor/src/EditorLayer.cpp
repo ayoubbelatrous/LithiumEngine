@@ -5,6 +5,7 @@ namespace Lithium
 {
 	void EditorLayer::OnCreate()
 	{
+		_shp = CreateRef<SceneHierachyPanel>();
 
 		LT_PROFILE_FUNCTION("init");
 		
@@ -15,8 +16,13 @@ namespace Lithium
 		_MainScene = CreateRef<Scene>();
 
 		Entity entity = _MainScene->CreateEntity("name");
+		Entity entity2 = _MainScene->CreateEntity("hello");
+		//entity2.AddComponent<TransformComponent>();
 
+		
 		_Selection = entity;
+		_shp->SetSelection(_MainScene);
+
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity.AddComponent<TransformComponent>();
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
@@ -168,10 +174,10 @@ namespace Lithium
 		glm::mat4 _view = view;
 		glm::mat4 _proj = proj;
 		//_Selection = _PanelManager->_SceneTreePanel->_Selection;
-
+		_shp->OnUpdate(_Selection);
+		
 		if(_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
 		{
-			
 			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
 			ImGuizmo::SetGizmoSizeClipSpace(0.2f);
 			ImGuizmo::SetOrthographic(true);

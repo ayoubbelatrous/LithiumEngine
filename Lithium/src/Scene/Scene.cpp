@@ -19,6 +19,11 @@ namespace Lithium
 		return ent;
 	}
 
+	void Scene::DeleteEntity(Entity entity)
+	{
+		_Registry.destroy(entity.GetHandle());
+	}
+
 	void Scene::onEditorUpdate()
 	{
 		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
