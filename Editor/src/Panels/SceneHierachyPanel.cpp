@@ -22,10 +22,7 @@ namespace Lithium
 		});
 		ImGui::End();
 	}
-
-
-
-
+	
 	 void SceneHierachyPanel::DrawEntity(Entity entity,Entity& _Selection) {
 
 		/*

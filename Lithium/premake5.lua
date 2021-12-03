@@ -38,6 +38,7 @@ includedirs
     "%{IncludeDir.imgui}",
     "%{IncludeDir.entt}",
     "%{IncludeDir.imguizmo}",
+    "%{IncludeDir.yaml}",
     
 }
 
@@ -51,6 +52,7 @@ links
 	"GLFW",
     "GLAD",
     "IMGUI",
+    "YAML",
 	"opengl32.lib"
 }
 

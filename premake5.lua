@@ -22,12 +22,14 @@ IncludeDir["stb_image"] = "%{wks.location}/Lithium/vendor/stb_image"
 IncludeDir["imgui"] = "%{wks.location}/Lithium/vendor/imgui"
 IncludeDir["entt"] = "%{wks.location}/Lithium/vendor/entt"
 IncludeDir["imguizmo"] = "%{wks.location}/Lithium/vendor/imguizmo"
+IncludeDir["yaml"] = "%{wks.location}/Lithium/vendor/yaml/include"
 
 group "Dependencies"
 
 	include "Lithium/vendor/glfw"
 	include "Lithium/vendor/glad"
 	include "Lithium/vendor/imgui"
+	include "Lithium/vendor/yaml"
 group ""
 
 include "Lithium"
