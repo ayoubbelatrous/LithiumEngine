@@ -37,6 +37,7 @@ includedirs
     "%{IncludeDir.stb_image}",
     "%{IncludeDir.imgui}",
     "%{IncludeDir.entt}",
+    "%{IncludeDir.imguizmo}",
     
 }
 

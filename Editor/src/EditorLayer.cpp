@@ -1,13 +1,13 @@
 #include "EditorLayer.h"
-#include "imgui.h"
-#include <../imgui/example/imgui_impl_glfw.h>
-#include <../imgui/example/imgui_impl_opengl3.h>
+
 #include "ImGuizmo.h"
 namespace Lithium
 {
 	void EditorLayer::OnCreate()
 	{
+
 		LT_PROFILE_FUNCTION("init");
+		_Selection = Entity(entt::null,_MainScene.get());
 		framebuffer = CreateRef<FrameBuffer>();
 		framebuffer->Bind();
 		framebuffer->resize(1000, 1000);
@@ -19,7 +19,7 @@ namespace Lithium
 		entity.AddComponent<TransformComponent>();
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
 		SpriteRendererComponent& sp = entity.GetComponent<SpriteRendererComponent>();
-
+		_Selection = entity;
 		tc.Position = glm::vec3(-3, 0, 0);
 		tex2 = CreateRef<Texture>("assets/images/check.png");
 		sp.tex = CreateRef<Texture>("assets/images/check.png");
@@ -159,6 +159,35 @@ namespace Lithium
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
 		ImGui::Image((void*)(intptr_t)framebuffer->GetColorAttachmentID(), ImGui::GetContentRegionAvail(), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+
+		ImVec2 viewportMinRegion = ImGui::GetWindowContentRegionMin();
+		ImVec2 viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		ImVec2 viewportOffset = ImGui::GetWindowPos();
+		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+
+		glm::mat4 _view = view;
+		glm::mat4 _proj = proj;
+
+		if(_Selection.GetHandle() != entt::null)
+		{
+			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
+			ImGuizmo::SetGizmoSizeClipSpace(0.2f);
+			ImGuizmo::SetOrthographic(true);
+			ImGuizmo::SetDrawlist();
+			
+			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
+			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
+				(ImGuizmo::OPERATION)ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(matri));
+
+			if (ImGuizmo::IsUsing())
+			{
+				_Selection.GetComponent<TransformComponent>().Position = matri[3];
+			}
+		}
+		
+	
 		ImGui::End();
 
 		ImGui::Begin("Stats");

@@ -28,6 +28,11 @@ namespace Lithium
 		{
 			return _Scene->GetRegistry().get<T>(_Handle);
 		}
+
+		entt::entity GetHandle()
+		{
+			return _Handle;
+		}
 	private:
 		entt::entity _Handle;
 		Scene* _Scene;

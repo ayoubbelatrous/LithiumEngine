@@ -3,6 +3,7 @@
 #include "Core/Base.h"
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
+#include "gtc/type_ptr.hpp"
 #include "Renderer/VertexArray.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Renderer2D.h"
@@ -13,9 +14,9 @@
 #include "entt.hpp"
 #include "Scene/Entity.h"
 #include "Scene/Components.h"
-
-
-
+#include "imgui.h"
+#include <../imgui/example/imgui_impl_glfw.h>
+#include <../imgui/example/imgui_impl_opengl3.h>
 
 namespace Lithium
 {
@@ -51,5 +52,7 @@ namespace Lithium
 		float viewportSize[2];
 
 		float orthosize = 5;
+		ImVec2 m_ViewportBounds[2];
+		Entity _Selection;
 	};
 }
