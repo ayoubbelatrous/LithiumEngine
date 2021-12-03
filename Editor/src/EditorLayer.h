@@ -17,6 +17,8 @@
 #include "imgui.h"
 #include <../imgui/example/imgui_impl_glfw.h>
 #include <../imgui/example/imgui_impl_opengl3.h>
+#include "Panels/PanelManager.h"
+#include "Panels/SceneTreePanel.h"
 
 namespace Lithium
 {
@@ -52,7 +54,8 @@ namespace Lithium
 		float viewportSize[2];
 
 		float orthosize = 5;
-		ImVec2 m_ViewportBounds[2];
+		ImVec2 _ViewportBounds[2];
 		Entity _Selection;
+		Ref<PanelManager> _PanelManager;
 	};
 }

@@ -1,13 +1,14 @@
 #pragma once
-
-
+#include "Scene/Scene.h"
+#include "Core/Base.h"
 
 namespace Lithium
 {
 	class Panel
 	{
 	public:
-		virtual void onCreate() = 0;
-		virtual void onUpdate() = 0;
+		virtual void onCreate() {};
+		virtual void onUpdate() {};
+		virtual void SetScene(Ref<Scene> scene) {};
 	};
 }

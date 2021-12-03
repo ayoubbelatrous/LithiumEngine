@@ -7,14 +7,24 @@ namespace Lithium
 	{
 
 		LT_PROFILE_FUNCTION("init");
+		
 		_Selection = Entity(entt::null,_MainScene.get());
 		framebuffer = CreateRef<FrameBuffer>();
 		framebuffer->Bind();
 		framebuffer->resize(1000, 1000);
 		_MainScene = CreateRef<Scene>();
 
-
 		Entity entity = _MainScene->CreateEntity("name");
+		Entity entity2 = _MainScene->CreateEntity("hi");
+		entity2.AddComponent<TransformComponent>();
+
+
+		_PanelManager = CreateRef<PanelManager>();
+		_PanelManager->SetScene(_MainScene);
+		Ref<SceneTreePanel> panel = CreateRef<SceneTreePanel>();
+		panel->SetSelection(_Selection);
+		_PanelManager->PushPanel(panel);
+
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity.AddComponent<TransformComponent>();
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
@@ -55,13 +65,7 @@ namespace Lithium
 
 		model = glm::translate(glm::mat4(1), { -0.0, 0.0, 0.0 });		
 
-		auto view = _MainScene->GetRegistry().view<TransformComponent, SpriteRendererComponent>();
-		for (auto entity : view)
-		{
-			auto& [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-			Renderer2D::DrawQuad(tc.GetMatrix(), sc.GetColor(), tex2);
-		}
-		
+		_MainScene->onEditorUpdate();
 		Renderer2D::EndScene();
 		framebuffer->UnBind();
 		RenderImgui();
@@ -103,6 +107,7 @@ namespace Lithium
 
 	void EditorLayer::RenderImgui()
 	{
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -156,6 +161,7 @@ namespace Lithium
 		ImGui::End();
 		ImGui::Begin("Scene");
 
+	
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
 		ImGui::Image((void*)(intptr_t)framebuffer->GetColorAttachmentID(), ImGui::GetContentRegionAvail(), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -164,8 +170,8 @@ namespace Lithium
 		ImVec2 viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		ImVec2 viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		ImVec2 viewportOffset = ImGui::GetWindowPos();
-		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
-		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+		_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+		_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
 		glm::mat4 _view = view;
 		glm::mat4 _proj = proj;
@@ -177,7 +183,7 @@ namespace Lithium
 			ImGuizmo::SetOrthographic(true);
 			ImGuizmo::SetDrawlist();
 			
-			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
+			ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
 				(ImGuizmo::OPERATION)ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(matri));
 
@@ -187,14 +193,13 @@ namespace Lithium
 			}
 		}
 		
-	
 		ImGui::End();
 
 		ImGui::Begin("Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 
-
+		_PanelManager->onUpdate();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
