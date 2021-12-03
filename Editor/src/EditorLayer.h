@@ -13,6 +13,10 @@
 #include "entt.hpp"
 #include "Scene/Entity.h"
 #include "Scene/Components.h"
+
+
+
+
 namespace Lithium
 {
 	struct Data
@@ -38,13 +42,14 @@ namespace Lithium
 		glm::mat4 model;
 		glm::vec3 pos;
 
-		Ref<Texture> tex;
-		Ref<Texture> tex2;
 		Ref<FrameBuffer> framebuffer;
 		Ref<Scene> _MainScene;
+		Ref<Texture> tex;
+		Ref<Texture> tex2;
+
+
+		float viewportSize[2];
+
+		float orthosize = 5;
 	};
-
-
-	
-
 }

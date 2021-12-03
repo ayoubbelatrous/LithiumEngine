@@ -47,8 +47,8 @@ namespace Lithium
 
 	void Texture::Bind(unsigned int slot) const
 	{
-		glBindTexture(GL_TEXTURE_2D, _id);
 
+		glBindTexture(GL_TEXTURE_2D, _id);
 		glActiveTexture(GL_TEXTURE0 + slot);
 
 	}
@@ -65,8 +65,9 @@ namespace Lithium
 
 	void Texture::SetData(const void* data)
 	{
-		Bind(0);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		//Bind(1);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _width, _height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	}
 
 	Ref<Texture> Texture::Create(int width, int height)

@@ -41,7 +41,7 @@ namespace Lithium
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
 		std::array<Ref<Texture>, MaxTextureSlots> slots;
-		uint32_t textureIndex = 1;
+		uint32_t textureIndex = 0;
 		glm::vec4 QuadVertexPositions[4];
 		glm::mat4 viewProjection;
 		glm::mat4 _proj;
@@ -88,7 +88,7 @@ namespace Lithium
 		delete[] quadIndices;
 
 		data.WhiteTexture = Texture::Create(1, 1);
-		unsigned int white = 0xffffffff;
+		unsigned int white = 0xfffffffff;
 		data.WhiteTexture->SetData(&white);
 
 
@@ -151,7 +151,7 @@ namespace Lithium
 		}
 
 
-			data.textureShader->SetUniformiv("u_texture",sampler2D);
+		data.textureShader->SetUniformiv("u_texture",sampler2D);
 		data.quadIB->Bind();
 		RendererCommand::DrawIndexed(data.QuadIndexCount);
 	}
@@ -207,7 +207,7 @@ namespace Lithium
 				NextBatch();
 
 			float textureIndex = 0.0f;
-			for (uint32_t i = 1; i < data.textureIndex; i++)
+			for (uint32_t i = 0; i < data.textureIndex; i++)
 			{
 				if (data.slots[i]->GetID() == texture->GetID())
 				{

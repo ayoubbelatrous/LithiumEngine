@@ -17,7 +17,14 @@ namespace Lithium
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
+#define DEBUG_MODE
+#ifdef DEBUG_MODE
 #define CORE_LOG(x) {std::cout << x << std::endl;}
+#else
+#define CORE_LOG(x) {}
+#endif
+	
+
 #define BIND_EVENT(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 }

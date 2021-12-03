@@ -1,5 +1,5 @@
 #include "lipch.h"
-
+#include "Components.h"
 #include "Scene.h"
 #include "Entity.h"
 
@@ -12,9 +12,11 @@ namespace Lithium
 
 	
 	
-	Entity Scene::CreateEntity()
+	Entity Scene::CreateEntity(const std::string& name)
 	{
-		return {_Registry.create(),this };
+		Entity ent(_Registry.create(),this);
+		ent.AddComponent<NameComponent>(name);
+		return ent;
 	}
 
 }

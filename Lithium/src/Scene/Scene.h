@@ -1,5 +1,6 @@
 #pragma once
 #include "entt.hpp"
+#include <string>
 namespace Lithium
 {
 	class Entity;
@@ -9,7 +10,7 @@ namespace Lithium
 
 		Scene();
 
-		Entity CreateEntity();
+		Entity CreateEntity(const std::string& name);
 		
 		entt::registry& GetRegistry() { return _Registry; }
 	private:

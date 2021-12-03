@@ -15,7 +15,7 @@ namespace Lithium
 
 
 		glGenTextures(1, &renderedTexture);
-		glActiveTexture(GL_TEXTURE31);
+		//glActiveTexture(GL_TEXTURE31);
 		glBindTexture(GL_TEXTURE_2D, renderedTexture);
 
 		// Give an empty image to OpenGL ( the last "0" )
@@ -45,7 +45,7 @@ namespace Lithium
 
 	void FrameBuffer::Bind() const
 	{
-		glActiveTexture(GL_TEXTURE31);
+		//glActiveTexture(GL_TEXTURE17);
 		glBindTexture(GL_TEXTURE_2D, renderedTexture);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _id);

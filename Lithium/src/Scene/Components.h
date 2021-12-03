@@ -2,7 +2,8 @@
 #include <string>
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
-
+#include "Renderer/Texture.h"
+#include "Core/Base.h"
 
 namespace Lithium
 {
@@ -35,5 +36,21 @@ namespace Lithium
 			transform = glm::translate(glm::mat4(1),Position);
 			return transform;
 		}
+	};
+
+
+	struct SpriteRendererComponent
+	{
+		glm::vec4 Color;
+		Ref<Texture> tex;
+
+		SpriteRendererComponent() = default;
+		SpriteRendererComponent(const glm::vec4 color)
+			:Color(color) {
+			tex = CreateRef<Texture>();
+		}
+		SpriteRendererComponent(const SpriteRendererComponent& other) = default;
+		glm::vec4 GetColor() const { return Color; }
+		Ref<Texture> GetTexture() const { return tex; }
 	};
 }
