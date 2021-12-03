@@ -15,13 +15,11 @@ namespace Lithium
 	{
 		ImGui::Begin("Hierachy");
 		
-
-	
 		_Scene->GetRegistry().each([&](auto entityID)
-			{
+		{
 				Entity entity{ entityID , _Scene.get() };
 				DrawEntity(entity,_Selection);
-			});
+		});
 		ImGui::End();
 	}
 

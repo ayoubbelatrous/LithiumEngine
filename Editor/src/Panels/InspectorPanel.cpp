@@ -43,6 +43,11 @@ namespace Lithium
 			ImGui::DragFloat3("Rotation",glm::value_ptr(trans.Rotation),0.01f);
 			ImGui::DragFloat3("Scale",glm::value_ptr(trans.Scale),0.01f);
 		}
+		if (_Selection.HasComponent<SpriteRendererComponent>())
+		{
+			SpriteRendererComponent& renderer = _Selection.GetComponent<SpriteRendererComponent>();
+			ImGui::ColorEdit4("Color", glm::value_ptr(renderer.Color));
+		}
 		}
 		ImGui::End();
 	}

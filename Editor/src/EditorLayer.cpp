@@ -17,12 +17,20 @@ namespace Lithium
 		_MainScene = CreateRef<Scene>();
 
 		Entity entity = _MainScene->CreateEntity("name");
+		Entity entity2 = _MainScene->CreateEntity("hello");
 		
 		_Selection = entity;
 		_shp->SetScene(_MainScene);
 		_InspectorPanel->SetScene(_MainScene);
+
+
+
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity.AddComponent<TransformComponent>();
+
+		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
+		entity2.AddComponent<TransformComponent>();
+
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
 		SpriteRendererComponent& sp = entity.GetComponent<SpriteRendererComponent>();
 		tc.Position = glm::vec3(-3, 0, 0);
@@ -155,6 +163,9 @@ namespace Lithium
 
 
 		ImGui::End();
+		_shp->OnUpdate(_Selection);
+		_InspectorPanel->OnUpdate(_Selection);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 		ImGui::Begin("Scene");
 
 	
@@ -171,19 +182,8 @@ namespace Lithium
 
 		glm::mat4 _view = view;
 		glm::mat4 _proj = proj;
-		//_Selection = _PanelManager->_SceneTreePanel->_Selection;
-		Entity ent = {};
-		if (ent.GetHandle() == entt::null)
-		{
-			
-			CORE_LOG("YES");
-		}
-		else
-		{
-			CORE_LOG("NO");
-		}
-		_shp->OnUpdate(_Selection);
-		_InspectorPanel->OnUpdate(_Selection);
+		
+		
 		if(_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
 		{
 			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
@@ -203,7 +203,7 @@ namespace Lithium
 		}
 		
 		ImGui::End();
-		
+		ImGui::PopStyleVar();
 		ImGui::Begin("Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
