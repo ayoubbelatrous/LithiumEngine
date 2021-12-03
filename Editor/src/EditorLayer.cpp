@@ -15,21 +15,12 @@ namespace Lithium
 		_MainScene = CreateRef<Scene>();
 
 		Entity entity = _MainScene->CreateEntity("name");
-		Entity entity2 = _MainScene->CreateEntity("hi");
-		entity2.AddComponent<TransformComponent>();
 
-
-		_PanelManager = CreateRef<PanelManager>();
-		_PanelManager->SetScene(_MainScene);
-		Ref<SceneTreePanel> panel = CreateRef<SceneTreePanel>();
-		panel->SetSelection(_Selection);
-		_PanelManager->PushPanel(panel);
-
+		_Selection = entity;
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity.AddComponent<TransformComponent>();
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
 		SpriteRendererComponent& sp = entity.GetComponent<SpriteRendererComponent>();
-		_Selection = entity;
 		tc.Position = glm::vec3(-3, 0, 0);
 		tex2 = CreateRef<Texture>("assets/images/check.png");
 		sp.tex = CreateRef<Texture>("assets/images/check.png");
@@ -57,6 +48,7 @@ namespace Lithium
 			orthoBottom, orthoTop);
 
 #pragma endregion
+
 
 		framebuffer->Bind();
 		RendererCommand::ClearColor(glm::vec4(0.25));
@@ -175,9 +167,11 @@ namespace Lithium
 
 		glm::mat4 _view = view;
 		glm::mat4 _proj = proj;
+		//_Selection = _PanelManager->_SceneTreePanel->_Selection;
 
-		if(_Selection.GetHandle() != entt::null)
+		if(_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
 		{
+			
 			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
 			ImGuizmo::SetGizmoSizeClipSpace(0.2f);
 			ImGuizmo::SetOrthographic(true);
@@ -191,6 +185,7 @@ namespace Lithium
 			{
 				_Selection.GetComponent<TransformComponent>().Position = matri[3];
 			}
+			
 		}
 		
 		ImGui::End();
@@ -198,8 +193,6 @@ namespace Lithium
 		ImGui::Begin("Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
-
-		_PanelManager->onUpdate();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
