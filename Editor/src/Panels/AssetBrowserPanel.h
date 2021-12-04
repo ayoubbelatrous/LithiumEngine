@@ -1,7 +1,7 @@
 #pragma once
-#include "COre/Base.h"
+#include "Core/Base.h"
 #include "Renderer/Texture.h"
-
+#include <filesystem>
 
 namespace Lithium {
 	class AssetBrowserPanel
@@ -11,6 +11,7 @@ namespace Lithium {
 		void OnUpdate();
 	private:
 		Ref<Texture> _FolderIcon;
-		Ref<Texture> FileIcon;
+		Ref<Texture> _FileIcon;
+		std::filesystem::path currentpath;
 	};
 }

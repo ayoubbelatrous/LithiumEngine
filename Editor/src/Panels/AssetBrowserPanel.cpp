@@ -1,26 +1,61 @@
 #include "AssetBrowserPanel.h"
 #include "imgui.h"
-#include <filesystem>
+
 
 namespace Lithium
 {
-
+	extern const std::filesystem::path root = "assets";
 	void AssetBrowserPanel::OnCreate()
 	{
 		_FolderIcon = CreateRef<Texture>("assets/Editor/icons/folder.png");
+		 _FileIcon = CreateRef<Texture>("assets/Editor/icons/file.png");
+		currentpath = root;
 	}
 
 	void AssetBrowserPanel::OnUpdate()
 	{
-		ImGui::Begin("Asset Browser");
-		ImGui::Columns(5,0,false);
-		for (auto& entry: std::filesystem::directory_iterator("assets"))
+
+		float itemwidth = 128;
+		
+		ImGui::Begin("Project");
+
+
+		float width = ImGui::GetContentRegionAvail().x;
+
+		
+		ImGui::Columns((int)(width / itemwidth),0,false);
+		if (currentpath != "assets")
+		{
+			if (ImGui::Button("->"))
+			{
+				currentpath = currentpath.parent_path();
+			}
+		}
+		
+		for (auto& entry: std::filesystem::directory_iterator(currentpath))
 		{
 			const auto& path = entry.path();
 			auto relativePath = std::filesystem::relative(path, "assets");
-			
+	
+
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			ImGui::ImageButton((ImTextureID)_FolderIcon->GetID(), { 100,100}, { 0,1 }, { 1,0 });
+			ImTextureID icontexid = entry.is_directory() ? (ImTextureID)_FolderIcon->GetID() : (ImTextureID)_FileIcon->GetID();
+			ImGui::ImageButton(icontexid, { 100,100 }, { 0,1 }, { 1,0 });
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+			{
+					if (entry.is_directory())
+						currentpath /= path.filename();
+			}
+
+			if (ImGui::BeginDragDropSource())
+			{
+				const wchar_t* itemPath = relativePath.c_str();
+				ImGui::SetDragDropPayload("ASSET_FILE", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				ImGui::Image(icontexid, { 50,50}, { 0,1 }, { 1,0 });
+				ImGui::Text(relativePath.filename().string().c_str());
+				ImGui::EndDragDropSource();
+			}
+
 			ImGui::PopStyleColor();
 			ImGui::TextWrapped(relativePath.filename().string().c_str());
 			//ImGui::Text("%s",entry.path().string());
