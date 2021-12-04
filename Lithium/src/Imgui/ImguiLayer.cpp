@@ -78,10 +78,9 @@ namespace Lithium
 		style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.45f, 0.45f, 0.45f, 0.43f);
 
 
-		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Regular.ttf", 18);
-		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Bold.ttf", 18);
+		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Regular.ttf", 17);
+		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Bold.ttf", 16);
 		static ImGuiID dockspaceID = 0;
-
 	}
 
 	void GUIlayer::OnUpdate()

@@ -7,8 +7,10 @@ namespace Lithium
 {
 	void EditorLayer::OnCreate()
 	{
+		LastMousePosiition = glm::vec2(0);
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
+		_AssetBrowerPanel  = CreateRef<AssetBrowserPanel>();
 
 		LT_PROFILE_FUNCTION("init");
 		
@@ -46,6 +48,7 @@ namespace Lithium
 		model = glm::translate(glm::mat4(1), pos);
 	
 		Renderer2D::Init();
+		_AssetBrowerPanel->OnCreate();
 	}
 
 	void EditorLayer::OnUpdate()
@@ -83,10 +86,11 @@ namespace Lithium
 		{
 			view = glm::translate(view, { 1 * speed,0,0 });
 		}
+	
 #pragma endregion 
 		
 		framebuffer->Bind();
-		RendererCommand::ClearColor(glm::vec4(0.005));
+		RendererCommand::ClearColor(glm::vec4(0.25,0.25,0.35,0));
 		RendererCommand::Clear();
 		Renderer2D::BeginScene(proj, view);
 
@@ -112,6 +116,7 @@ namespace Lithium
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
 	{
+	
 	}
 
 	void EditorLayer::RenderImgui()
@@ -170,6 +175,7 @@ namespace Lithium
 		ImGui::End();
 		_shp->OnUpdate(_Selection);
 		_InspectorPanel->OnUpdate(_Selection);
+		_AssetBrowerPanel->OnUpdate();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 		ImGui::Begin("Scene");
 
