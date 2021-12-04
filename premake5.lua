@@ -25,7 +25,6 @@ IncludeDir["imguizmo"] = "%{wks.location}/Lithium/vendor/imguizmo"
 IncludeDir["yaml"] = "%{wks.location}/Lithium/vendor/yaml/include"
 
 group "Dependencies"
-
 	include "Lithium/vendor/glfw"
 	include "Lithium/vendor/glad"
 	include "Lithium/vendor/imgui"

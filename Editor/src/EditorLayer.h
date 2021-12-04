@@ -19,7 +19,7 @@
 #include <../imgui/example/imgui_impl_opengl3.h>
 #include "Panels/SceneHierachyPanel.h"
 #include "Panels/InspectorPanel.h"
-
+#include "Scene/Serializer.h"
 namespace Lithium
 {
 	struct Data
@@ -58,5 +58,6 @@ namespace Lithium
 		Entity _Selection;
 		Ref<SceneHierachyPanel> _shp;
 		Ref<InspectorPanel> _InspectorPanel;
+		Serializer sz;
 	};
 }

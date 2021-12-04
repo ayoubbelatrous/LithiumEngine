@@ -52,7 +52,7 @@ links
 	"GLFW",
     "GLAD",
     "IMGUI",
-    "YAML",
+    "yaml-cpp",
 	"opengl32.lib"
 }
 

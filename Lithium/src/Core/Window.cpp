@@ -1,7 +1,7 @@
 #include "lipch.h"
 #include "Window.h"
 #include "glad/glad.h"
-
+#include "Input/Input.h"
 
 namespace Lithium
 {
@@ -14,7 +14,7 @@ namespace Lithium
 	{
 
 	}
-
+	
 	void Window::Init()
 	{
 		glfwInit();

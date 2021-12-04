@@ -29,9 +29,9 @@ namespace Lithium
 		}
 
 
-		GLFWwindow& GETWindow()
+		GLFWwindow* GETWindow()
 		{
-			return *window;
+			return window;
 		}
 
 		void SetAppEventCallback(const EventCallback& e)  { _Data.callback = e; }

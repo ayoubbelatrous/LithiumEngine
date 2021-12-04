@@ -1,6 +1,8 @@
 #include "EditorLayer.h"
 
 #include "ImGuizmo.h"
+#include "Input/Input.h"
+
 namespace Lithium
 {
 	void EditorLayer::OnCreate()
@@ -42,6 +44,7 @@ namespace Lithium
 
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
+	
 		Renderer2D::Init();
 	}
 
@@ -59,8 +62,29 @@ namespace Lithium
 			orthoBottom, orthoTop);
 
 #pragma endregion
+#pragma region CameraMovement
+		float speed = 0.01f;
+		if (Input::IsKeyPressed(Key::W))
+		{
+			view = glm::translate(view, { 0,1 * speed,0 });
+		}
 
+		if (Input::IsKeyPressed(Key::S))
+		{
+			view = glm::translate(view, { 0,-1 * speed,0 });
+		}
 
+		if (Input::IsKeyPressed(Key::A))
+		{
+			view = glm::translate(view, { -1 * speed,0,0 });
+		}
+
+		if (Input::IsKeyPressed(Key::D))
+		{
+			view = glm::translate(view, { 1 * speed,0,0 });
+		}
+#pragma endregion 
+		
 		framebuffer->Bind();
 		RendererCommand::ClearColor(glm::vec4(0.005));
 		RendererCommand::Clear();
@@ -69,9 +93,11 @@ namespace Lithium
 		model = glm::translate(glm::mat4(1), { -0.0, 0.0, 0.0 });		
 
 		_MainScene->onEditorUpdate();
+		
 		Renderer2D::EndScene();
 		framebuffer->UnBind();
 		RenderImgui();
+
 	}
 
 	void EditorLayer::OnDestroy()
@@ -86,26 +112,6 @@ namespace Lithium
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
 	{
-		float speed = 0.1f;
-		if (e.keycode == KEYCODE_W)
-		{
-			view = glm::translate(view, { 0,1 * speed,0 });
-		}
-
-		if (e.keycode == KEYCODE_S)
-		{
-			view = glm::translate(view, { 0,-1 * speed,0 });
-		}
-
-		if (e.keycode == KEYCODE_A)
-		{
-			view = glm::translate(view, { -1 * speed,0,0 });
-		}
-
-		if (e.keycode == KEYCODE_D)
-		{
-			view = glm::translate(view, { 1 * speed,0,0 });
-		}
 	}
 
 	void EditorLayer::RenderImgui()
