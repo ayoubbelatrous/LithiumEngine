@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "Debug/Profiler.h"
 #include "glm.hpp"
-#include "../Imgui/ImguiLayer.h"
 
 namespace Lithium
 {
@@ -11,7 +10,8 @@ namespace Lithium
 	{
 		_Window = CreateScope<Window>();
 		_Window->Init();
-		PushLayer(new GUIlayer);
+		_ImguiLayer = new GUIlayer();
+		PushOverlay(_ImguiLayer);
 		_Window->SetAppEventCallback([this](auto&&... args) -> decltype(auto)
 		{ 
 				return this->Application::OnEvent(std::forward<decltype(args)>(args)...);
@@ -34,6 +34,13 @@ namespace Lithium
 		layer->OnCreate();
 	}
 
+	void Application::PushOverlay(Layer* layer)
+	{
+		instance = this;
+		_Stack.PushOverlay(layer);
+		layer->OnCreate();
+	}
+
 	void Application::Run()
 	{
 		
@@ -52,11 +59,14 @@ namespace Lithium
 
 	void Application::OnEvent(Event& e)
 	{
-		for (Layer* layer : _Stack)
+
+
+		for (auto it = _Stack.rbegin(); it != _Stack.rend(); ++it)
 		{
-			layer->onEvent(e);
+			if (e._Handeled)
+				break;
+			(*it)->onEvent(e);
 		}
-		
 		if (e.GetEventType() == EventType::WindowClose)
 		{
 			_running = false;
@@ -64,9 +74,7 @@ namespace Lithium
 		if (e.GetEventType() == EventType::WindowResize)
 		{
 			WindowResizeEvent& resizeevent = static_cast<WindowResizeEvent&>(e);
-			CORE_LOG(resizeevent.GetWidth());
-			CORE_LOG(resizeevent.GetHeight());
-			
+		
 		}
 	}
 
