@@ -172,7 +172,7 @@ namespace Lithium
 				}
 				ImGui::EndDragDropTarget();
 			}
-		}
+		  }
 		}
 		ImGui::Button("Add Component");
 		ImGui::End();

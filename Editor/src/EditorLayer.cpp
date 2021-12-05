@@ -22,7 +22,7 @@ namespace Lithium
 		framebuffer->Bind();
 		framebuffer->resize(1000, 1000);
 		_MainScene = CreateRef<Scene>();
-
+		sz = Serializer(_MainScene);
 		Entity entity = _MainScene->CreateEntity("name");
 		Entity entity2 = _MainScene->CreateEntity("hello");
 		
@@ -48,13 +48,16 @@ namespace Lithium
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
 	
+		//_MainScene = CreateRef<Scene>();
 		Renderer2D::Init();
 		_AssetBrowerPanel->OnCreate();
-		//sz.SerializeScene(_MainScene, "assets/scenes/main.lis");
 	}
 
 	void EditorLayer::OnUpdate()
 	{
+
+
+		LT_PROFILE_FUNCTION("UPDATE");
 #pragma region CalculateProjection
 
 		float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
@@ -132,10 +135,24 @@ namespace Lithium
 			if (control)
 			{
 				_EditorStatus = "Saving Scene...";
-				sz.SerializeScene(_MainScene, "assets/scenes/main.lis");
+				sz.SerializeScene("assets/scenes/main.lis");
 				_EditorStatus = "";
 			}
 		}
+		if (e.keycode == KEYCODE_R)
+		{
+			if (control)
+			{
+				Ref<Scene> scene = CreateRef<Scene>();
+				sz = Serializer(scene);
+				_EditorStatus = "Reloading Scene...";
+				sz.DeserializeScene("assets/scenes/main.lis");
+				_MainScene = scene;
+				_EditorStatus = "";
+			}
+		}
+
+
 	}
 
 	void EditorLayer::RenderImgui()
@@ -229,7 +246,7 @@ namespace Lithium
 			
 			ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
-				(ImGuizmo::OPERATION)ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(matri));
+				(ImGuizmo::OPERATION)ImGuizmo::OPERATION::SCALE, ImGuizmo::WORLD, glm::value_ptr(matri));
 
 			if (ImGuizmo::IsUsing())
 			{

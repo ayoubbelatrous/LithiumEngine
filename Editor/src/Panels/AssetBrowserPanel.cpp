@@ -22,8 +22,22 @@ namespace Lithium
 
 		float width = ImGui::GetContentRegionAvail().x;
 
-		
-		ImGui::Columns((int)(width / itemwidth),0,false);
+		int columns = 1;
+		if ((int)width < 10)
+		{
+			columns = 1;
+		}
+		else
+		{
+			columns = (int)(width / itemwidth);
+		}
+
+
+		if (columns < 1)
+		{
+			columns = 1;
+		}
+		ImGui::Columns(columns,0,false);
 		if (currentpath != "assets")
 		{
 			if (ImGui::Button("->"))

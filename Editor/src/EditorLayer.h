@@ -33,6 +33,7 @@ namespace Lithium
 		EditorLayer()
 			:Layer("hi")
 		{
+			sz = Serializer(_MainScene);
 		}
 		void OnCreate() override;
 		void OnUpdate() override;

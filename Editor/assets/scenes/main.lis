@@ -1,0 +1,21 @@
+Entities:
+  - Entity: 1
+    Name: hello
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+    Child Manager:
+      children: ids go here
+  - Entity: 0
+    Name: name
+    Transform:
+      Position: [-1.18181825, -0.465631723, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+    Child Manager:
+      children: ids go here

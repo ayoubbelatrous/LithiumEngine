@@ -9,6 +9,16 @@ namespace Lithium
 	class Serializer
 	{
 	public:
-		void SerializeScene(const Ref<Scene>& scene, const std::string& path);
+		Serializer() = default;
+		Serializer(const Ref<Scene>& scene)
+			:_Scene(scene)
+		{
+
+		}
+
+		void SerializeScene(const std::string& path);
+		void DeserializeScene(const std::string& path);
+	private:
+		Ref<Scene> _Scene;
 	};
 }
