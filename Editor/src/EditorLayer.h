@@ -49,6 +49,9 @@ namespace Lithium
 		Ref<FrameBuffer> framebuffer;
 		Ref<Scene> _MainScene;
 
+		bool _ViewportHovered = false;
+		bool _ViewportFocus = false;
+
 
 		float viewportSize[2];
 

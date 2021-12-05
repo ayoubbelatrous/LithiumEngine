@@ -47,6 +47,7 @@ namespace Lithium
 	
 		Renderer2D::Init();
 		_AssetBrowerPanel->OnCreate();
+		//sz.SerializeScene(_MainScene, "assets/scenes/main.lis");
 	}
 
 	void EditorLayer::OnUpdate()
@@ -64,25 +65,29 @@ namespace Lithium
 
 #pragma endregion
 #pragma region CameraMovement
-		float speed = 0.01f;
-		if (Input::IsKeyPressed(Key::W))
+		if (_ViewportFocus)
 		{
-			view = glm::translate(view, { 0,1 * speed,0 });
-		}
+			float speed = 0.01f;
+			if (Input::IsKeyPressed(Key::W))
+			{
+				view = glm::translate(view, { 0,1 * speed,0 });
+			}
 
-		if (Input::IsKeyPressed(Key::S))
-		{
-			view = glm::translate(view, { 0,-1 * speed,0 });
-		}
+			if (Input::IsKeyPressed(Key::S))
+			{
+				view = glm::translate(view, { 0,-1 * speed,0 });
+			}
 
-		if (Input::IsKeyPressed(Key::A))
-		{
-			view = glm::translate(view, { -1 * speed,0,0 });
-		}
+			if (Input::IsKeyPressed(Key::A))
+			{
+				view = glm::translate(view, { -1 * speed,0,0 });
+			}
 
-		if (Input::IsKeyPressed(Key::D))
-		{
-			view = glm::translate(view, { 1 * speed,0,0 });
+			if (Input::IsKeyPressed(Key::D))
+			{
+				view = glm::translate(view, { 1 * speed,0,0 });
+			}
+
 		}
 	
 #pragma endregion 
@@ -114,12 +119,27 @@ namespace Lithium
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
 	{
-	
+		bool control = Input::IsKeyPressed(Key::LeftControl);
+		bool shift = Input::IsKeyPressed(Key::LeftShift);
+
+		if (e.keycode == KEYCODE_S)
+		{
+			if (control)
+			{
+				sz.SerializeScene(_MainScene, "assets/scenes/main.lis");
+			}
+		}
 	}
 
 	void EditorLayer::RenderImgui()
 	{
 
+
+		if (!_ViewportFocus)
+		{
+			Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
+		}
+	
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -176,7 +196,7 @@ namespace Lithium
 		_AssetBrowerPanel->OnUpdate();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 		ImGui::Begin("Scene");
-		
+		_ViewportFocus = ImGui::IsWindowFocused();
 	
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
