@@ -152,8 +152,15 @@ namespace Lithium
 				
 			ImGui::Separator();
 			ImGui::ColorEdit4("Color", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().Color));
-
-			ImGui::Button("texture");
+			if (_Selection.GetComponent<SpriteRendererComponent>().tex)
+			{
+				ImGui::Image((ImTextureID)_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), {75,75});
+			}
+			else
+			{
+				ImGui::Button("texture", { ImGui::GetContentRegionAvail().x,30 });
+			}
+			
 			if (ImGui::BeginDragDropTarget())
 			{
 
