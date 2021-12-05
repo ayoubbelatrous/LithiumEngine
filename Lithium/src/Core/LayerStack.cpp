@@ -9,4 +9,10 @@ namespace Lithium
 		_Layers.emplace(_Layers.begin() + _LayerIndex, layer);
 		_LayerIndex++;
 	}
+
+	void LayerStack::PushOverlay(Layer* layer)
+	{
+		_Layers.emplace_back(layer);
+	}
+
 }
