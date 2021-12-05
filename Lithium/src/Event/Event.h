@@ -22,7 +22,7 @@ namespace Lithium
 	{
 		
 	public:
-
+		bool _Handeled = false;
 		virtual ~Event() = default;
 
 		virtual const char* GetName() const = 0;
