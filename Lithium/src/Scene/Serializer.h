@@ -9,6 +9,6 @@ namespace Lithium
 	class Serializer
 	{
 	public:
-		void SerializeScene(const void* data);
+		void SerializeScene(const Ref<Scene>& scene, const std::string& path);
 	};
 }
