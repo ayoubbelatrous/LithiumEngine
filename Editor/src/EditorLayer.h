@@ -48,8 +48,6 @@ namespace Lithium
 
 		Ref<FrameBuffer> framebuffer;
 		Ref<Scene> _MainScene;
-		Ref<Texture> tex;
-		Ref<Texture> tex2;
 
 
 		float viewportSize[2];

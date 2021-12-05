@@ -6,11 +6,13 @@
 #include "glm.hpp"
 #include "gtc/type_ptr.hpp"
 #include "Core/Base.h"
+#include <filesystem>
 
 
 
 namespace Lithium
 {
+	extern const std::filesystem::path root;
 	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -146,10 +148,23 @@ namespace Lithium
 					ImGui::EndPopup();
 				}
 
-			
+				
 				
 			ImGui::Separator();
 			ImGui::ColorEdit4("Color", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().Color));
+
+			ImGui::Button("texture");
+			if (ImGui::BeginDragDropTarget())
+			{
+
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path texturepath = root/path;
+					_Selection.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>(texturepath.string());
+				}
+				ImGui::EndDragDropTarget();
+			}
 		}
 		}
 		ImGui::Button("Add Component");

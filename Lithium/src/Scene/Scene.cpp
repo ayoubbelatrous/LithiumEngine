@@ -31,7 +31,15 @@ namespace Lithium
 		for (auto entity : view)
 		{
 			auto& [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-			Renderer2D::DrawQuad(tc.GetMatrix(), sc.GetColor());
+			if (sc.tex)
+			{
+				Renderer2D::DrawQuad(tc.GetMatrix(), sc.GetColor(), sc.tex);
+			}
+			else
+			{
+				Renderer2D::DrawQuad(tc.GetMatrix(), sc.GetColor());
+
+			}
 		}
 	}
 

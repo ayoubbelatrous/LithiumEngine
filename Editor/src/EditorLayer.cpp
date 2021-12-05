@@ -37,8 +37,6 @@ namespace Lithium
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
 		SpriteRendererComponent& sp = entity.GetComponent<SpriteRendererComponent>();
 		tc.Position = glm::vec3(-3, 0, 0);
-		tex2 = CreateRef<Texture>("assets/images/check.png");
-		sp.tex = CreateRef<Texture>("assets/images/check.png");
 
 		pos = glm::vec3(0);
 		view = glm::mat4(0);
@@ -176,15 +174,14 @@ namespace Lithium
 		_shp->OnUpdate(_Selection);
 		_InspectorPanel->OnUpdate(_Selection);
 		_AssetBrowerPanel->OnUpdate();
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 		ImGui::Begin("Scene");
-
+		
 	
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
 		ImGui::Image((void*)(intptr_t)framebuffer->GetColorAttachmentID(), ImGui::GetContentRegionAvail(), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
-
+	
 		ImVec2 viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		ImVec2 viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		ImVec2 viewportOffset = ImGui::GetWindowPos();

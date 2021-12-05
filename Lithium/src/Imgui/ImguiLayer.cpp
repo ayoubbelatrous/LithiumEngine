@@ -24,6 +24,7 @@ namespace Lithium
 
 		ImGui_ImplGlfw_InitForOpenGL(app.GetWindow().GetglfwWindowptr(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
+	
 		ImGuiStyle* style = &ImGui::GetStyle();
 
 
@@ -76,10 +77,11 @@ namespace Lithium
 		style->Colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
 		style->Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 		style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.45f, 0.45f, 0.45f, 0.43f);
-
+		//style->Colors[ImGuiCol_DragDropTarget] = ImVec4(0.45f, 0.5f, 0.45f, 0.43f);
 
 		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Regular.ttf", 17);
 		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Bold.ttf", 16);
+
 		static ImGuiID dockspaceID = 0;
 	}
 
