@@ -51,7 +51,7 @@ namespace Lithium
 
 		bool _ViewportHovered = false;
 		bool _ViewportFocus = false;
-
+		std::string _EditorStatus;
 
 		float viewportSize[2];
 

@@ -7,6 +7,9 @@ namespace Lithium
 {
 	void EditorLayer::OnCreate()
 	{
+		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
+
+		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
@@ -115,6 +118,8 @@ namespace Lithium
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyEvent>(BIND_EVENT(EditorLayer::onKeyEvent));
+		CORE_LOG(e.GetName() << "editor");
+
 	}
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
@@ -126,7 +131,9 @@ namespace Lithium
 		{
 			if (control)
 			{
+				_EditorStatus = "Saving Scene...";
 				sz.SerializeScene(_MainScene, "assets/scenes/main.lis");
+				_EditorStatus = "";
 			}
 		}
 	}
@@ -135,11 +142,7 @@ namespace Lithium
 	{
 
 
-		if (!_ViewportFocus)
-		{
-			Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
-		}
-	
+		
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -197,7 +200,12 @@ namespace Lithium
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 		ImGui::Begin("Scene");
 		_ViewportFocus = ImGui::IsWindowFocused();
-	
+		if (_ViewportFocus)
+		{
+			Application::GetInstance().GetImguiLayer()->SetBlockEvent(false);
+		}
+		
+
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
 		ImGui::Image((void*)(intptr_t)framebuffer->GetColorAttachmentID(), ImGui::GetContentRegionAvail(), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -234,7 +242,9 @@ namespace Lithium
 		ImGui::PopStyleVar();
 		ImGui::Begin("Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text(_EditorStatus.c_str());
 		ImGui::End();
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
