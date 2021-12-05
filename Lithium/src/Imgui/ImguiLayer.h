@@ -9,6 +9,7 @@ namespace Lithium
 	class GUIlayer : public Layer
 	{
 	public:
+
 		GUIlayer()
 			:Layer("imgui layer")
 		{
@@ -17,7 +18,11 @@ namespace Lithium
 		void OnUpdate() override;
 		void OnDestroy() override;
 		void onEvent(Event& event) override;
+		void SetBlockEvent(bool block)
+		{
+			_BlockEvent = block;
+		}
 	private:
-
+		bool _BlockEvent = false;
 	};
 }
