@@ -21,6 +21,7 @@
 #include "Panels/InspectorPanel.h"
 #include "Panels/AssetBrowserPanel.h"
 #include "Scene/Serializer.h"
+
 namespace Lithium
 {
 	struct Data
@@ -63,7 +64,6 @@ namespace Lithium
 		Ref<InspectorPanel> _InspectorPanel;
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
 		Serializer sz;
-
 
 		glm::vec2 LastMousePosiition;
 	};

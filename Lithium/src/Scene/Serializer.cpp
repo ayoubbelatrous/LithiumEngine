@@ -150,6 +150,10 @@ namespace Lithium
 		for (auto entity : entities)
 		{
 			Entity deserEntity;
+			auto id = data["Entity"];
+
+			CORE_LOG(id.as<uint32_t>());
+
 			auto nameC = data["Name"];
 			if (nameC)
 			{
@@ -163,12 +167,9 @@ namespace Lithium
 			{
 				deserEntity.AddComponent<TransformComponent>();
 				TransformComponent& tc = deserEntity.GetComponent<TransformComponent>();
-				glm::vec3 pos = transform["Position"].as<glm::vec3>();
-				glm::vec3 rot = transform["Rotation"].as<glm::vec3>();
-				glm::vec3 scale = transform["Scale"].as<glm::vec3>();
-				tc.Position = pos;
-				tc.Rotation = rot;
-				tc.Scale = scale;
+				tc.Position = transform["Position"].as<glm::vec3>();
+				tc.Rotation = transform["Rotation"].as<glm::vec3>();
+				tc.Scale = transform["Scale"].as<glm::vec3>();
 
 			}
 			auto sprite = data["Sprite Renderer"];

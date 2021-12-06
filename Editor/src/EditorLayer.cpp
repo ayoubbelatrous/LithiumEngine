@@ -51,6 +51,7 @@ namespace Lithium
 		//_MainScene = CreateRef<Scene>();
 		Renderer2D::Init();
 		_AssetBrowerPanel->OnCreate();
+		
 	}
 
 	void EditorLayer::OnUpdate()
@@ -103,8 +104,11 @@ namespace Lithium
 		RendererCommand::Clear();
 		Renderer2D::BeginScene(proj, view);
 
-		model = glm::translate(glm::mat4(1), { -0.0, 0.0, 0.0 });		
 
+
+		
+		model = glm::translate(glm::mat4(1), { -0.0, 0.0, 0.0 });		
+		//Renderer2D::DrawQuad(model, glm::vec4(1, 1, 1, 1));
 		_MainScene->onEditorUpdate();
 		
 		Renderer2D::EndScene();
@@ -246,7 +250,7 @@ namespace Lithium
 			
 			ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
-				(ImGuizmo::OPERATION)ImGuizmo::OPERATION::SCALE, ImGuizmo::WORLD, glm::value_ptr(matri));
+				(ImGuizmo::OPERATION)ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(matri));
 
 			if (ImGuizmo::IsUsing())
 			{
@@ -258,6 +262,7 @@ namespace Lithium
 		ImGui::End();
 		ImGui::PopStyleVar();
 		ImGui::Begin("Stats");
+		//CORE_LOG(Renderer2D::GetStats().DrawCalls);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text(_EditorStatus.c_str());
 		ImGui::End();
