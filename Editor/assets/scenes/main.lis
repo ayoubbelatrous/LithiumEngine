@@ -12,7 +12,7 @@ Entities:
   - Entity: 0
     Name: name
     Transform:
-      Position: [-1.18181825, -0.465631723, 0]
+      Position: [-3, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:

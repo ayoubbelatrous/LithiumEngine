@@ -151,8 +151,11 @@ namespace Lithium
 
 	void Shader::SetUniformiv(const std::string& name, int vector[])
 	{
+
 		int location = GetLocation(name);
-		glUniform1iv(location, sizeof(vector) / sizeof(uint32_t), &vector[0]);
+		
+		glUniform1iv(location, 8, vector);
+
 	}
 
 }

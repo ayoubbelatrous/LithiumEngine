@@ -48,11 +48,14 @@ namespace Lithium
 		
 		for (auto& entry: std::filesystem::directory_iterator(currentpath))
 		{
+		
 			const auto& path = entry.path();
 			auto relativePath = std::filesystem::relative(path, "assets");
 	
 
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+			ImGui::PushID(relativePath.filename().string().c_str());
+
 			ImTextureID icontexid = entry.is_directory() ? (ImTextureID)_FolderIcon->GetID() : (ImTextureID)_FileIcon->GetID();
 			ImGui::ImageButton(icontexid, { 100,100 }, { 0,1 }, { 1,0 });
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -69,11 +72,12 @@ namespace Lithium
 				ImGui::Text(relativePath.filename().string().c_str());
 				ImGui::EndDragDropSource();
 			}
-
+			
 			ImGui::PopStyleColor();
 			ImGui::TextWrapped(relativePath.filename().string().c_str());
 			//ImGui::Text("%s",entry.path().string());
 			ImGui::NextColumn();
+			ImGui::PopID();
 		}
 		ImGui::Columns(1);
 

@@ -13,9 +13,10 @@ namespace Lithium
 		int _height;
 		int _BPP;
 	public:
+		Texture() = default;
 		Texture(const std::string& path);
 		Texture(int width, int height);
-		Texture() {}
+		//Texture():_id(0) {}
 		~Texture();
 		void Bind(unsigned int slot = 0) const;
 		void UnBind() const;
@@ -23,5 +24,9 @@ namespace Lithium
 		void SetData(const void* data);
 		static Ref<Texture> Create(int width, int height);
 		static Ref<Texture> Load(const std::string& path);
+		bool operator==(const Texture& other) const
+		{
+			return _id == ((Texture&)other)._id;
+		}
 	};
 }

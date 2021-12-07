@@ -14,7 +14,8 @@ namespace Lithium
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
 		_AssetBrowerPanel  = CreateRef<AssetBrowserPanel>();
-
+		tex2 = CreateRef<Texture>("assets/images/check.png");
+		tex = CreateRef<Texture>("assets/images/test.png");
 		LT_PROFILE_FUNCTION("init");
 		
 		_Selection = Entity(entt::null,_MainScene.get());
@@ -24,6 +25,7 @@ namespace Lithium
 		_MainScene = CreateRef<Scene>();
 		sz = Serializer(_MainScene);
 		Entity entity = _MainScene->CreateEntity("name");
+		Entity entity3 = _MainScene->CreateEntity("dod");
 		Entity entity2 = _MainScene->CreateEntity("hello");
 		
 		_Selection = entity;
@@ -35,12 +37,18 @@ namespace Lithium
 
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity2.AddComponent<TransformComponent>();
-		ChildManagerComponent& childmanager = entity2.GetComponent<ChildManagerComponent>();
-		childmanager.AddChild(entity);
-		TransformComponent& tc = entity.GetComponent<TransformComponent>();
-		SpriteRendererComponent& sp = entity.GetComponent<SpriteRendererComponent>();
-		tc.Position = glm::vec3(-3, 0, 0);
 
+		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
+		entity3.AddComponent<TransformComponent>();
+
+		
+
+		entity2.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>();
+		entity.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>();
+		entity3.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>("assets/images/test.png");
+
+	    //sp.tex = CreateRef<Texture>("assets/images/check.png");
+	
 		pos = glm::vec3(0);
 		view = glm::mat4(0);
 		view = model = glm::translate(glm::mat4(1), glm::vec3(1));
@@ -48,10 +56,11 @@ namespace Lithium
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
 	
+
 		//_MainScene = CreateRef<Scene>();
-		Renderer2D::Init();
+		//Renderer2D::Init();
 		_AssetBrowerPanel->OnCreate();
-		
+		BatchRenderer::Init();
 	}
 
 	void EditorLayer::OnUpdate()
@@ -102,16 +111,16 @@ namespace Lithium
 		framebuffer->Bind();
 		RendererCommand::ClearColor(glm::vec4(0.25,0.25,0.35,0));
 		RendererCommand::Clear();
-		Renderer2D::BeginScene(proj, view);
+		BatchRenderer::Begin(view, proj);
+		model = glm::translate(glm::mat4(1.0), { 0.0,0.0,0.0 });
 
-
+	
+		model = glm::translate(glm::mat4(1.0), {0.0,0.0,0.0});
+		BatchRenderer::DrawQuad(model, { 1,0.5,1,1 }, tex);
+		
 
 		
-		model = glm::translate(glm::mat4(1), { -0.0, 0.0, 0.0 });		
-		//Renderer2D::DrawQuad(model, glm::vec4(1, 1, 1, 1));
-		_MainScene->onEditorUpdate();
-		
-		Renderer2D::EndScene();
+		BatchRenderer::End();
 		framebuffer->UnBind();
 		RenderImgui();
 
