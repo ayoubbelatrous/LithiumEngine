@@ -99,6 +99,7 @@ namespace Lithium
 			SpriteRendererComponent& sprite = entity.GetComponent<SpriteRendererComponent>();
 			emitter << YAML::Key << "Sprite Renderer" << YAML::BeginMap;
 			emitter << YAML::Key << "Color" << YAML::Value << sprite.Color;
+			emitter << YAML::Key << "Texture Path" << YAML::Value << sprite.tex->GetPath();
 			emitter << YAML::EndMap;
 		}
 
