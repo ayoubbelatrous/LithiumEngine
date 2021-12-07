@@ -8,6 +8,7 @@ namespace Lithium
 {
 	Texture::Texture(const std::string& path)
 	{
+		_Path = path;
 		stbi_set_flip_vertically_on_load(1);
 		_localBuffer = stbi_load(path.c_str(), &_width, &_height, &_BPP, 4);
 
