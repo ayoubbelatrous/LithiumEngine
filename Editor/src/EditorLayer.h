@@ -66,6 +66,7 @@ namespace Lithium
 		Serializer sz;
 		Ref<Texture> tex;
 		Ref<Texture> tex2;
+		Ref<Texture> tex3;
 		glm::vec2 LastMousePosiition;
 	};
 }

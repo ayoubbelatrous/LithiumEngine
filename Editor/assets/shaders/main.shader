@@ -30,7 +30,7 @@ void main()
 #version 330 core
 
 layout(location = 0) out vec4 color;
-uniform sampler2D u_textures[32];
+uniform sampler2D u_textures[18];
 in vec4 Color;
 in vec2 TexCoord;
 in flat float v_TexIndex;

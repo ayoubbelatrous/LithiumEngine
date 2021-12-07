@@ -17,6 +17,7 @@
 
 namespace Lithium
 {
+
 	struct Vertex
 	{
 		glm::vec3 Position;
@@ -31,7 +32,7 @@ namespace Lithium
 		const static uint32_t MaxQuadCount = 1000;
 		const static uint32_t MaxVertices = MaxQuadCount * 4;
 		const static uint32_t MaxIndices = MaxQuadCount * 6;
-		const static uint32_t MaxTextures = 8;
+		const static uint32_t MaxTextures = 18;
 		Ref<VertexArray> _VertexArray;
 		Ref<VertexBuffer> _VertexBuffer;
 		Ref<IndexBuffer> _IndexBuffer;
@@ -54,6 +55,7 @@ namespace Lithium
 
 	void BatchRenderer::Init()
 	{
+		LT_PROFILE_FUNCTION("Renderer Init");
 		_Data._VertexArray = CreateRef<VertexArray>();
 		_Data._VertexBuffer = CreateRef<VertexBuffer>(_Data.MaxVertices * sizeof(Vertex));
 		
@@ -109,6 +111,7 @@ namespace Lithium
 
 	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<Texture>& texture)
 	{
+		LT_PROFILE_FUNCTION("Renderer Draw Quad");
 		constexpr int VertexCount = 4;
 		
 		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -148,6 +151,7 @@ namespace Lithium
 
 	void BatchRenderer::DrawData()
 	{
+		LT_PROFILE_FUNCTION("Renderer Draw Data");
 		uint32_t dataSize = (uint32_t)((uint8_t*)_Data._VertexBufferPtr- (uint8_t*)_Data._VertexBufferBase);
 
 		_Data._VertexBuffer->SetData(_Data._VertexBufferBase, dataSize);

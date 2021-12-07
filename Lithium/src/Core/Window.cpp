@@ -34,7 +34,7 @@ namespace Lithium
 		glEnable(GL_DEPTH_TEST);
 		int number;
 		//glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &number);
-		CORE_LOG(number);
+		//CORE_LOG(number);
 		CORE_LOG(glGetString(GL_VERSION));
 
 		glfwSetWindowUserPointer(window, &_Data);

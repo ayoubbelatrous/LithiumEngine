@@ -154,7 +154,7 @@ namespace Lithium
 
 		int location = GetLocation(name);
 		
-		glUniform1iv(location, 8, vector);
+		glUniform1iv(location, 18, vector);
 
 	}
 

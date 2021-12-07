@@ -15,6 +15,7 @@ namespace Lithium
 		_InspectorPanel = CreateRef<InspectorPanel>();
 		_AssetBrowerPanel  = CreateRef<AssetBrowserPanel>();
 		tex2 = CreateRef<Texture>("assets/images/check.png");
+		tex3 = CreateRef<Texture>("assets/images/check.png");
 		tex = CreateRef<Texture>("assets/images/test.png");
 		LT_PROFILE_FUNCTION("init");
 		
@@ -117,7 +118,11 @@ namespace Lithium
 	
 		model = glm::translate(glm::mat4(1.0), {0.0,0.0,0.0});
 		BatchRenderer::DrawQuad(model, { 1,0.5,1,1 }, tex);
-		
+		model = glm::translate(glm::mat4(1.0), { -1.0,0.0,0.0 });
+		BatchRenderer::DrawQuad(model, { 1,1,1,1 }, tex2);
+		model = glm::translate(glm::mat4(1.0), { -2.0,0.0,0.0 });
+		BatchRenderer::DrawQuad(model, { 1,1,1,1 }, tex3);
+
 
 		
 		BatchRenderer::End();
@@ -170,7 +175,7 @@ namespace Lithium
 
 	void EditorLayer::RenderImgui()
 	{
-
+		LT_PROFILE_FUNCTION("Render Imgui");
 
 		
 		ImGui_ImplOpenGL3_NewFrame();
