@@ -12,6 +12,7 @@ namespace Lithium
 		int _width;
 		int _height;
 		int _BPP;
+		
 	public:
 		Texture() = default;
 		Texture(const std::string& path);
@@ -28,5 +29,6 @@ namespace Lithium
 		{
 			return _id == ((Texture&)other)._id;
 		}
+		bool loaded = false;
 	};
 }

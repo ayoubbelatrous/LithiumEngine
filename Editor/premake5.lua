@@ -31,5 +31,3 @@ project "Editor"
 		"Lithium",
 		
 	}
-
-

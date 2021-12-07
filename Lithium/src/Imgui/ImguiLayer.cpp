@@ -96,7 +96,7 @@ namespace Lithium
 
 	void GUIlayer::onEvent(Event& e)
 	{
-		CORE_LOG(e.GetName() << "gui");
+		
 		if (_BlockEvent)
 		{
 			e._Handeled = true;

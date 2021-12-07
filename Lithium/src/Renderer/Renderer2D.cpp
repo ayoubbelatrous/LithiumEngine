@@ -148,7 +148,25 @@ namespace Lithium
 
 		_Data._IndexCount += 6;
 	}
+	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color)
+	{
+		LT_PROFILE_FUNCTION("Renderer Draw Quad");
+		constexpr int VertexCount = 4;
 
+		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+
+		float textureIndex = 0.0f;
+		for (size_t i = 0; i < VertexCount; i++)
+		{
+			_Data._VertexBufferPtr->Position = transform * _Data._VertexPositions[i];
+			_Data._VertexBufferPtr->Color = color;
+			_Data._VertexBufferPtr->TextureCoords = textureCoords[i];
+			_Data._VertexBufferPtr->TextureIndex = textureIndex;
+			_Data._VertexBufferPtr++;
+		}
+
+		_Data._IndexCount += 6;
+	}
 	void BatchRenderer::DrawData()
 	{
 		LT_PROFILE_FUNCTION("Renderer Draw Data");

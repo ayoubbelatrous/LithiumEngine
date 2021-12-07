@@ -149,7 +149,7 @@ namespace Lithium
 		glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
 	}
 
-	void Shader::SetUniformiv(const std::string& name, int vector[])
+	void Shader::SetUniformiv(const std::string& name, int *vector)
 	{
 
 		int location = GetLocation(name);

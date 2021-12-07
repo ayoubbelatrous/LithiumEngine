@@ -55,7 +55,3 @@ links
     "yaml-cpp",
 	"opengl32.lib"
 }
-
-
-
-

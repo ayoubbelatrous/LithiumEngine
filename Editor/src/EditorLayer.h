@@ -64,9 +64,9 @@ namespace Lithium
 		Ref<InspectorPanel> _InspectorPanel;
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
 		Serializer sz;
-		Ref<Texture> tex;
-		Ref<Texture> tex2;
-		Ref<Texture> tex3;
+		//Ref<Texture> tex;
+		//Ref<Texture> tex2;
+		//Ref<Texture> tex3;
 		glm::vec2 LastMousePosiition;
 	};
 }

@@ -7,13 +7,9 @@ layout(location = 2) in vec2 a_TexCoord;
 layout(location = 3) in float a_TexIndex;
 
 
-
-
-
-
 out vec4 Color;
 out vec2 TexCoord;
-out flat float  v_TexIndex;
+out float  v_TexIndex;
 
 uniform mat4 u_projection;
 
@@ -33,7 +29,7 @@ layout(location = 0) out vec4 color;
 uniform sampler2D u_textures[18];
 in vec4 Color;
 in vec2 TexCoord;
-in flat float v_TexIndex;
+in float v_TexIndex;
 
 void main()
 {

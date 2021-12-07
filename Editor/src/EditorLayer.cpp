@@ -14,9 +14,9 @@ namespace Lithium
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
 		_AssetBrowerPanel  = CreateRef<AssetBrowserPanel>();
-		tex2 = CreateRef<Texture>("assets/images/check.png");
-		tex3 = CreateRef<Texture>("assets/images/check.png");
-		tex = CreateRef<Texture>("assets/images/test.png");
+		//tex2 = CreateRef<Texture>("assets/images/check.png");
+		//tex3 = CreateRef<Texture>("assets/images/check.png");
+		//tex = CreateRef<Texture>("assets/images/test.png");
 		LT_PROFILE_FUNCTION("init");
 		
 		_Selection = Entity(entt::null,_MainScene.get());
@@ -44,9 +44,9 @@ namespace Lithium
 
 		
 
-		entity2.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>();
-		entity.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>();
-		entity3.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>("assets/images/test.png");
+		//entity2.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>();
+		//entity.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>();
+		//entity3.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>("assets/images/test.png");
 
 	    //sp.tex = CreateRef<Texture>("assets/images/check.png");
 	
@@ -114,17 +114,7 @@ namespace Lithium
 		RendererCommand::Clear();
 		BatchRenderer::Begin(view, proj);
 		model = glm::translate(glm::mat4(1.0), { 0.0,0.0,0.0 });
-
-	
-		model = glm::translate(glm::mat4(1.0), {0.0,0.0,0.0});
-		BatchRenderer::DrawQuad(model, { 1,0.5,1,1 }, tex);
-		model = glm::translate(glm::mat4(1.0), { -1.0,0.0,0.0 });
-		BatchRenderer::DrawQuad(model, { 1,1,1,1 }, tex2);
-		model = glm::translate(glm::mat4(1.0), { -2.0,0.0,0.0 });
-		BatchRenderer::DrawQuad(model, { 1,1,1,1 }, tex3);
-
-
-		
+		_MainScene->onEditorUpdate();
 		BatchRenderer::End();
 		framebuffer->UnBind();
 		RenderImgui();
@@ -139,7 +129,6 @@ namespace Lithium
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyEvent>(BIND_EVENT(EditorLayer::onKeyEvent));
-		CORE_LOG(e.GetName() << "editor");
 
 	}
 

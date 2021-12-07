@@ -30,13 +30,20 @@ namespace Lithium
 		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
 		for (auto entity : view)
 		{
-			auto& [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
+			auto [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
 			Entity ent = {entity,this};
-			NameComponent& name = ent.GetComponent<NameComponent>();
+			//NameComponent& name = ent.GetComponent<NameComponent>();
 		
-			
-			
-				//Renderer2D::DrawQuad(tc.GetMatrix(), sc.tex);
+			if (sc.tex->loaded)
+			{
+				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color, sc.tex);
+
+			}
+			else
+			{
+				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color);
+
+			}
 			
 		}
 	}
