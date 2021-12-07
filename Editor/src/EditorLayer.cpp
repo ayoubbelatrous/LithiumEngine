@@ -155,6 +155,8 @@ namespace Lithium
 				_EditorStatus = "Reloading Scene...";
 				sz.DeserializeScene("assets/scenes/main.lis");
 				_MainScene = scene;
+				_InspectorPanel->SetScene(_MainScene);
+				_shp->SetScene(_MainScene);
 				_EditorStatus = "";
 			}
 		}

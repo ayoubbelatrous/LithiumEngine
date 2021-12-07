@@ -70,16 +70,16 @@ namespace Lithium
 	YAML::Emitter& operator <<(YAML::Emitter& emitter, const glm::vec4& vector)
 	{
 		emitter << YAML::Flow;
-		emitter << YAML::BeginSeq << vector.x << vector.y << vector.z <<vector.w<< YAML::EndSeq;
+		emitter << YAML::BeginSeq << vector.x << vector.y << vector.z << vector.w << YAML::EndSeq;
 		return emitter;
 	}
-	YAML::Emitter& operator <<(YAML::Emitter& emitter,const glm::vec3& vector)
+	YAML::Emitter& operator <<(YAML::Emitter& emitter, const glm::vec3& vector)
 	{
 		emitter << YAML::Flow;
 		emitter << YAML::BeginSeq << vector.x << vector.y << vector.z << YAML::EndSeq;
 		return emitter;
 	}
-	static void SerializeEntity(YAML::Emitter& emitter,Entity entity)
+	static void SerializeEntity(YAML::Emitter& emitter, Entity entity)
 	{
 		emitter << YAML::BeginMap;
 		emitter << YAML::Key << "Entity" << YAML::Value << (uint32_t)entity.GetHandle();
@@ -88,7 +88,7 @@ namespace Lithium
 
 		TransformComponent& tc = entity.GetComponent<TransformComponent>();
 		emitter << YAML::Key << "Transform" << YAML::BeginMap;
-		emitter << YAML::Key << "Position" << YAML::Value <<tc.Position;
+		emitter << YAML::Key << "Position" << YAML::Value << tc.Position;
 		emitter << YAML::Key << "Rotation" << YAML::Value << tc.Rotation;
 		emitter << YAML::Key << "Scale" << YAML::Value << tc.Scale;
 		emitter << YAML::EndMap;
@@ -118,12 +118,12 @@ namespace Lithium
 	{
 		YAML::Emitter emitter;
 		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "Entities";
-		emitter << YAML::Value << YAML::BeginSeq;
+		emitter << YAML::Key << "Scene" << YAML::Value << "NONE";
+		emitter << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		_Scene->GetRegistry().each([&](auto entity)
-		{
+			{
 				SerializeEntity(emitter, { entity,_Scene.get() });
-		});
+			});
 		emitter << YAML::EndSeq;
 		emitter << YAML::EndMap;
 		std::ofstream output(path);
@@ -134,36 +134,30 @@ namespace Lithium
 	{
 
 		YAML::Node data;
-	    try
-	    {
+		try
+		{
 			data = YAML::LoadFile(path);
-	    }
-	    catch (YAML::ParserException e)
-	    {
+		}
+		catch (YAML::ParserException e)
+		{
 			CORE_LOG("failed to load scene");
 			return;
-	    }
+		}
 
-
+		//CORE_LOG(data);
 		auto entities = data["Entities"];
-		if (entities)
-		
+		//if (entities)
+		CORE_LOG(entities);
 		for (auto entity : entities)
 		{
 			Entity deserEntity;
 			auto id = data["Entity"];
+			uint32_t uuid = entity["Entity"].as<uint32_t>();
+			//CORE_LOG(uuid);
+			std::string nameC = entity["Name"].as<std::string>();
+			deserEntity = _Scene->CreateEntity(nameC);
 
-			CORE_LOG(id.as<uint32_t>());
-
-			auto nameC = data["Name"];
-			if (nameC)
-			{
-				CORE_LOG(nameC);
-				std::string name = nameC.as<std::string>();
-				deserEntity = _Scene->CreateEntity(name);
-			}
-
-			auto transform = data["Transform"];
+			auto transform = entity["Transform"];
 			if (transform)
 			{
 				deserEntity.AddComponent<TransformComponent>();
@@ -173,7 +167,7 @@ namespace Lithium
 				tc.Scale = transform["Scale"].as<glm::vec3>();
 
 			}
-			auto sprite = data["Sprite Renderer"];
+			auto sprite = entity["Sprite Renderer"];
 
 			if (sprite)
 			{
@@ -181,6 +175,7 @@ namespace Lithium
 				SpriteRendererComponent& sp = deserEntity.GetComponent<SpriteRendererComponent>();
 				glm::vec4 color = sprite["Color"].as<glm::vec4>();
 				sp.Color = color;
+				sp.tex = CreateRef<Texture>();
 			}
 		}
 	}

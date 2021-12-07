@@ -11,7 +11,7 @@ namespace Lithium
 		void OnCreate();
 		void OnUpdate(Entity& _Selection);
 		void DrawEntity(Entity entity,Entity& _Selection);
-		void SetScene(Ref<Scene>& scene)
+		void SetScene(Ref<Scene> scene)
 		{
 			_Scene = scene;
 		}
