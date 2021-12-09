@@ -8,28 +8,27 @@ namespace Lithium
 	void EditorLayer::OnCreate()
 	{
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
-
+		
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
 		_AssetBrowerPanel  = CreateRef<AssetBrowserPanel>();
-		//tex2 = CreateRef<Texture>("assets/images/check.png");
-		//tex3 = CreateRef<Texture>("assets/images/check.png");
-		//tex = CreateRef<Texture>("assets/images/test.png");
+
 		LT_PROFILE_FUNCTION("init");
 		
+		_MainScene = CreateRef<Scene>();
+		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
 		_Selection = Entity(entt::null,_MainScene.get());
 		framebuffer = CreateRef<FrameBuffer>();
 		framebuffer->Bind();
 		framebuffer->resize(1000, 1000);
-		_MainScene = CreateRef<Scene>();
-		sz = Serializer(_MainScene);
+		//sz = Serializer(_MainScene);
 		Entity entity = _MainScene->CreateEntity("name");
 		Entity entity3 = _MainScene->CreateEntity("dod");
 		Entity entity2 = _MainScene->CreateEntity("hello");
 		
-		_Selection = entity;
+		//_Selection = entity;
 		_shp->SetScene(_MainScene);
 		_InspectorPanel->SetScene(_MainScene);
 		
@@ -42,14 +41,6 @@ namespace Lithium
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity3.AddComponent<TransformComponent>();
 
-		
-
-		//entity2.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>();
-		//entity.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>();
-		//entity3.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>("assets/images/test.png");
-
-	    //sp.tex = CreateRef<Texture>("assets/images/check.png");
-	
 		pos = glm::vec3(0);
 		view = glm::mat4(0);
 		view = model = glm::translate(glm::mat4(1), glm::vec3(1));
@@ -57,11 +48,9 @@ namespace Lithium
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
 	
-
-		//_MainScene = CreateRef<Scene>();
-		//Renderer2D::Init();
 		_AssetBrowerPanel->OnCreate();
 		BatchRenderer::Init();
+		
 	}
 
 	void EditorLayer::OnUpdate()
@@ -117,8 +106,9 @@ namespace Lithium
 		_MainScene->onEditorUpdate();
 		BatchRenderer::End();
 		framebuffer->UnBind();
+		_Selection = _shp->GetSelection();
+		_InspectorPanel->SetSelection(_Selection);
 		RenderImgui();
-
 	}
 
 	void EditorLayer::OnDestroy()
@@ -142,7 +132,11 @@ namespace Lithium
 			if (control)
 			{
 				_EditorStatus = "Saving Scene...";
-				sz.SerializeScene("assets/scenes/main.lis");
+				//
+				
+				Serializer ser(_MainScene);
+				//sz.SerializeScene("assets/scenes/main.lis");
+				ser.SerializeScene("assets/scenes/test.lis");
 				_EditorStatus = "";
 			}
 		}
@@ -151,12 +145,16 @@ namespace Lithium
 			if (control)
 			{
 				Ref<Scene> scene = CreateRef<Scene>();
-				sz = Serializer(scene);
+				//sz = Serializer(scene);
 				_EditorStatus = "Reloading Scene...";
-				sz.DeserializeScene("assets/scenes/main.lis");
+			//	sz.DeserializeScene("assets/scenes/main.lis");
+				Serializer ser(_MainScene);
+				ser.DeserializeScene("assets/scenes/test.lis");
 				_MainScene = scene;
+				_Selection = Entity(entt::null, nullptr);
 				_InspectorPanel->SetScene(_MainScene);
 				_shp->SetScene(_MainScene);
+				_InspectorPanel->SetSelection(_shp->GetSelection());
 				_EditorStatus = "";
 			}
 		}
@@ -220,8 +218,8 @@ namespace Lithium
 
 
 		ImGui::End();
-		_shp->OnUpdate(_Selection);
-		_InspectorPanel->OnUpdate(_Selection);
+		_shp->OnUpdate();
+		_InspectorPanel->OnUpdate();
 		_AssetBrowerPanel->OnUpdate();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 		ImGui::Begin("Scene");
@@ -283,4 +281,11 @@ namespace Lithium
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}
+
+	void EditorLayer::SceneEvent(Event& e)
+	{
+		CreateEntityEvent& ev = static_cast<CreateEntityEvent&>(e);
+		//CORE_LOG("Scene event!!" << ev.GetName() << " " << (uint32_t)ev.entity.GetHandle());
+	}
+
 }

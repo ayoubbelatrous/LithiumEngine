@@ -9,13 +9,18 @@ namespace Lithium
 	{
 	public:
 		void OnCreate();
-		void OnUpdate(Entity& _Selection);
+		void OnUpdate();
 		void DrawEntity(Entity entity,Entity& _Selection);
 		void SetScene(Ref<Scene> scene)
 		{
 			_Scene = scene;
 		}
+		Entity GetSelection()
+		{
+			return _Selection;
+		}
 	private:
 		Ref<Scene> _Scene;
+		Entity _Selection;
 	};
 }

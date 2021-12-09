@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "Renderer/Renderer2D.h"
+
 namespace Lithium
 {
 
@@ -17,6 +18,8 @@ namespace Lithium
 		Entity ent(_Registry.create(),this);
 		ent.AddComponent<NameComponent>(name);
 		ent.AddComponent<ChildManagerComponent>();
+		CreateEntityEvent e = CreateEntityEvent();
+		callback(e);
 		return ent;
 	}
 
@@ -47,5 +50,6 @@ namespace Lithium
 			
 		}
 	}
+
 
 }

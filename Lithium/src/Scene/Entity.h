@@ -37,6 +37,10 @@ namespace Lithium
 		{
 			return _Handle;
 		}
+		Scene* getScene()
+		{
+			return _Scene;
+		}
 	private:
 		entt::entity _Handle;
 		Scene* _Scene;

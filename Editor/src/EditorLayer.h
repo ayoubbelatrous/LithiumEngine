@@ -21,7 +21,8 @@
 #include "Panels/InspectorPanel.h"
 #include "Panels/AssetBrowserPanel.h"
 #include "Scene/Serializer.h"
-#include <array>
+
+
 namespace Lithium
 {
 	struct Data
@@ -34,7 +35,7 @@ namespace Lithium
 		EditorLayer()
 			:Layer("hi")
 		{
-			sz = Serializer(_MainScene);
+			//sz = Serializer(_MainScene);
 		}
 		void OnCreate() override;
 		void OnUpdate() override;
@@ -42,6 +43,7 @@ namespace Lithium
 		void onEvent(Event& e) override;
 		void onKeyEvent(KeyEvent& e);
 		void RenderImgui();
+		void SceneEvent(Event& e);
 	private:
 		glm::mat4 proj;
 		glm::mat4 view;
@@ -63,10 +65,13 @@ namespace Lithium
 		Ref<SceneHierachyPanel> _shp;
 		Ref<InspectorPanel> _InspectorPanel;
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
-		Serializer sz;
+		//Serializer sz;
 		//Ref<Texture> tex;
 		//Ref<Texture> tex2;
 		//Ref<Texture> tex3;
+	
+
+		std::string text;
 		glm::vec2 LastMousePosiition;
 	};
 }

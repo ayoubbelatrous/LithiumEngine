@@ -180,9 +180,6 @@ namespace Lithium
 			_Data.TextureSlots[i]->Bind(i);
 		_Data._VertexArray->Bind();
 	
-
-	
-
 		_Data._shader->Bind();
 		_Data._shader->SetUniformMat4f("u_projection",_Data.projection);
 

@@ -11,7 +11,7 @@ namespace Lithium
 		
 	}
 
-	void SceneHierachyPanel::OnUpdate(Entity& _Selection)
+	void SceneHierachyPanel::OnUpdate()
 	{
 		ImGui::Begin("Hierachy");
 		
@@ -75,6 +75,4 @@ namespace Lithium
 
 		ImGui::PopStyleColor();
 	 }
-
-
 }

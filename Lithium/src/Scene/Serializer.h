@@ -13,7 +13,7 @@ namespace Lithium
 		Serializer(const Ref<Scene>& scene)
 			:_Scene(scene)
 		{
-
+			
 		}
 
 		void SerializeScene(const std::string& path);

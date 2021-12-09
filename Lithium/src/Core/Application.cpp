@@ -12,10 +12,7 @@ namespace Lithium
 		_Window->Init();
 		_ImguiLayer = new GUIlayer();
 		PushOverlay(_ImguiLayer);
-		_Window->SetAppEventCallback([this](auto&&... args) -> decltype(auto)
-		{ 
-				return this->Application::OnEvent(std::forward<decltype(args)>(args)...);
-		});
+		_Window->SetAppEventCallback(BIND_EVENT(Application::OnEvent));
 
 	}
 	Application::~Application()
@@ -75,6 +72,16 @@ namespace Lithium
 		{
 			WindowResizeEvent& resizeevent = static_cast<WindowResizeEvent&>(e);
 		
+		}
+	}
+
+	void Application::SceneOnEvent(Event& e)
+	{
+		for (auto it = _Stack.rbegin(); it != _Stack.rend(); ++it)
+		{
+			if (e._Handeled)
+				break;
+			(*it)->onEvent(e);
 		}
 	}
 

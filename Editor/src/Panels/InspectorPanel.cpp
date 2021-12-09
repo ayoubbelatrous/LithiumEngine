@@ -83,13 +83,13 @@ namespace Lithium
 
 	}
 
-	void InspectorPanel::OnUpdate(Entity& _Selection)
+	void InspectorPanel::OnUpdate()
 	{
 
 		
 		ImGui::Begin("Inspector");
 		
-		if (_Selection.GetHandle() != entt::null)
+		if (_Selection.GetHandle() != entt::null && _Selection.getScene() != nullptr)
 		{
 		
 		if (_Selection.HasComponent<NameComponent>())

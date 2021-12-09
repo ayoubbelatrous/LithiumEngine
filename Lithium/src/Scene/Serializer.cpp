@@ -121,9 +121,9 @@ namespace Lithium
 		emitter << YAML::Key << "Scene" << YAML::Value << "NONE";
 		emitter << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		_Scene->GetRegistry().each([&](auto entity)
-			{
+		{
 				SerializeEntity(emitter, { entity,_Scene.get() });
-			});
+		});
 		emitter << YAML::EndSeq;
 		emitter << YAML::EndMap;
 		std::ofstream output(path);
@@ -143,17 +143,12 @@ namespace Lithium
 			CORE_LOG("failed to load scene");
 			return;
 		}
-
-		//CORE_LOG(data);
 		auto entities = data["Entities"];
-		//if (entities)
-		CORE_LOG(entities);
+		
 		for (auto entity : entities)
 		{
 			Entity deserEntity;
 			auto id = data["Entity"];
-			uint32_t uuid = entity["Entity"].as<uint32_t>();
-			//CORE_LOG(uuid);
 			std::string nameC = entity["Name"].as<std::string>();
 			deserEntity = _Scene->CreateEntity(nameC);
 
@@ -174,8 +169,17 @@ namespace Lithium
 				deserEntity.AddComponent<SpriteRendererComponent>();
 				SpriteRendererComponent& sp = deserEntity.GetComponent<SpriteRendererComponent>();
 				glm::vec4 color = sprite["Color"].as<glm::vec4>();
+				std::string path = sprite["Texture Path"].as<std::string>();
 				sp.Color = color;
-				sp.tex = CreateRef<Texture>();
+				if (path != "")
+				{
+					sp.tex = CreateRef<Texture>(path);
+				}
+				else
+				{
+					sp.tex = CreateRef<Texture>();
+				}
+				
 			}
 		}
 	}

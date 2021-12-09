@@ -22,6 +22,7 @@ namespace Lithium
 		void PushOverlay(Layer* layer);
 		void Run();
 		void OnEvent(Event& e);
+		void SceneOnEvent(Event& e);
 		GUIlayer* GetImguiLayer() { return _ImguiLayer; }
 		Window& GetWindow();
 		static Application& GetInstance() { return *instance; };

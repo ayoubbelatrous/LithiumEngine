@@ -1,9 +1,9 @@
 Scene: NONE
 Entities:
   - Entity: 2
-    Name: name
+    Name: hello
     Transform:
-      Position: [0.34482801, -1.63218415, 0]
+      Position: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:
@@ -14,7 +14,7 @@ Entities:
   - Entity: 1
     Name: dod
     Transform:
-      Position: [-1.02298856, -0.114942133, 0]
+      Position: [-2.11494255, -0.747126281, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:
@@ -23,9 +23,9 @@ Entities:
     Child Manager:
       children: ids go here
   - Entity: 0
-    Name: hello
+    Name: name
     Transform:
-      Position: [-2.12643671, -0.804597795, 0]
+      Position: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:

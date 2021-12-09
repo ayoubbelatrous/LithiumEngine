@@ -1,6 +1,7 @@
 #pragma once
 #include "Event.h"
 #include "KeyCodes.h"
+
 namespace Lithium
 {
 
@@ -59,4 +60,19 @@ namespace Lithium
 		int scancode;
 		EVENT_TYPE(KeyPress);
 	};
+
+	class CreateEntityEvent : public Event
+	{
+	public:
+
+		CreateEntityEvent() = default;
+		const char* GetName() const override {
+
+			return "CreateEntityEvent";
+		}
+
+		EVENT_TYPE(CreateEntity);
+		
+	};
+
 }
