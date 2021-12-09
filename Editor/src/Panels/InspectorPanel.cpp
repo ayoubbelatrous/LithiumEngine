@@ -7,12 +7,13 @@
 #include "gtc/type_ptr.hpp"
 #include "Core/Base.h"
 #include <filesystem>
-
+#include "AssetManager/AssetManager.h"
 
 
 namespace Lithium
 {
 	extern const std::filesystem::path root;
+	extern AssetMananger assetManager;
 	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -169,7 +170,7 @@ namespace Lithium
 				{
 					const wchar_t* path = (const wchar_t*)payload->Data;
 					std::filesystem::path texturepath = root/path;
-					_Selection.GetComponent<SpriteRendererComponent>().tex = CreateRef<Texture>(texturepath.string());
+					_Selection.GetComponent<SpriteRendererComponent>().tex = assetManager.LoadAsset<Ref<Texture>>(texturepath.string());
 				}
 				ImGui::EndDragDropTarget();
 			}

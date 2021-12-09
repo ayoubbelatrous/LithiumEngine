@@ -1,7 +1,9 @@
 #pragma once
 #include "Lithium.h"
-
-
+#include "glm.hpp"
+#include "gtc/matrix_transform.hpp"
+#include "gtc/type_ptr.hpp"
+#include "Renderer/FrameBuffer.h"
 namespace Lithium
 {
 
@@ -21,5 +23,10 @@ namespace Lithium
 		void RenderImgui();
 		void SceneEvent(Event& e);
 	private:
+		glm::mat4 proj;
+		glm::mat4 view;
+		glm::mat4 model;
+		glm::vec3 pos;
+		Ref<FrameBuffer> _framebuffer;
 	};
 }

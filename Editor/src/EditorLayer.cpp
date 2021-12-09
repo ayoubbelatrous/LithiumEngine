@@ -6,8 +6,10 @@
 
 namespace Lithium
 {
+	extern AssetMananger assetManager = AssetMananger();
 	void EditorLayer::OnCreate()
 	{
+	
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
@@ -48,10 +50,9 @@ namespace Lithium
 
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
-	
+		
 		_AssetBrowerPanel->OnCreate();
 		BatchRenderer::Init();
-		
 	}
 
 	void EditorLayer::OnUpdate()

@@ -21,7 +21,7 @@
 #include "Panels/InspectorPanel.h"
 #include "Panels/AssetBrowserPanel.h"
 #include "Scene/Serializer.h"
-
+#include "AssetManager/AssetManager.h"
 
 namespace Lithium
 {
@@ -69,7 +69,6 @@ namespace Lithium
 		//Ref<Texture> tex;
 		//Ref<Texture> tex2;
 		//Ref<Texture> tex3;
-	
 
 		std::string text;
 		glm::vec2 LastMousePosiition;

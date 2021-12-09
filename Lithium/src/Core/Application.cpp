@@ -71,6 +71,8 @@ namespace Lithium
 		if (e.GetEventType() == EventType::WindowResize)
 		{
 			WindowResizeEvent& resizeevent = static_cast<WindowResizeEvent&>(e);
+			int height = resizeevent.height;
+			int width = resizeevent.width;
 		
 		}
 	}
