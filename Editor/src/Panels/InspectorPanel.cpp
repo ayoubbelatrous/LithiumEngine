@@ -81,7 +81,7 @@ namespace Lithium
 	}
 	void InspectorPanel::OnCreate()
 	{
-
+		assetManager.LoadAsset<Ref<Texture>>("assets/images/test.png");
 	}
 
 	void InspectorPanel::OnUpdate()

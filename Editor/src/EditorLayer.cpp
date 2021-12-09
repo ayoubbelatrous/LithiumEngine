@@ -16,6 +16,7 @@ namespace Lithium
 		LastMousePosiition = glm::vec2(0);
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
+		_InspectorPanel->OnCreate();
 		_AssetBrowerPanel  = CreateRef<AssetBrowserPanel>();
 
 		LT_PROFILE_FUNCTION("init");
@@ -52,13 +53,13 @@ namespace Lithium
 		model = glm::translate(glm::mat4(1), pos);
 		
 		_AssetBrowerPanel->OnCreate();
+	
+		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
 		BatchRenderer::Init();
 	}
 
 	void EditorLayer::OnUpdate()
 	{
-
-
 		LT_PROFILE_FUNCTION("UPDATE");
 #pragma region CalculateProjection
 
@@ -97,16 +98,34 @@ namespace Lithium
 			}
 
 		}
-	
+
 #pragma endregion 
 		
 		framebuffer->Bind();
-		RendererCommand::ClearColor(glm::vec4(0.25,0.25,0.35,0));
+		RendererCommand::ClearColor(glm::vec4(0.25, 0.25, 0.35, 0));
 		RendererCommand::Clear();
+		//framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);
 		model = glm::translate(glm::mat4(1.0), { 0.0,0.0,0.0 });
 		_MainScene->onEditorUpdate();
 		BatchRenderer::End();
+
+/*
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= _ViewportBounds[0].x;
+		my -= _ViewportBounds[0].y;
+		glm::vec2 viewportSize = _ViewportBounds[1] - _ViewportBounds[0];
+		my = viewportSize.y - my;
+		int mouseX = (int)mx;
+		int mouseY = (int)my;
+		//CORE_LOG(mouseX << " " << mouseY);
+		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+		{
+			 int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
+			 CORE_LOG(pixelData);
+		}
+*/
+
 		framebuffer->UnBind();
 		_Selection = _shp->GetSelection();
 		_InspectorPanel->SetSelection(_Selection);
@@ -134,14 +153,13 @@ namespace Lithium
 			if (control)
 			{
 				_EditorStatus = "Saving Scene...";
-				//
-
 				Serializer ser(_MainScene);
 				//sz.SerializeScene("assets/scenes/main.lis");
 				ser.SerializeScene("assets/scenes/test.lis");
 				_EditorStatus = "";
 			}
 		}
+		/*
 		if (e.keycode == KEYCODE_R)
 		{
 			if (control)
@@ -160,6 +178,7 @@ namespace Lithium
 				_EditorStatus = "";
 			}
 		}
+		*/
 
 		if (e.keycode == KEYCODE_E)
 		{
@@ -172,6 +191,17 @@ namespace Lithium
 		if (e.keycode == KEYCODE_W)
 		{
 			_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
+		}
+
+
+
+		if (e.keycode == KEYCODE_E)
+		{
+			if (control)
+			{
+				Entity e = _MainScene->CreateEntity("new Entity");
+				e.AddComponent<TransformComponent>();
+			}
 		}
 	}
 
@@ -233,7 +263,7 @@ namespace Lithium
 		ImGui::End();
 		_shp->OnUpdate();
 		_InspectorPanel->OnUpdate();
-		_AssetBrowerPanel->OnUpdate();
+		//_AssetBrowerPanel->OnUpdate();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 		ImGui::Begin("Scene");
 		_ViewportFocus = ImGui::IsWindowFocused();
@@ -306,7 +336,7 @@ namespace Lithium
 	void EditorLayer::SceneEvent(Event& e)
 	{
 		CreateEntityEvent& ev = static_cast<CreateEntityEvent&>(e);
-		//CORE_LOG("Scene event!!" << ev.GetName() << " " << (uint32_t)ev.entity.GetHandle());
+		CORE_LOG("Created Entity");
 	}
 
 }

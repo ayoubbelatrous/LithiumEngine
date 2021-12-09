@@ -18,15 +18,16 @@ namespace Lithium
 		
 		if (_Cache.find(path) != _Cache.end())
 		{
-			CORE_LOG("Asset Already loaded"<< path);
+			CORE_LOG("loaded Texture Asset " << path);
 			uint32_t id =  _Cache[path];
 			//*_id = id;
 			Ref<Texture> asset = _TextureCache[id];
+			
 			return asset;
 		}
 		else
 		{
-			CORE_LOG("loaded asset" << path);
+			
 			Ref<Texture>texture =  CreateRef<Texture>(path);
 			_TextureCache.emplace(Ptr,texture);
 			_Cache.emplace(path, Ptr);

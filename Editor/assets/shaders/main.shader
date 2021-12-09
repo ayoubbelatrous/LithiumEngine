@@ -11,6 +11,7 @@ out vec4 Color;
 out vec2 TexCoord;
 out float  v_TexIndex;
 
+
 uniform mat4 u_projection;
 
 void main()
@@ -18,7 +19,6 @@ void main()
 	Color = a_Color;
 	TexCoord = a_TexCoord;
 	v_TexIndex = a_TexIndex;
-
 	gl_Position = u_projection * vec4(a_Position, 1.0);
 }
 
@@ -26,13 +26,17 @@ void main()
 #version 330 core
 
 layout(location = 0) out vec4 color;
+layout(location = 1) out int color2;
+
 uniform sampler2D u_textures[18];
 in vec4 Color;
 in vec2 TexCoord;
 in float v_TexIndex;
 
+
 void main()
 {
 	int index = int(v_TexIndex);
 	color = Color * texture(u_textures[index], TexCoord);
+	color2 = 10;
 }

@@ -11,6 +11,7 @@ namespace Lithium
 		int width;
 		int height;
 		unsigned int renderedTexture;
+		unsigned int _EntityTexture;
 	public:
 		FrameBuffer();
 		~FrameBuffer();
@@ -19,5 +20,7 @@ namespace Lithium
 		void UnBind() const;
 		unsigned int GetColorAttachmentID() const;
 		void resize(int x, int y);
+		int ReadPixel(int i,int x,int y);
+		void ClearAttachment(int i,int value);
 	};
 }

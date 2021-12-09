@@ -60,7 +60,7 @@ namespace Lithium
 		float viewportSize[2];
 
 		float orthosize = 5;
-		ImVec2 _ViewportBounds[2];
+		glm::vec2 _ViewportBounds[2];
 		Entity _Selection;
 		Ref<SceneHierachyPanel> _shp;
 		Ref<InspectorPanel> _InspectorPanel;
