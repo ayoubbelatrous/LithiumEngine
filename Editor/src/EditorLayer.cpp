@@ -9,7 +9,7 @@ namespace Lithium
 	void EditorLayer::OnCreate()
 	{
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
-		
+		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
 		_shp = CreateRef<SceneHierachyPanel>();

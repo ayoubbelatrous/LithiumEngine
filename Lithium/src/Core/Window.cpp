@@ -19,8 +19,8 @@ namespace Lithium
 	{
 		glfwInit();
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 		window = glfwCreateWindow(1280, 780, "Lithium", NULL, NULL);
@@ -32,6 +32,7 @@ namespace Lithium
 
 		glViewport(0, 0, 1280, 780);
 		glEnable(GL_DEPTH_TEST);
+
 		int number;
 		//glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &number);
 		//CORE_LOG(number);

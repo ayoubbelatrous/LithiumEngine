@@ -15,9 +15,9 @@ namespace Lithium
 
 
 		glGenTextures(1, &renderedTexture);
-		//glActiveTexture(GL_TEXTURE31);
-		glBindTexture(GL_TEXTURE_2D, renderedTexture);
 
+		glBindTexture(GL_TEXTURE_2D, renderedTexture);
+		glActiveTexture(GL_TEXTURE0);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 
