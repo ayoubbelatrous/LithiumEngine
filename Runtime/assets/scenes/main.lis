@@ -1,0 +1,35 @@
+Scene: NONE
+Entities:
+  - Entity: 2
+    Name: name
+    Transform:
+      Position: [0.34482801, -1.63218415, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""
+    Child Manager:
+      children: ids go here
+  - Entity: 1
+    Name: dod
+    Transform:
+      Position: [-1.02298856, -0.114942133, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: assets\images\check.png
+    Child Manager:
+      children: ids go here
+  - Entity: 0
+    Name: hello
+    Transform:
+      Position: [-2.12643671, -0.804597795, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""
+    Child Manager:
+      children: ids go here
