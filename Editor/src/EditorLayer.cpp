@@ -2,6 +2,7 @@
 
 #include "ImGuizmo.h"
 #include "Input/Input.h"
+#include "Core/Math.h"
 
 namespace Lithium
 {
@@ -133,7 +134,7 @@ namespace Lithium
 			{
 				_EditorStatus = "Saving Scene...";
 				//
-				
+
 				Serializer ser(_MainScene);
 				//sz.SerializeScene("assets/scenes/main.lis");
 				ser.SerializeScene("assets/scenes/test.lis");
@@ -147,7 +148,7 @@ namespace Lithium
 				Ref<Scene> scene = CreateRef<Scene>();
 				//sz = Serializer(scene);
 				_EditorStatus = "Reloading Scene...";
-			//	sz.DeserializeScene("assets/scenes/main.lis");
+				//	sz.DeserializeScene("assets/scenes/main.lis");
 				Serializer ser(_MainScene);
 				ser.DeserializeScene("assets/scenes/test.lis");
 				_MainScene = scene;
@@ -159,7 +160,18 @@ namespace Lithium
 			}
 		}
 
-
+		if (e.keycode == KEYCODE_E)
+		{
+			_GizmoMode = ImGuizmo::OPERATION::ROTATE;
+		}
+		if (e.keycode == KEYCODE_R)
+		{
+			_GizmoMode = ImGuizmo::OPERATION::SCALE;
+		}
+		if (e.keycode == KEYCODE_W)
+		{
+			_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
+		}
 	}
 
 	void EditorLayer::RenderImgui()
@@ -244,6 +256,7 @@ namespace Lithium
 		glm::mat4 _proj = proj;
 		
 		
+
 		if(_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
 		{
 			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
@@ -253,11 +266,18 @@ namespace Lithium
 			
 			ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
-				(ImGuizmo::OPERATION)ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(matri));
+				(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
 
 			if (ImGuizmo::IsUsing())
 			{
-				_Selection.GetComponent<TransformComponent>().Position = matri[3];
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(matri, translation, rotation, scale);
+				//_Selection.GetComponent<TransformComponent>().Position = matri[3];
+
+				glm::vec3 deltaRotation = rotation - _Selection.GetComponent<TransformComponent>().Rotation;
+				_Selection.GetComponent<TransformComponent>().Position= translation;
+				_Selection.GetComponent<TransformComponent>().Rotation += deltaRotation;
+				_Selection.GetComponent<TransformComponent>().Scale = scale;
 			}
 			
 		}
