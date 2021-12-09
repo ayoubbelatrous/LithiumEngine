@@ -5,7 +5,8 @@
 #include "Renderer/Texture.h"
 #include "Core/Base.h"
 #include "Entity.h"
-
+#define GLM_ENABLE_EXPERIMENTAL
+#include <gtx/quaternion.hpp>
 namespace Lithium
 {
 	struct NameComponent
@@ -33,9 +34,9 @@ namespace Lithium
 
 		glm::mat4 GetMatrix()
 		{
-			glm::mat4 transform;
-			transform = glm::translate(glm::mat4(1), Position) * glm::scale(glm::mat4(1), Scale);
-			return transform;
+			glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
+			return glm::translate(glm::mat4(1), Position) * rotation * glm::scale(glm::mat4(1), Scale);
+			
 		}
 	};
 
