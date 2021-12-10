@@ -46,7 +46,11 @@ namespace Lithium
 		glm::vec4 Color;
 		Ref<Texture> tex = nullptr;
 
-		SpriteRendererComponent() = default;
+		SpriteRendererComponent()
+		{
+			Color = glm::vec4(1);
+			tex = CreateRef<Texture>();
+		}
 		SpriteRendererComponent(const glm::vec4 color)
 			:Color(color) {
 			tex = CreateRef<Texture>();

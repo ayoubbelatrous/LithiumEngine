@@ -175,8 +175,40 @@ namespace Lithium
 				ImGui::EndDragDropTarget();
 			}
 		  }
+
+		if (ImGui::Button("Add Component"))
+		{
+			ImGui::OpenPopup("add_componenet_popup");
 		}
-		ImGui::Button("Add Component");
+
+
+		if (ImGui::BeginPopup("add_componenet_popup"))
+		{
+			if (!_Selection.HasComponent<SpriteRendererComponent>())
+			{
+
+			  if (ImGui::MenuItem("Sprite Renderer"))
+			  {
+			
+				_Selection.AddComponent<SpriteRendererComponent>();
+			  }
+			}
+
+
+			if (!_Selection.HasComponent<TransformComponent>())
+			{
+
+				if (ImGui::MenuItem("Transform"))
+				{
+
+					_Selection.AddComponent<TransformComponent>();
+				}
+			}
+			ImGui::EndPopup();
+
+		}
+		}
+		
 		ImGui::End();
 	}
 

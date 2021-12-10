@@ -68,6 +68,9 @@ namespace Lithium
 
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
 		BatchRenderer::Init();
+
+
+		CORE_LOG(Math::Random::Float());
 	}
 
 	void EditorLayer::OnUpdate()
@@ -263,7 +266,7 @@ namespace Lithium
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
+		//ImGui::ShowDemoWindow();
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
