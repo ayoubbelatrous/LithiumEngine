@@ -45,6 +45,7 @@ namespace Lithium
 		void OnDestroy() override;
 		void onEvent(Event& e) override;
 		void onKeyEvent(KeyEvent& e);
+		void onMouseWheelEvent(MouseWheelEvent& e);
 		void RenderImgui();
 		void SceneEvent(Event& e);
 	private:

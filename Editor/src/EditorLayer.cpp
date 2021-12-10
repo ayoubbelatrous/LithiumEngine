@@ -120,7 +120,6 @@ namespace Lithium
 		RendererCommand::ClearColor(glm::vec4(0.25, 0.25, 0.35, 0));
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
-		
 		BatchRenderer::Begin(view, proj);
 
 		_MainScene->onEditorUpdate();
@@ -147,9 +146,9 @@ namespace Lithium
 		//raywor = glm::translate(glm::inverse(view), { rayeye.x,rayeye.y,rayeye.z});
 		raywor = glm::normalize(raywor);
 		//CORE_LOG(raywor.x << " " << raywor.y);*/
-
+	
 		_Selection = _shp->GetSelection();
-		if (!ImGuizmo::IsOver() &&  Input::IsMouseKeyPressed(0) )
+		if (!ImGuizmo::IsOver() &&  Input::IsMouseKeyPressed(0) && _ViewportFocus)
 		{
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
@@ -169,7 +168,6 @@ namespace Lithium
 
 		}
 		
-
 		framebuffer->UnBind();
 		
 		_InspectorPanel->SetSelection(_Selection);
@@ -185,7 +183,9 @@ namespace Lithium
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyEvent>(BIND_EVENT(EditorLayer::onKeyEvent));
+		dispatcher.Dispatch<MouseWheelEvent>(BIND_EVENT(EditorLayer::onMouseWheelEvent));
 
+		
 	}
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
@@ -248,6 +248,11 @@ namespace Lithium
 				e.AddComponent<TransformComponent>();
 			}
 		}
+	}
+
+	void EditorLayer::onMouseWheelEvent(MouseWheelEvent& e)
+	{
+		orthosize -= e.GetOffsetY() * 0.5;
 	}
 
 	void EditorLayer::RenderImgui()
