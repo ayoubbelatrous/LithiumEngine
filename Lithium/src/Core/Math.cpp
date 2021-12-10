@@ -6,6 +6,8 @@
 
 namespace Lithium::Math
 {
+	std::mt19937 Random::s_RandomEngine;
+	std::uniform_int_distribution<std::mt19937::result_type> Random::s_Distribution;
 	bool DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale)
 	{
 		// From glm::decompose in matrix_decompose.inl
