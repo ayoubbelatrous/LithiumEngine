@@ -80,5 +80,8 @@ namespace Lithium
 		std::string text;
 		glm::vec2 LastMousePosiition;
 		int _GizmoMode = -1;
+
+		bool hoveringEntity = false;
+		Entity hoveredEntity;
 	};
 }

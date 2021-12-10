@@ -7,7 +7,7 @@
 namespace Lithium
 {
 
-	
+	extern const std::filesystem::path root;
 	bool intersectPlane(const glm::vec3& n, const glm::vec3& p0, const glm::vec3& l0, const glm::vec3& l, float& t)
 	{
 		float denom = glm::dot(n, l);
@@ -149,14 +149,22 @@ namespace Lithium
 		//CORE_LOG(raywor.x << " " << raywor.y);*/
 
 		_Selection = _shp->GetSelection();
-		if (Input::IsMouseKeyPressed(0) && !ImGuizmo::IsOver())
+		if (!ImGuizmo::IsOver() &&  Input::IsMouseKeyPressed(0) )
 		{
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
+				hoveringEntity = true;
 				pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
 				Entity ent{(entt::entity)pixelData,_MainScene.get()};
 				_Selection = ent;
 				_shp->SetSelection(_Selection);
+
+				hoveredEntity = ent;
+			}
+			else
+			{
+				hoveringEntity = false;
+				hoveredEntity = Entity();
 			}
 
 		}
@@ -308,12 +316,27 @@ namespace Lithium
 		{
 			Application::GetInstance().GetImguiLayer()->SetBlockEvent(false);
 		}
-
+		
 
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
 		ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
+		if (ImGui::BeginDragDropTarget())
+		{
 
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+			{
+				
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				std::filesystem::path texturepath = root / path;
+				if (hoveringEntity && hoveredEntity.HasComponent<SpriteRendererComponent>())
+				{
+					hoveredEntity.GetComponent<SpriteRendererComponent>().tex = assetManager.LoadAsset<Ref<Texture>>(texturepath.string());
+				}
+				
+			}
+			ImGui::EndDragDropTarget();
+		}
 		ImVec2 viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		ImVec2 viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		ImVec2 viewportOffset = ImGui::GetWindowPos();
@@ -330,7 +353,7 @@ namespace Lithium
 			ImGuizmo::SetGizmoSizeClipSpace(0.2f);
 			ImGuizmo::SetOrthographic(true);
 			ImGuizmo::SetDrawlist();
-
+			
 			ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
 				(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
