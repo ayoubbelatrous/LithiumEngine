@@ -64,6 +64,13 @@ namespace Lithium
 			wdata.callback(ev);
 		});
 
+		glfwSetScrollCallback(window, [](GLFWwindow* win, double xoffset,double yoffset)
+		{
+				WindowData& wdata = *(WindowData*)glfwGetWindowUserPointer(win);
+				MouseWheelEvent ev = MouseWheelEvent((float)xoffset,(float)yoffset);
+				wdata.callback(ev);
+		});
+
 	}
 
 	void Window::OnUpdate()

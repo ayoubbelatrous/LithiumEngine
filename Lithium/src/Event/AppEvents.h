@@ -61,6 +61,34 @@ namespace Lithium
 		EVENT_TYPE(KeyPress);
 	};
 
+
+	class MouseWheelEvent : public Event
+	{
+	public:
+
+		MouseWheelEvent() = default;
+		MouseWheelEvent(float x,float y)
+		:xOffset(x),yOffset(y){}
+		const char* GetName() const override {
+
+			return "MouseWheelEvent";
+		}
+		float GetOffsetX()
+		{
+			return xOffset;
+		}
+		float GetOffsetY()
+		{
+			return yOffset;
+		}
+	private:
+		float xOffset;
+		float yOffset;
+		EVENT_TYPE(MouseWheel);
+
+	};
+
+
 	class CreateEntityEvent : public Event
 	{
 	public:

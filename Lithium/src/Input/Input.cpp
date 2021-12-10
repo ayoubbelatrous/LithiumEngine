@@ -20,6 +20,7 @@ namespace Lithium
 		auto* window = Application::GetInstance().GetWindow().GETWindow();
 		auto state = glfwGetMouseButton(window, static_cast<int32_t>(mousekey));
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
+		
 	}
 
 	glm::vec2 Input::MousePosition()
