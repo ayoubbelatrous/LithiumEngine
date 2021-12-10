@@ -19,6 +19,11 @@ namespace Lithium
 		{
 			return _Selection;
 		}
+
+		void SetSelection(Entity selec)
+		{
+			_Selection = selec;
+		}
 	private:
 		Ref<Scene> _Scene;
 		Entity _Selection;

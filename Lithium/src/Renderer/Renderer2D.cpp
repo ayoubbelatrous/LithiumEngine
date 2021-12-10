@@ -24,6 +24,7 @@ namespace Lithium
 		glm::vec4 Color;
 		glm::vec2 TextureCoords;
 		float TextureIndex;
+		float EntityID;
 	};
 
 
@@ -64,6 +65,7 @@ namespace Lithium
 		Layout->Push<float>(4);
 		Layout->Push<float>(2);
 		Layout->Push<float>(1);
+		Layout->Push<float>(1);
 		_Data._VertexArray->AddBuffer(_Data._VertexBuffer, Layout);
 		_Data._shader = CreateRef<Shader>("assets/shaders/main.shader");
 		_Data._VertexBufferBase = new Vertex[_Data.MaxQuadCount];
@@ -93,11 +95,12 @@ namespace Lithium
 		_Data._VertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
 		_Data._VertexPositions[2] = { 0.5f,  0.5f, 0.0f, 1.0f };
 		_Data._VertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
-		_Data.projection = glm::mat4(0);
+		_Data.projection = glm::mat4(0); 
 	}
 
 	void BatchRenderer::Begin(const glm::mat4& transform, const glm::mat4& projection)
 	{
+		;
 		_Data.projection = projection * transform;
 		_Data._IndexCount = 0;
 		_Data._VertexBufferPtr= _Data._VertexBufferBase;
@@ -109,7 +112,7 @@ namespace Lithium
 		DrawData();
 	}
 
-	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<Texture>& texture)
+	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<Texture>& texture, int entityID)
 	{
 		LT_PROFILE_FUNCTION("Renderer Draw Quad");
 		constexpr int VertexCount = 4;
@@ -143,12 +146,13 @@ namespace Lithium
 			_Data._VertexBufferPtr->Color = color;
 			_Data._VertexBufferPtr->TextureCoords = textureCoords[i];
 			_Data._VertexBufferPtr->TextureIndex = textureIndex;
+			_Data._VertexBufferPtr->EntityID = (float)entityID;
 			_Data._VertexBufferPtr++;
 		}
 
 		_Data._IndexCount += 6;
 	}
-	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color)
+	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color,int entityID)
 	{
 		LT_PROFILE_FUNCTION("Renderer Draw Quad");
 		constexpr int VertexCount = 4;
@@ -162,6 +166,7 @@ namespace Lithium
 			_Data._VertexBufferPtr->Color = color;
 			_Data._VertexBufferPtr->TextureCoords = textureCoords[i];
 			_Data._VertexBufferPtr->TextureIndex = textureIndex;
+			_Data._VertexBufferPtr->EntityID = (float)entityID;
 			_Data._VertexBufferPtr++;
 		}
 

@@ -47,7 +47,7 @@ namespace Lithium
 	void VertexBufferLayout::Push<int>(unsigned int count)
 	{
 		elements.push_back({ count,GL_INT,false });
-		Stride += 1 * count;
+		Stride += 4 * count;
 	}
 	
 }

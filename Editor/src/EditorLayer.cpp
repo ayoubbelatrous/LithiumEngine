@@ -6,10 +6,23 @@
 
 namespace Lithium
 {
+
+	
+	bool intersectPlane(const glm::vec3& n, const glm::vec3& p0, const glm::vec3& l0, const glm::vec3& l, float& t)
+	{
+		float denom = glm::dot(n, l);
+		if (denom > 1e-6) {
+			glm::vec3 p0l0 = p0 - l0;
+			t = glm::dot(p0l0, n) / denom;
+			return (t >= 0);
+		}
+
+		return false;
+	}
 	extern AssetMananger assetManager = AssetMananger();
 	void EditorLayer::OnCreate()
 	{
-	
+
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
@@ -17,13 +30,13 @@ namespace Lithium
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
 		_InspectorPanel->OnCreate();
-		_AssetBrowerPanel  = CreateRef<AssetBrowserPanel>();
+		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 
 		LT_PROFILE_FUNCTION("init");
-		
+
 		_MainScene = CreateRef<Scene>();
 		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
-		_Selection = Entity(entt::null,_MainScene.get());
+		_Selection = Entity(entt::null, _MainScene.get());
 		framebuffer = CreateRef<FrameBuffer>();
 		framebuffer->Bind();
 		framebuffer->resize(1000, 1000);
@@ -31,11 +44,11 @@ namespace Lithium
 		Entity entity = _MainScene->CreateEntity("name");
 		Entity entity3 = _MainScene->CreateEntity("dod");
 		Entity entity2 = _MainScene->CreateEntity("hello");
-		
+
 		//_Selection = entity;
 		_shp->SetScene(_MainScene);
 		_InspectorPanel->SetScene(_MainScene);
-		
+
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity.AddComponent<TransformComponent>();
 
@@ -46,14 +59,13 @@ namespace Lithium
 		entity3.AddComponent<TransformComponent>();
 
 		pos = glm::vec3(0);
-		view = glm::mat4(0);
-		view = model = glm::translate(glm::mat4(1), glm::vec3(1));
+		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
-		
+
 		_AssetBrowerPanel->OnCreate();
-	
+
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
 		BatchRenderer::Init();
 	}
@@ -71,6 +83,7 @@ namespace Lithium
 
 		proj = glm::ortho(orthoLeft, orthoRight,
 			orthoBottom, orthoTop);
+		framebuffer->resize(viewportSize[0], viewportSize[1]);
 
 #pragma endregion
 #pragma region CameraMovement
@@ -100,35 +113,59 @@ namespace Lithium
 		}
 
 #pragma endregion 
-		
+		//CORE_LOG(mouse.x<<mouse.y);
+
+		//CORE_LOG(ray.x << ray.y << ray.z);
 		framebuffer->Bind();
 		RendererCommand::ClearColor(glm::vec4(0.25, 0.25, 0.35, 0));
 		RendererCommand::Clear();
-		//framebuffer->ClearAttachment(1, -1);
+		framebuffer->ClearAttachment(1, -1);
+		
 		BatchRenderer::Begin(view, proj);
-		model = glm::translate(glm::mat4(1.0), { 0.0,0.0,0.0 });
+
 		_MainScene->onEditorUpdate();
 		BatchRenderer::End();
 
-/*
+
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= _ViewportBounds[0].x;
 		my -= _ViewportBounds[0].y;
-		glm::vec2 viewportSize = _ViewportBounds[1] - _ViewportBounds[0];
-		my = viewportSize.y - my;
-		int mouseX = (int)mx;
-		int mouseY = (int)my;
-		//CORE_LOG(mouseX << " " << mouseY);
-		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+		glm::vec2 vs = _ViewportBounds[1] - _ViewportBounds[0];
+	    my = vs.y - my;
+		mouseX = (int)mx;
+		mouseY = (int)my;
+
+		/*glm::vec3 ndc = Math::GetNormalizedDeviceCoords({ mouseX, mouseY }, { viewportSize[0], viewportSize[1] });
+		//CORE_LOG(ray.x <<" " << ray.y);
+		glm::vec4 ClipCoords = glm::vec4(ndc.x, ndc.y, -1, 1);
+
+		glm::mat4 invertedproj = glm::inverse(proj);
+		glm::vec4 eyecoords = invertedproj * ClipCoords;
+		glm::vec4 rayeye = glm::vec4(eyecoords.x, eyecoords.y, -1.0, 0.0);
+		glm::vec3 raywor = glm::vec3();
+		raywor = (glm::inverse(view) * rayeye);
+		//raywor = glm::translate(glm::inverse(view), { rayeye.x,rayeye.y,rayeye.z});
+		raywor = glm::normalize(raywor);
+		//CORE_LOG(raywor.x << " " << raywor.y);*/
+
+		_Selection = _shp->GetSelection();
+		if (Input::IsMouseKeyPressed(0) && !ImGuizmo::IsOver())
 		{
-			 int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
-			 CORE_LOG(pixelData);
+			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
+			{
+				pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
+				Entity ent{(entt::entity)pixelData,_MainScene.get()};
+				_Selection = ent;
+				_shp->SetSelection(_Selection);
+			}
+
 		}
-*/
+		
 
 		framebuffer->UnBind();
-		_Selection = _shp->GetSelection();
+		
 		_InspectorPanel->SetSelection(_Selection);
+
 		RenderImgui();
 	}
 
@@ -209,7 +246,7 @@ namespace Lithium
 	{
 		LT_PROFILE_FUNCTION("Render Imgui");
 
-		
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -263,7 +300,7 @@ namespace Lithium
 		ImGui::End();
 		_shp->OnUpdate();
 		_InspectorPanel->OnUpdate();
-		//_AssetBrowerPanel->OnUpdate();
+		_AssetBrowerPanel->OnUpdate();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 		ImGui::Begin("Scene");
 		_ViewportFocus = ImGui::IsWindowFocused();
@@ -271,30 +308,29 @@ namespace Lithium
 		{
 			Application::GetInstance().GetImguiLayer()->SetBlockEvent(false);
 		}
-		
+
 
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
-		ImGui::Image((void*)(intptr_t)framebuffer->GetColorAttachmentID(), ImGui::GetContentRegionAvail(), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	
+		ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
+
 		ImVec2 viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		ImVec2 viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		ImVec2 viewportOffset = ImGui::GetWindowPos();
 		_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
 		_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
-
 		glm::mat4 _view = view;
 		glm::mat4 _proj = proj;
-		
-		
 
-		if(_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
+
+
+		if (_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
 		{
 			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
 			ImGuizmo::SetGizmoSizeClipSpace(0.2f);
 			ImGuizmo::SetOrthographic(true);
 			ImGuizmo::SetDrawlist();
-			
+
 			ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
 				(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
@@ -306,20 +342,25 @@ namespace Lithium
 				//_Selection.GetComponent<TransformComponent>().Position = matri[3];
 
 				glm::vec3 deltaRotation = rotation - _Selection.GetComponent<TransformComponent>().Rotation;
-				_Selection.GetComponent<TransformComponent>().Position= translation;
+				_Selection.GetComponent<TransformComponent>().Position = translation;
 				_Selection.GetComponent<TransformComponent>().Rotation += deltaRotation;
 				_Selection.GetComponent<TransformComponent>().Scale = scale;
+				UsingGizmos = true;
 			}
-			
+			else
+			{
+				UsingGizmos = false;
+			}
+
 		}
-		
+
 		ImGui::End();
 		ImGui::PopStyleVar();
 		ImGui::Begin("Stats");
 		//CORE_LOG(Renderer2D::GetStats().DrawCalls);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text(_EditorStatus.c_str());
-		ImGui::End();
+		ImGui::End();			 
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

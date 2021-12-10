@@ -31,7 +31,9 @@ namespace Lithium
 		}
 
 		glViewport(0, 0, 1280, 780);
-		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
 		int number;
 		//glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &number);

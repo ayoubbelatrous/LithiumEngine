@@ -4,6 +4,9 @@
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "gtx/transform.hpp"
+
 #include "Renderer/VertexArray.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Renderer2D.h"
@@ -69,7 +72,11 @@ namespace Lithium
 		//Ref<Texture> tex;
 		//Ref<Texture> tex2;
 		//Ref<Texture> tex3;
-
+		int mouseX = 0;
+		int mouseY = 0;
+		int pixelData; 
+		float pixelData2;
+		bool UsingGizmos;
 		std::string text;
 		glm::vec2 LastMousePosiition;
 		int _GizmoMode = -1;

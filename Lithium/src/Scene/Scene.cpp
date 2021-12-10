@@ -39,12 +39,12 @@ namespace Lithium
 		
 			if (sc.tex->loaded)
 			{
-				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color, sc.tex);
+				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color, sc.tex,(int)entity);
 
 			}
 			else
 			{
-				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color);
+				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color,(int)entity);
 
 			}
 			
