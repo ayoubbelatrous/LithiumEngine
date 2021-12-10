@@ -78,4 +78,12 @@ namespace Lithium::Math
 		return true;
 	}
 
+	glm::vec3 GetNormalizedDeviceCoords(const glm::vec2& mouse, const glm::vec2& viewportsize)
+	{
+		float x = (2.0f * mouse.x) / viewportsize.y - 1.0f;
+		float y = 1.0f - (2.0f * mouse.y) / viewportsize.x;
+		float z = 1.0f;
+		return glm::vec3(x,-y,z);
+	}
+
 }
