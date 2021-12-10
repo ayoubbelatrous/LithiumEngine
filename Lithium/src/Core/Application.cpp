@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Debug/Profiler.h"
 #include "glm.hpp"
-
+#include "Math.h"
 namespace Lithium
 {
 	Application* Application::instance = nullptr;
@@ -13,6 +13,7 @@ namespace Lithium
 		_ImguiLayer = new GUIlayer();
 		PushOverlay(_ImguiLayer);
 		_Window->SetAppEventCallback(BIND_EVENT(Application::OnEvent));
+		Math::Random::Init();
 
 	}
 	Application::~Application()
