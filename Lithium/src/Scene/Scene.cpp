@@ -11,8 +11,7 @@ namespace Lithium
 		:_Registry(entt::registry())
 	{}
 
-	
-	
+
 	Entity Scene::CreateEntity(const std::string& name)
 	{
 		Entity ent(_Registry.create(),this);
@@ -50,6 +49,8 @@ namespace Lithium
 			
 		}
 	}
+
+	
 
 
 }

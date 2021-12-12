@@ -23,10 +23,19 @@ namespace Lithium
 
 		void onEditorUpdate();
 		void SetEventCallback(const EventCallback& e) { callback = e; }
+		template<typename Comp>
+		void CopyComponent(Entity src, Entity dst)
+		{
+			if (src.HasComponent<Comp>())
+				dst.AddOrReplaceComponent<Comp>(src.GetComponent<Comp>());
+		}
 	private:
 		entt::registry _Registry;
 		EventCallback callback;
 
 	};
+
+	
+
 
 }

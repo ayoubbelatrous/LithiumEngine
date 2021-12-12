@@ -6,19 +6,8 @@
 
 namespace Lithium
 {
-
+	
 	extern const std::filesystem::path root;
-	bool intersectPlane(const glm::vec3& n, const glm::vec3& p0, const glm::vec3& l0, const glm::vec3& l, float& t)
-	{
-		float denom = glm::dot(n, l);
-		if (denom > 1e-6) {
-			glm::vec3 p0l0 = p0 - l0;
-			t = glm::dot(p0l0, n) / denom;
-			return (t >= 0);
-		}
-
-		return false;
-	}
 	extern AssetMananger assetManager = AssetMananger();
 	void EditorLayer::OnCreate()
 	{
@@ -56,8 +45,8 @@ namespace Lithium
 		entity2.AddComponent<TransformComponent>();
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		entity3.AddComponent<TransformComponent>();
-
+	
+		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
@@ -68,13 +57,11 @@ namespace Lithium
 
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
 		BatchRenderer::Init();
-
-
-		CORE_LOG(Math::Random::Float());
 	}
 
 	void EditorLayer::OnUpdate()
 	{
+		
 		LT_PROFILE_FUNCTION("UPDATE");
 #pragma region CalculateProjection
 
@@ -124,11 +111,12 @@ namespace Lithium
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);
-
+		
 		_MainScene->onEditorUpdate();
+	
 		BatchRenderer::End();
-
-
+		
+	
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= _ViewportBounds[0].x;
 		my -= _ViewportBounds[0].y;
@@ -151,7 +139,7 @@ namespace Lithium
 		//CORE_LOG(raywor.x << " " << raywor.y);*/
 	
 		_Selection = _shp->GetSelection();
-		if (!ImGuizmo::IsOver() &&  Input::IsMouseKeyPressed(0) && _ViewportFocus)
+		if (!ImGuizmo::IsOver() &&  Input::IsMouseKeyPressed(0) && _ViewportHovered)
 		{
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
@@ -174,7 +162,6 @@ namespace Lithium
 		framebuffer->UnBind();
 		
 		_InspectorPanel->SetSelection(_Selection);
-
 		RenderImgui();
 	}
 
@@ -247,8 +234,12 @@ namespace Lithium
 		{
 			if (control)
 			{
-				Entity e = _MainScene->CreateEntity("new Entity");
-				e.AddComponent<TransformComponent>();
+				if (e.action == 1)
+				{
+					Entity e = _MainScene->CreateEntity("new Entity");
+					e.AddComponent<TransformComponent>();
+				}
+			
 			}
 		}
 	}
@@ -319,6 +310,7 @@ namespace Lithium
 		_AssetBrowerPanel->OnUpdate();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 		ImGui::Begin("Scene");
+		_ViewportHovered = ImGui::IsWindowHovered();
 		_ViewportFocus = ImGui::IsWindowFocused();
 		if (_ViewportFocus)
 		{

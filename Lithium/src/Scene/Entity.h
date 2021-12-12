@@ -41,6 +41,13 @@ namespace Lithium
 		{
 			return _Scene;
 		}
+
+
+		template<typename T, typename... Args>
+	    void AddOrReplaceComponent(Args&&... args)
+		{
+			_Scene->GetRegistry().emplace_or_replace<T>(_Handle, std::forward<Args>(args)...);
+		}
 	private:
 		entt::entity _Handle;
 		Scene* _Scene;

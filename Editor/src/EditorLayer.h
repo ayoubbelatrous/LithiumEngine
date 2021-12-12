@@ -25,7 +25,7 @@
 #include "Panels/AssetBrowserPanel.h"
 #include "Scene/Serializer.h"
 #include "AssetManager/AssetManager.h"
-
+#include <thread>
 namespace Lithium
 {
 	struct Data
@@ -81,7 +81,6 @@ namespace Lithium
 		std::string text;
 		glm::vec2 LastMousePosiition;
 		int _GizmoMode = -1;
-
 		bool hoveringEntity = false;
 		Entity hoveredEntity;
 	};
