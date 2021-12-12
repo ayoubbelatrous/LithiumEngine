@@ -47,6 +47,7 @@ namespace Lithium
 		void onEvent(Event& e) override;
 		void onKeyEvent(KeyEvent& e);
 		void onMouseWheelEvent(MouseWheelEvent& e);
+		void onEditorEvent(Event& e);
 		void RenderImgui();
 		void SceneEvent(Event& e);
 	private:

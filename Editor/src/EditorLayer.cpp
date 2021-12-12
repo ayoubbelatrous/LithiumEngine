@@ -20,6 +20,7 @@ namespace Lithium
 		_InspectorPanel = CreateRef<InspectorPanel>();
 		_InspectorPanel->OnCreate();
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
+		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 
 		LT_PROFILE_FUNCTION("init");
 
@@ -261,6 +262,11 @@ namespace Lithium
 		orthosize -= e.GetOffsetY() * 0.5;
 	}
 
+	void EditorLayer::onEditorEvent(Event& e)
+	{
+		CORE_LOG(e.GetName());
+	}
+
 	void EditorLayer::RenderImgui()
 	{
 		LT_PROFILE_FUNCTION("Render Imgui");
@@ -397,7 +403,7 @@ namespace Lithium
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text(_EditorStatus.c_str());
 		ImGui::End();			 
-
+		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -413,7 +419,6 @@ namespace Lithium
 	void EditorLayer::SceneEvent(Event& e)
 	{
 		CreateEntityEvent& ev = static_cast<CreateEntityEvent&>(e);
-		CORE_LOG("Created Entity");
+		CORE_LOG(e.GetName());
 	}
-
 }

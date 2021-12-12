@@ -2,6 +2,7 @@
 #include "Event/Event.h"
 namespace Lithium
 {
+
 	class EditorEvent : public Event
 	{
 
@@ -18,4 +19,5 @@ namespace Lithium
 
 		EVENT_TYPE(AssetBrowser);
 	};
+	
 }
