@@ -45,8 +45,8 @@ namespace Lithium
 		entity2.AddComponent<TransformComponent>();
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-	
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
+	//	_MainScene->DuplicateEntity(entity3);
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
@@ -240,6 +240,18 @@ namespace Lithium
 					e.AddComponent<TransformComponent>();
 				}
 			
+			}
+		}
+
+		if (e.keycode == KEYCODE_D && _Selection)
+		{
+			if (control)
+			{
+				if (e.action == GLFW_PRESS)
+				{
+					_MainScene->DuplicateEntity(_Selection);
+				}
+
 			}
 		}
 	}
