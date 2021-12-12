@@ -50,7 +50,26 @@ namespace Lithium
 		}
 	}
 
-	
+	Entity Scene::DuplicateEntity(Entity src)
+	{
+		Entity entity = CreateEntity("new Entity");
+		if (src.HasComponent<TransformComponent>())
+		{
+			CopyComponent<TransformComponent>(src, entity);
+		}
 
+		if (src.HasComponent<SpriteRendererComponent>())
+		{
+			CopyComponent<SpriteRendererComponent>(src, entity);
+
+		}
+		if (src.HasComponent<NameComponent>())
+		{
+			CopyComponent<NameComponent>(src, entity);
+
+		}
+
+		return entity;
+	}
 
 }
