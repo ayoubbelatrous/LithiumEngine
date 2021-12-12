@@ -48,6 +48,18 @@ namespace Lithium
 		{
 			_Scene->GetRegistry().emplace_or_replace<T>(_Handle, std::forward<Args>(args)...);
 		}
+
+		explicit operator bool() const
+		{
+			if (_Handle == entt::null)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
 	private:
 		entt::entity _Handle;
 		Scene* _Scene;
