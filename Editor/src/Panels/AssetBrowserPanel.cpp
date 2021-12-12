@@ -62,6 +62,10 @@ namespace Lithium
 			{
 					if (entry.is_directory())
 						currentpath /= path.filename();
+					if (path.extension() == ".png")
+					{
+				
+					}
 			}
 
 			if (ImGui::BeginDragDropSource())
