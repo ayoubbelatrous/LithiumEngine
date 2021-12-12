@@ -19,5 +19,25 @@ namespace Lithium
 
 		EVENT_TYPE(AssetBrowser);
 	};
-	
+	class OpenSpriteEditorEvent : public EditorEvent
+	{
+		std::string _Path;
+
+	public:
+		OpenSpriteEditorEvent() = default;
+		OpenSpriteEditorEvent(const std::string& path)
+		{
+			_Path = path;
+		}
+		const char* GetName() const override {
+
+			return "OpenSpriteEditorEvent";
+		}
+		std::string& GetPath()
+		{
+			return _Path;
+		}		
+		EVENT_TYPE(OpenSpriteEditor);
+
+	};
 }

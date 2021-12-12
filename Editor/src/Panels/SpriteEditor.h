@@ -10,8 +10,16 @@ namespace Lithium
 		void OnCreate();
 		void SetTexture(const Ref<Texture>& texture);
 		void OnUpdate();
+		void Open()
+		{
+			_Open = true;
+		}
+		void Close()
+		{
+			_Open = false;
+		}
 	private:
-
+		bool _Open = false;
 		Ref<Texture> _Texture;
 	};
 }

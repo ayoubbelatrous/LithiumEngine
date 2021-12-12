@@ -12,7 +12,7 @@ namespace Lithium
 	enum class EventType
 	{
 		WindowResize, WindowClose, WindowMove, WindowFocus,
-		KeyPress,CreateEntity,MouseWheel,AssetBrowser,
+		KeyPress,CreateEntity,MouseWheel,AssetBrowser,OpenSpriteEditor,
 
 	};
 

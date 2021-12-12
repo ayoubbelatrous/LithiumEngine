@@ -264,7 +264,13 @@ namespace Lithium
 
 	void EditorLayer::onEditorEvent(Event& e)
 	{
-		CORE_LOG(e.GetName());
+		if (e.GetEventType() == EventType::OpenSpriteEditor)
+		{
+			OpenSpriteEditorEvent& SpriteEditorEvent = static_cast<OpenSpriteEditorEvent&>(e);
+			Ref<Texture> texture = assetManager.LoadAsset<Ref<Texture>>(SpriteEditorEvent.GetPath());
+			_SpriteEditor.Open();
+			_SpriteEditor.SetTexture(texture);
+		}
 	}
 
 	void EditorLayer::RenderImgui()

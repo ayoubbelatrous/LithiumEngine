@@ -64,7 +64,8 @@ namespace Lithium
 						currentpath /= path.filename();
 					if (path.extension() == ".png")
 					{
-				
+						OpenSpriteEditorEvent ev = OpenSpriteEditorEvent(path.string());
+						callback(ev);
 					}
 			}
 
