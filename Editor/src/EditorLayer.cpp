@@ -11,7 +11,7 @@ namespace Lithium
 	extern AssetMananger assetManager = AssetMananger();
 	void EditorLayer::OnCreate()
 	{
-
+		
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
@@ -52,9 +52,9 @@ namespace Lithium
 
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
-
+		tex = CreateRef<Texture>("assets/images/test.png");
 		_AssetBrowerPanel->OnCreate();
-
+		_SpriteEditor.SetTexture(tex);
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
 		BatchRenderer::Init();
 	}
@@ -320,6 +320,7 @@ namespace Lithium
 		_shp->OnUpdate();
 		_InspectorPanel->OnUpdate();
 		_AssetBrowerPanel->OnUpdate();
+		_SpriteEditor.OnUpdate();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 		ImGui::Begin("Scene");
 		_ViewportHovered = ImGui::IsWindowHovered();

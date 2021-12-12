@@ -23,6 +23,7 @@
 #include "Panels/SceneHierachyPanel.h"
 #include "Panels/InspectorPanel.h"
 #include "Panels/AssetBrowserPanel.h"
+#include "Panels/SpriteEditor.h"
 #include "Scene/Serializer.h"
 #include "AssetManager/AssetManager.h"
 #include <thread>
@@ -69,8 +70,9 @@ namespace Lithium
 		Ref<SceneHierachyPanel> _shp;
 		Ref<InspectorPanel> _InspectorPanel;
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
+		SpriteEditor _SpriteEditor;
 		//Serializer sz;
-		//Ref<Texture> tex;
+		Ref<Texture> tex;
 		//Ref<Texture> tex2;
 		//Ref<Texture> tex3;
 		int mouseX = 0;
