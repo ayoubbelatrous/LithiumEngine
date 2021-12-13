@@ -41,7 +41,32 @@ in flat float v_EntityID;
 
 void main()
 {
-	int index = int(v_TexIndex);
-	color = Color * texture(u_textures[index], TexCoord);
+	//int index = int(v_TexIndex);
+	//color = Color * texture(u_textures[index], TexCoord);
+	vec4 texColor = Color;
+	switch (int(v_TexIndex))
+	{
+	case  0: texColor *= texture(u_textures[0], TexCoord); break;
+	case  1: texColor *= texture(u_textures[1], TexCoord); break;
+	case  2: texColor *= texture(u_textures[2], TexCoord); break;
+	case  3: texColor *= texture(u_textures[3], TexCoord); break;
+	case  4: texColor *= texture(u_textures[4], TexCoord); break;
+	case  5: texColor *= texture(u_textures[5], TexCoord); break;
+	case  6: texColor *= texture(u_textures[6], TexCoord); break;
+	case  7: texColor *= texture(u_textures[7], TexCoord); break;
+	case  8: texColor *= texture(u_textures[8], TexCoord); break;
+	case  9: texColor *= texture(u_textures[9], TexCoord); break;
+	case 10: texColor *= texture(u_textures[10], TexCoord); break;
+	case 11: texColor *= texture(u_textures[11], TexCoord); break;
+	case 12: texColor *= texture(u_textures[12], TexCoord); break;
+	case 13: texColor *= texture(u_textures[13], TexCoord); break;
+	case 14: texColor *= texture(u_textures[14], TexCoord); break;
+	case 15: texColor *= texture(u_textures[15], TexCoord); break;
+	case 16: texColor *= texture(u_textures[16], TexCoord); break;
+	case 17: texColor *= texture(u_textures[17], TexCoord); break;
+
+	}
+
+	color = texColor;
 	color2 = int(v_EntityID);
 }
