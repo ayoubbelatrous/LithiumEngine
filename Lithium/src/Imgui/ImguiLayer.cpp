@@ -26,7 +26,7 @@ namespace Lithium
 		ImGui_ImplOpenGL3_Init("#version 330");
 	
 		ImGuiStyle* style = &ImGui::GetStyle();
-
+		
 
 		style->WindowPadding = ImVec2(15, 15);
 		style->WindowRounding = 5.0f;
@@ -77,6 +77,11 @@ namespace Lithium
 		style->Colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
 		style->Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 		style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.45f, 0.45f, 0.45f, 0.43f);
+		style->Colors[ImGuiCol_Tab] = ImVec4(0.24,0.25,0.25,1.0);
+	//	style->Colors[ImGuiCol] = ImVec4(0.24,0.25,0.25,1.0);
+		style->Colors[ImGuiCol_TabUnfocused] = ImVec4(0.24,0.25,0.25,1.0);
+		style->Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.24,0.25,0.25,1.0);
+		style->Colors[ImGuiCol_TabActive] = ImVec4(0.26,0.26,0.26,1.0);
 		//style->Colors[ImGuiCol_DragDropTarget] = ImVec4(0.45f, 0.5f, 0.45f, 0.43f);
 
 		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Regular.ttf", 17);

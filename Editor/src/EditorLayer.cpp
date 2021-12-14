@@ -53,7 +53,7 @@ namespace Lithium
 
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
-		tex = CreateRef<Texture>("assets/images/test.png");
+		tex = CreateRef<Texture>("assets/images/atlastest.png");
 		_AssetBrowerPanel->OnCreate();
 		_SpriteEditor.SetTexture(tex);
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
@@ -112,7 +112,7 @@ namespace Lithium
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);
-		
+		BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);		
 		_MainScene->onEditorUpdate();
 	
 		BatchRenderer::End();
@@ -140,7 +140,7 @@ namespace Lithium
 		//CORE_LOG(raywor.x << " " << raywor.y);*/
 	
 		_Selection = _shp->GetSelection();
-		if (!ImGuizmo::IsOver() &&  Input::IsMouseKeyPressed(0) && _ViewportHovered)
+		if (  Input::IsMouseKeyPressed(0) && _ViewportHovered && !ImGuizmo::IsOver()/*&&*/)
 		{
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
@@ -287,7 +287,7 @@ namespace Lithium
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
 		// because it would be confusing to have two docking targets within each others.
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar|ImGuiWindowFlags_NoDocking;
 		if (opt_fullscreen)
 		{
 			const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -328,12 +328,15 @@ namespace Lithium
 		}
 
 
+
+
 		ImGui::End();
 		_shp->OnUpdate();
 		_InspectorPanel->OnUpdate();
 		_AssetBrowerPanel->OnUpdate();
 		_SpriteEditor.OnUpdate();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
+
 		ImGui::Begin("Scene");
 		_ViewportHovered = ImGui::IsWindowHovered();
 		_ViewportFocus = ImGui::IsWindowFocused();
@@ -401,13 +404,35 @@ namespace Lithium
 			}
 
 		}
+		/*
+		window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+		ImGui::SetNextWindowBgAlpha(0.10f);
+		float padding = 10;
+		ImVec2 pos = ImVec2(_ViewportBounds[0].x + padding, _ViewportBounds[0].y + padding);
+		ImGui::SetNextWindowPos(pos );
+		ImGui::SetNextWindowSize({ 95,35 });
+		
+		ImGui::Begin("win",(bool*)true,window_flags);
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 0,0 });
+		ImGui::Button("T", {30,35});
+		ImGui::SameLine();
+		ImGui::Button("R", { 30,35 });
+		ImGui::SameLine();
+		ImGui::Button("S", { 30,35 });
+		ImGui::SameLine();
+		ImGui::PopStyleVar(2);
 		ImGui::End();
+		*/
+		ImGui::End();
+	
 		ImGui::PopStyleVar();
 		ImGui::Begin("Stats");
 		//CORE_LOG(Renderer2D::GetStats().DrawCalls);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text(_EditorStatus.c_str());
+		
 		ImGui::End();			 
 		
 		ImGui::Render();

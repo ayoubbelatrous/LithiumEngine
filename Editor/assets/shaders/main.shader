@@ -41,8 +41,7 @@ in flat float v_EntityID;
 
 void main()
 {
-	//int index = int(v_TexIndex);
-	//color = Color * texture(u_textures[index], TexCoord);
+
 	vec4 texColor = Color;
 	switch (int(v_TexIndex))
 	{
