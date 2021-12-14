@@ -31,7 +31,7 @@ namespace Lithium
 		return textureCoords;
 	}
 
-	Lithium::TextureMode TextureData::GetMode()
+	TextureMode TextureData::GetMode()
 	{
 		return _Mode;
 	}

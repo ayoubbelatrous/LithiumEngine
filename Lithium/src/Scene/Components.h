@@ -53,10 +53,13 @@ namespace Lithium
 		{
 			Color = glm::vec4(1);
 			tex = CreateRef<Texture>();
+			textureData = CreateRef<TextureData>(TextureMode::Single,0,0,0,0);
 		}
 		SpriteRendererComponent(const glm::vec4 color)
 			:Color(color) {
 			tex = CreateRef<Texture>();
+			textureData = CreateRef<TextureData>(TextureMode::Single, 0, 0, 0, 0);
+
 		}
 
 		SpriteRendererComponent(const glm::vec4 color,Ref<TextureData> data)

@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Renderer/Renderer2D.h"
 
+
 namespace Lithium
 {
 
@@ -38,7 +39,11 @@ namespace Lithium
 		
 			if (sc.tex->loaded)
 			{
-				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color, sc.tex,(int)entity);
+				if (sc.textureData->GetMode() == TextureMode::Single)
+				{
+					BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color, sc.tex, (int)entity);
+
+				}
 
 			}
 			else

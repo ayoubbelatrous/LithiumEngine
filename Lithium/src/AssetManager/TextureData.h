@@ -13,11 +13,15 @@ namespace Lithium
 	{
 	public:
 		TextureData(TextureMode mode, int CellsizeX, int CellsizeY,int width,int height);
+		TextureData():
+			_Mode(TextureMode::Single)
+		{
+		}
 		glm::vec2 GetCellSize();
 		glm::vec2* CalculateUVs(int indexY = 0,int indexX = 0);
 		TextureMode GetMode();
 	private:
-		TextureMode _Mode;
+		TextureMode _Mode = TextureMode::Single;
 		int _CellsizeX;
 		int _CellsizeY;
 		int _Width;
