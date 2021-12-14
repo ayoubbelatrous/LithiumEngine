@@ -7,6 +7,8 @@
 #include "Entity.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <gtx/quaternion.hpp>
+#include "AssetManager/TextureData.h"
+
 namespace Lithium
 {
 	struct NameComponent
@@ -45,6 +47,7 @@ namespace Lithium
 	{
 		glm::vec4 Color;
 		Ref<Texture> tex = nullptr;
+		Ref<TextureData> textureData;
 
 		SpriteRendererComponent()
 		{
@@ -55,9 +58,16 @@ namespace Lithium
 			:Color(color) {
 			tex = CreateRef<Texture>();
 		}
+
+		SpriteRendererComponent(const glm::vec4 color,Ref<TextureData> data)
+			:Color(color) {
+			tex = CreateRef<Texture>();
+			textureData = data;
+		}
 		SpriteRendererComponent(const SpriteRendererComponent& other) = default;
 		glm::vec4 GetColor() const { return Color; }
 		Ref<Texture> GetTexture() const { return tex; }
+		Ref<TextureData> GetTextureData() const { return textureData; }
 	};
 
 

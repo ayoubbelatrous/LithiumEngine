@@ -172,6 +172,53 @@ namespace Lithium
 
 		_Data._IndexCount += 6;
 	}
+
+	void BatchRenderer::DrawQuadTest(const glm::mat4& transform, const glm::vec4 color, const Ref<Texture>& texture, int entityID)
+	{
+		constexpr int VertexCount = 4;
+
+		constexpr float spritewidth = 1024;
+		constexpr glm::vec2 cellsize = glm::vec2(128,256);
+		constexpr glm::vec2 index = glm::vec2(5, 0);
+
+		constexpr glm::vec2 textureCoords[] = {
+			{ (index.x * cellsize.x) / spritewidth, (index.y * cellsize.y) / spritewidth},
+			{ ((index.x + 1) * cellsize.x) / spritewidth, (index.y * cellsize.y) / spritewidth},
+			{ ((index.x + 1) * cellsize.x) / spritewidth, ((index.y + 1) * cellsize.y) / spritewidth},
+			{ ((index.x + 1) * cellsize.x) / spritewidth, ((index.y + 1) * cellsize.y) / spritewidth},
+		};
+
+		float textureIndex = 0.0f;
+		for (uint32_t i = 1; i < _Data.TextureSlotIndex; i++)
+		{
+			if (*_Data.TextureSlots[i] == *texture)
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+
+		if (textureIndex == 0.0f)
+		{
+			textureIndex = (float)_Data.TextureSlotIndex;
+			_Data.TextureSlots[_Data.TextureSlotIndex] = texture;
+			_Data.TextureSlotIndex++;
+		}
+
+
+		for (size_t i = 0; i < VertexCount; i++)
+		{
+			_Data._VertexBufferPtr->Position = transform * _Data._VertexPositions[i];
+			_Data._VertexBufferPtr->Color = color;
+			_Data._VertexBufferPtr->TextureCoords = textureCoords[i];
+			_Data._VertexBufferPtr->TextureIndex = textureIndex;
+			_Data._VertexBufferPtr->EntityID = (float)entityID;
+			_Data._VertexBufferPtr++;
+		}
+
+		_Data._IndexCount += 6;
+	}
+
 	void BatchRenderer::DrawData()
 	{
 		LT_PROFILE_FUNCTION("Renderer Draw Data");
