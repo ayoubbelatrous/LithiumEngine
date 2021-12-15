@@ -31,5 +31,7 @@ namespace Lithium
 		}
 		bool loaded = false;
 		std::string GetPath() { return _Path; }
+		int GetWidth() const { return _width; }
+		int GetHeight() const { return _height; }
 	};
 }
