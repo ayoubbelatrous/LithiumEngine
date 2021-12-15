@@ -1,19 +1,35 @@
 #include "SpriteEditor.h"
 #include "imgui.h"
-
-
-
+#include <filesystem>
+#include "gtc/type_ptr.hpp"
+#include <iostream>
 namespace Lithium
 {
-
+	extern AssetMananger assetManager;
+	extern std::filesystem::path root;
 	void SpriteEditor::OnCreate()
 	{
-
+		cellsize = glm::vec2(0);
 	}
 
 	void SpriteEditor::SetTexture(const Ref<Texture>& texture)
 	{
 		_Texture = texture;
+		std::filesystem::path path(texture->GetPath());
+		path.replace_extension(".metadata");
+		if (std::filesystem::exists(path))
+		{
+			hasMetadata = true;
+			_TextureData = assetManager.LoadTextureMetadata(path);
+		}
+		else
+		{
+			hasMetadata = false;
+			_TextureData = CreateRef<TextureData>();
+		}
+		
+		
+		
 	}
 
 	void SpriteEditor::OnUpdate()
@@ -41,9 +57,22 @@ namespace Lithium
 		ImGui::PopStyleColor();
 		if (ImGui::BeginPopup("slice_options_popup"))
 		{
-			float* test = new float[2];
-			ImGui::InputFloat2("Cell Size", test);
-			ImGui::Button("Slice");
+			
+			ImGui::InputFloat2("Cell Size",glm::value_ptr(cellsize));
+			if (ImGui::Button("Slice"))
+			{
+		
+				Ref<TextureData> data = CreateRef<TextureData>(TextureMode::Single,
+					cellsize.x, cellsize.y,
+					_Texture->GetWidth(),_Texture->GetWidth());
+				_TextureData = data;
+				hasMetadata = true;
+				CORE_LOG(_Texture->GetPath());
+				std::filesystem::path path(_Texture->GetPath());
+				path.replace_extension(".metadata");
+				assetManager.GenerateTextureMetadata(data, path);
+			}
+
 			ImGui::EndPopup();
 		}
 		if (_Texture)
@@ -62,13 +91,44 @@ namespace Lithium
 			else
 			{
 				aspect = size.y / size.x;
-				width = size.x;
+				width = size.x ;
 				height = size.y / aspect;
 			}
-		
+			if (hasMetadata)
+			{
+				ImVec2 pos = ImGui::GetCursorPos();
+				ImVec2 winpos = ImGui::GetWindowPos();
+				ImVec4 color = { 0,1,0,1 };
+				ImU32 col = ImColor(color);
+				int twidth = _TextureData->GetWidth();
+				int theight = _TextureData->GetHeight();
+				int sizex = twidth / _TextureData->GetCellSizeX();
+				int sizey = theight / _TextureData->GetCellSizeY();
+				int cellsizeX = twidth / sizex;
+				int cellsizeY = theight / sizey;
+				ImGui::Image(reinterpret_cast<void*>(_Texture->GetID()), { width,height }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-			ImGui::Image(reinterpret_cast<void*>(_Texture->GetID()), {width,height}, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-			
+				for (size_t i = 0; i < (int)width / cellsizeX; i++)
+				{
+					ImDrawList* drawlist = ImGui::GetWindowDrawList();
+					ImVec2 newpos = { winpos.x + pos.x ,winpos.y + pos.y + (cellsizeX * i) };
+					ImVec2 lastpos = { winpos.x + pos.x + width ,winpos.y + pos.y + (cellsizeX * i) };
+					drawlist->AddLine(newpos, lastpos, col, 1.5f);
+				}
+
+				for (size_t i = 0; i < (int)height / cellsizeY; i++)
+				{
+					ImDrawList* drawlist = ImGui::GetWindowDrawList();
+					ImVec2 newpos = { winpos.x + pos.x + (cellsizeY * i) ,winpos.y + pos.y };
+					ImVec2 lastpos = { winpos.x + pos.x + (cellsizeY * i),winpos.y + pos.y + height };
+					drawlist->AddLine(newpos, lastpos, col, 1.5f);
+				}
+			}
+			else
+			{
+				ImGui::Image(reinterpret_cast<void*>(_Texture->GetID()), { width,height }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+			}
 		}
 		else
 		{

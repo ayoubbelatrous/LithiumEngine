@@ -1,6 +1,9 @@
 #pragma once
 #include "Core/Base.h"
 #include "Renderer/Texture.h"
+#include "glm.hpp"
+#include "AssetManager/AssetManager.h"
+
 
 namespace Lithium
 {
@@ -20,6 +23,9 @@ namespace Lithium
 		}
 	private:
 		bool _Open = false;
+		glm::vec2 cellsize;
 		Ref<Texture> _Texture;
+		Ref<TextureData> _TextureData;
+		bool hasMetadata = false;
 	};
 }
