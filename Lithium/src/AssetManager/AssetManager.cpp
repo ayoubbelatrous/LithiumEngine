@@ -2,7 +2,7 @@
 
 #include "AssetManager.h"
 #include "yaml-cpp/yaml.h"
-
+#include <filesystem>
 namespace Lithium
 {
 
@@ -27,8 +27,9 @@ namespace Lithium
 		}
 		else
 		{
-			
+			std::filesystem::path _path = path;
 			Ref<Texture>texture =  CreateRef<Texture>(path);
+			GenerateTextureMetadata(CreateRef<TextureData>(), _path.replace_extension(".metadata"));
 			_TextureCache.emplace(Ptr,texture);
 			_Cache.emplace(path, Ptr);
 			//*_id = Ptr;
@@ -62,7 +63,7 @@ namespace Lithium
 		return true;
 	}
 
-	void AssetMananger::GenerateTextureMetadata(const Ref<TextureData>& texturedata)
+	void AssetMananger::GenerateTextureMetadata(const Ref<TextureData>& texturedata,const std::filesystem::path& path)
 	{
 		YAML::Emitter emitter;
 		emitter << YAML::BeginMap;
@@ -73,7 +74,7 @@ namespace Lithium
 		emitter << YAML::Key << "Height" << YAML::Value << 0;
 
 		emitter << YAML::EndMap;
-		std::ofstream output("assets/test.metadata");
+		std::ofstream output(path.c_str());
 		output << emitter.c_str();
 	}
 
