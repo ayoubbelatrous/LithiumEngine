@@ -1,7 +1,6 @@
 #include "AssetBrowserPanel.h"
 #include "imgui.h"
 
-
 namespace Lithium
 {
 	extern const std::filesystem::path root = "assets";
@@ -10,6 +9,7 @@ namespace Lithium
 		_FolderIcon = CreateRef<Texture>("assets/Editor/icons/folder.png");
 		 _FileIcon = CreateRef<Texture>("assets/Editor/icons/file.png");
 		currentpath = root;
+		Refresh();
 	}
 
 	void AssetBrowserPanel::OnUpdate()
@@ -43,10 +43,11 @@ namespace Lithium
 			if (ImGui::Button("->"))
 			{
 				currentpath = currentpath.parent_path();
+				Refresh();
 			}
 		}
 		
-		for (auto& entry: std::filesystem::directory_iterator(currentpath))
+		for (auto entry: _Cache)
 		{
 		
 			const auto& path = entry.path();
@@ -57,12 +58,16 @@ namespace Lithium
 			ImGui::PushID(relativePath.filename().string().c_str());
 		
 			ImTextureID icontexid = entry.is_directory() ? (ImTextureID)_FolderIcon->GetID() : (ImTextureID)_FileIcon->GetID();
-		
+			
 			ImGui::ImageButton(icontexid, { 100,100 }, { 0,1 }, { 1,0 });
+
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
-					if (entry.is_directory())
-						currentpath /= path.filename();
+				if (entry.is_directory())
+				{
+					currentpath /= path.filename();
+					Refresh();
+				}
 					if (path.extension() == ".png")
 					{
 						OpenSpriteEditorEvent ev = OpenSpriteEditorEvent(path.string());
@@ -88,6 +93,19 @@ namespace Lithium
 		ImGui::Columns(1);
 
 		ImGui::End();
+	}
+
+	void AssetBrowserPanel::Refresh()
+	{
+		
+		_Cache.clear();
+		for (auto& entry : std::filesystem::directory_iterator(currentpath))
+		{
+			if (entry.path().extension() != ".metadata")
+			{
+				_Cache.push_back(entry);
+			}
+		}
 	}
 
 }

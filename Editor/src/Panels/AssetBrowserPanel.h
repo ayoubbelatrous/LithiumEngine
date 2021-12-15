@@ -4,7 +4,8 @@
 #include <filesystem>
 #include <functional>
 #include "../EditorEvents.h"
-
+#include <vector>
+#include <iostream>
 namespace Lithium {
 	using EventCallback = std::function<void(Event&)>;
 	class AssetBrowserPanel
@@ -17,10 +18,12 @@ namespace Lithium {
 		{
 			callback = callbackfn;
 		}
+		void Refresh();
 	private:
 		Ref<Texture> _FolderIcon;
 		Ref<Texture> _FileIcon;
 		std::filesystem::path currentpath;
 		EventCallback callback;
+		std::vector<std::filesystem::directory_entry> _Cache;
 	};
 }
