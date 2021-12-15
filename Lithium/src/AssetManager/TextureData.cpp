@@ -36,6 +36,12 @@ namespace Lithium
 		return _Mode;
 	}
 
+	void TextureData::SliceByCount(int x, int y)
+	{
+		_CellsizeX = _Width / x;
+		_CellsizeY = _Width / y;
+	}
+
 }
 
 
