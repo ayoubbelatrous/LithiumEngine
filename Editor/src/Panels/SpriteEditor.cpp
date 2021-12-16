@@ -27,21 +27,21 @@ namespace Lithium
 			hasMetadata = false;
 			_TextureData = CreateRef<TextureData>();
 		}
-		
-		
-		
+
+
+
 	}
 
 	void SpriteEditor::OnUpdate()
 	{
 		if (!_Open)
 			return;
-	
+
 		ImGui::Begin("Sprite Editor", &_Open);
 
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.25,0.25,0.25,1 });
 		float width = ImGui::GetContentRegionAvailWidth();
-		
+
 		if (ImGui::Button("Slice"))
 		{
 			ImGui::OpenPopup("slice_options_popup");
@@ -57,14 +57,32 @@ namespace Lithium
 		ImGui::PopStyleColor();
 		if (ImGui::BeginPopup("slice_options_popup"))
 		{
-			
-			ImGui::InputFloat2("Cell Size",glm::value_ptr(cellsize));
+			/*if (ImGui::MenuItem("ByCount"))
+			{
+				ImGui::InputInt2("Cell Size", (int*)glm::value_ptr(cellsize));
+				if (ImGui::Button("Slice"))
+				{
+					Ref<TextureData> data = CreateRef<TextureData>(TextureMode::Single,
+						cellsize.x, cellsize.y,
+						_Texture->GetWidth(), _Texture->GetWidth());
+					data->SliceByCount(cellsize.x, cellsize.y);
+					_TextureData = data;
+					hasMetadata = true;
+					CORE_LOG(_Texture->GetPath());
+					std::filesystem::path path(_Texture->GetPath());
+					path.replace_extension(".metadata");
+					assetManager.GenerateTextureMetadata(data, path);
+				}
+			}*/
+
+			ImGui::InputFloat2("Cell Size", glm::value_ptr(cellsize));
+
 			if (ImGui::Button("Slice"))
 			{
-		
+
 				Ref<TextureData> data = CreateRef<TextureData>(TextureMode::Single,
 					cellsize.x, cellsize.y,
-					_Texture->GetWidth(),_Texture->GetWidth());
+					_Texture->GetWidth(), _Texture->GetWidth());
 				_TextureData = data;
 				hasMetadata = true;
 				CORE_LOG(_Texture->GetPath());
@@ -73,12 +91,15 @@ namespace Lithium
 				assetManager.GenerateTextureMetadata(data, path);
 			}
 
+
+
+
 			ImGui::EndPopup();
 		}
 		if (_Texture)
 		{
 			ImVec2 size = ImGui::GetContentRegionAvail();
-		
+
 			float aspect = 0;
 			float width = 0;
 			float height = 0;
@@ -91,7 +112,7 @@ namespace Lithium
 			else
 			{
 				aspect = size.y / size.x;
-				width = size.x ;
+				width = size.x;
 				height = size.y / aspect;
 			}
 			if (hasMetadata)
@@ -104,8 +125,8 @@ namespace Lithium
 				int theight = _TextureData->GetHeight();
 				int sizex = twidth / _TextureData->GetCellSizeX();
 				int sizey = theight / _TextureData->GetCellSizeY();
-				int cellsizeX = twidth / sizex;
-				int cellsizeY = theight / sizey;
+				int cellsizeX = width / sizex;
+				int cellsizeY = height / sizey;
 				ImGui::Image(reinterpret_cast<void*>(_Texture->GetID()), { width,height }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 				for (size_t i = 0; i < (int)width / cellsizeX; i++)
@@ -134,14 +155,13 @@ namespace Lithium
 		{
 			ImGui::Text("No Sprite Selected");
 		}
-/*
-		ImVec2 pos = ImGui::GetWindowPos();
-		ImVec2 size = ImGui::GetWindowSize();
-/ **/
-	/*	ImVec4 color(1,1,1,1);
-		ImU32 col = ImColor(color);
-		ImGui::GetWindowDrawList()->AddLine({ pos.x + 100,pos.y }, { pos.x + 100,pos.y  +size.y }, col);* /*/
-		ImGui::End();		
+		/*
+				ImVec2 pos = ImGui::GetWindowPos();
+				ImVec2 size = ImGui::GetWindowSize();
+		/ **/
+		/*	ImVec4 color(1,1,1,1);
+			ImU32 col = ImColor(color);
+			ImGui::GetWindowDrawList()->AddLine({ pos.x + 100,pos.y }, { pos.x + 100,pos.y  +size.y }, col);* /*/
+		ImGui::End();
 	}
-
 }

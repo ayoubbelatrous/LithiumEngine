@@ -11,7 +11,6 @@ namespace Lithium
 	extern AssetMananger assetManager = AssetMananger();
 	void EditorLayer::OnCreate()
 	{
-		
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
@@ -19,6 +18,7 @@ namespace Lithium
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
 		_InspectorPanel->OnCreate();
+		_SpriteEditor.OnCreate();
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 
@@ -48,8 +48,10 @@ namespace Lithium
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		Ref<TextureData> texturedata = entity3.GetComponent<SpriteRendererComponent>().textureData = CreateRef<TextureData>(TextureMode::Single, 128, 128, 1024, 1024);
 		entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.LoadAsset<Ref<Texture>>("assets/images/test.png");
-		assetManager.GenerateTextureMetadata(texturedata);
-		entity2.GetComponent<SpriteRendererComponent>().textureData = assetManager.LoadTextureMetadata("assets/test.metadata");
+		Ref<TextureData> testdata = assetManager.GetMetaData<Ref<TextureData>>("assets/images/test.png");
+		
+		//assetManager.GenerateTextureMetadata(texturedata);
+		//entity2.GetComponent<SpriteRendererComponent>().textureData = assetManager.LoadTextureMetadata("assets/test.metadata");
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
 	//	_MainScene->DuplicateEntity(entity3);
 		pos = glm::vec3(0);
@@ -116,7 +118,7 @@ namespace Lithium
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);
-		BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);		
+		//BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);		
 		_MainScene->onEditorUpdate();
 	
 		BatchRenderer::End();
@@ -408,7 +410,7 @@ namespace Lithium
 			}
 
 		}
-		/*
+		
 		window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
 		ImGui::SetNextWindowBgAlpha(0.10f);
 		float padding = 10;
@@ -428,7 +430,7 @@ namespace Lithium
 		ImGui::SameLine();
 		ImGui::PopStyleVar(2);
 		ImGui::End();
-		*/
+		
 		ImGui::End();
 	
 		ImGui::PopStyleVar();
@@ -454,6 +456,6 @@ namespace Lithium
 	void EditorLayer::SceneEvent(Event& e)
 	{
 		CreateEntityEvent& ev = static_cast<CreateEntityEvent&>(e);
-		CORE_LOG(e.GetName());
+		
 	}
 }
