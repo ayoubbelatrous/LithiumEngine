@@ -82,7 +82,7 @@ namespace Lithium
 
 				Ref<TextureData> data = CreateRef<TextureData>(TextureMode::Multiple,
 					cellsize.x, cellsize.y,
-					_Texture->GetWidth(), _Texture->GetWidth());
+					_Texture->GetWidth(), _Texture->GetHeight());
 				_TextureData = data;
 				hasMetadata = true;
 				CORE_LOG(_Texture->GetPath());
@@ -90,10 +90,6 @@ namespace Lithium
 				path.replace_extension(".metadata");
 				assetManager.GenerateTextureMetadata(data, path);
 			}
-
-
-
-
 			ImGui::EndPopup();
 		}
 		if (_Texture)

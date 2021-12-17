@@ -18,17 +18,19 @@ namespace Lithium
 	glm::vec2* TextureData::CalculateUVs(int indexY /*= 0*/, int indexX /*= 0*/)
 	{
 
-		glm::vec2 cellsize = glm::vec2(128, 256);
-		glm::vec2 index = glm::vec2(5, 0);
+		glm::vec2 cellsize = glm::vec2(_CellsizeX, _CellsizeY);
+		glm::vec2 index = glm::vec2(indexX, indexY);
 
-		glm::vec2 textureCoords[] = {
-			{ (index.x * cellsize.x) / _Width, (index.y * cellsize.y) / _Width},
-			{ ((index.x + 1) * cellsize.x) / _Width, (index.y * cellsize.y) / _Width},
-			{ ((index.x + 1) * cellsize.x) / _Width, ((index.y + 1) * cellsize.y) / _Width},
-			{ ((index.x + 1) * cellsize.x) / _Width, ((index.y + 1) * cellsize.y) / _Width},
+		coords = new glm::vec2[]{
+			{ (index.x * cellsize.x) / _Width, (index.y * cellsize.y) / _Height},
+			{ ((index.x + 1) * cellsize.x) / _Width, (index.y * cellsize.y) / _Height},
+			{ ((index.x + 1) * cellsize.x) / _Width, ((index.y + 1) * cellsize.y) / _Height},
+			{ (index.x * cellsize.x) / _Width, ((index.y + 1) * cellsize.y) / _Height},
 		};
 
-		return textureCoords;
+		
+	
+		return coords;
 	}
 
 	TextureMode TextureData::GetMode()

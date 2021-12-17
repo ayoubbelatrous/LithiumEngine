@@ -45,7 +45,9 @@ namespace Lithium
 				}
 				if (sc.textureData->GetMode() == TextureMode::Multiple)
 				{
-					BatchRenderer::DrawQuadSubTexture(tc.GetMatrix(), sc.Color,sc.textureData->CalculateUVs(1,1), sc.tex, (int)entity);
+				
+					BatchRenderer::DrawQuadSubTexture(tc.GetMatrix(), sc.Color, sc.textureData->CalculateUVs(sc.texIndex.x,sc.texIndex.y), sc.tex, (int)entity);
+
 				}
 
 			}

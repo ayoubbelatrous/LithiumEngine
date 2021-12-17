@@ -180,6 +180,7 @@ namespace Lithium
 				}
 				ImGui::EndDragDropTarget();
 			}
+			ImGui::InputFloat2("Tex Index", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().texIndex));
 		  }
 
 		if (ImGui::Button("Add Component"))

@@ -173,7 +173,7 @@ namespace Lithium
 		_Data._IndexCount += 6;
 	}
 
-	void BatchRenderer::DrawQuadSubTexture(const glm::mat4& transform, const glm::vec4 color, const glm::vec2* coords, const Ref<Texture>& texture, int entityID)
+	void BatchRenderer::DrawQuadSubTexture(const glm::mat4& transform, const glm::vec4 color, const glm::vec2 coords[], const Ref<Texture>& texture, int entityID)
 	{
 		constexpr int VertexCount = 4;
 
