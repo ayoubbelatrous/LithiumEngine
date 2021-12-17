@@ -37,6 +37,25 @@ namespace Lithium
 		int height = 0;
 		EVENT_TYPE(WindowResize);
 	};
+	class WindowFileDropEvent : public Event
+	{
+	public:
+
+		WindowFileDropEvent() = default;
+		WindowFileDropEvent(int count, const char** path) : Pathcount(count), paths(path)
+		{}
+		const char* GetName() const override {
+
+			return "WindowFileDropEvent";
+		}
+		const char** paths;
+		int Pathcount;
+		const char** getPaths()
+		{
+			return paths;
+		}
+		EVENT_TYPE(WindowFileDrop);
+	};
 
 
 	class KeyEvent : public Event

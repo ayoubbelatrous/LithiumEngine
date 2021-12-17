@@ -70,7 +70,13 @@ namespace Lithium
 				MouseWheelEvent ev = MouseWheelEvent((float)xoffset,(float)yoffset);
 				wdata.callback(ev);
 		});
-
+		glfwSetDropCallback(window, [](GLFWwindow* win, int count, const char** paths)
+		{
+				CORE_LOG(paths[0]);
+				WindowData& wdata = *(WindowData*)glfwGetWindowUserPointer(win);
+				WindowFileDropEvent ev = WindowFileDropEvent(count, paths);
+				wdata.callback(ev);
+		});
 	}
 
 	void Window::OnUpdate()
