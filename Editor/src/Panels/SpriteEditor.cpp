@@ -80,7 +80,7 @@ namespace Lithium
 			if (ImGui::Button("Slice"))
 			{
 
-				Ref<TextureData> data = CreateRef<TextureData>(TextureMode::Single,
+				Ref<TextureData> data = CreateRef<TextureData>(TextureMode::Multiple,
 					cellsize.x, cellsize.y,
 					_Texture->GetWidth(), _Texture->GetWidth());
 				_TextureData = data;

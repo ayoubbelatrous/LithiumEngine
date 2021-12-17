@@ -8,7 +8,7 @@
 #include "Core/Base.h"
 #include <filesystem>
 #include "AssetManager/AssetManager.h"
-
+#include <iostream>
 
 namespace Lithium
 {
@@ -171,6 +171,12 @@ namespace Lithium
 					const wchar_t* path = (const wchar_t*)payload->Data;
 					std::filesystem::path texturepath = root/path;
 					_Selection.GetComponent<SpriteRendererComponent>().tex = assetManager.LoadAsset<Ref<Texture>>(texturepath.string());
+					std::filesystem::path _path = _Selection.GetComponent<SpriteRendererComponent>().tex->GetPath();
+					_Selection.GetComponent<SpriteRendererComponent>().textureData = assetManager.GetMetaData<Ref<TextureData>>(_path.string());
+					TextureMode mode = _Selection.GetComponent<SpriteRendererComponent>().textureData->GetMode();
+					Ref<TextureData> data = assetManager.GetMetaData<Ref<TextureData>>(_path.string());
+					CORE_LOG((int)data->GetMode());
+					//CORE_LOG(_path);
 				}
 				ImGui::EndDragDropTarget();
 			}

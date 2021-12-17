@@ -46,10 +46,7 @@ namespace Lithium
 		entity2.AddComponent<TransformComponent>();
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		Ref<TextureData> texturedata = entity3.GetComponent<SpriteRendererComponent>().textureData = CreateRef<TextureData>(TextureMode::Single, 128, 128, 1024, 1024);
-		entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.LoadAsset<Ref<Texture>>("assets/images/test.png");
-		Ref<TextureData> testdata = assetManager.GetMetaData<Ref<TextureData>>("assets/images/test.png");
-		
+
 		//assetManager.GenerateTextureMetadata(texturedata);
 		//entity2.GetComponent<SpriteRendererComponent>().textureData = assetManager.LoadTextureMetadata("assets/test.metadata");
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);

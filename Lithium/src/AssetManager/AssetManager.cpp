@@ -33,6 +33,7 @@ namespace Lithium
 			{
 				Ref<TextureData> tdata = LoadTextureMetadata(_path);
 				_TextureDataCache.emplace(Ptr, tdata);
+				CORE_LOG("mode " << (int)tdata->GetMode());
 			}
 			else
 			{
@@ -103,12 +104,13 @@ namespace Lithium
 			CORE_LOG("failed to load metadata");
 			return nullptr;
 		}
-		TextureMode mode = (TextureMode)data["Mode"].as<int>();
+		int mode = data["Mode"].as<int>();
 		int cellsizeX = data["CellSizeX"].as<int>();
 		int cellsizeY = data["CellSizeY"].as<int>();
 		int width = data["Width"].as<int>();
 		int height = data["Height"].as<int>();
-		Ref<TextureData> texturedata = CreateRef<TextureData>(mode, cellsizeX, cellsizeY, width, height);
+		Ref<TextureData> texturedata = CreateRef<TextureData>(TextureMode(mode), cellsizeX, cellsizeY, width, height);
+		//CORE_LOG(mode);
 		return texturedata;
 
 	}
@@ -122,11 +124,10 @@ namespace Lithium
 	Ref<TextureData> AssetMananger::GetMetaData<Ref<TextureData>>(const std::string& path)
 	{
 		std::filesystem::path _path = path;
-		_path.replace_extension(".metadata");
+		
 		uint32_t id = _Cache[_path.string()];
 		//*_id = id;
 		Ref<TextureData> asset = _TextureDataCache[id];
-
 		return asset;
 	}
 
