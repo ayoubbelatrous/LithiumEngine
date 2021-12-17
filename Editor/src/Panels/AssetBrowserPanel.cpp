@@ -68,11 +68,11 @@ namespace Lithium
 					currentpath /= path.filename();
 					Refresh();
 				}
-					if (path.extension() == ".png"|| path.extension() == ".jpg")
-					{
-						OpenSpriteEditorEvent ev = OpenSpriteEditorEvent(path.string());
-						callback(ev);
-					}
+				if (path.extension() == ".png"|| path.extension() == ".jpg")
+				{
+					OpenSpriteEditorEvent ev = OpenSpriteEditorEvent(path.string());
+					callback(ev);
+				}
 			}
 
 			if (ImGui::BeginDragDropSource())

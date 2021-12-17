@@ -178,7 +178,12 @@ namespace Lithium
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyEvent>(BIND_EVENT(EditorLayer::onKeyEvent));
 		dispatcher.Dispatch<MouseWheelEvent>(BIND_EVENT(EditorLayer::onMouseWheelEvent));
-
+		if (e.GetEventType() == EventType::WindowFileDrop)
+		{
+			WindowFileDropEvent& dropevent = static_cast<WindowFileDropEvent&>(e);
+			std::filesystem::copy(dropevent.getPaths()[0],_AssetBrowerPanel->GetCurrentPath());
+			_AssetBrowerPanel->Refresh();
+		}
 		
 	}
 
@@ -274,6 +279,7 @@ namespace Lithium
 			_SpriteEditor.Open();
 			_SpriteEditor.SetTexture(texture);
 		}
+		
 	}
 
 	void EditorLayer::RenderImgui()

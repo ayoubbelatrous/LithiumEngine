@@ -19,6 +19,10 @@ namespace Lithium {
 			callback = callbackfn;
 		}
 		void Refresh();
+		std::filesystem::path& GetCurrentPath()
+		{
+			return currentpath;
+		}
 	private:
 		Ref<Texture> _FolderIcon;
 		Ref<Texture> _FileIcon;
