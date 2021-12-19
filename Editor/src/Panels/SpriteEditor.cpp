@@ -47,7 +47,19 @@ namespace Lithium
 			ImGui::OpenPopup("slice_options_popup");
 		}
 		ImGui::SameLine();
-		ImGui::Button("Reset");
+		if (ImGui::Button("Reset"))
+		{
+			Ref<TextureData> data = CreateRef<TextureData>(TextureMode::Single,
+				cellsize.x, cellsize.y,
+				_Texture->GetWidth(), _Texture->GetHeight());
+			_TextureData = data;
+			hasMetadata = false;
+			std::filesystem::path path(_Texture->GetPath());
+			path.replace_extension(".metadata");
+			assetManager.GenerateTextureMetadata(data, path);
+			MetaDataChangeEventEditorEvent ev(_Texture->GetPath());
+			callback(ev);
+		}
 		ImGui::SameLine();
 		ImGui::SetCursorPosX(width - 10);
 		if (ImGui::Button("X", { 25,25 }))
@@ -79,7 +91,11 @@ namespace Lithium
 
 			if (ImGui::Button("Slice"))
 			{
+			
+				if (cellsize.x != 0 || cellsize.y != 0)
+				{
 
+				
 				Ref<TextureData> data = CreateRef<TextureData>(TextureMode::Multiple,
 					cellsize.x, cellsize.y,
 					_Texture->GetWidth(), _Texture->GetHeight());
@@ -90,6 +106,7 @@ namespace Lithium
 				assetManager.GenerateTextureMetadata(data, path);
 				MetaDataChangeEventEditorEvent ev(_Texture->GetPath());
 				callback(ev);
+				}
 
 			}
 			ImGui::EndPopup();
@@ -115,16 +132,19 @@ namespace Lithium
 			}
 			if (hasMetadata)
 			{
+			
 				ImVec2 pos = ImGui::GetCursorPos();
 				ImVec2 winpos = ImGui::GetWindowPos();
 				ImVec4 color = { 0,1,0,1 };
 				ImU32 col = ImColor(color);
 				int twidth = _TextureData->GetWidth();
 				int theight = _TextureData->GetHeight();
+
 				int sizex = twidth / _TextureData->GetCellSizeX();
 				int sizey = theight / _TextureData->GetCellSizeY();
 				int cellsizeX = width / sizex;
 				int cellsizeY = height / sizey;
+				
 				ImGui::Image(reinterpret_cast<void*>(_Texture->GetID()), { width,height }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 				for (size_t i = 0; i < (int)width / cellsizeX; i++)

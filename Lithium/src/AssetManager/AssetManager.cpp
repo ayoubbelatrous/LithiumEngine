@@ -130,12 +130,7 @@ namespace Lithium
 		uint32_t id = _Cache[_path.string()];
 		//*_id = id;
 		_TextureDataCache[id] = LoadTextureMetadata(_metapath);
-		
-		//_TextureCache[id] = CreateRef<Texture>(path);
-		for (std::pair<uint32_t,Ref<TextureData>> element: _TextureDataCache)
-		{
-			CORE_LOG(element.first << " " << element.second.get());
-		}
+	
 	}
 
 	template<>

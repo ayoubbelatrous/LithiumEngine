@@ -33,7 +33,7 @@ namespace Lithium
 		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
 		for (auto entity : view)
 		{
-			auto [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
+			auto& [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
 			Entity ent = { entity,this };
 			//NameComponent& name = ent.GetComponent<NameComponent>();
 
@@ -45,16 +45,12 @@ namespace Lithium
 				}
 				if (sc.textureData->GetMode() == TextureMode::Multiple)
 				{
-
 					BatchRenderer::DrawQuadSubTexture(tc.GetMatrix(), sc.Color, sc.textureData->CalculateUVs(sc.texIndex.x, sc.texIndex.y), sc.tex, (int)entity);
-
 				}
-
 			}
 			else
 			{
 				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color, (int)entity);
-
 			}
 
 		}

@@ -283,7 +283,7 @@ namespace Lithium
 		if (e.GetEventType() == EventType::MetaDataChanged)
 		{
 			MetaDataChangeEventEditorEvent& SpriteEditorEvent = static_cast<MetaDataChangeEventEditorEvent&>(e);
-			CORE_LOG("metadata chnaged!");
+		
 			assetManager.ChangeMetaData(SpriteEditorEvent.GetPath());
 			auto view = _MainScene->GetRegistry().view<SpriteRendererComponent>();
 			for (auto entity : view)
