@@ -8,9 +8,15 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <gtx/quaternion.hpp>
 #include "AssetManager/TextureData.h"
+#include "OrthographicCamera.h"
 
 namespace Lithium
 {
+	enum class CameraMode
+	{
+		None, Orthographic, Perspective
+
+	};
 	struct NameComponent
 	{
 		std::string Name = "New Entity";
@@ -29,7 +35,7 @@ namespace Lithium
 
 		glm::vec3 Position;
 		glm::vec3 Rotation;
-		glm::vec3 Scale = glm::vec3(1);	
+		glm::vec3 Scale = glm::vec3(1);
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent& other) = default;
@@ -38,7 +44,6 @@ namespace Lithium
 		{
 			glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
 			return glm::translate(glm::mat4(1), Position) * rotation * glm::scale(glm::mat4(1), Scale);
-			
 		}
 	};
 
@@ -53,7 +58,7 @@ namespace Lithium
 		{
 			Color = glm::vec4(1);
 			tex = CreateRef<Texture>();
-			textureData = CreateRef<TextureData>(TextureMode::Single,0,0,0,0);
+			textureData = CreateRef<TextureData>(TextureMode::Single, 0, 0, 0, 0);
 		}
 		SpriteRendererComponent(const glm::vec4 color)
 			:Color(color) {
@@ -62,7 +67,7 @@ namespace Lithium
 
 		}
 
-		SpriteRendererComponent(const glm::vec4 color,Ref<TextureData> data)
+		SpriteRendererComponent(const glm::vec4 color, Ref<TextureData> data)
 			:Color(color) {
 			tex = CreateRef<Texture>();
 			textureData = data;
@@ -88,5 +93,20 @@ namespace Lithium
 		}
 
 	};
+
+
+	struct CameraComponent
+	{
+		CameraComponent() = default;
+		CameraMode mode;
+		OrthographicCamera camera;
+		const OrthographicCamera& GetCamera()
+		{
+			return camera;
+		}
+		CameraComponent(const CameraComponent& other) = default;
+
+	};
+
 }
 
