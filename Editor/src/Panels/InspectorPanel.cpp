@@ -174,8 +174,8 @@ namespace Lithium
 					std::filesystem::path _path = _Selection.GetComponent<SpriteRendererComponent>().tex->GetPath();
 					_Selection.GetComponent<SpriteRendererComponent>().textureData = assetManager.GetMetaData<Ref<TextureData>>(_path.string());
 					TextureMode mode = _Selection.GetComponent<SpriteRendererComponent>().textureData->GetMode();
-					Ref<TextureData> data = assetManager.GetMetaData<Ref<TextureData>>(_path.string());
-					CORE_LOG((int)data->GetMode());
+					Ref<TextureData> data = _Selection.GetComponent<SpriteRendererComponent>().textureData;
+
 					//CORE_LOG(_path);
 				}
 				ImGui::EndDragDropTarget();

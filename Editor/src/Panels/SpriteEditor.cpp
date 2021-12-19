@@ -85,10 +85,12 @@ namespace Lithium
 					_Texture->GetWidth(), _Texture->GetHeight());
 				_TextureData = data;
 				hasMetadata = true;
-				CORE_LOG(_Texture->GetPath());
 				std::filesystem::path path(_Texture->GetPath());
 				path.replace_extension(".metadata");
 				assetManager.GenerateTextureMetadata(data, path);
+				MetaDataChangeEventEditorEvent ev(_Texture->GetPath());
+				callback(ev);
+
 			}
 			ImGui::EndPopup();
 		}

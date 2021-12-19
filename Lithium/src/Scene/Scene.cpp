@@ -15,7 +15,7 @@ namespace Lithium
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		Entity ent(_Registry.create(),this);
+		Entity ent(_Registry.create(), this);
 		ent.AddComponent<NameComponent>(name);
 		ent.AddComponent<ChildManagerComponent>();
 		CreateEntityEvent e = CreateEntityEvent();
@@ -34,9 +34,9 @@ namespace Lithium
 		for (auto entity : view)
 		{
 			auto [tc, sc] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-			Entity ent = {entity,this};
+			Entity ent = { entity,this };
 			//NameComponent& name = ent.GetComponent<NameComponent>();
-		
+
 			if (sc.tex->loaded)
 			{
 				if (sc.textureData->GetMode() == TextureMode::Single)
@@ -45,18 +45,18 @@ namespace Lithium
 				}
 				if (sc.textureData->GetMode() == TextureMode::Multiple)
 				{
-				
-					BatchRenderer::DrawQuadSubTexture(tc.GetMatrix(), sc.Color, sc.textureData->CalculateUVs(sc.texIndex.x,sc.texIndex.y), sc.tex, (int)entity);
+
+					BatchRenderer::DrawQuadSubTexture(tc.GetMatrix(), sc.Color, sc.textureData->CalculateUVs(sc.texIndex.x, sc.texIndex.y), sc.tex, (int)entity);
 
 				}
 
 			}
 			else
 			{
-				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color,(int)entity);
+				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color, (int)entity);
 
 			}
-			
+
 		}
 	}
 

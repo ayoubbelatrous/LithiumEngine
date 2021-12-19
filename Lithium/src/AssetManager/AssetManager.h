@@ -17,6 +17,7 @@ namespace Lithium
 		void GenerateTextureMetadata(const Ref<TextureData>& texturedata,const std::filesystem::path& path);
 		template<typename T>
 		T GetMetaData(const std::string& path);
+		void ChangeMetaData(const std::string& path);
 		Ref<TextureData> LoadTextureMetadata(const std::filesystem::path& path);
 	private:
 		std::unordered_map<uint32_t , Ref<Texture>> _TextureCache;

@@ -20,10 +20,10 @@ namespace Lithium
 		{
 			CORE_LOG("loaded Texture Asset " << path);
 			uint32_t id = _Cache[path];
-			//*_id = id;
-			Ref<Texture> asset = _TextureCache[id];
 
-			return asset;
+			
+
+			return _TextureCache[id];
 		}
 		else
 		{
@@ -44,9 +44,9 @@ namespace Lithium
 			Ref<Texture>texture = CreateRef<Texture>(path);
 			_TextureCache.emplace(Ptr, texture);
 			_Cache.emplace(path, Ptr);
-			//*_id = Ptr;
+			int id = Ptr;
 			Ptr++;
-			return texture;
+			return _TextureCache[id];
 		}
 
 	}
@@ -120,15 +120,32 @@ namespace Lithium
 		
 		static_assert(false);
 	}
+
+	void AssetMananger::ChangeMetaData(const std::string& path)
+	{
+		std::filesystem::path _path = path;
+		std::filesystem::path _metapath = path;
+
+		_metapath.replace_extension(".metadata");
+		uint32_t id = _Cache[_path.string()];
+		//*_id = id;
+		_TextureDataCache[id] = LoadTextureMetadata(_metapath);
+		
+		//_TextureCache[id] = CreateRef<Texture>(path);
+		for (std::pair<uint32_t,Ref<TextureData>> element: _TextureDataCache)
+		{
+			CORE_LOG(element.first << " " << element.second.get());
+		}
+	}
+
 	template<>
 	Ref<TextureData> AssetMananger::GetMetaData<Ref<TextureData>>(const std::string& path)
 	{
 		std::filesystem::path _path = path;
 		
 		uint32_t id = _Cache[_path.string()];
-		//*_id = id;
-		Ref<TextureData> asset = _TextureDataCache[id];
-		return asset;
+
+		return 	_TextureDataCache[id];
 	}
 
 	

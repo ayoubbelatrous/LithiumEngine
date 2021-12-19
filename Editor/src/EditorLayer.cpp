@@ -21,6 +21,7 @@ namespace Lithium
 		_SpriteEditor.OnCreate();
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
+		_SpriteEditor.SetEventCallback((BIND_EVENT(EditorLayer::onEditorEvent)));
 
 		LT_PROFILE_FUNCTION("init");
 
@@ -279,7 +280,22 @@ namespace Lithium
 			_SpriteEditor.Open();
 			_SpriteEditor.SetTexture(texture);
 		}
-		
+		if (e.GetEventType() == EventType::MetaDataChanged)
+		{
+			MetaDataChangeEventEditorEvent& SpriteEditorEvent = static_cast<MetaDataChangeEventEditorEvent&>(e);
+			CORE_LOG("metadata chnaged!");
+			assetManager.ChangeMetaData(SpriteEditorEvent.GetPath());
+			auto view = _MainScene->GetRegistry().view<SpriteRendererComponent>();
+			for (auto entity : view)
+			{
+				auto& sc = view.get<SpriteRendererComponent>(entity);
+				if (sc.tex->loaded)
+				{
+					sc.textureData = assetManager.GetMetaData<Ref<TextureData>>(sc.tex->GetPath());
+				}
+			}
+		}
+
 	}
 
 	void EditorLayer::RenderImgui()

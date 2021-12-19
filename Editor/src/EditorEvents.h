@@ -59,7 +59,7 @@ namespace Lithium
 		{
 			return _Path;
 		}
-		EVENT_TYPE(OpenSpriteEditor);
+		EVENT_TYPE(MetaDataChanged);
 
 	};
 }
