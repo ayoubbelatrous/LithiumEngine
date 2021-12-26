@@ -55,3 +55,12 @@ links
     "yaml-cpp",
 	"opengl32.lib"
 }
+
+
+	filter "configurations:Debug"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		runtime "Release"
+		optimize "on"

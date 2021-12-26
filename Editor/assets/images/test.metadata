@@ -1,5 +1,5 @@
 Mode: 2
-CellSizeX: 512
-CellSizeY: 512
-Width: 512
-Height: 512
+CellSizeX: 50
+CellSizeY: 50
+Width: 800
+Height: 400
