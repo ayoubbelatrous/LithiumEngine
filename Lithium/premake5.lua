@@ -39,6 +39,8 @@ includedirs
     "%{IncludeDir.entt}",
     "%{IncludeDir.imguizmo}",
     "%{IncludeDir.yaml}",
+    "%{IncludeDir.msdf}",
+    "%{IncludeDir.msdfatlasgen}",
     
 }
 
@@ -53,7 +55,8 @@ links
     "GLAD",
     "IMGUI",
     "yaml-cpp",
-	"opengl32.lib"
+	"opengl32.lib",
+    "msdf-atlas-gen",
 }
 
 

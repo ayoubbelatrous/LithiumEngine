@@ -19,6 +19,8 @@ endif
 # #############################################
 
 RESCOMP = windres
+TARGETDIR = bin/GLAD
+TARGET = $(TARGETDIR)/GLAD.lib
 DEFINES +=
 INCLUDES += -Iinclude
 FORCE_INCLUDE +=
@@ -35,27 +37,15 @@ define POSTBUILDCMDS
 endef
 
 ifeq ($(config),debug)
-TARGETDIR = bin/Debug-windows-x86_64/Glad
-TARGET = $(TARGETDIR)/Glad.lib
-OBJDIR = bin-int/Debug-windows-x86_64/Glad
+OBJDIR = bin-int/GLAD/Debug
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 
 else ifeq ($(config),release)
-TARGETDIR = bin/Release-windows-x86_64/Glad
-TARGET = $(TARGETDIR)/Glad.lib
-OBJDIR = bin-int/Release-windows-x86_64/Glad
+OBJDIR = bin-int/GLAD/Release
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
-
-else ifeq ($(config),dist)
-TARGETDIR = bin/Dist-windows-x86_64/Glad
-TARGET = $(TARGETDIR)/Glad.lib
-OBJDIR = bin-int/Dist-windows-x86_64/Glad
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
 
 endif
@@ -81,7 +71,7 @@ all: $(TARGET)
 
 $(TARGET): $(GENERATED) $(OBJECTS) $(LDDEPS) | $(TARGETDIR)
 	$(PRELINKCMDS)
-	@echo Linking Glad
+	@echo Linking GLAD
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -102,7 +92,7 @@ else
 endif
 
 clean:
-	@echo Cleaning Glad
+	@echo Cleaning GLAD
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(GENERATED)

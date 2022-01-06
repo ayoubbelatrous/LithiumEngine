@@ -3,10 +3,11 @@
 #include "ImGuizmo.h"
 #include "Input/Input.h"
 #include "Core/Math.h"
+#include "Font/Font.h"
 
 namespace Lithium
 {
-	
+
 	extern const std::filesystem::path root;
 	extern AssetMananger assetManager = AssetMananger();
 	void EditorLayer::OnCreate()
@@ -62,11 +63,13 @@ namespace Lithium
 		_SpriteEditor.SetTexture(tex);
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
 		BatchRenderer::Init();
+
+		
 	}
 
 	void EditorLayer::OnUpdate()
 	{
-		
+
 		LT_PROFILE_FUNCTION("UPDATE");
 #pragma region CalculateProjection
 
@@ -107,21 +110,21 @@ namespace Lithium
 
 		}
 
-#pragma endregion 
+#pragma endregion
 		//CORE_LOG(mouse.x<<mouse.y);
 
 		//CORE_LOG(ray.x << ray.y << ray.z);
 		framebuffer->Bind();
-		RendererCommand::ClearColor(glm::vec4(0.25, 0.25, 0.35, 0));
+		RendererCommand::ClearColor(glm::vec4(0.45, 0.45, 0.35, 0));
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);
-		//BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);		
+		//BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);
 		_MainScene->onEditorUpdate();
-	
+
 		BatchRenderer::End();
-		
-	
+        
+
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= _ViewportBounds[0].x;
 		my -= _ViewportBounds[0].y;
@@ -142,7 +145,7 @@ namespace Lithium
 		//raywor = glm::translate(glm::inverse(view), { rayeye.x,rayeye.y,rayeye.z});
 		raywor = glm::normalize(raywor);
 		//CORE_LOG(raywor.x << " " << raywor.y);*/
-	
+
 		_Selection = _shp->GetSelection();
 		if (  Input::IsMouseKeyPressed(0) && _ViewportHovered && !ImGuizmo::IsOver()/*&&*/)
 		{
@@ -163,9 +166,9 @@ namespace Lithium
 			}
 
 		}
-		
+
 		framebuffer->UnBind();
-		
+
 		_InspectorPanel->SetSelection(_Selection);
 		RenderImgui();
 	}
@@ -185,7 +188,7 @@ namespace Lithium
 			std::filesystem::copy(dropevent.getPaths()[0],_AssetBrowerPanel->GetCurrentPath());
 			_AssetBrowerPanel->Refresh();
 		}
-		
+
 	}
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
@@ -249,7 +252,7 @@ namespace Lithium
 					Entity e = _MainScene->CreateEntity("new Entity");
 					e.AddComponent<TransformComponent>();
 				}
-			
+
 			}
 		}
 
@@ -264,6 +267,10 @@ namespace Lithium
 
 			}
 		}
+	
+
+
+
 	}
 
 	void EditorLayer::onMouseWheelEvent(MouseWheelEvent& e)
@@ -283,7 +290,7 @@ namespace Lithium
 		if (e.GetEventType() == EventType::MetaDataChanged)
 		{
 			MetaDataChangeEventEditorEvent& SpriteEditorEvent = static_cast<MetaDataChangeEventEditorEvent&>(e);
-		
+
 			assetManager.ChangeMetaData(SpriteEditorEvent.GetPath());
 			auto view = _MainScene->GetRegistry().view<SpriteRendererComponent>();
 			for (auto entity : view)
@@ -369,7 +376,7 @@ namespace Lithium
 		{
 			Application::GetInstance().GetImguiLayer()->SetBlockEvent(false);
 		}
-		
+
 
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
@@ -379,14 +386,14 @@ namespace Lithium
 
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
 			{
-				
+
 				const wchar_t* path = (const wchar_t*)payload->Data;
 				std::filesystem::path texturepath = root / path;
 				if (hoveringEntity && hoveredEntity.HasComponent<SpriteRendererComponent>())
 				{
 					hoveredEntity.GetComponent<SpriteRendererComponent>().tex = assetManager.LoadAsset<Ref<Texture>>(texturepath.string());
 				}
-				
+
 			}
 			ImGui::EndDragDropTarget();
 		}
@@ -406,7 +413,7 @@ namespace Lithium
 			ImGuizmo::SetGizmoSizeClipSpace(0.2f);
 			ImGuizmo::SetOrthographic(true);
 			ImGuizmo::SetDrawlist();
-			
+
 			ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
 				(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
@@ -429,14 +436,14 @@ namespace Lithium
 			}
 
 		}
-		
+
 		window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
 		ImGui::SetNextWindowBgAlpha(0.10f);
 		float padding = 10;
 		ImVec2 pos = ImVec2(_ViewportBounds[0].x + padding, _ViewportBounds[0].y + padding);
 		ImGui::SetNextWindowPos(pos );
 		ImGui::SetNextWindowSize({ 95,35 });
-		
+
 		ImGui::Begin("win",(bool*)true,window_flags);
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
@@ -449,17 +456,17 @@ namespace Lithium
 		ImGui::SameLine();
 		ImGui::PopStyleVar(2);
 		ImGui::End();
-		
+
 		ImGui::End();
-	
+
 		ImGui::PopStyleVar();
 		ImGui::Begin("Stats");
 		//CORE_LOG(Renderer2D::GetStats().DrawCalls);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text(_EditorStatus.c_str());
-		
-		ImGui::End();			 
-		
+
+		ImGui::End();
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -475,6 +482,6 @@ namespace Lithium
 	void EditorLayer::SceneEvent(Event& e)
 	{
 		CreateEntityEvent& ev = static_cast<CreateEntityEvent&>(e);
-		
+
 	}
 }

@@ -86,5 +86,7 @@ namespace Lithium
 		int _GizmoMode = -1;
 		bool hoveringEntity = false;
 		Entity hoveredEntity;
+
+	
 	};
 }

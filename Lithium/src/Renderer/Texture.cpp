@@ -21,6 +21,7 @@ namespace Lithium
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _localBuffer);
 		//glBindTexture(GL_TEXTURE_2D, 0);
 		stbi_image_free(_localBuffer);
+		
 		loaded = true;
 	}
 

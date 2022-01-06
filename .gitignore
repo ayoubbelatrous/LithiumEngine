@@ -11,5 +11,8 @@ bin-int/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
-
-
+**.mk
+**.project
+**.workspace
+**/MakeFile
+compile_flags.txt
