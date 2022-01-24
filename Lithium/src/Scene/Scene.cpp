@@ -53,6 +53,8 @@ namespace Lithium
 				BatchRenderer::DrawQuad(tc.GetMatrix(), sc.Color, (int)entity);
 			}
 
+			
+
 		}
 	}
 

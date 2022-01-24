@@ -5,6 +5,8 @@
 #include "Core/Math.h"
 #include "Font/Font.h"
 
+
+
 namespace Lithium
 {
 
@@ -23,7 +25,7 @@ namespace Lithium
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 		_SpriteEditor.SetEventCallback((BIND_EVENT(EditorLayer::onEditorEvent)));
-
+		//Font::GenFonts("assets/Editor/Fonts/OpenSans-Regular.ttf");
 		LT_PROFILE_FUNCTION("init");
 
 		_MainScene = CreateRef<Scene>();
@@ -62,9 +64,14 @@ namespace Lithium
 		_AssetBrowerPanel->OnCreate();
 		_SpriteEditor.SetTexture(tex);
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
-		BatchRenderer::Init();
-
+		//BatchRenderer::Init();
+		//FontRenderer::Init();
+		shader = CreateRef<Shader>("assets/shaders/test.shader");
+		atlas = CreateRef<Texture>("assets/atlas.png");
+		std::vector<glm::vec3> verts = MeshLoader::LoadModel("assets/model/test.obj");
 		
+		mesh.setVertices(verts);
+		mesh.Init();
 	}
 
 	void EditorLayer::OnUpdate()
@@ -115,15 +122,21 @@ namespace Lithium
 
 		//CORE_LOG(ray.x << ray.y << ray.z);
 		framebuffer->Bind();
-		RendererCommand::ClearColor(glm::vec4(0.45, 0.45, 0.35, 0));
+		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
-		BatchRenderer::Begin(view, proj);
+		
+		//BatchRenderer::Begin(view, proj);
 		//BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);
-		_MainScene->onEditorUpdate();
 
-		BatchRenderer::End();
-        
+		//_MainScene->onEditorUpdate();
+		
+		//BatchRenderer::End();
+
+		shader->Bind();
+		shader->SetUniformMat4f("projection", model* view * proj );
+		mesh.Draw();
+		
 
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= _ViewportBounds[0].x;
@@ -207,7 +220,7 @@ namespace Lithium
 				_EditorStatus = "";
 			}
 		}
-		/*
+		
 		if (e.keycode == KEYCODE_R)
 		{
 			if (control)
@@ -226,7 +239,7 @@ namespace Lithium
 				_EditorStatus = "";
 			}
 		}
-		*/
+		
 
 		if (e.keycode == KEYCODE_E)
 		{
@@ -247,7 +260,7 @@ namespace Lithium
 		{
 			if (control)
 			{
-				if (e.action == 1)
+				
 				{
 					Entity e = _MainScene->CreateEntity("new Entity");
 					e.AddComponent<TransformComponent>();
@@ -464,7 +477,6 @@ namespace Lithium
 		//CORE_LOG(Renderer2D::GetStats().DrawCalls);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text(_EditorStatus.c_str());
-
 		ImGui::End();
 
 		ImGui::Render();

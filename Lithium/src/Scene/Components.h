@@ -9,6 +9,8 @@
 #include <gtx/quaternion.hpp>
 #include "AssetManager/TextureData.h"
 #include "OrthographicCamera.h"
+#include "Mesh/Mesh.h"
+
 
 namespace Lithium
 {
@@ -105,6 +107,34 @@ namespace Lithium
 			return camera;
 		}
 		CameraComponent(const CameraComponent& other) = default;
+
+	};
+
+	struct MeshComponent
+	{
+		MeshComponent() = default;
+		Ref<Mesh> _Mesh;
+		std::string path;
+		MeshComponent(const MeshComponent& other) = default;
+		Ref<Mesh> GetMesh()
+		{
+			return _Mesh;
+		}
+		void SetMesh(Ref<Mesh> mesh)
+		{
+			_Mesh = mesh;
+		}
+	};
+
+	struct MeshRendererComponent
+	{
+		MeshRendererComponent() = default;
+		MeshRendererComponent(const MeshRendererComponent& other) = default;
+		
+	};
+
+	struct MaterialComponent
+	{
 
 	};
 

@@ -18,4 +18,14 @@ namespace Lithium {
 		static void DrawQuadSubTexture(const glm::mat4& transform, const glm::vec4 color,const glm::vec2 coords[], const Ref<Texture>& texture, int entityID);
 		static void DrawData();
 	};
+
+
+	class FontRenderer
+	{
+	public:
+		static void Init();
+		static void Begin(const glm::mat4& transform, const glm::mat4& projection);
+		static void End();
+		static void DrawData();
+	};
 }

@@ -14,12 +14,12 @@ Entities:
   - Entity: 1
     Name: dod
     Transform:
-      Position: [-2.11494255, -0.747126281, 0]
+      Position: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
-      Texture Path: assets\images\check.png
+      Texture Path: ""
     Child Manager:
       children: ids go here
   - Entity: 0

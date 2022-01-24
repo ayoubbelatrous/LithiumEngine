@@ -41,6 +41,7 @@ includedirs
     "%{IncludeDir.yaml}",
     "%{IncludeDir.msdf}",
     "%{IncludeDir.msdfatlasgen}",
+    "%{IncludeDir.assimp}",
     
 }
 
@@ -57,6 +58,7 @@ links
     "yaml-cpp",
 	"opengl32.lib",
     "msdf-atlas-gen",
+      "assimp",
 }
 
 

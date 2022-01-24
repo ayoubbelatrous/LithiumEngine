@@ -1,7 +1,10 @@
-#include "lipch.h"
+﻿#include "lipch.h"
 #include "Window.h"
 #include "glad/glad.h"
 #include "Input/Input.h"
+
+
+
 
 namespace Lithium
 {
@@ -19,9 +22,9 @@ namespace Lithium
 	{
 		glfwInit();
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 		window = glfwCreateWindow(1280, 780, "Lithium", NULL, NULL);
 		glfwMakeContextCurrent(window);
@@ -29,10 +32,13 @@ namespace Lithium
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			std::cout << "Failed to initialize OpenGL context" << std::endl;
 		}
-
+		
+		GLuint id = 0;
+		const char* message​ = "hello";
 		glViewport(0, 0, 1280, 780);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
 
 		int number;

@@ -3,5 +3,5 @@
 
 
 namespace Lithium::Font {
-	bool GenFonts();
+	void GenFonts(const char* fontFilename);
 }

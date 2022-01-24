@@ -183,6 +183,38 @@ namespace Lithium
 			ImGui::InputFloat2("Tex Index", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().texIndex));
 		  }
 
+		if (_Selection.HasComponent<MeshComponent>())
+		{
+			ImGui::Selectable("Mesh");
+
+
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Remove Component"))
+				{
+					
+				}
+				if (ImGui::MenuItem("Copy Component"))
+				{
+				}
+
+				ImGui::EndPopup();
+			}
+
+			ImGui::Text(_Selection.GetComponent<MeshComponent>().path.c_str());
+			if (ImGui::BeginDragDropTarget())
+			{
+
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					
+				}
+				ImGui::EndDragDropTarget();
+			}
+		
+		}
+
 		if (ImGui::Button("Add Component"))
 		{
 			ImGui::OpenPopup("add_componenet_popup");
@@ -209,6 +241,36 @@ namespace Lithium
 				{
 
 					_Selection.AddComponent<TransformComponent>();
+				}
+			}
+
+			if (!_Selection.HasComponent<MeshComponent>())
+			{
+
+				if (ImGui::MenuItem("Mesh"))
+				{
+
+					_Selection.AddComponent<MeshComponent>();
+				}
+			}
+
+			if (!_Selection.HasComponent<MeshRendererComponent>())
+			{
+
+				if (ImGui::MenuItem("Mesh Renderer"))
+				{
+
+					_Selection.AddComponent<MeshRendererComponent>();
+				}
+			}
+
+			if (!_Selection.HasComponent<MaterialComponent>())
+			{
+
+				if (ImGui::MenuItem("Material"))
+				{
+
+					_Selection.AddComponent<MaterialComponent>();
 				}
 			}
 			ImGui::EndPopup();

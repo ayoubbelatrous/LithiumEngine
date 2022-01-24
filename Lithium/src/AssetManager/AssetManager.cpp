@@ -9,7 +9,6 @@ namespace Lithium
 	template<typename T>
 	T AssetManager(const std::string& path)
 	{
-		static_assert(false);
 	}
 
 	template<>
@@ -53,7 +52,7 @@ namespace Lithium
 	template<typename T>
 	T AssetMananger::GetByHandle(uint32_t id)
 	{
-		static_assert(false);
+		
 	}
 	template<>
 	Ref<Texture> AssetMananger::GetByHandle<Ref<Texture>>(uint32_t id)
@@ -118,7 +117,7 @@ namespace Lithium
 	T AssetMananger::GetMetaData(const std::string& path)
 	{
 		
-		static_assert(false);
+		
 	}
 
 	void AssetMananger::ChangeMetaData(const std::string& path)

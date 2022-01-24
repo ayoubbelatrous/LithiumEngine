@@ -17,3 +17,7 @@ bin-int/
 **.workspace
 **/MakeFile
 compile_flags.txt
+
+MakeFile
+Makefile
+makefile

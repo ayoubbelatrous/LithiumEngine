@@ -27,6 +27,7 @@
 #include "Scene/Serializer.h"
 #include "AssetManager/AssetManager.h"
 #include <thread>
+#include "Mesh/Mesh.h"
 namespace Lithium
 {
 	struct Data
@@ -74,6 +75,7 @@ namespace Lithium
 		SpriteEditor _SpriteEditor;
 		//Serializer sz;
 		Ref<Texture> tex;
+		Ref<Texture> atlas;
 		//Ref<Texture> tex2;
 		//Ref<Texture> tex3;
 		int mouseX = 0;
@@ -86,7 +88,7 @@ namespace Lithium
 		int _GizmoMode = -1;
 		bool hoveringEntity = false;
 		Entity hoveredEntity;
-
-	
+		Mesh mesh;
+		Ref<Shader> shader;
 	};
 }

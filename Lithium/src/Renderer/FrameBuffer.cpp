@@ -120,7 +120,12 @@ namespace Lithium
 	void FrameBuffer::ClearAttachment(int i,int value)
 	{
 
-		glClearTexImage(_EntityTexture, 0, GL_RED_INTEGER, GL_INT, &value);
+		//*glClearTexImage(_EntityTexture, 0, GL_RED_INTEGER, GL_INT, &value);
+		
+		glClearBufferiv(_EntityTexture, 0, &value);
+		
+		
+
 	}
 
 }

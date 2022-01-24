@@ -74,6 +74,7 @@ namespace Lithium
 			glGetShaderInfoLog(id, length, &length, message);
 			std::cout << "shader error" << std::endl;
 			std::cout << message << std::endl;
+
 			glDeleteShader(id);
 			return 0;
 		}
