@@ -5,7 +5,6 @@
 
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/Shader.h"
-#include "Mesh/Mesh.h"
 
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/VertexArray.h"

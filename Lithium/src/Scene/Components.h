@@ -110,33 +110,6 @@ namespace Lithium
 
 	};
 
-	struct MeshComponent
-	{
-		MeshComponent() = default;
-		Ref<Mesh> _Mesh;
-		std::string path;
-		MeshComponent(const MeshComponent& other) = default;
-		Ref<Mesh> GetMesh()
-		{
-			return _Mesh;
-		}
-		void SetMesh(Ref<Mesh> mesh)
-		{
-			_Mesh = mesh;
-		}
-	};
-
-	struct MeshRendererComponent
-	{
-		MeshRendererComponent() = default;
-		MeshRendererComponent(const MeshRendererComponent& other) = default;
-		
-	};
-
-	struct MaterialComponent
-	{
-
-	};
 
 }
 

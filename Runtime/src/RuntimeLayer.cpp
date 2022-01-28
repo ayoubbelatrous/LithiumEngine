@@ -52,10 +52,6 @@ namespace Lithium {
 		view = glm::mat4(1.0f);
 		view = glm::translate(view,pos);
 
-		std::vector<glm::vec3> verts = MeshLoader::LoadModel("assets/model/test.obj");
-
-		mesh.setVertices(verts);
-		mesh.Init();
 	}
 
 	void RuntimeLayer::OnUpdate()
@@ -87,13 +83,8 @@ namespace Lithium {
 		//view = glm::mat4(1.0f);
 
 		//view = glm::translate(view, pos);
-		shader->Bind();
-		shader->SetUniformMat4f("MVP", proj * view * model );
-		shader->SetUniformMat4f("M",model);
-		shader->SetUniformMat4f("V", view);
-		shader->SetUniform3f("LightPosition_worldspace", glm::vec3(4,4,4));
-		shader->SetUniformMat4f("MV", model *view);
-		mesh.Draw();
+		//shader->Bind();
+		//shader->SetUniformMat4f("u_projection", proj * view * model );
 
 		_framebuffer->UnBind();
 
