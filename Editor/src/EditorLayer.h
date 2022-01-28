@@ -58,6 +58,7 @@ namespace Lithium
 		glm::vec3 pos;
 
 		Ref<FrameBuffer> framebuffer;
+		Ref<FrameBuffer> DisplayBuffer;
 		Ref<Scene> _MainScene;
 
 		bool _ViewportHovered = false;
@@ -90,5 +91,11 @@ namespace Lithium
 		Entity hoveredEntity;
 		Mesh mesh;
 		Ref<Shader> shader;
+		Ref<Shader> frameshader;
+
+
+		Ref<VertexArray> vertarray;
+		Ref<VertexBuffer> vertbuffer;
+
 	};
 }

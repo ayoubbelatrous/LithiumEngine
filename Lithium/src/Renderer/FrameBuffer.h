@@ -17,6 +17,7 @@ namespace Lithium
 		~FrameBuffer();
 		unsigned int GetID() const;
 		void Bind() const;
+		void BindTexture() const;
 		void UnBind() const;
 		unsigned int GetColorAttachmentID(int i = 0) const;
 		void resize(int x, int y);

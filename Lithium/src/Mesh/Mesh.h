@@ -12,11 +12,12 @@ namespace Lithium
 	struct MeshVertex
 	{
 		glm::vec3 pos;
+		glm::vec3 normal;
 	};
 	class Mesh
 	{
 	private:
-		MeshVertex* _Vertices = nullptr;
+		std::vector<MeshVertex> _Vertices;
 		std::vector<glm::vec3> _Uvs;
 		std::vector<glm::vec3> _Indices;
 		std::vector<glm::vec3> _Normals;
@@ -30,12 +31,14 @@ namespace Lithium
 		void setVertices(std::vector<glm::vec3> verts)
 		{
 			uint32_t size = verts.size();
-			_Vertices = new MeshVertex[size];
+			
+			
 			for (glm::vec3 vertex:verts)
 			{
 				
-				_Vertices->pos =  vertex;
-				_Vertices++;
+				MeshVertex meshvertex;
+				meshvertex.pos = vertex;
+				_Vertices.push_back(meshvertex);
 			}
 			count = size;
 			

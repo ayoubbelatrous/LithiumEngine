@@ -12,7 +12,11 @@ workspace "Lithium"
 	{
 		"MultiProcessorCompile"
 	}
-
+	defines
+	{
+		"BUILD_PROFILER",
+		"STATIC_RUNTIME"
+	}
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "%{wks.location}/Lithium/vendor/glfw/include"

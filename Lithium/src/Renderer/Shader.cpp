@@ -138,6 +138,12 @@ namespace Lithium
 		int location = GetLocation(name);
 		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
 	}
+	void Shader::SetUniform3f(const std::string& name, const glm::vec3& vector)
+	{
+		int location = GetLocation(name);
+		glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+
 	void Shader::SetUniform1i(const std::string& name, int value)
 	{
 		int location = GetLocation(name);

@@ -10,8 +10,10 @@ namespace Lithium
 	{
 		_Window = CreateScope<Window>();
 		_Window->Init();
+#ifndef STATIC_RUNTIME
 		_ImguiLayer = new GUIlayer();
 		PushOverlay(_ImguiLayer);
+#endif
 		_Window->SetAppEventCallback(BIND_EVENT(Application::OnEvent));
 		Math::Random::Init();
 

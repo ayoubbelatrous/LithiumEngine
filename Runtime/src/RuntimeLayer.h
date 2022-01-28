@@ -2,8 +2,15 @@
 #include "Lithium.h"
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
-#include "gtc/type_ptr.hpp"
+
 #include "Renderer/FrameBuffer.h"
+#include "Renderer/Shader.h"
+#include "Mesh/Mesh.h"
+
+#include "Renderer/VertexBuffer.h"
+#include "Renderer/VertexArray.h"
+#include "Renderer/VertexBufferLayout.h"
+
 namespace Lithium
 {
 
@@ -28,5 +35,12 @@ namespace Lithium
 		glm::mat4 model;
 		glm::vec3 pos;
 		Ref<FrameBuffer> _framebuffer;
+		Ref<Shader> shader;
+		Ref<Shader> frameshader;
+		Mesh mesh;
+		int rot;
+		Ref<VertexArray> _vertexarray;
+		Ref<VertexBuffer> _vertexbuffer;
+		
 	};
 }

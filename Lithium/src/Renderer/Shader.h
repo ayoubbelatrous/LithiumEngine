@@ -21,6 +21,7 @@ namespace Lithium
 		void Bind();
 		int GetLocation(const std::string& name);
 		void SetUniform4f(const std::string& name, const glm::vec4& vector);
+		void SetUniform3f(const std::string& name, const glm::vec3& vector);
 		void SetUniform1i(const std::string& name, int value);
 		void SetUniformMat4f(const std::string& name, const glm::mat4& mat);
 		void SetUniformiv(const std::string& name, int vector[]);

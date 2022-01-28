@@ -52,6 +52,11 @@ namespace Lithium
 		glViewport(0, 0, width, height);
 	}
 
+	void FrameBuffer::BindTexture() const
+	{
+		glBindTexture(GL_TEXTURE_2D, renderedTexture);
+	}
+
 	void FrameBuffer::UnBind() const
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

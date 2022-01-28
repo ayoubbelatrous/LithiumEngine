@@ -26,14 +26,19 @@ namespace Lithium
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 		_SpriteEditor.SetEventCallback((BIND_EVENT(EditorLayer::onEditorEvent)));
 		//Font::GenFonts("assets/Editor/Fonts/OpenSans-Regular.ttf");
-		LT_PROFILE_FUNCTION("init");
 
 		_MainScene = CreateRef<Scene>();
 		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
 		_Selection = Entity(entt::null, _MainScene.get());
+		DisplayBuffer = CreateRef<FrameBuffer>();
+		DisplayBuffer->Bind();
+		DisplayBuffer->resize(1000, 1000);
 		framebuffer = CreateRef<FrameBuffer>();
 		framebuffer->Bind();
 		framebuffer->resize(1000, 1000);
+
+		
+		
 		//sz = Serializer(_MainScene);
 		Entity entity = _MainScene->CreateEntity("name");
 		Entity entity3 = _MainScene->CreateEntity("dod");
@@ -64,20 +69,42 @@ namespace Lithium
 		_AssetBrowerPanel->OnCreate();
 		_SpriteEditor.SetTexture(tex);
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
-		//BatchRenderer::Init();
+		BatchRenderer::Init();
 		//FontRenderer::Init();
 		shader = CreateRef<Shader>("assets/shaders/test.shader");
+		frameshader = CreateRef<Shader>("assets/shaders/frame.shader");
 		atlas = CreateRef<Texture>("assets/atlas.png");
 		std::vector<glm::vec3> verts = MeshLoader::LoadModel("assets/model/test.obj");
 		
 		mesh.setVertices(verts);
 		mesh.Init();
+
+		float rectangleVertices[] =
+		{
+			// Coords    // texCoords
+			 1.0f, -1.0f,  1.0f, 0.0f,
+			-1.0f, -1.0f,  0.0f, 0.0f,
+			-1.0f,  1.0f,  0.0f, 1.0f,
+
+			 1.0f,  1.0f,  1.0f, 1.0f,
+			 1.0f, -1.0f,  1.0f, 0.0f,
+			-1.0f,  1.0f,  0.0f, 1.0f
+		};
+
+		vertarray = CreateRef<VertexArray>();
+		vertbuffer = CreateRef<VertexBuffer>((void*)&rectangleVertices,sizeof(rectangleVertices));
+		Ref<VertexBufferLayout> layout = CreateRef<VertexBufferLayout>();
+		layout->Push<float>(2);
+		layout->Push<float>(2);
+		vertarray->AddBuffer(vertbuffer, layout);
+
+
 	}
 
 	void EditorLayer::OnUpdate()
 	{
 
-		LT_PROFILE_FUNCTION("UPDATE");
+		
 #pragma region CalculateProjection
 
 		float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
@@ -89,6 +116,8 @@ namespace Lithium
 		proj = glm::ortho(orthoLeft, orthoRight,
 			orthoBottom, orthoTop);
 		framebuffer->resize(viewportSize[0], viewportSize[1]);
+		DisplayBuffer->resize(viewportSize[0], viewportSize[1]);
+
 
 #pragma endregion
 #pragma region CameraMovement
@@ -121,20 +150,22 @@ namespace Lithium
 		//CORE_LOG(mouse.x<<mouse.y);
 
 		//CORE_LOG(ray.x << ray.y << ray.z);
+
 		framebuffer->Bind();
+		//frameshader->Bind();
+		//frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID(0));
 		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		
-		//BatchRenderer::Begin(view, proj);
+		BatchRenderer::Begin(view, proj);
 		//BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);
 
-		//_MainScene->onEditorUpdate();
+		_MainScene->onEditorUpdate();
 		
-		//BatchRenderer::End();
-
+		BatchRenderer::End();
 		shader->Bind();
-		shader->SetUniformMat4f("projection", model* view * proj );
+		shader->SetUniformMat4f("projection", model* proj * view );
 		mesh.Draw();
 		
 
@@ -181,7 +212,20 @@ namespace Lithium
 		}
 
 		framebuffer->UnBind();
+		
 
+		DisplayBuffer->Bind();
+		
+		//RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
+		//RendererCommand::Clear();
+	//	DisplayBuffer->ClearAttachment(1, -1);
+		vertarray->Bind();
+		frameshader->Bind();
+		framebuffer->BindTexture();
+		frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID());
+		RendererCommand::Draw(6);
+
+		DisplayBuffer->UnBind();
 		_InspectorPanel->SetSelection(_Selection);
 		RenderImgui();
 	}
@@ -320,7 +364,6 @@ namespace Lithium
 
 	void EditorLayer::RenderImgui()
 	{
-		LT_PROFILE_FUNCTION("Render Imgui");
 
 
 		ImGui_ImplOpenGL3_NewFrame();
@@ -393,7 +436,7 @@ namespace Lithium
 
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
-		ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
+		ImGui::Image(reinterpret_cast<void*>(DisplayBuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
 		if (ImGui::BeginDragDropTarget())
 		{
 
