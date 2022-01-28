@@ -9,6 +9,7 @@
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/VertexArray.h"
 #include "Renderer/VertexBufferLayout.h"
+#include "Mesh/Mesh.h"
 
 namespace Lithium
 {
@@ -36,7 +37,7 @@ namespace Lithium
 		Ref<FrameBuffer> _framebuffer;
 		Ref<Shader> shader;
 		Ref<Shader> frameshader;
-		Mesh mesh;
+		Ref<Mesh> mesh;
 		int rot;
 		Ref<VertexArray> _vertexarray;
 		Ref<VertexBuffer> _vertexbuffer;

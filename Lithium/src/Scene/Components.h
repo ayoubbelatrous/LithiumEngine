@@ -9,7 +9,7 @@
 #include <gtx/quaternion.hpp>
 #include "AssetManager/TextureData.h"
 #include "OrthographicCamera.h"
-#include "Mesh/Mesh.h"
+
 
 
 namespace Lithium

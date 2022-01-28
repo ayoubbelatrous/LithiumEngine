@@ -8,7 +8,7 @@ namespace Lithium {
 
 		float rectangleVertices[] =
 		{
-			// Coords    // texCoords
+			// Coords    // texCoordsmesh
 			 1.0f, -1.0f,  1.0f, 0.0f,
 			-1.0f, -1.0f,  0.0f, 0.0f, 
 			-1.0f,  1.0f,  0.0f, 1.0f,
@@ -51,7 +51,7 @@ namespace Lithium {
 
 		view = glm::mat4(1.0f);
 		view = glm::translate(view,pos);
-
+		mesh = Mesh::LoadMesh("assets/model/teapot.obj");
 	}
 
 	void RuntimeLayer::OnUpdate()
@@ -83,9 +83,9 @@ namespace Lithium {
 		//view = glm::mat4(1.0f);
 
 		//view = glm::translate(view, pos);
-		//shader->Bind();
-		//shader->SetUniformMat4f("u_projection", proj * view * model );
-
+		shader->Bind();
+		shader->SetUniformMat4f("u_projection", proj * view * model );
+		mesh->Render();
 		_framebuffer->UnBind();
 
 		frameshader->Bind();
