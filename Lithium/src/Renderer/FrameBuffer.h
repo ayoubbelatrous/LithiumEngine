@@ -12,12 +12,13 @@ namespace Lithium
 		int height;
 		unsigned int renderedTexture;
 		unsigned int _EntityTexture;
+		uint32_t _DepthBuffer;
 	public:
 		FrameBuffer();
 		~FrameBuffer();
 		unsigned int GetID() const;
 		void Bind() const;
-		void BindTexture() const;
+		void BindTexture(uint32_t slot) const;
 		void UnBind() const;
 		unsigned int GetColorAttachmentID(int i = 0) const;
 		void resize(int x, int y);

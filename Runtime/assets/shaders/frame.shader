@@ -19,13 +19,13 @@ layout(location = 0) out vec4 color;
 
 in vec2 vtex;
 
-uniform sampler2D utex;
+uniform sampler2D u_tex;
 
 void main()
 {
 
 
-   color = texture(utex,vtex);
+   color = texture(u_tex,vtex);
    float gamma = 2.2;
    color.rgb = pow(color.rgb, vec3(1.0 / gamma));
    

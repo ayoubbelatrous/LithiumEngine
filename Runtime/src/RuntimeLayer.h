@@ -10,6 +10,9 @@
 #include "Renderer/VertexArray.h"
 #include "Renderer/VertexBufferLayout.h"
 #include "Mesh/Mesh.h"
+#include <vector>
+#include "Renderer/Texture.h"
+
 
 namespace Lithium
 {
@@ -37,10 +40,12 @@ namespace Lithium
 		Ref<FrameBuffer> _framebuffer;
 		Ref<Shader> shader;
 		Ref<Shader> frameshader;
-		Ref<Mesh> mesh;
+		std::vector<Ref<Mesh>> meshs;
 		int rot;
 		Ref<VertexArray> _vertexarray;
 		Ref<VertexBuffer> _vertexbuffer;
-		
+		glm::vec3 LightPos;
+		Ref<Texture> uvTEST;
+	
 	};
 }
