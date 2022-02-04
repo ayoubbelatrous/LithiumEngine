@@ -49,15 +49,15 @@ namespace Lithium {
 
 
 		model = glm::mat4(1.0f);
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		view = glm::mat4(1.0f);
 		view = glm::translate(view,pos);
 		
 		LightPos = glm::vec3(0.0,2.0,0.0);
 		//model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-		meshs = Mesh::LoadMesh("assets/model/Shotgun.obj");
-		uvTEST = CreateRef<Texture>("assets/images/shotgun.png");
+		meshs = Mesh::LoadMesh("assets/model/Skull.obj");
+		uvTEST = CreateRef<Texture>("assets/model/tex/skull_diffuse.jpg");
 	}
 
 	void RuntimeLayer::OnUpdate()
@@ -119,7 +119,7 @@ namespace Lithium {
 		RendererCommand::Draw(6);
 		
 		//model = glm::mat4(1.0f);
-		//model = glm::rotate(model, glm::radians(-2.0f / 50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(-2.0f / 50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	
 	}
 

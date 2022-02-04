@@ -15,7 +15,7 @@ workspace "Lithium"
 	defines
 	{
 		"BUILD_PROFILER",
-		"STATIC_RUNTIME"
+		
 	}
 
 IncludeDir = {}

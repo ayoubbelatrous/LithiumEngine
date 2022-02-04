@@ -182,7 +182,7 @@ namespace Lithium
 			}
 			ImGui::InputFloat2("Tex Index", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().texIndex));
 		  }
-
+		/*
 		if (_Selection.HasComponent<MeshComponent>())
 		{
 			ImGui::Selectable("Mesh");
@@ -214,7 +214,7 @@ namespace Lithium
 			}
 		
 		}
-
+		*/
 		if (ImGui::Button("Add Component"))
 		{
 			ImGui::OpenPopup("add_componenet_popup");
@@ -244,6 +244,7 @@ namespace Lithium
 				}
 			}
 
+			/*
 			if (!_Selection.HasComponent<MeshComponent>())
 			{
 
@@ -273,6 +274,7 @@ namespace Lithium
 					_Selection.AddComponent<MaterialComponent>();
 				}
 			}
+			*/
 			ImGui::EndPopup();
 
 		}

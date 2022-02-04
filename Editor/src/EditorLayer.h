@@ -75,8 +75,6 @@ namespace Lithium
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
 		SpriteEditor _SpriteEditor;
 		//Serializer sz;
-		Ref<Texture> tex;
-		Ref<Texture> atlas;
 		//Ref<Texture> tex2;
 		//Ref<Texture> tex3;
 		int mouseX = 0;

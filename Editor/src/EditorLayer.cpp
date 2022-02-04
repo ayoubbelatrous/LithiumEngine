@@ -9,6 +9,7 @@
 
 namespace Lithium
 {
+	static std::vector<Ref<Mesh>> meshes;
 
 	extern const std::filesystem::path root;
 	extern AssetMananger assetManager = AssetMananger();
@@ -65,19 +66,13 @@ namespace Lithium
 
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
-		tex = CreateRef<Texture>("assets/images/atlastest.png");
+		//tex = CreateRef<Texture>("assets/images/atlastest.png");
 		_AssetBrowerPanel->OnCreate();
-		_SpriteEditor.SetTexture(tex);
 		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
-		BatchRenderer::Init();
+		//BatchRenderer::Init();
 		//FontRenderer::Init();
 		shader = CreateRef<Shader>("assets/shaders/test.shader");
 		frameshader = CreateRef<Shader>("assets/shaders/frame.shader");
-		atlas = CreateRef<Texture>("assets/atlas.png");
-		std::vector<glm::vec3> verts = MeshLoader::LoadModel("assets/model/test.obj");
-		
-		mesh.setVertices(verts);
-		mesh.Init();
 
 		float rectangleVertices[] =
 		{
@@ -98,7 +93,7 @@ namespace Lithium
 		layout->Push<float>(2);
 		vertarray->AddBuffer(vertbuffer, layout);
 
-
+		meshes = Mesh::LoadMesh("assets/model/test.obj");
 	}
 
 	void EditorLayer::OnUpdate()
@@ -158,16 +153,18 @@ namespace Lithium
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		
-		BatchRenderer::Begin(view, proj);
+		//BatchRenderer::Begin(view, proj);
 		//BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);
 
-		_MainScene->onEditorUpdate();
+		//_MainScene->onEditorUpdate();
 		
-		BatchRenderer::End();
+		//BatchRenderer::End();
 		shader->Bind();
 		shader->SetUniformMat4f("projection", model* proj * view );
-		mesh.Draw();
-		
+		for (auto mesh : meshes)
+		{
+			mesh->Render();
+		}
 
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= _ViewportBounds[0].x;
@@ -221,7 +218,7 @@ namespace Lithium
 	//	DisplayBuffer->ClearAttachment(1, -1);
 		vertarray->Bind();
 		frameshader->Bind();
-		framebuffer->BindTexture();
+		framebuffer->BindTexture(0);
 		frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID());
 		RendererCommand::Draw(6);
 

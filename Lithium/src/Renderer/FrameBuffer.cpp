@@ -21,15 +21,23 @@ namespace Lithium
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
 
-
+		glGenTextures(1, &_EntityTexture);
+		glBindTexture(GL_TEXTURE_2D, _EntityTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_R32I, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _EntityTexture, 0);
 		
 		glGenRenderbuffers(1, &_DepthBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, _DepthBuffer);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height); // use a single renderbuffer object for both a depth AND stencil buffer.
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _DepthBuffer); //
 	
-		GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0};
-		glDrawBuffers(1, DrawBuffers);
+		
+
+		GLenum DrawBuffers[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+		glDrawBuffers(2, DrawBuffers);
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
@@ -99,13 +107,20 @@ namespace Lithium
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
 		
 
+		glGenTextures(1, &_EntityTexture);
+		glBindTexture(GL_TEXTURE_2D, _EntityTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_R32I, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _EntityTexture, 0);
+
 		glGenRenderbuffers(1, &_DepthBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, _DepthBuffer);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height); // use a single renderbuffer object for both a depth AND stencil buffer.
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _DepthBuffer); //
 		
 
-		GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+		GLenum DrawBuffers[2] = { GL_COLOR_ATTACHMENT0 ,GL_COLOR_ATTACHMENT1	};
 		glDrawBuffers(1, DrawBuffers);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
