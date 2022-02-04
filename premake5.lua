@@ -14,6 +14,7 @@ workspace "Lithium"
 	}
 	defines
 	{
+		"STATIC_RUNTIME",
 		"BUILD_PROFILER",
 		
 	}

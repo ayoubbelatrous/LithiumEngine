@@ -25,6 +25,12 @@ namespace Lithium {
 		shader = CreateRef<Shader>("assets/shaders/test.shader");
 		frameshader = CreateRef<Shader>("assets/shaders/frame.shader");
 		
+		FrameBufferAttachmentDescriptor framebufferspec(
+			{
+				FramebufferTextureFormat::RGBA8,
+				FramebufferTextureFormat::Depth
+			}
+		);
 
 		_vertexarray = CreateRef<VertexArray>();
 		_vertexbuffer = CreateRef<VertexBuffer>((void*)&rectangleVertices,sizeof(rectangleVertices));
@@ -36,7 +42,7 @@ namespace Lithium {
 
 		_vertexarray->AddBuffer(_vertexbuffer, layout);
 
-		_framebuffer = CreateRef<FrameBuffer>();
+		_framebuffer = CreateRef<FrameBuffer>(framebufferspec);
 		_framebuffer->Bind();
 
 		glm::vec2 size = Application::GetInstance().GetWindow().getSize();
@@ -93,11 +99,11 @@ namespace Lithium {
 		//view = glm::translate(view, pos);
 		
 		shader->Bind();
-		uvTEST->Bind(2);
+		
 		shader->SetUniformMat4f("u_projection", proj * view * model );
 		shader->SetUniformMat4f("model", model);
 		shader->SetUniform3f("lightPos", LightPos);
-		shader->SetUniform1i("diffuse", uvTEST->GetID());
+	//	shader->SetUniform1i("diffuse", uvTEST->GetID());
 		//LightPos.y+= 0.01f;
 		//shader->SetUniformMat4f("model", glm::inverse(model) ); 
 		//shader->SetUniform3f("lightPos", LightPos);
@@ -106,13 +112,13 @@ namespace Lithium {
 		{
 			mesh->Render();
 		}
-		uvTEST->UnBind();
+	
 		_framebuffer->UnBind();
 	
 		
 		frameshader->Bind();
-		_framebuffer->BindTexture(1);
-		frameshader->SetUniform1i("u_tex", _framebuffer->GetColorAttachmentID());
+		_framebuffer->BindTexture(1,0);
+		frameshader->SetUniform1i("u_tex", _framebuffer->GetColorAttachmentID(0));
 
 		_vertexarray->Bind();
 		_vertexbuffer->Bind();
