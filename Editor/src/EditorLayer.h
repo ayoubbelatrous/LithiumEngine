@@ -87,7 +87,7 @@ namespace Lithium
 		int _GizmoMode = -1;
 		bool hoveringEntity = false;
 		Entity hoveredEntity;
-		Mesh mesh;
+		
 		Ref<Shader> shader;
 		Ref<Shader> frameshader;
 

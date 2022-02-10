@@ -9,7 +9,7 @@
 
 namespace Lithium
 {
-	static std::vector<Ref<Mesh>> meshes;
+	
 
 	extern const std::filesystem::path root;
 	extern AssetMananger assetManager = AssetMananger();
@@ -31,10 +31,24 @@ namespace Lithium
 		_MainScene = CreateRef<Scene>();
 		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
 		_Selection = Entity(entt::null, _MainScene.get());
-		DisplayBuffer = CreateRef<FrameBuffer>();
+		FrameBufferAttachmentDescriptor mainframebufferspec(
+			{
+				FramebufferTextureFormat::RGBA8
+			}
+		);
+
+		FrameBufferAttachmentDescriptor displayframebufferspec(
+			{
+				FramebufferTextureFormat::RGBA8,
+				FramebufferTextureFormat::RED_INTEGER,
+				FramebufferTextureFormat::Depth
+			}
+		);
+
+		DisplayBuffer = CreateRef<FrameBuffer>(displayframebufferspec);
 		DisplayBuffer->Bind();
 		DisplayBuffer->resize(1000, 1000);
-		framebuffer = CreateRef<FrameBuffer>();
+		framebuffer = CreateRef<FrameBuffer>(mainframebufferspec);
 		framebuffer->Bind();
 		framebuffer->resize(1000, 1000);
 
@@ -93,7 +107,7 @@ namespace Lithium
 		layout->Push<float>(2);
 		vertarray->AddBuffer(vertbuffer, layout);
 
-		meshes = Mesh::LoadMesh("assets/model/test.obj");
+		
 	}
 
 	void EditorLayer::OnUpdate()
@@ -161,10 +175,7 @@ namespace Lithium
 		//BatchRenderer::End();
 		shader->Bind();
 		shader->SetUniformMat4f("projection", model* proj * view );
-		for (auto mesh : meshes)
-		{
-			mesh->Render();
-		}
+	
 
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= _ViewportBounds[0].x;
@@ -218,7 +229,7 @@ namespace Lithium
 	//	DisplayBuffer->ClearAttachment(1, -1);
 		vertarray->Bind();
 		frameshader->Bind();
-		framebuffer->BindTexture(0);
+		framebuffer->BindTexture(0,0);
 		frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID());
 		RendererCommand::Draw(6);
 

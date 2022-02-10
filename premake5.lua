@@ -14,7 +14,7 @@ workspace "Lithium"
 	}
 	defines
 	{
-		"STATIC_RUNTIME",
+		
 		"BUILD_PROFILER",
 		
 	}
@@ -44,3 +44,4 @@ group ""
 include "Lithium"
 include "Editor"
 include "Runtime"
+include "NewEditor"
