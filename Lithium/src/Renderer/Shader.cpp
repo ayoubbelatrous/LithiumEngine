@@ -4,6 +4,9 @@
 
 namespace Lithium
 {
+
+
+	
 	Shader::Shader()
 	{
 		id = 0;
@@ -104,6 +107,38 @@ namespace Lithium
 	void Shader::Bind()
 	{
 		glUseProgram(id);
+	}
+
+	ShaderDataInfo Shader::GetAttribute(uint32_t index)
+	{
+		GLsizei buffersize;
+		GLenum type;
+		GLint size;
+		GLchar name[256];
+		GLint numu;
+		glGetProgramiv(id, GL_ACTIVE_UNIFORMS, &numu);
+
+		if (index > numu)
+		{
+			CORE_LOG("shader attrib out of bound");
+
+			return ShaderDataInfo();
+		}
+		glGetActiveUniform(id,index, 256, &buffersize, &size, &type, name);
+
+		//CORE_LOG("buffer size : " << buffersize);
+		//CORE_LOG("type : " << type);
+		//CORE_LOG("size : " << size);
+		//CORE_LOG("name : " << name);
+
+		ShaderDataInfo info = ShaderDataInfo((size_t)buffersize,type,size,name);
+		return info;
+	}
+	int Shader::GetAttribCount()
+	{
+		GLint numu;
+		glGetProgramiv(id, GL_ACTIVE_UNIFORMS, &numu);
+		return numu;
 	}
 
 	Ref<Shader> Shader::Load(const std::string& path)

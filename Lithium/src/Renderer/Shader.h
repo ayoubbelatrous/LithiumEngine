@@ -6,6 +6,19 @@
 
 namespace Lithium
 {
+	struct ShaderDataInfo
+	{
+		ShaderDataInfo(size_t buffsize, uint32_t datatype, int size, const std::string& name)
+			:BufferSize(buffsize), DataType(datatype), Size(size), Name(name)
+		{}
+		ShaderDataInfo()
+		{}
+		size_t BufferSize;
+		uint32_t DataType;
+		int Size;
+		std::string Name;
+
+	};
 	class Shader
 	{
 	private:
@@ -25,6 +38,10 @@ namespace Lithium
 		void SetUniform1i(const std::string& name, int value);
 		void SetUniformMat4f(const std::string& name, const glm::mat4& mat);
 		void SetUniformiv(const std::string& name, int vector[]);
+
+		int GetAttribCount();
+
+		ShaderDataInfo GetAttribute(uint32_t index);
 		static Ref<Shader> Load(const std::string& path);
 	};
 }
