@@ -20,7 +20,6 @@ namespace Lithium
 	template<typename T>
 	void Push(unsigned int count)
 	{
-		static_assert(false);
 	}
 	template<>
 	void VertexBufferLayout::Push<float>(unsigned int count)
