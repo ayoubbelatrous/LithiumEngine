@@ -10,7 +10,8 @@
 #include <gtx/quaternion.hpp>
 #include "AssetManager/TextureData.h"
 #include "OrthographicCamera.h"
-
+#include "Mesh/Mesh.h"
+#include "Mesh/Material.h"
 
 
 namespace Lithium
@@ -127,6 +128,10 @@ namespace Lithium
 	{
 		MaterialComponent() = default;
 		MaterialComponent(const MaterialComponent& other) = default;
+		MaterialComponent(const Ref<Material>& mat)
+			:material(mat)
+		{}
+		Ref<Material> material;
 		
 	};
 }

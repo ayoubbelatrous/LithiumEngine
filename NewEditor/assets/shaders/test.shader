@@ -3,12 +3,17 @@
 
 layout(location = 0) in vec3 a_Position;
 
-uniform mat4 projection;
+
+uniform vec4 v4;
+uniform vec2 vert;
+out vec2 v_vert;
+
 
 void main()
 {
-
-	gl_Position = projection * vec4(a_Position, 1.0);
+	
+	v_vert = vert;
+	gl_Position = v4;
 }
 
 #shader fragment
@@ -16,16 +21,15 @@ void main()
 
 layout(location = 0) out vec4 color;
 
-layout(location = 1) out int color2;
 
-
-
+in vec2 v_vert;
+uniform sampler2D u_tex;
 
 void main()
 {
 
 
 
-	color = vec4(1.0,0.0,0.0,1.0);
-	color2 = -1;
+	color = texture(u_tex, v_vert);
+
 }

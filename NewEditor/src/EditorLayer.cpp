@@ -4,7 +4,7 @@
 #include "Input/Input.h"
 #include "Core/Math.h"
 #include "Font/Font.h"
-
+#include "Mesh/Material.h"
 
 
 namespace Lithium
@@ -15,14 +15,67 @@ namespace Lithium
 
 		FrameBufferAttachmentDescriptor mainframebufferdescryptor(
 			{
-				FramebufferTextureFormat::RGBA8,
-				FramebufferTextureFormat::Depth
+				FramebufferTextureFormat::RGBA8
 			}
 		);
 		_MainFramebuffer = CreateRef<FrameBuffer>(mainframebufferdescryptor);
 		_MainFramebuffer->resize(1000, 1000);
 
 		_MainScene = CreateRef<Scene>();
+
+		Ref<Material> material;
+		Ref<Shader> shader = CreateRef<Shader>("assets/shaders/test.shader");
+		material = Material::MaterialFromShader(shader);
+		CORE_LOG("material has: ");
+		for(Ref<MaterialData> field:material->GetDataFields())
+		{
+			if(field->getType() == MaterialDataType::Vec2)
+			{
+				CORE_LOG("VEC2");
+			}
+
+			if (field->getType() == MaterialDataType::Vec3)
+			{
+				CORE_LOG("VEC3");
+			}
+
+			if (field->getType() == MaterialDataType::Vec4)
+			{
+				CORE_LOG("VEC4");
+			}
+
+			if (field->getType() == MaterialDataType::TexturePath)
+			{
+				CORE_LOG("texture path");
+			}
+		}
+
+		Material::MaterialToFile(material, "assets/mat.mat");
+		material = Material::MaterialFromFile("assets/mat.mat");
+
+		CORE_LOG("material has: ");
+		for (Ref<MaterialData> field : material->GetDataFields())
+		{
+			if (field->getType() == MaterialDataType::Vec2)
+			{
+				CORE_LOG("VEC2");
+			}
+
+			if (field->getType() == MaterialDataType::Vec3)
+			{
+				CORE_LOG("VEC3");
+			}
+
+			if (field->getType() == MaterialDataType::Vec4)
+			{
+				CORE_LOG("VEC4");
+			}
+
+			if (field->getType() == MaterialDataType::TexturePath)
+			{
+				CORE_LOG("texture path");
+			}
+		}
 	}
 	void EditorLayer::OnUpdate()
 	{
@@ -32,7 +85,7 @@ namespace Lithium
 		RendererCommand::ClearColor(glm::vec4(1));
 		RendererCommand::Clear();
 		_MainFramebuffer->UnBind();
-		_MainFramebuffer->BindTexture(1, 0);
+		
 		RenderImgui();
 	}
 
@@ -43,9 +96,13 @@ namespace Lithium
 		ImGui::Begin("scene");
 		ViewportSize.x = ImGui::GetContentRegionAvail().x;
 		ViewportSize.y = ImGui::GetContentRegionAvail().y;
-		ImGui::Image(reinterpret_cast<ImTextureID>(_MainFramebuffer->GetColorAttachmentID()),ImVec2(ViewportSize.x,ViewportSize.y), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::Image(reinterpret_cast<ImTextureID>(_MainFramebuffer->GetColorAttachmentID(0)),ImVec2(ViewportSize.x,ViewportSize.y), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		ImGui::End();
 		ImGui::PopStyleVar();
+		
+		ImGui::Begin("Hierachy", &openHierachy);
+	
+		ImGui::End();
 
 		EndImGui();
 
@@ -61,7 +118,7 @@ namespace Lithium
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
 		// because it would be confusing to have two docking targets within each others.
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		if (opt_fullscreen)
 		{
 			const ImGuiViewport* viewport = ImGui::GetMainViewport();

@@ -56,7 +56,7 @@ namespace Lithium
 		Ref<FrameBuffer> _MainFramebuffer;
 		//imgui ui
 		glm::vec2 ViewportSize;
-
+		bool openHierachy;
 		Ref<Scene> _MainScene;
 
 	};

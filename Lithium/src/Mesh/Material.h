@@ -12,7 +12,7 @@ namespace Lithium
 		Vec2,
 		Vec3,
 		Vec4,
-		TexturePath
+		TexturePath,
 	};
 
 #define DATA_TYPE(t) static MaterialDataType GetDataType() { return MaterialDataType::t; }\
@@ -82,6 +82,7 @@ namespace Lithium
 		Material();
 		~Material();
 		static bool MaterialToFile(const Ref<Material>& material, const std::string& path);
+		static Ref<Material> MaterialFromFile(const std::string& path);
 		static Ref<Material> MaterialFromShader(const Ref<Shader>& shader);
 		std::vector<Ref<MaterialData>>& GetDataFields()
 		{
