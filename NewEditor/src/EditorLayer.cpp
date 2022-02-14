@@ -24,7 +24,7 @@ namespace Lithium
 		_MainScene = CreateRef<Scene>();
 
 		Ref<Material> material;
-		Ref<Shader> shader = CreateRef<Shader>("assets/shaders/test.shader");
+		shader = CreateRef<Shader>("assets/shaders/test.shader");
 		material = Material::MaterialFromShader(shader);
 		CORE_LOG("material has: ");
 		for(Ref<MaterialData> field:material->GetDataFields())
@@ -76,14 +76,38 @@ namespace Lithium
 				CORE_LOG("texture path");
 			}
 		}
+		
+
+		proj = glm::perspective(glm::radians(45.0f), (float)ViewportSize.x / (float)ViewportSize.y, 0.1f, 100.0f);
+		model = glm::mat4(1.0f);
+		view = glm::mat4(1.0f);
+		// note that we're translating the scene in the reverse direction of where we want to move
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
+
+		_ub = CreateRef<UniformBuffer>(sizeof(CameraBuffer),0);
+		data.u_proj = proj * view * model;
+
+		_ub->SetData(&data, sizeof(data), 0);
+		
+		
+		meshes = Mesh::LoadMesh("assets/model/test.obj");
 	}
 	void EditorLayer::OnUpdate()
 	{
+
+		
 		_MainFramebuffer->resize(ViewportSize.x, ViewportSize.y);
 		_MainFramebuffer->Bind();
 		_MainScene->onEditorUpdate();
-		RendererCommand::ClearColor(glm::vec4(1));
+		RendererCommand::ClearColor(glm::vec4(0.25));
 		RendererCommand::Clear();
+		shader->Bind();
+		for (auto mesh : meshes)
+		{
+			mesh->Render();
+
+		}
+
 		_MainFramebuffer->UnBind();
 		
 		RenderImgui();

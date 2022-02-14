@@ -6,18 +6,6 @@
 namespace YAML {
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 	template<>
 	struct convert<glm::vec2>
 	{

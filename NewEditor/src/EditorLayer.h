@@ -24,8 +24,14 @@
 #include "AssetManager/AssetManager.h"
 #include <thread>
 #include "Mesh/Mesh.h"
+#include "Renderer/UniformBuffer.h"
+
 namespace Lithium
 {
+	struct CameraBuffer
+	{
+		glm::mat4 u_proj;
+	};
 	struct Data
 	{
 		std::string name = "entity";
@@ -58,6 +64,11 @@ namespace Lithium
 		glm::vec2 ViewportSize;
 		bool openHierachy;
 		Ref<Scene> _MainScene;
+		Ref<UniformBuffer> _ub;
+		std::vector<Ref<Mesh>> meshes;
+		Ref<Shader> shader;
+		
+		CameraBuffer data;
 
 	};
 }
