@@ -26,6 +26,7 @@ namespace Lithium
 		std::unordered_map<std::string, int> unifromCache;
 		static unsigned int CompileShader(const std::string& source, unsigned int type);
 		static unsigned int CreateShader(const std::string& vertexshader, const std::string& fragmentshader);
+		std::string _Path;
 	public:
 		Shader(const std::string& path);
 		Shader();
@@ -40,7 +41,10 @@ namespace Lithium
 		void SetUniformiv(const std::string& name, int vector[]);
 
 		int GetAttribCount();
-
+		std::string GetPath()
+		{
+			return _Path;
+		}
 		ShaderDataInfo GetAttribute(uint32_t index);
 		static Ref<Shader> Load(const std::string& path);
 	};

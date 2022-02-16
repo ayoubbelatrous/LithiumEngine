@@ -20,7 +20,7 @@ namespace Lithium
 	Shader::Shader(const std::string& path)
 	{
 
-
+		_Path = path;
 		enum class ShaderType
 		{
 			NONE = -1,
