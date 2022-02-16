@@ -218,6 +218,7 @@ namespace Lithium
 				Ref<Vec3> vec3 = CreateRef<Vec3>();
 				vec3->name = name;
 				vec3->Value = value;
+
 				material->PushDataField(vec3);
 
 			}
@@ -228,6 +229,7 @@ namespace Lithium
 				Ref<Vec4> vec4 = CreateRef<Vec4>();
 				vec4->name = name;
 				vec4->Value = value;
+
 				material->PushDataField(vec4);
 
 			}
@@ -240,7 +242,7 @@ namespace Lithium
 				path->Value = value;
 				material->PushDataField(path);
 			}
-			CORE_LOG(name);
+		
 		}
 
 
@@ -250,6 +252,7 @@ namespace Lithium
 
 	Ref<Material> Material::MaterialFromShader(const Ref<Shader>& shader)
 	{
+		
 		Ref<Material> material = CreateRef<Material>();
 		for (size_t i = 0; i < shader->GetAttribCount(); i++)
 		{
@@ -268,6 +271,7 @@ namespace Lithium
 			else if (type == MaterialDataType::Vec3)
 			{
 				Ref<Vec3> vec3 = CreateRef<Vec3>();
+				vec3->Value = glm::vec3(0.0);
 				vec3->name = info.Name;
 				material->PushDataField(vec3);
 			}
@@ -276,6 +280,8 @@ namespace Lithium
 			{
 				Ref<Vec4> vec4 = CreateRef<Vec4>();
 				vec4->name = info.Name;
+				vec4->Value = glm::vec4(0,0,0,1);
+
 				material->PushDataField(vec4);
 			}
 
