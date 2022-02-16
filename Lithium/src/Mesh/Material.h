@@ -76,7 +76,7 @@ namespace Lithium
 	{
 	
 		std::vector<Ref<MaterialData>> _DataFields;
-
+		Ref<Shader> _Shader;
 	public:
 		
 		Material();
@@ -91,6 +91,15 @@ namespace Lithium
 		void PushDataField(const Ref<MaterialData>& datafield)
 		{
 			_DataFields.push_back(datafield);
+		}
+
+		void SetShader(const Ref<Shader>& shader)
+		{
+			_Shader = shader;
+		}
+		Ref<Shader> GetShader()
+		{
+			return _Shader;
 		}
 
 
