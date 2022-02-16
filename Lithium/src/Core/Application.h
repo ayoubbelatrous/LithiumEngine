@@ -5,6 +5,7 @@
 #include "Event/AppEvents.h"
 #include "Event/Event.h"
 #include "../Imgui/ImguiLayer.h"
+#include "AssetManager/AssetManager.h"
 
 namespace Lithium
 {
@@ -25,6 +26,7 @@ namespace Lithium
 		void SceneOnEvent(Event& e);
 		GUIlayer* GetImguiLayer() { return _ImguiLayer; }
 		Window& GetWindow();
+		Ref<AssetManager> assetManager;
 		static Application& GetInstance() { return *instance; };
 		static Application* instance;
 	};

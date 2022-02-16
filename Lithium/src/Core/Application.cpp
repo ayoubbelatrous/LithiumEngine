@@ -16,7 +16,7 @@ namespace Lithium
 #endif
 		_Window->SetAppEventCallback(BIND_EVENT(Application::OnEvent));
 		Math::Random::Init();
-
+		assetManager = CreateRef<AssetManager>();
 	}
 	Application::~Application()
 	{
