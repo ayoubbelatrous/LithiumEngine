@@ -8,7 +8,6 @@
 #include "Entity.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <gtx/quaternion.hpp>
-#include "AssetManager/TextureData.h"
 #include "OrthographicCamera.h"
 #include "Mesh/Mesh.h"
 #include "Mesh/Material.h"
@@ -56,30 +55,23 @@ namespace Lithium
 	{
 		glm::vec4 Color;
 		Ref<Texture> tex = nullptr;
-		Ref<TextureData> textureData;
+		
 		glm::vec2 texIndex = glm::vec2();
 		SpriteRendererComponent()
 		{
 			Color = glm::vec4(1);
 			tex = CreateRef<Texture>();
-			textureData = CreateRef<TextureData>(TextureMode::Single, 0, 0, 0, 0);
 		}
 		SpriteRendererComponent(const glm::vec4 color)
 			:Color(color) {
 			tex = CreateRef<Texture>();
-			textureData = CreateRef<TextureData>(TextureMode::Single, 0, 0, 0, 0);
 
 		}
 
-		SpriteRendererComponent(const glm::vec4 color, Ref<TextureData> data)
-			:Color(color) {
-			tex = CreateRef<Texture>();
-			textureData = data;
-		}
 		SpriteRendererComponent(const SpriteRendererComponent& other) = default;
 		glm::vec4 GetColor() const { return Color; }
 		Ref<Texture> GetTexture() const { return tex; }
-		Ref<TextureData> GetTextureData() const { return textureData; }
+	
 	};
 
 
