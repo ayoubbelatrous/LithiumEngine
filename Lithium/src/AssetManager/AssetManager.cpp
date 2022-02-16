@@ -1,147 +1,84 @@
 #include "lipch.h"
-
 #include "AssetManager.h"
-#include "yaml-cpp/yaml.h"
-#include <filesystem>
-namespace Lithium
-{
+#include "Core/Base.h"
+#include "Core/Math.h"
 
-	template<typename T>
-	T AssetManager(const std::string& path)
+namespace Lithium {
+
+
+	template<>
+	Handle<Ref<Mesh>> AssetManager::LoadAsset(const std::string& path)
 	{
+		Ref<Mesh> mesh = CreateRef<Mesh>();
+		Handle<Ref<Mesh>> m(path);
+		m.SetAsset(mesh);
+
+		return m;
 	}
 
 	template<>
-	Ref<Texture> AssetMananger::LoadAsset<Ref<Texture>>(const std::string& path)
+	Handle<Ref<Material>> AssetManager::LoadAsset(const std::string& path)
 	{
+		Ref<Material> material = Material::MaterialFromFile(path);
+		Handle<Ref<Material>> m(path);
+		m.SetAsset(material);
 
-		if (_Cache.find(path) != _Cache.end())
+		return m;
+	}
+
+	template<>
+	Handle<Ref<Texture>> AssetManager::LoadAsset(const std::string& path)
+	{
+		Handle<Ref<Texture>> asset(path);
+
+		if (_PathTable.find(path) != _PathTable.end())
 		{
-			CORE_LOG("loaded Texture Asset " << path);
-			uint32_t id = _Cache[path];
-
+			uint32_t id = _PathTable[path];
+			Ref<Texture> texture = _TextureCache[id];
+			asset.SetAsset(texture);
+			uint32_t* refrence = &_TextureRefrenceCount[id];;
+			asset.ref = refrence;
+			*refrence += 1;
+			asset.SetDeleteCallBack([this]() {
+				this->CheckForRefrences();
+				});
+			return asset;
+		}
+		else
+		{
 			
+			float id = Math::Random::Float();
+			id *= 10000000;
 
-			return _TextureCache[id];
-		}
-		else
-		{
-			std::filesystem::path _path = path;
-			_path.replace_extension(".metadata");
-			if (std::filesystem::exists(_path))
-			{
-				Ref<TextureData> tdata = LoadTextureMetadata(_path);
-				_TextureDataCache.emplace(Ptr, tdata);
-				CORE_LOG("mode " << (int)tdata->GetMode());
-			}
-			else
-			{
-				Ref<TextureData> tdata = CreateRef<TextureData>();
-				_TextureDataCache.emplace(Ptr, tdata);
 
-			}
-			Ref<Texture>texture = CreateRef<Texture>(path);
-			_TextureCache.emplace(Ptr, texture);
-			_Cache.emplace(path, Ptr);
-			int id = Ptr;
-			Ptr++;
-			return _TextureCache[id];
-		}
+			_PathTable.emplace(path, id);
+			_TextureRefrenceCount.emplace(id, 0);
 
-	}
-	template<typename T>
-	T AssetMananger::GetByHandle(uint32_t id)
-	{
+
+			Ref<Texture> texture = CreateRef<Texture>(path);
+
+
+			_TextureCache.emplace(id, texture);
+
+
+			asset.SetAsset(_TextureCache[id]);
+			
 		
-	}
-	template<>
-	Ref<Texture> AssetMananger::GetByHandle<Ref<Texture>>(uint32_t id)
-	{
-
-		if (_TextureCache.find(id) != _TextureCache.end())
-		{
-			return _TextureCache[id];
-		}
-		else
-		{
-			return CreateRef<Texture>();
-		}
-	}
-
-	bool AssetMananger::IsLoaded(uint32_t id)
-	{
-		return true;
-	}
-
-	void AssetMananger::GenerateTextureMetadata(const Ref<TextureData>& texturedata, const std::filesystem::path& path)
-	{
-		YAML::Emitter emitter;
-		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "Mode" << YAML::Value << (int)texturedata->GetMode();
-		emitter << YAML::Key << "CellSizeX" << YAML::Value << texturedata->GetCellSizeX();
-		emitter << YAML::Key << "CellSizeY" << YAML::Value << texturedata->GetCellSizeY();
-		emitter << YAML::Key << "Width" << YAML::Value << texturedata->GetWidth();
-		emitter << YAML::Key << "Height" << YAML::Value << texturedata->GetHeight();
-
-		emitter << YAML::EndMap;
-		std::ofstream output(path.c_str());
-		output << emitter.c_str();
-	}
-
-
-
-	Ref<TextureData> AssetMananger::LoadTextureMetadata(const std::filesystem::path& path)
-	{
-
-		YAML::Node data;
-		try
-		{
-			data = YAML::LoadFile(path.string());
-		}
-		catch (YAML::ParserException e)
-		{
-			CORE_LOG("failed to load metadata");
-			return nullptr;
-		}
-		int mode = data["Mode"].as<int>();
-		int cellsizeX = data["CellSizeX"].as<int>();
-		int cellsizeY = data["CellSizeY"].as<int>();
-		int width = data["Width"].as<int>();
-		int height = data["Height"].as<int>();
-		Ref<TextureData> texturedata = CreateRef<TextureData>(TextureMode(mode), cellsizeX, cellsizeY, width, height);
-		//CORE_LOG(mode);
-		return texturedata;
-
-	}
-	template<typename T>
-	T AssetMananger::GetMetaData(const std::string& path)
-	{
+			uint32_t* refrence = &_TextureRefrenceCount[id];;
+			asset.ref = refrence;
+			*refrence+=1;
 		
-		
+
+			asset.SetDeleteCallBack([this]() {
+				this->CheckForRefrences();
+			});
+			return asset;
+		}
 	}
 
-	void AssetMananger::ChangeMetaData(const std::string& path)
+	void AssetManager::CheckForRefrences()
 	{
-		std::filesystem::path _path = path;
-		std::filesystem::path _metapath = path;
-
-		_metapath.replace_extension(".metadata");
-		uint32_t id = _Cache[_path.string()];
-		//*_id = id;
-		_TextureDataCache[id] = LoadTextureMetadata(_metapath);
-	
+		//TODO: delete cache when refrence count hits 0
 	}
-
-	template<>
-	Ref<TextureData> AssetMananger::GetMetaData<Ref<TextureData>>(const std::string& path)
-	{
-		std::filesystem::path _path = path;
-		
-		uint32_t id = _Cache[_path.string()];
-
-		return 	_TextureDataCache[id];
-	}
-
-	
 
 }
