@@ -49,9 +49,10 @@ namespace Lithium
 
 	void Texture::Bind(unsigned int slot) const
 	{
-		//CORE_LOG(GL_TEXTURE0+slot);
-		glActiveTexture(GL_TEXTURE0+ slot);
-		glBindTexture(GL_TEXTURE_2D, _id);
+		
+		//glActiveTexture(GL_TEXTURE0+ slot);
+		//glBindTexture(GL_TEXTURE_2D, _id);
+		glBindTextureUnit(slot, _id);
 	}
 
 	void Texture::UnBind() const
