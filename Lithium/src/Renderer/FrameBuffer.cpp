@@ -1,7 +1,7 @@
 #include "lipch.h"
 #include "FrameBuffer.h"
 #include "glad/glad.h"
-
+#include "Core/Base.h"
 namespace Lithium
 {
 
@@ -12,14 +12,15 @@ namespace Lithium
 
 	void FrameBuffer::ReCreate()
 	{
-	
 
+		
 		if (_id)
 		{
 			glDeleteFramebuffers(1, &_id);
 			glDeleteTextures(textureIds.size(), textureIds.data());
-			glDeleteTextures(1, &_DepthBuffer);
-			textureIds.clear();
+			//glDeleteTextures(1, &_DepthBuffer);
+			glDeleteRenderbuffers(1, &_DepthBuffer);
+			textureIds.clear(); 
 		}
 
 		
@@ -37,14 +38,32 @@ namespace Lithium
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textureIds[i], 0);
+				glBindTexture(GL_TEXTURE_2D, 0);
 			}
-			else if (descriptor.Attachments[i].format == FramebufferTextureFormat::Depth)
+			else if (descriptor.Attachments[i].format == FramebufferTextureFormat::DEPTH24STENCIL8)
 			{
+				/*
+				glGenTextures(1, &_DepthBuffer);
+				glBindTexture(GL_TEXTURE_2D, _DepthBuffer);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL_ATTACHMENT, GL_UNSIGNED_INT_24_8, nullptr);
+				
+
+				
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, _DepthBuffer, GL_TEXTURE_2D, 0);
+				*/
+
 				
 				glGenRenderbuffers(1, &_DepthBuffer);
 				glBindRenderbuffer(GL_RENDERBUFFER, _DepthBuffer);
 				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+				glBindRenderbuffer(GL_RENDERBUFFER, 0);
 				glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _DepthBuffer);
+
 			}
 
 			else if (descriptor.Attachments[i].format == FramebufferTextureFormat::RED_INTEGER)
@@ -56,10 +75,13 @@ namespace Lithium
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textureIds[i], 0);
-
+				glBindTexture(GL_TEXTURE_2D, 0);
 			}
 		}
-
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
+			CORE_LOG("framebuffer incomplete");
+		}
 		GLenum drawbuffers[4] = { GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1,GL_COLOR_ATTACHMENT2,GL_COLOR_ATTACHMENT3 };
 
 		glDrawBuffers(textureIds.size(), drawbuffers);
@@ -70,6 +92,8 @@ namespace Lithium
 	FrameBuffer::FrameBuffer(FrameBufferAttachmentDescriptor desc)
 	{
 		descriptor = desc;
+		width = 1;
+		height = 1;
 		ReCreate();
 	}
 	FrameBuffer::FrameBuffer()
@@ -89,10 +113,12 @@ namespace Lithium
 
 	void FrameBuffer::Bind() const
 	{
-		//glActiveTexture(GL_TEXTURE31);
-		//glBindTexture(GL_TEXTURE_2D, renderedTexture);
-		glEnable(GL_DEPTH_TEST);
+		
+
+
 		glBindFramebuffer(GL_FRAMEBUFFER, _id);
+		glEnable(GL_DEPTH_TEST);
+
 		glViewport(0, 0, width, height);
 	}
 
@@ -104,8 +130,10 @@ namespace Lithium
 
 	void FrameBuffer::UnBind() const
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 		glDisable(GL_DEPTH_TEST);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
 	}
 
 	unsigned int FrameBuffer::GetColorAttachmentID(int i) const
