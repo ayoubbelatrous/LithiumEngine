@@ -10,3 +10,5 @@
 #include "Debug/Profiler.h"
 #include <functional>
 #include <filesystem>
+#include <thread>
+#include <chrono>
