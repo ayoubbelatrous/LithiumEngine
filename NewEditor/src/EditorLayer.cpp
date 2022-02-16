@@ -7,6 +7,7 @@
 #include "Mesh/Material.h"
 
 
+
 namespace Lithium
 {
 	
@@ -15,102 +16,74 @@ namespace Lithium
 
 		FrameBufferAttachmentDescriptor mainframebufferdescryptor(
 			{
-				FramebufferTextureFormat::RGBA8
+				FramebufferTextureFormat::RGBA8,
+				FramebufferTextureFormat::Depth,
 			}
 		);
 		_MainFramebuffer = CreateRef<FrameBuffer>(mainframebufferdescryptor);
-		_MainFramebuffer->resize(1000, 1000);
-
+		_HierachyPanel = CreateRef<SceneHierachyPanel>();
 		_MainScene = CreateRef<Scene>();
 
-		Ref<Material> material;
+	
 		shader = CreateRef<Shader>("assets/shaders/test.shader");
 		material = Material::MaterialFromShader(shader);
-		CORE_LOG("material has: ");
-		for(Ref<MaterialData> field:material->GetDataFields())
-		{
-			if(field->getType() == MaterialDataType::Vec2)
-			{
-				CORE_LOG("VEC2");
-			}
-
-			if (field->getType() == MaterialDataType::Vec3)
-			{
-				CORE_LOG("VEC3");
-			}
-
-			if (field->getType() == MaterialDataType::Vec4)
-			{
-				CORE_LOG("VEC4");
-			}
-
-			if (field->getType() == MaterialDataType::TexturePath)
-			{
-				CORE_LOG("texture path");
-			}
-		}
-
 		Material::MaterialToFile(material, "assets/mat.mat");
 		material = Material::MaterialFromFile("assets/mat.mat");
 
-		CORE_LOG("material has: ");
-		for (Ref<MaterialData> field : material->GetDataFields())
-		{
-			if (field->getType() == MaterialDataType::Vec2)
-			{
-				CORE_LOG("VEC2");
-			}
-
-			if (field->getType() == MaterialDataType::Vec3)
-			{
-				CORE_LOG("VEC3");
-			}
-
-			if (field->getType() == MaterialDataType::Vec4)
-			{
-				CORE_LOG("VEC4");
-			}
-
-			if (field->getType() == MaterialDataType::TexturePath)
-			{
-				CORE_LOG("texture path");
-			}
-		}
-		
-
 		proj = glm::perspective(glm::radians(45.0f), (float)ViewportSize.x / (float)ViewportSize.y, 0.1f, 100.0f);
 		model = glm::mat4(1.0f);
+		model = glm::translate(glm::mat4(1.0), glm::vec3(0,0,-10));
 		view = glm::mat4(1.0f);
 		// note that we're translating the scene in the reverse direction of where we want to move
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f,-6.0));
 
 		_ub = CreateRef<UniformBuffer>(sizeof(CameraBuffer),0);
-		data.u_proj = proj * view * model;
+		data.u_proj = proj * view;
 
 		_ub->SetData(&data, sizeof(data), 0);
 		
 		
 		meshes = Mesh::LoadMesh("assets/model/test.obj");
+		diffuse= CreateRef<Texture>("assets/test.png");
+		material->SetShader(shader);
+
+		entity = _MainScene->CreateEntity("entity");
+		entity.AddComponent<MaterialComponent>(material);
+		entity.AddComponent<MeshRendererComponent>();
+		entity.AddComponent<MeshComponent>();
+		entity.AddComponent<TransformComponent>();
+
+
+
+
+		entity.GetComponent<MeshComponent>()._Mesh = meshes[0];
+		_HierachyPanel->SetScene(_MainScene);
+		_HierachyPanel->OnCreate();
+
+		
+		texasset = Application::GetInstance().assetManager->LoadAsset<Ref<Texture>>("assets/images/test.jpg");
+		//t = Application::GetInstance().assetManager->LoadAsset<Ref<Texture>>("assets/images/test.jpg");
+		//Handle<Ref<Texture>> b = Application::GetInstance().assetManager->LoadAsset<Ref<Texture>>("assets/images/test.jpg");
+
 	}
 	void EditorLayer::OnUpdate()
 	{
+		proj = glm::perspective(glm::radians(45.0f), (float)ViewportSize.x / (float)ViewportSize.y, 0.1f, 100.0f);
 
-		
+		data.u_proj = proj * view;
+		model = glm::rotate(model, glm::radians(-1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		_ub->SetData(&data, sizeof(data), 0);
+
 		_MainFramebuffer->resize(ViewportSize.x, ViewportSize.y);
 		_MainFramebuffer->Bind();
-		_MainScene->onEditorUpdate();
-		RendererCommand::ClearColor(glm::vec4(0.25));
+		entity.GetComponent<TransformComponent>().Rotation = glm::vec3(glm::radians(60.0f),0,0);
+		RendererCommand::ClearColor(glm::vec4(0.25,0.11,0.54,1.0));
 		RendererCommand::Clear();
-		shader->Bind();
-		for (auto mesh : meshes)
-		{
-			mesh->Render();
-
-		}
-
+		_MainScene->onEditorUpdate();
 		_MainFramebuffer->UnBind();
 		
 		RenderImgui();
+		
 	}
 
 	void EditorLayer::RenderImgui()
@@ -124,10 +97,32 @@ namespace Lithium
 		ImGui::End();
 		ImGui::PopStyleVar();
 		
-		ImGui::Begin("Hierachy", &openHierachy);
-	
+		ImGui::Begin("Inspector", &openHierachy);
+		ImGui::Text("shader %s", shader->GetPath().c_str());
+		ImGui::Separator();
+		for (auto field : material->GetDataFields())
+		{
+			if (field->getType() == MaterialDataType::Vec4)
+			{
+				Vec4* type = (Vec4*)field.get();
+				ImGui::ColorEdit4(type->name.c_str(), glm::value_ptr(type->Value),0.01);
+			}
+
+			if (field->getType() == MaterialDataType::TexturePath)
+			{
+				TexturePath* type = (TexturePath*)field.get();
+				ImGui::Text(type->name.c_str());
+				ImGui::Image(reinterpret_cast<ImTextureID>(texasset.GetAsset()->GetID()), { 100,100 });
+				
+			}
+		}
 		ImGui::End();
 
+		ImGui::Begin("debug");
+		ImGui::Text("texture cache count : %i", Application::GetInstance().assetManager->GetTextureCount());
+		
+		ImGui::End();
+		_HierachyPanel->OnUpdate();
 		EndImGui();
 
 	}

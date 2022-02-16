@@ -25,6 +25,7 @@
 #include <thread>
 #include "Mesh/Mesh.h"
 #include "Renderer/UniformBuffer.h"
+#include "panels/SceneHierachyPanel.h"
 
 namespace Lithium
 {
@@ -67,8 +68,11 @@ namespace Lithium
 		Ref<UniformBuffer> _ub;
 		std::vector<Ref<Mesh>> meshes;
 		Ref<Shader> shader;
-		
+		Entity entity;
+		Ref<Material> material;
 		CameraBuffer data;
-
+		Ref<Texture> diffuse;
+		Ref<SceneHierachyPanel> _HierachyPanel;
+		Handle<Ref<Texture>> texasset;
 	};
 }
