@@ -23,6 +23,7 @@ project "NewEditor"
 		  "%{IncludeDir.imgui}",
 		  "%{IncludeDir.entt}",
 		  "%{IncludeDir.imguizmo}",
+		   "%{IncludeDir.lua}",
 		  
 	}
 

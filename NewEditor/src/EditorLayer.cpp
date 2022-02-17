@@ -5,7 +5,7 @@
 #include "Core/Math.h"
 #include "Font/Font.h"
 #include "Mesh/Material.h"
-
+#include "Script/Lua/LuaServer.h"
 
 
 namespace Lithium
@@ -64,7 +64,7 @@ namespace Lithium
 		texasset = Application::GetInstance().assetManager->LoadAsset<Ref<Texture>>("assets/images/test.jpg");
 		//t = Application::GetInstance().assetManager->LoadAsset<Ref<Texture>>("assets/images/test.jpg");
 		//Handle<Ref<Texture>> b = Application::GetInstance().assetManager->LoadAsset<Ref<Texture>>("assets/images/test.jpg");
-
+		LuaServer server = LuaServer();
 	}
 	void EditorLayer::OnUpdate()
 	{
