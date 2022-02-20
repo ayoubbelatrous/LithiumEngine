@@ -33,7 +33,7 @@ namespace Lithium
 		bool _Open = false;
 		glm::vec2 cellsize;
 		Ref<Texture> _Texture;
-		Ref<TextureData> _TextureData;
+		
 		bool hasMetadata = false;
 		EventCallback callback;
 	};

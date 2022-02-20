@@ -13,7 +13,6 @@
 namespace Lithium
 {
 	extern const std::filesystem::path root;
-	extern AssetMananger assetManager;
 	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -81,7 +80,7 @@ namespace Lithium
 	}
 	void InspectorPanel::OnCreate()
 	{
-		assetManager.LoadAsset<Ref<Texture>>("assets/images/test.png");
+	
 	}
 
 	void InspectorPanel::OnUpdate()
@@ -170,11 +169,6 @@ namespace Lithium
 				{
 					const wchar_t* path = (const wchar_t*)payload->Data;
 					std::filesystem::path texturepath = root/path;
-					_Selection.GetComponent<SpriteRendererComponent>().tex = assetManager.LoadAsset<Ref<Texture>>(texturepath.string());
-					std::filesystem::path _path = _Selection.GetComponent<SpriteRendererComponent>().tex->GetPath();
-					_Selection.GetComponent<SpriteRendererComponent>().textureData = assetManager.GetMetaData<Ref<TextureData>>(_path.string());
-					TextureMode mode = _Selection.GetComponent<SpriteRendererComponent>().textureData->GetMode();
-					Ref<TextureData> data = _Selection.GetComponent<SpriteRendererComponent>().textureData;
 
 					//CORE_LOG(_path);
 				}

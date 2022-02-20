@@ -4,15 +4,14 @@
 #include "Input/Input.h"
 #include "Core/Math.h"
 #include "Font/Font.h"
-
-
+#include "Lua/LuaServer.h"
 
 namespace Lithium
 {
 	
 
 	extern const std::filesystem::path root;
-	extern AssetMananger assetManager = AssetMananger();
+
 	void EditorLayer::OnCreate()
 	{
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
@@ -22,26 +21,22 @@ namespace Lithium
 		_shp = CreateRef<SceneHierachyPanel>();
 		_InspectorPanel = CreateRef<InspectorPanel>();
 		_InspectorPanel->OnCreate();
-		_SpriteEditor.OnCreate();
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
-		_SpriteEditor.SetEventCallback((BIND_EVENT(EditorLayer::onEditorEvent)));
-		//Font::GenFonts("assets/Editor/Fonts/OpenSans-Regular.ttf");
 
 		_MainScene = CreateRef<Scene>();
 		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
 		_Selection = Entity(entt::null, _MainScene.get());
 		FrameBufferAttachmentDescriptor mainframebufferspec(
 			{
-				FramebufferTextureFormat::RGBA8
+				FramebufferTextureFormat::RGBA8,
+			    FramebufferTextureFormat::RED_INTEGER
 			}
 		);
 
 		FrameBufferAttachmentDescriptor displayframebufferspec(
 			{
 				FramebufferTextureFormat::RGBA8,
-				FramebufferTextureFormat::RED_INTEGER,
-				FramebufferTextureFormat::Depth
 			}
 		);
 
@@ -52,9 +47,7 @@ namespace Lithium
 		framebuffer->Bind();
 		framebuffer->resize(1000, 1000);
 
-		
-		
-		//sz = Serializer(_MainScene);
+	
 		Entity entity = _MainScene->CreateEntity("name");
 		Entity entity3 = _MainScene->CreateEntity("dod");
 		Entity entity2 = _MainScene->CreateEntity("hello");
@@ -71,20 +64,14 @@ namespace Lithium
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 
-		//assetManager.GenerateTextureMetadata(texturedata);
-		//entity2.GetComponent<SpriteRendererComponent>().textureData = assetManager.LoadTextureMetadata("assets/test.metadata");
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
-	//	_MainScene->DuplicateEntity(entity3);
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
 		model = glm::translate(glm::mat4(1), pos);
-		//tex = CreateRef<Texture>("assets/images/atlastest.png");
 		_AssetBrowerPanel->OnCreate();
-		//entity3.GetComponent<SpriteRendererComponent>().tex = assetManager.GetByHandle<Ref<Texture>>(0);
-		//BatchRenderer::Init();
-		//FontRenderer::Init();
+		BatchRenderer::Init();
 		shader = CreateRef<Shader>("assets/shaders/test.shader");
 		frameshader = CreateRef<Shader>("assets/shaders/frame.shader");
 
@@ -106,8 +93,8 @@ namespace Lithium
 		layout->Push<float>(2);
 		layout->Push<float>(2);
 		vertarray->AddBuffer(vertbuffer, layout);
-
-		
+		LuaServer server;
+		server.Test();
 	}
 
 	void EditorLayer::OnUpdate()
@@ -154,25 +141,16 @@ namespace Lithium
 			}
 
 		}
-
-#pragma endregion
-		//CORE_LOG(mouse.x<<mouse.y);
-
-		//CORE_LOG(ray.x << ray.y << ray.z);
-
 		framebuffer->Bind();
-		//frameshader->Bind();
-		//frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID(0));
-		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
-		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
+		RendererCommand::ClearColor(glm::vec4(0.00, 0.10, 0.00, 0));
+		RendererCommand::Clear();
 		
-		//BatchRenderer::Begin(view, proj);
-		//BatchRenderer::DrawQuadTest(model, { 1,1,1,1 }, tex, -1);
+		BatchRenderer::Begin(view, proj);
 
-		//_MainScene->onEditorUpdate();
+		_MainScene->onEditorUpdate();
 		
-		//BatchRenderer::End();
+		BatchRenderer::End();
 		shader->Bind();
 		shader->SetUniformMat4f("projection", model* proj * view );
 	
@@ -184,49 +162,28 @@ namespace Lithium
 	    my = vs.y - my;
 		mouseX = (int)mx;
 		mouseY = (int)my;
+		if (Input::IsMouseKeyPressed(0) && ImGuizmo::IsUsing() == false)
 
-		/*glm::vec3 ndc = Math::GetNormalizedDeviceCoords({ mouseX, mouseY }, { viewportSize[0], viewportSize[1] });
-		//CORE_LOG(ray.x <<" " << ray.y);
-		glm::vec4 ClipCoords = glm::vec4(ndc.x, ndc.y, -1, 1);
-
-		glm::mat4 invertedproj = glm::inverse(proj);
-		glm::vec4 eyecoords = invertedproj * ClipCoords;
-		glm::vec4 rayeye = glm::vec4(eyecoords.x, eyecoords.y, -1.0, 0.0);
-		glm::vec3 raywor = glm::vec3();
-		raywor = (glm::inverse(view) * rayeye);
-		//raywor = glm::translate(glm::inverse(view), { rayeye.x,rayeye.y,rayeye.z});
-		raywor = glm::normalize(raywor);
-		//CORE_LOG(raywor.x << " " << raywor.y);*/
-
-		_Selection = _shp->GetSelection();
-		if (  Input::IsMouseKeyPressed(0) && _ViewportHovered && !ImGuizmo::IsOver()/*&&*/)
 		{
-			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
-			{
-				hoveringEntity = true;
-				pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
-				Entity ent{(entt::entity)pixelData,_MainScene.get()};
-				_Selection = ent;
-				_shp->SetSelection(_Selection);
-
-				hoveredEntity = ent;
-			}
+			int pixeldata = framebuffer->ReadPixel(1, mouseX, mouseY);
+			if (pixeldata < 0)
+			{}
 			else
 			{
-				hoveringEntity = false;
-				hoveredEntity = Entity();
-			}
+				Entity entity((entt::entity)pixeldata, _MainScene.get());
 
+				_Selection = entity;
+			}
 		}
+
 
 		framebuffer->UnBind();
 		
 
 		DisplayBuffer->Bind();
 		
-		//RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
-		//RendererCommand::Clear();
-	//	DisplayBuffer->ClearAttachment(1, -1);
+		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
+		RendererCommand::Clear();
 		vertarray->Bind();
 		frameshader->Bind();
 		framebuffer->BindTexture(0,0);
@@ -345,28 +302,7 @@ namespace Lithium
 
 	void EditorLayer::onEditorEvent(Event& e)
 	{
-		if (e.GetEventType() == EventType::OpenSpriteEditor)
-		{
-			OpenSpriteEditorEvent& SpriteEditorEvent = static_cast<OpenSpriteEditorEvent&>(e);
-			Ref<Texture> texture = assetManager.LoadAsset<Ref<Texture>>(SpriteEditorEvent.GetPath());
-			_SpriteEditor.Open();
-			_SpriteEditor.SetTexture(texture);
-		}
-		if (e.GetEventType() == EventType::MetaDataChanged)
-		{
-			MetaDataChangeEventEditorEvent& SpriteEditorEvent = static_cast<MetaDataChangeEventEditorEvent&>(e);
-
-			assetManager.ChangeMetaData(SpriteEditorEvent.GetPath());
-			auto view = _MainScene->GetRegistry().view<SpriteRendererComponent>();
-			for (auto entity : view)
-			{
-				auto& sc = view.get<SpriteRendererComponent>(entity);
-				if (sc.tex->loaded)
-				{
-					sc.textureData = assetManager.GetMetaData<Ref<TextureData>>(sc.tex->GetPath());
-				}
-			}
-		}
+		
 
 	}
 
@@ -430,7 +366,7 @@ namespace Lithium
 		_shp->OnUpdate();
 		_InspectorPanel->OnUpdate();
 		_AssetBrowerPanel->OnUpdate();
-		_SpriteEditor.OnUpdate();
+	
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 
 		ImGui::Begin("Scene");
@@ -455,7 +391,7 @@ namespace Lithium
 				std::filesystem::path texturepath = root / path;
 				if (hoveringEntity && hoveredEntity.HasComponent<SpriteRendererComponent>())
 				{
-					hoveredEntity.GetComponent<SpriteRendererComponent>().tex = assetManager.LoadAsset<Ref<Texture>>(texturepath.string());
+					
 				}
 
 			}

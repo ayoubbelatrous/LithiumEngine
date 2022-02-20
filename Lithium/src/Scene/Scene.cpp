@@ -30,7 +30,8 @@ namespace Lithium
 
 	void Scene::onEditorUpdate()
 	{
-		auto view = GetRegistry().view<TransformComponent, MeshRendererComponent,MeshComponent,MaterialComponent>();
+		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
+		/*
 		for (auto entity : view)
 		{
 			auto& [tc, msh] = view.get<TransformComponent, MeshComponent>(entity);
@@ -53,6 +54,13 @@ namespace Lithium
 			shader->SetUniformMat4f("model", tc.GetMatrix());
 			
 			msh._Mesh->Render();
+		}
+		*/
+		for (auto entity : view)
+		{
+		
+			auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
+			BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(),(int)entity);
 		}
 	}
 

@@ -28,6 +28,7 @@
 #include "AssetManager/AssetManager.h"
 #include <thread>
 #include "Mesh/Mesh.h"
+
 namespace Lithium
 {
 	struct Data
@@ -73,7 +74,6 @@ namespace Lithium
 		Ref<SceneHierachyPanel> _shp;
 		Ref<InspectorPanel> _InspectorPanel;
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
-		SpriteEditor _SpriteEditor;
 		//Serializer sz;
 		//Ref<Texture> tex2;
 		//Ref<Texture> tex3;

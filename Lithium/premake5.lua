@@ -42,6 +42,8 @@ includedirs
     "%{IncludeDir.msdf}",
     "%{IncludeDir.msdfatlasgen}",
     "%{IncludeDir.assimp}",
+    "%{IncludeDir.lua533}",
+
     
 }
 
@@ -59,6 +61,7 @@ links
 	"opengl32.lib",
     "msdf-atlas-gen",
       "assimp",
+      "lua533",
 }
 
 
