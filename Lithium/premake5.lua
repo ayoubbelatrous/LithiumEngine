@@ -43,6 +43,7 @@ includedirs
     "%{IncludeDir.msdfatlasgen}",
     "%{IncludeDir.assimp}",
     "%{IncludeDir.lua533}",
+    "%{IncludeDir.mono}",
 
     
 }
@@ -62,6 +63,7 @@ links
     "msdf-atlas-gen",
       "assimp",
       "lua533",
+      "%{LibDir.mono}/mono-2.0-sgen.lib",
 }
 
 

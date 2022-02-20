@@ -4,12 +4,11 @@
 #include "Input/Input.h"
 #include "Core/Math.h"
 #include "Font/Font.h"
-#include "Lua/LuaServer.h"
+
+
 
 namespace Lithium
 {
-	
-
 	extern const std::filesystem::path root;
 
 	void EditorLayer::OnCreate()
@@ -64,6 +63,7 @@ namespace Lithium
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 
+
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
@@ -93,8 +93,7 @@ namespace Lithium
 		layout->Push<float>(2);
 		layout->Push<float>(2);
 		vertarray->AddBuffer(vertbuffer, layout);
-		LuaServer server;
-		server.Test();
+
 	}
 
 	void EditorLayer::OnUpdate()

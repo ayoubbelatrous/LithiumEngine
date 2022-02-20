@@ -33,6 +33,25 @@ IncludeDir["msdf"] = "%{wks.location}/Lithium/vendor/msdf-atlas-gen/msdfgen"
 IncludeDir["assimp"] = "%{wks.location}/Lithium/vendor/assimp/include"
 IncludeDir["lua533"] = "%{wks.location}/Lithium/vendor/lua533/src"
 
+if os.getenv("MONO_DIR") then
+	IncludeDir["mono"] = os.getenv("MONO_DIR") .. "include/mono-2.0/"
+else
+	print("please set env var for mono path called MONO_DIR or use default [y,n]")
+	print("C:/Program Files/Mono")
+	local answer = io.read()
+	if answer == "n" then
+		IncludeDir["mono"] ="mononull"	
+
+	else
+		IncludeDir["mono"] ="C:/Program Files/Mono"	
+	end
+
+end
+
+
+LibDir = {}
+LibDir["mono"] = os.getenv("MONO_DIR") .. "lib"
+
 group "Dependencies"
 	include "Lithium/vendor/glfw"
 	include "Lithium/vendor/glad"
