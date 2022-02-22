@@ -24,6 +24,7 @@ project "Editor"
 		  "%{IncludeDir.entt}",
 		  "%{IncludeDir.imguizmo}",
 		  "%{IncludeDir.lua533}",
+		  "%{IncludeDir.mono}",
 		  
 	}
 

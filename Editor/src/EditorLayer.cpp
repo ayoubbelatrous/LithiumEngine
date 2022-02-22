@@ -4,7 +4,7 @@
 #include "Input/Input.h"
 #include "Core/Math.h"
 #include "Font/Font.h"
-
+#include "Script/MonoServer.h"
 
 
 namespace Lithium
@@ -93,6 +93,8 @@ namespace Lithium
 		layout->Push<float>(2);
 		layout->Push<float>(2);
 		vertarray->AddBuffer(vertbuffer, layout);
+
+		_monoserver = CreateRef<MonoServer>();
 
 	}
 

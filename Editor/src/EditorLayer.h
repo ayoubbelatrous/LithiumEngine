@@ -28,7 +28,7 @@
 #include "AssetManager/AssetManager.h"
 #include <thread>
 #include "Mesh/Mesh.h"
-
+#include "Script/MonoServer.h"
 namespace Lithium
 {
 	struct Data
@@ -94,6 +94,8 @@ namespace Lithium
 
 		Ref<VertexArray> vertarray;
 		Ref<VertexBuffer> vertbuffer;
+
+		Ref<MonoServer> _monoserver;
 
 	};
 }

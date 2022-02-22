@@ -1,0 +1,6 @@
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\Assem\Csharp.dll
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\Assem\Csharp.pdb
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\Csharp\obj\Debug\Csharp.csproj.CoreCompileInputs.cache
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\Csharp\obj\Debug\Csharp.dll
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\Csharp\obj\Debug\Csharp.pdb
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\Csharp\obj\Debug\Csharp.csproj.AssemblyReference.cache
