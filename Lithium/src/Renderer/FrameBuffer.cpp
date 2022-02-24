@@ -173,11 +173,7 @@ namespace Lithium
 	{
 
 
-		
-		glClearBufferiv(textureIds[i], 0, &value);
-		
-		
-
+		glClearTexImage(textureIds[i], 0,GL_RED_INTEGER, GL_INT, &value);
 	}
 
 }
