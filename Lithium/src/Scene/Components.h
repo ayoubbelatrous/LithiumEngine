@@ -12,6 +12,7 @@
 #include "Mesh/Mesh.h"
 #include "Mesh/Material.h"
 
+#include "Script/ScriptClass.h"
 
 namespace Lithium
 {
@@ -125,6 +126,24 @@ namespace Lithium
 		{}
 		Ref<Material> material;
 		
+	};
+
+
+
+	struct ScriptComponent
+	{
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent& other) = default;
+		ScriptComponent(const std::string& name)
+			:_name(name)
+		{
+			
+		}
+		
+		std::string _name;
+		Ref<ScriptClass> _Scriptclass;
+		
+		//Ref<ScriptObject> _Scriptobject;
 	};
 }
 
