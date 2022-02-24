@@ -60,9 +60,21 @@ namespace Lithium
 		{
 		
 			auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-			BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(),(int)entity);
+			BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(),(uint32_t)entity);
 		}
 	}
+
+	void Scene::onUpdate()
+	{
+		//TODO: get script component view.
+		//TODO: instantiate script object from scriptclass if not instatiated and set entity id.
+		//TODO: call onupdate on scriptobject.
+		
+	}
+
+	
+
+
 
 	Entity Scene::DuplicateEntity(Entity src)
 	{

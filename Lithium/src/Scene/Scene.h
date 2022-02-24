@@ -22,6 +22,7 @@ namespace Lithium
 		entt::registry& GetRegistry() { return _Registry; }
 
 		void onEditorUpdate();
+		void onUpdate();
 		void SetEventCallback(const EventCallback& e) { callback = e; }
 		template<typename Comp>
 	void CopyComponent(Entity src, Entity dst)
