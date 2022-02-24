@@ -29,6 +29,8 @@
 #include <thread>
 #include "Mesh/Mesh.h"
 #include "Script/MonoServer.h"
+#include "Core/Timer.h"
+
 namespace Lithium
 {
 	struct Data
@@ -52,6 +54,7 @@ namespace Lithium
 		void onEditorEvent(Event& e);
 		void RenderImgui();
 		void SceneEvent(Event& e);
+		void StartRuntime();
 	private:
 		glm::mat4 proj;
 		glm::mat4 view;
@@ -97,5 +100,9 @@ namespace Lithium
 
 		Ref<MonoServer> _monoserver;
 
+		Ref<Texture> _PlayButtonTexture;
+		Ref<Texture> _StopButtonTexture;
+		Ref<Texture> _PauseTexture;
+		
 	};
 }

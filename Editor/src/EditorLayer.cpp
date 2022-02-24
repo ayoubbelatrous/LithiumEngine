@@ -7,6 +7,7 @@
 #include "Script/MonoServer.h"
 
 
+
 namespace Lithium
 {
 	extern const std::filesystem::path root;
@@ -14,6 +15,8 @@ namespace Lithium
 	void EditorLayer::OnCreate()
 	{
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
+		_monoserver = CreateRef<MonoServer>();
+
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
@@ -62,7 +65,11 @@ namespace Lithium
 		entity2.AddComponent<TransformComponent>();
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-
+		entity3.AddComponent<ScriptComponent>("Test");
+		ScriptComponent& sco = entity3.GetComponent<ScriptComponent>();
+		sco._Scriptclass = _monoserver->GetClass(sco._name);
+		Ref<ScriptClass> scc = sco._Scriptclass;
+		
 
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
@@ -94,16 +101,25 @@ namespace Lithium
 		layout->Push<float>(2);
 		vertarray->AddBuffer(vertbuffer, layout);
 
-		_monoserver = CreateRef<MonoServer>();
-
+		_PlayButtonTexture = CreateRef<Texture>("assets/Editor/icons/playbutton.png");
 	}
 
 	void EditorLayer::OnUpdate()
 	{
+		//TODO: reload all classes in scriptcomponent if assembly changes
+		if (_monoserver->CheckForChange())
+		{
+			auto view = _MainScene->GetRegistry().view<ScriptComponent>();
+			
+			for (auto entity : view)
+			{
 
+				ScriptComponent& scc = view.get<ScriptComponent>(entity);
+				scc._Scriptclass = _monoserver->GetClass(scc._name);
+			}
+		}
 		
 #pragma region CalculateProjection
-
 		float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
 		float orthoLeft = -orthosize * AspectRatio * 0.5f;
 		float orthoRight = orthosize * AspectRatio * 0.5f;
@@ -143,10 +159,10 @@ namespace Lithium
 
 		}
 		framebuffer->Bind();
-		framebuffer->ClearAttachment(1, -1);
-		RendererCommand::ClearColor(glm::vec4(0.00, 0.10, 0.00, 0));
+	
+		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
 		RendererCommand::Clear();
-		
+		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);
 
 		_MainScene->onEditorUpdate();
@@ -163,12 +179,21 @@ namespace Lithium
 	    my = vs.y - my;
 		mouseX = (int)mx;
 		mouseY = (int)my;
-		if (Input::IsMouseKeyPressed(0) && ImGuizmo::IsUsing() == false)
+		if (Input::IsMouseKeyPressed(0) && !ImGuizmo::IsUsing())
 
 		{
 			int pixeldata = framebuffer->ReadPixel(1, mouseX, mouseY);
-			if (pixeldata < 0)
-			{}
+			
+			if (pixeldata == -1)
+			{
+				Entity entity(entt::null, _MainScene.get());
+
+				_Selection = entity;
+			}
+			else if (pixeldata <= -1)
+			{
+				
+			}
 			else
 			{
 				Entity entity((entt::entity)pixeldata, _MainScene.get());
@@ -360,9 +385,6 @@ namespace Lithium
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
 
-
-
-
 		ImGui::End();
 		_shp->OnUpdate();
 		_InspectorPanel->OnUpdate();
@@ -443,18 +465,16 @@ namespace Lithium
 		float padding = 10;
 		ImVec2 pos = ImVec2(_ViewportBounds[0].x + padding, _ViewportBounds[0].y + padding);
 		ImGui::SetNextWindowPos(pos );
-		ImGui::SetNextWindowSize({ 95,35 });
+		//ImGui::SetNextWindowSize({ 30,30 });
 
 		ImGui::Begin("win",(bool*)true,window_flags);
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 0,0 });
-		ImGui::Button("T", {30,35});
-		ImGui::SameLine();
-		ImGui::Button("R", { 30,35 });
-		ImGui::SameLine();
-		ImGui::Button("S", { 30,35 });
-		ImGui::SameLine();
+		if (ImGui::ImageButton((ImTextureID*)_PlayButtonTexture->GetID(), { 30, 35 }))
+		{
+			StartRuntime();
+		}
 		ImGui::PopStyleVar(2);
 		ImGui::End();
 
@@ -464,6 +484,10 @@ namespace Lithium
 		ImGui::Begin("Stats");
 		//CORE_LOG(Renderer2D::GetStats().DrawCalls);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		if (ImGui::Button("update assembly"))
+		{
+			_monoserver->CheckForChange();
+		}
 		ImGui::Text(_EditorStatus.c_str());
 		ImGui::End();
 
@@ -484,4 +508,10 @@ namespace Lithium
 		CreateEntityEvent& ev = static_cast<CreateEntityEvent&>(e);
 
 	}
+
+	void EditorLayer::StartRuntime()
+	{
+		
+	}
+
 }
