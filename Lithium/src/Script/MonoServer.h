@@ -2,6 +2,8 @@
 
 
 #include "Core/Base.h"
+#include "Script/ScriptClass.h"
+#include <filesystem>
 
 namespace Lithium
 {
@@ -11,8 +13,16 @@ namespace Lithium
 		MonoDomain* _MonoAppDomain;
 		MonoAssembly* _MonoAssembly;
 		MonoImage* _MonoImage;
+	
+		char* _assemblyData;
 		std::string _Path = "assets/TestProject/Assem/Csharp.dll";
-		
+		std::string _BinPath = "assets/TestProject/bin/Csharp.dll";
+
+
+
+		std::filesystem::file_time_type lastassemblytime;
+
+		void Bindinternals();
 		public:
 			MonoServer();
 			~MonoServer();
@@ -39,12 +49,13 @@ namespace Lithium
 				return _Path;
 			}
 
-			bool Invoke()
-			{
 
-			}
-
-
+			void Reload();
+			void DeleteAssemblies();
+			Ref<ScriptClass> GetClass(const std::string& name);
+			bool CheckForChange();
+			std::unordered_map<std::string, Ref<ScriptClass>> _ClassCache;
+			
 	};
 	
 

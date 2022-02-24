@@ -6,148 +6,35 @@
 #include <mono/metadata/debug-helpers.h>
 #include "Core/Base.h"
 #include "MonoServer.h"
-#include <cassert>
+#include <assert.h>
+
+#include <chrono>
+#include "Script/ScriptError.h"
+#include <mono/metadata/environment.h>
 
 
 namespace Lithium
 {
-	/*bool mono_destory_domain_with_assisisated_assembly(MonoDomain* domain_to_destroy) {
-		if (domain_to_destroy != _MainDomain) {
-			mono_domain_set(_MainDomain, 0);
-			mono_domain_unload(domain_to_destroy);
-			return true;
-		}
-		return false;
-	}*/
-	void Test()
-	{
-		
-
-
-
-
-
-
-
-
-
-
-
-
-		//mono_set_dirs("assets/CsharpAssemblies/", "assets/CsharpAssemblies/");
-
-		//_MainDomain = mono_jit_init_version("Root", "v4.0.30319");
-		//_Domain = mono_domain_create_appdomain("Csharp", NULL);
-		//if (_Domain)
-		//	mono_domain_set(_Domain, 0);
-
-		//	// Open assembly.
-		//	_Assembly = mono_domain_assembly_open(mono_domain_get(), "assets/TestProject/Assem/Csharp.dll");
-		//	if (_Assembly) 
-		//		_Image = mono_assembly_get_image(_Assembly);
-		//	
-		//mono_add_internal_call("Debug::Log", Log);
-	
-		//MonoClass* klass = mono_class_from_name(_Image, "", "Test");
-		//if (!klass)
-		//	CORE_LOG("!!!Loaded class TEST");
-
-		//MonoObject* object = mono_object_new(_Domain, klass);
-
-
-		//MonoClass* klass2 = mono_class_from_name(_Image, "", "Hello");
-		//if (!klass)
-		//	CORE_LOG("!!!Loaded class HELLo");
-
-		//MonoObject* object2 = mono_object_new(_Domain, klass2);
-	
-		//mono_runtime_object_init(object);
-		//mono_runtime_object_init(object2);
-		//if (!object)
-		//	CORE_LOG("!!!created object class");
-
-		//if (!object2)
-		//	CORE_LOG("!!!created object2 class");
-
-		//std::vector<std::string> _FieldsNames;
-		//std::vector<MonoClassField*> _Fields;
-		//MonoClassField* field;
-		//void* iter = nullptr;
-
-		//while ((field = mono_class_get_fields(klass, &iter)) != nullptr)
-		//{
-		//	if ((mono_field_get_flags(field)) == 0)
-		//		continue;
-		//	_FieldsNames.push_back(mono_field_get_name(field));
-		//	_Fields.push_back(field);
-		//}
-
-		//
-
-		//mono_field_set_value(object, _Fields[0],object2);
-
-
-		//
-		//MonoMethodDesc* BarkMethodDesc;
-		//const char* BarkMethodDescStr = "Test:Update";
-		//BarkMethodDesc = mono_method_desc_new(BarkMethodDescStr, NULL);
-		//if (!BarkMethodDesc)
-		//	CORE_LOG("!!!desc success");
-
-		////Search the method in the image
-		//MonoMethod* method;
-		//method = mono_method_desc_search_in_image(BarkMethodDesc, _Image);
-		//if (!method)
-		//	CORE_LOG("!!!method update in test found");
-		//void* args[1];
-		//float delta = 0.0116f;
-		//args[0] = &delta;
-
-		////Run the method
-		//std::cout << "Running the method: " << BarkMethodDescStr << std::endl;
-
-		//for (size_t i = 0; i < 1; i++)
-		//{
-		//	mono_runtime_invoke(method, object, args, nullptr);
-
-		//}
-
-
-		//if (std::cin.get()) {
-		//	mono_destory_domain_with_assisisated_assembly(_Domain);
-
-		//	if (std::cin.get())
-		//	{
-		//		CORE_LOG("update assembly!");
-		//		//update assembly
-		//	}
-		//	_Domain = mono_domain_create_appdomain("Csharp", NULL);
-		//	if (_Domain)
-		//		mono_domain_set(_Domain, 0);
-
-	
-		//	mono_image_close(_Image);
-		//	
-		//	_Assembly = mono_domain_assembly_open(mono_domain_get(), "assets/TestProject/Assem/Csharp.dll");
-		//	if (_Assembly)
-		//		_Image = mono_assembly_get_image(_Assembly);
-		//}
-
-
-		//mono_add_internal_call("Debug::Log", Log);
-		//MonoClass* testcla = mono_class_from_name(_Image, "", "Test");
-		//if (!klass)
-		//	CORE_LOG("!!!Loaded class TEST2");
-
-		//MonoObject* objj = mono_object_new(_Domain, testcla);
-
-		//mono_runtime_object_init(objj);
-
-		
+	static void Log(MonoString* log) {
+		const char* text = mono_string_to_utf8(log);
+		CORE_LOG(text);
 	}
+	static void BindFunc(const std::string& name,const void* Func)
+	{
+		mono_add_internal_call(name.c_str(), Func);
+	}
+	void MonoServer::Bindinternals()
+	{
+		//Binds debug class
+		BindFunc("Debug:Log", Log);
+	}
+
 	MonoServer::MonoServer()
 	{
+		lastassemblytime = std::filesystem::last_write_time(_Path);
+
 		InitMono();
+		Bindinternals();
 	}
 	MonoServer::~MonoServer()
 	{
@@ -155,7 +42,9 @@ namespace Lithium
 	}
 	void MonoServer::InitMono()
 	{
-		mono_set_dirs("assets/CsharpAssemblies/", "assets/CsharpAssemblies/");
+	
+		std::filesystem::copy_file(_Path.c_str(),_BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
+		mono_set_dirs("assets/CsharpAssemblies/", ".");
 
 		_MonoRootDomain = mono_jit_init("RootDomain");
 		_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
@@ -169,11 +58,11 @@ namespace Lithium
 		{
 			CORE_LOG("[CS MONO] : failed to create appdomain ' _MonoAppDomain '  ");
 			
-			assert("[CS MONO] : failed to create appdomain ' _MonoAppDomain '");
+			assert("");
 		}
 
 		
-		_MonoAssembly = mono_domain_assembly_open(mono_domain_get(),_Path.c_str());
+		_MonoAssembly = mono_domain_assembly_open(mono_domain_get(),_BinPath.c_str());
 		if (_MonoAssembly)
 		{
 			_MonoImage = mono_assembly_get_image(_MonoAssembly);
@@ -183,7 +72,7 @@ namespace Lithium
 		{
 			CORE_LOG("[CS MONO] : failed to load assembly ' _MonoAssembly '  ");
 
-			assert("[CS MONO] : failed to load assembly ' _MonoAssembly '  ");
+			assert("");
 		}
 
 
@@ -191,9 +80,84 @@ namespace Lithium
 		{
 			CORE_LOG("[CS MONO] : failed to create assembly ' _MonoImage '  ");
 
-			assert("[CS MONO] : failed to create assembly ' _MonoImage '  ");
+			assert("");
 		}
+	
+	}
+	void MonoServer::Reload()
+	{
+		_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
+		if (_MonoAppDomain)
+		mono_domain_set(_MonoAppDomain, 0);
+		else
+		{
+			CORE_LOG("error domain");
+		}
+
 		
+
+		_MonoAssembly = mono_domain_assembly_open(mono_domain_get(), _BinPath.c_str());
+	
+		_MonoImage = mono_assembly_get_image(_MonoAssembly);
+
+
+		Bindinternals();
+		_ClassCache.clear();
+
 		
 	}
+	void MonoServer::DeleteAssemblies()
+	{
+			mono_domain_set(_MonoRootDomain, 0);
+			mono_domain_unload(_MonoAppDomain);
+	}
+	bool MonoServer::CheckForChange()
+	{
+
+		//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+		if (std::filesystem::last_write_time(_Path) != lastassemblytime)
+		{
+			lastassemblytime = std::filesystem::last_write_time(_Path);
+			CORE_LOG("updating assembly");
+			DeleteAssemblies();
+			std::filesystem::copy_file(_Path.c_str(), _BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
+
+			Reload();
+			std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
+			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() << "[ns]" << std::endl;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+
+	}
+	Ref<ScriptClass> MonoServer::GetClass(const std::string& name)
+	{
+		if (_ClassCache.find(name) != _ClassCache.end())
+		{
+			return _ClassCache[name];
+		}
+		else
+		{
+			MonoClass* klass = mono_class_from_name(_MonoImage, "", name.c_str());
+			if (klass == NULL)
+			{
+				SCRIPT_ERROR("class not found : '" << name << "'");
+				return nullptr;
+			}
+			Ref<ScriptClass> _scriptclass = CreateRef<ScriptClass>((uint32_t)klass);
+			_scriptclass->SetName(name);
+			_scriptclass->LoadFields();
+			_ClassCache.emplace(name,_scriptclass);
+		
+			return _ClassCache[name];
+		}
+	}
+
+
 }
