@@ -110,17 +110,6 @@ namespace Lithium
 	void EditorLayer::OnUpdate()
 	{
 		//TODO: reload all classes in scriptcomponent if assembly changes
-		if (_monoserver->CheckForChange())
-		{
-			auto view = _MainScene->GetRegistry().view<ScriptComponent>();
-			
-			for (auto entity : view)
-			{
-
-				ScriptComponent& scc = view.get<ScriptComponent>(entity);
-				scc._Scriptclass = _monoserver->GetClass(scc._name);
-			}
-		}
 		
 #pragma region CalculateProjection
 		float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
@@ -173,6 +162,17 @@ namespace Lithium
 		case (SceneState::EDITOR):
 			{
 			_MainScene->onEditorUpdate();
+			if (_monoserver->CheckForChange())
+			{
+				auto view = _MainScene->GetRegistry().view<ScriptComponent>();
+
+				for (auto entity : view)
+				{
+
+					ScriptComponent& scc = view.get<ScriptComponent>(entity);
+					scc._Scriptclass = _monoserver->GetClass(scc._name);
+				}
+			}
 			}
 		case (SceneState::RUNTIME):
 		{
