@@ -11,7 +11,7 @@
 #include "OrthographicCamera.h"
 #include "Mesh/Mesh.h"
 #include "Mesh/Material.h"
-
+#include "Core/UUID.h"
 #include "Script/ScriptClass.h"
 
 namespace Lithium
@@ -20,6 +20,13 @@ namespace Lithium
 	{
 		None, Orthographic, Perspective
 
+	};
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
 	};
 	struct NameComponent
 	{
@@ -136,12 +143,10 @@ namespace Lithium
 		ScriptComponent(const ScriptComponent& other) = default;
 		ScriptComponent(const std::string& name)
 			:_name(name)
-		{
-			
-		}
+		{}
 		
 		std::string _name;
-		Ref<ScriptClass> _Scriptclass;
+		Ref<ScriptClass> _Scriptclass = nullptr;
 		
 		//Ref<ScriptObject> _Scriptobject;
 	};
