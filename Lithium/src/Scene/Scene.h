@@ -5,6 +5,7 @@
 #include "Event/Event.h"
 #include "Event/AppEvents.h"
 #include <functional>
+#include "Core/UUID.h"
 
 namespace Lithium
 {
@@ -17,6 +18,7 @@ namespace Lithium
 		Scene();
 
 		Entity CreateEntity(const std::string& name);
+		Entity CreateEntityWithUUID(UUID uuid,const std::string& name);
 		void DeleteEntity(Entity entity);
 		
 		entt::registry& GetRegistry() { return _Registry; }
@@ -25,12 +27,12 @@ namespace Lithium
 		void onUpdate();
 		void SetEventCallback(const EventCallback& e) { callback = e; }
 		template<typename Comp>
-	void CopyComponent(Entity src, Entity dst)
-	{
+	    void CopyComponent(Entity src, Entity dst)
+	    {
 		if (src.HasComponent<Comp>())
 			dst.AddOrReplaceComponent<Comp>(src.GetComponent<Comp>());
-	}
-
+	    }
+		static Ref<Scene> Copy(const Ref<Scene>& src);
 	Entity DuplicateEntity(Entity src);
 	private:
 		entt::registry _Registry;

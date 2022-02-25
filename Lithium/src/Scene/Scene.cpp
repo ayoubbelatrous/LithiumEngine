@@ -11,13 +11,37 @@ namespace Lithium
 	Scene::Scene()
 		:_Registry(entt::registry())
 	{}
+	
+	template<typename Component>
+	static void CopyComponentAll(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
+	{
+		auto view = src.view<Component>();
+		for (auto e : view)
+		{
+			UUID uuid = src.get<IDComponent>(e).ID;
+			
+			entt::entity dstEnttID = enttMap.at(uuid);
 
-
+			auto component = src.get<Component>(e);
+			dst.emplace_or_replace<Component>(dstEnttID, component);
+		}
+	}
+	
 	Entity Scene::CreateEntity(const std::string& name)
 	{
 		Entity ent(_Registry.create(), this);
+		ent.AddComponent<IDComponent>(UUID());
 		ent.AddComponent<NameComponent>(name);
-		ent.AddComponent<ChildManagerComponent>();
+		CreateEntityEvent e = CreateEntityEvent();
+		//callback(e);
+		return ent;
+	}
+
+	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
+	{
+		Entity ent(_Registry.create(), this);
+		ent.AddComponent<IDComponent>(uuid);
+		ent.AddComponent<NameComponent>(name);
 		CreateEntityEvent e = CreateEntityEvent();
 		//callback(e);
 		return ent;
@@ -31,31 +55,7 @@ namespace Lithium
 	void Scene::onEditorUpdate()
 	{
 		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
-		/*
-		for (auto entity : view)
-		{
-			auto& [tc, msh] = view.get<TransformComponent, MeshComponent>(entity);
 		
-			Entity ent = { entity,this };
-			MaterialComponent mtc = ent.GetComponent<MaterialComponent>();
-			Ref<Material> material = mtc.material;
-
-			Ref<Shader> shader = material->GetShader();
-			
-			shader->Bind();
-			for (auto field : material->GetDataFields())
-			{
-				if (field->getType() == MaterialDataType::Vec4)
-				{
-					Vec4* vec4 = (Vec4*)field.get();
-					shader->SetUniform4f(vec4->name,vec4->Value);
-				}
-			}
-			shader->SetUniformMat4f("model", tc.GetMatrix());
-			
-			msh._Mesh->Render();
-		}
-		*/
 		for (auto entity : view)
 		{
 		
@@ -69,12 +69,43 @@ namespace Lithium
 		//TODO: get script component view.
 		//TODO: instantiate script object from scriptclass if not instatiated and set entity id.
 		//TODO: call onupdate on scriptobject.
-		
+		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
+
+		for (auto entity : view)
+		{
+
+			auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
+			BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(), (uint32_t)entity);
+		}
 	}
 
 	
 
 
+
+	Ref<Scene> Scene::Copy(const Ref<Scene>& src)
+	{
+		std::unordered_map<UUID, entt::entity> enttMap;
+
+		Ref<Scene> newscene = CreateRef<Scene>();
+		auto view = src->GetRegistry().view<NameComponent>();
+		entt::registry& srcSceneRegistry = src->GetRegistry();
+
+		for (auto e : view)
+		{
+			UUID uuid = srcSceneRegistry.get<IDComponent>(e).ID;
+			const auto& name = srcSceneRegistry.get<NameComponent>(e).Name;
+			Entity newEntity = newscene->CreateEntityWithUUID(uuid, name);
+			enttMap[uuid] = newEntity.GetHandle();
+		}
+		entt::registry& dstSceneRegistry = newscene->GetRegistry();
+		CopyComponentAll<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<MaterialComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<ScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		return newscene;
+	}
 
 	Entity Scene::DuplicateEntity(Entity src)
 	{
