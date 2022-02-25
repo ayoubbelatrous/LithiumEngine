@@ -26,6 +26,7 @@ namespace Lithium
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 
+		
 		_MainScene = CreateRef<Scene>();
 		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
 		_Selection = Entity(entt::null, _MainScene.get());
@@ -102,6 +103,8 @@ namespace Lithium
 		vertarray->AddBuffer(vertbuffer, layout);
 
 		_PlayButtonTexture = CreateRef<Texture>("assets/Editor/icons/playbutton.png");
+		_StopButtonTexture = CreateRef<Texture>("assets/Editor/icons/stopbutton.png");
+
 	}
 
 	void EditorLayer::OnUpdate()
@@ -165,7 +168,17 @@ namespace Lithium
 		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);
 
-		_MainScene->onEditorUpdate();
+		switch (_sceneState)
+		{
+		case (SceneState::EDITOR):
+			{
+			_MainScene->onEditorUpdate();
+			}
+		case (SceneState::RUNTIME):
+		{
+			_MainScene->onUpdate();
+		}
+		}
 		
 		BatchRenderer::End();
 		shader->Bind();
@@ -471,10 +484,20 @@ namespace Lithium
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 0,0 });
-		if (ImGui::ImageButton((ImTextureID*)_PlayButtonTexture->GetID(), { 30, 35 }))
-		{
-			StartRuntime();
+		if (_sceneState == SceneState::RUNTIME) {
+			if (ImGui::ImageButton((ImTextureID*)_StopButtonTexture->GetID(), { 30, 35 }))
+			{
+				StopRuntime();
+			}
 		}
+		else if(_sceneState == SceneState::EDITOR)
+		{
+			if (ImGui::ImageButton((ImTextureID*)_PlayButtonTexture->GetID(), { 30, 35 }))
+			{
+				StartRuntime();
+			}
+		}
+	
 		ImGui::PopStyleVar(2);
 		ImGui::End();
 
@@ -511,7 +534,16 @@ namespace Lithium
 
 	void EditorLayer::StartRuntime()
 	{
+		_EditorScene = Scene::Copy(_MainScene);
+		_sceneState = SceneState::RUNTIME;
+	}
+
+	void EditorLayer::StopRuntime()
+	{
 		
+		_MainScene = _EditorScene;
+
+		_sceneState = SceneState::EDITOR;
 	}
 
 }

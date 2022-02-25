@@ -33,6 +33,13 @@
 
 namespace Lithium
 {
+	enum class SceneState
+	{
+		None = 0,
+		PAUSE,
+		EDITOR,
+		RUNTIME
+	};
 	struct Data
 	{
 		std::string name = "entity";
@@ -55,6 +62,7 @@ namespace Lithium
 		void RenderImgui();
 		void SceneEvent(Event& e);
 		void StartRuntime();
+		void StopRuntime();
 	private:
 		glm::mat4 proj;
 		glm::mat4 view;
@@ -64,6 +72,8 @@ namespace Lithium
 		Ref<FrameBuffer> framebuffer;
 		Ref<FrameBuffer> DisplayBuffer;
 		Ref<Scene> _MainScene;
+		Ref<Scene> _RuntimeScene;
+		Ref<Scene> _EditorScene;
 
 		bool _ViewportHovered = false;
 		bool _ViewportFocus = false;
@@ -103,6 +113,6 @@ namespace Lithium
 		Ref<Texture> _PlayButtonTexture;
 		Ref<Texture> _StopButtonTexture;
 		Ref<Texture> _PauseTexture;
-		
+		SceneState _sceneState = SceneState::EDITOR;
 	};
 }
