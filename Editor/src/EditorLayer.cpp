@@ -170,13 +170,22 @@ namespace Lithium
 				{
 
 					ScriptComponent& scc = view.get<ScriptComponent>(entity);
-					scc._Scriptclass = _monoserver->GetClass(scc._name);
+					std::string name = scc._name;
+
+					Entity ent((entt::entity)entity, _MainScene.get());
+					ent.RemoveComponent<ScriptComponent>();
+					ent.AddComponent<ScriptComponent>(name);
+					ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
+					newscc._Scriptclass = _monoserver->GetClass(name);
 				}
 			}
+			break;
 			}
 		case (SceneState::RUNTIME):
 		{
 			_MainScene->onUpdate();
+			break;
+
 		}
 		}
 		
@@ -192,8 +201,7 @@ namespace Lithium
 	    my = vs.y - my;
 		mouseX = (int)mx;
 		mouseY = (int)my;
-		if (Input::IsMouseKeyPressed(0) && !ImGuizmo::IsUsing())
-
+		if ( !ImGuizmo::IsUsing() && Input::IsMouseKeyPressed(0) )
 		{
 			int pixeldata = framebuffer->ReadPixel(1, mouseX, mouseY);
 			
@@ -263,7 +271,6 @@ namespace Lithium
 			{
 				_EditorStatus = "Saving Scene...";
 				Serializer ser(_MainScene);
-				//sz.SerializeScene("assets/scenes/main.lis");
 				ser.SerializeScene("assets/scenes/test.lis");
 				_EditorStatus = "";
 			}
@@ -274,17 +281,10 @@ namespace Lithium
 			if (control)
 			{
 				Ref<Scene> scene = CreateRef<Scene>();
-				//sz = Serializer(scene);
-				_EditorStatus = "Reloading Scene...";
-				//	sz.DeserializeScene("assets/scenes/main.lis");
-				Serializer ser(_MainScene);
-				ser.DeserializeScene("assets/scenes/test.lis");
+				Serializer sz = Serializer(scene);
+				sz.DeserializeScene("assets/scenes/test.lis");
 				_MainScene = scene;
 				_Selection = Entity(entt::null, nullptr);
-				_InspectorPanel->SetScene(_MainScene);
-				_shp->SetScene(_MainScene);
-				_InspectorPanel->SetSelection(_shp->GetSelection());
-				_EditorStatus = "";
 			}
 		}
 		
@@ -504,6 +504,16 @@ namespace Lithium
 		ImGui::End();
 
 		ImGui::PopStyleVar();
+		ImGui::Begin("Console");
+		if (ImGui::Button("Clear"))
+		{
+			MonoServer::_BufferLog.clear();
+		}
+		for (const char* log : MonoServer::_BufferLog)
+		{
+			ImGui::Selectable(log);
+		}
+		ImGui::End();
 		ImGui::Begin("Stats");
 		//CORE_LOG(Renderer2D::GetStats().DrawCalls);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -529,7 +539,6 @@ namespace Lithium
 	void EditorLayer::SceneEvent(Event& e)
 	{
 		CreateEntityEvent& ev = static_cast<CreateEntityEvent&>(e);
-
 	}
 
 	void EditorLayer::StartRuntime()
@@ -540,9 +549,7 @@ namespace Lithium
 
 	void EditorLayer::StopRuntime()
 	{
-		
 		_MainScene = _EditorScene;
-
 		_sceneState = SceneState::EDITOR;
 	}
 

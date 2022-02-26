@@ -3,5 +3,7 @@
 public abstract class Component
 {
    
-    public float entityID = 0;
+    public int entityID;
+
 }
+

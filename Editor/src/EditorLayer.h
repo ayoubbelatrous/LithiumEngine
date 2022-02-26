@@ -29,6 +29,8 @@
 #include <thread>
 #include "Mesh/Mesh.h"
 #include "Script/MonoServer.h"
+#include "Script/ScriptClass.h"
+#include "Script/ScriptObject.h"
 #include "Core/Timer.h"
 
 namespace Lithium
@@ -114,5 +116,6 @@ namespace Lithium
 		Ref<Texture> _StopButtonTexture;
 		Ref<Texture> _PauseTexture;
 		SceneState _sceneState = SceneState::EDITOR;
+		
 	};
 }

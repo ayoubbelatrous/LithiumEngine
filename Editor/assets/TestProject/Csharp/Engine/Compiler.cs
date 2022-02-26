@@ -19,6 +19,10 @@ namespace Engine
             results.Errors.Cast<CompilerError>().ToList().ForEach(error => errorlist.Add(error.ErrorText +" :: " + error.ErrorNumber));
 
             return errorlist.ToArray();
+
+
+
+
         }
 
     }

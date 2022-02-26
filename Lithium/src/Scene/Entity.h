@@ -32,7 +32,11 @@ namespace Lithium
 		{
 			return _Scene->GetRegistry().get<T>(_Handle);
 		}
-
+		template<typename T>
+	    void RemoveComponent()
+		{
+			_Scene->GetRegistry().remove<T>(_Handle);
+		}
 		entt::entity GetHandle()
 		{
 			return _Handle;

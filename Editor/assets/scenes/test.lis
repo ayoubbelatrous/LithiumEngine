@@ -1,28 +1,6 @@
 Scene: NONE
 Entities:
-  - Entity: 2
-    Name: hello
-    Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
-    Child Manager:
-      children: ids go here
-  - Entity: 1
-    Name: dod
-    Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
-    Child Manager:
-      children: ids go here
-  - Entity: 0
+  - Entity: 317593265
     Name: name
     Transform:
       Position: [0, 0, 0]
@@ -31,5 +9,21 @@ Entities:
     Sprite Renderer:
       Color: [1, 1, 1, 1]
       Texture Path: ""
-    Child Manager:
-      children: ids go here
+  - Entity: 3477099670
+    Name: dod
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""
+  - Entity: 1793844807
+    Name: hello
+    Transform:
+      Position: [-2.29349756, -0.105448097, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""

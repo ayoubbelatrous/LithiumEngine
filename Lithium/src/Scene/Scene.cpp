@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "Renderer/Renderer2D.h"
-
+#include "Script/MonoServer.h"
 
 namespace Lithium
 {
@@ -69,14 +69,39 @@ namespace Lithium
 		//TODO: get script component view.
 		//TODO: instantiate script object from scriptclass if not instatiated and set entity id.
 		//TODO: call onupdate on scriptobject.
-		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
-
-		for (auto entity : view)
 		{
+			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
 
-			auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-			BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(), (uint32_t)entity);
+			for (auto entity : view)
+			{
+
+				auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
+				BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(), (uint32_t)entity);
+			}
 		}
+	
+
+		{
+			auto view = GetRegistry().view<ScriptComponent>();
+
+			for (auto entity : view)
+			{
+
+				
+				auto& scc = view.get<ScriptComponent>(entity);
+				if (scc.created == false)
+				{
+					scc._Scriptobject = ScriptClass::CreateInstance(scc._Scriptclass);
+					ScriptClass::InitObjectRuntime(scc._Scriptobject);
+					scc.created = true;
+				}
+				scc._Scriptobject->Invoke();
+				
+			}
+		}
+
+
+	
 	}
 
 	

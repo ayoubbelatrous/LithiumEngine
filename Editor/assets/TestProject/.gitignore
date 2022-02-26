@@ -1,0 +1,5 @@
+bin/*
+Csharp/obj/*
+Csharp/obj/Debug/*
+Csharp/bin/*
+Assem/*

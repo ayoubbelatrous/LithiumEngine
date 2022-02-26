@@ -82,8 +82,10 @@ namespace Lithium
 	}
 	static void SerializeEntity(YAML::Emitter& emitter, Entity entity)
 	{
+		IDComponent& idc = entity.GetComponent<IDComponent>();
+
 		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "Entity" << YAML::Value << (uint32_t)entity.GetHandle();
+		emitter << YAML::Key << "Entity" << YAML::Value << (uint32_t)idc.ID;
 		NameComponent& name = entity.GetComponent<NameComponent>();
 		emitter << YAML::Key << "Name" << YAML::Value << name.GetName();
 
@@ -144,14 +146,17 @@ namespace Lithium
 			CORE_LOG("failed to load scene");
 			return;
 		}
+
+
 		auto entities = data["Entities"];
 		
 		for (auto entity : entities)
 		{
 			Entity deserEntity;
-			auto id = data["Entity"];
-			std::string nameC = entity["Name"].as<std::string>();
-			deserEntity = _Scene->CreateEntity(nameC);
+			
+			uint64_t uuid = entity["Entity"].as<uint64_t>();
+			std::string name = entity["Name"].as<std::string>();
+			deserEntity = _Scene->CreateEntityWithUUID(UUID(uuid), name);
 
 			auto transform = entity["Transform"];
 			if (transform)

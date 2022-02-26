@@ -13,6 +13,7 @@
 #include "Mesh/Material.h"
 #include "Core/UUID.h"
 #include "Script/ScriptClass.h"
+#include "Script/ScriptObject.h"
 
 namespace Lithium
 {
@@ -148,7 +149,9 @@ namespace Lithium
 		std::string _name;
 		Ref<ScriptClass> _Scriptclass = nullptr;
 		
-		//Ref<ScriptObject> _Scriptobject;
+		Ref<ScriptObject> _Scriptobject = nullptr;
+
+		bool created = false;
 	};
 }
 

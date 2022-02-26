@@ -1,17 +1,29 @@
 #include "lipch.h"
-#include "ScriptClass.h"
-#include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
-#include <mono/metadata/object.h>
 
-#include <mono/metadata/debug-helpers.h>
-#include <mono/metadata/environment.h>
-#include <mono/metadata/attrdefs.h>
+#include "Script/ScriptObject.h"
+#include "Script/ScriptClass.h"
+#include "glm.hpp"
 
 
 namespace Lithium
 {
 	
+	Ref<ScriptObject> ScriptClass::CreateInstance(const Ref<ScriptClass>& klass)
+	{
+		Ref<ScriptObject> object = CreateRef<ScriptObject>();
+		object->SetHandle(mono_object_new(klass->_DomainHandle, klass->_Handle));
+		object->SetClass(klass);
+		glm::vec2 test(10.0f);
+		mono_field_set_value(object->GetHandle(), klass->GetFields()["test"]->_fieldHandle,&test);
+		return object;
+		
+ 	}
+
+	void ScriptClass::InitObjectRuntime(const Ref<ScriptObject>& object)
+	{
+		mono_runtime_object_init(object->GetHandle());
+	}
+
 	void ScriptClass::SetName(const std::string& name)
 	{
 		_Name = name;
@@ -22,9 +34,14 @@ namespace Lithium
 		return _Name;
 	}
 
-	uint32_t ScriptClass::GetHandle()
+	MonoClass* ScriptClass::GetHandle()
 	{
 		return _Handle;
+	}
+
+	MonoDomain* ScriptClass::GetDomainHandle()
+	{
+		return _DomainHandle;
 	}
 
 	void ScriptClass::Reload()
@@ -38,7 +55,7 @@ namespace Lithium
 		MonoClassField* field;
 		void* iter = nullptr;
 		_Fields.clear();
-		while ((field = mono_class_get_fields((MonoClass*)_Handle, &iter)) != nullptr)
+		while ((field = mono_class_get_fields(_Handle, &iter)) != nullptr)
 		{
 			if ((mono_field_get_flags(field) & MONO_FIELD_ATTR_PUBLIC) == 0)
 				continue;
@@ -48,7 +65,9 @@ namespace Lithium
 			Ref<ScriptClassField> _field = CreateRef<ScriptClassField>();
 			_field->name = name;
 			_field->type = type;
+			_field->_fieldHandle = field;
 			_Fields.emplace(name,_field);
+			
 		}
 		
 	}

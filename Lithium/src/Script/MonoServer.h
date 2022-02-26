@@ -1,18 +1,22 @@
 #pragma once
 
-
-#include "Core/Base.h"
-#include "Script/ScriptClass.h"
 #include <filesystem>
+#include "Script/ScriptClass.h"
+#include <mono/jit/jit.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/object.h>
+#include <mono/metadata/environment.h>
+#include <mono/metadata/attrdefs.h>
 
 namespace Lithium
 {
 	class MonoServer
 	{
-		MonoDomain* _MonoRootDomain;
-		MonoDomain* _MonoAppDomain;
-		MonoAssembly* _MonoAssembly;
-		MonoImage* _MonoImage;
+		MonoDomain* _MonoRootDomain = nullptr;
+		MonoDomain* _MonoAppDomain = nullptr;
+		MonoAssembly* _MonoAssembly = nullptr;
+		MonoImage* _MonoImage = nullptr;
 	
 		char* _assemblyData;
 		std::string _Path = "assets/TestProject/Assem/Csharp.dll";
@@ -26,36 +30,15 @@ namespace Lithium
 		public:
 			MonoServer();
 			~MonoServer();
+	
 			void InitMono();
-			inline MonoDomain* GetRootDomain()
-				const
-			{
-				return _MonoRootDomain;
-			}
-			inline MonoDomain* GetAppDomain()
-				const
-			{
-				return _MonoAppDomain;
-			}
-			//Set Mono Assembly Path
-			inline std::string SetPath(const std::string& path)
-				const
-			{
-				return path;
-			}
-
-			inline std::string GetPath()
-			{
-				return _Path;
-			}
-
-
+			static void Log(MonoString* log);
+			static std::vector<const char*> _BufferLog;
 			void Reload();
 			void DeleteAssemblies();
 			Ref<ScriptClass> GetClass(const std::string& name);
 			bool CheckForChange();
 			std::unordered_map<std::string, Ref<ScriptClass>> _ClassCache;
-			
 	};
 	
 

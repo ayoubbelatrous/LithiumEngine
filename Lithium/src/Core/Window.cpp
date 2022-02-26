@@ -82,6 +82,8 @@ namespace Lithium
 				WindowFileDropEvent ev = WindowFileDropEvent(count, paths);
 				wdata.callback(ev);
 		});
+
+		//glfwSwapInterval(1);
 	}
 
 	void Window::OnUpdate()
