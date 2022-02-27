@@ -9,20 +9,35 @@
 namespace Lithium
 {
 	
-	void ScriptObject::Invoke()
+	void ScriptObject::SetMethods(std::unordered_map <std::string, Ref<ScriptMethod>> methods)
 	{
-		MonoMethodDesc* desc;
-		desc = mono_method_desc_new("Test:Update()", false);
-		if (!desc)
+		_Methods = methods;
+	}
+
+	void ScriptObject::SetFields(std::unordered_map <std::string, Ref<ScriptClassField>> fields)
+	{
+		std::unordered_map<std::string, Ref<ScriptClassField>> newfields;
+		for (auto field : fields)
 		{
-			CORE_LOG("method not found!!");
+			Ref<ScriptClassField> f = CreateRef<ScriptClassField>(field.second->_fieldHandle, _Handle);
+			f->_ComponentClass = field.second->_ComponentClass;
+			f->CheckIfSubClassOfComponent();
+			newfields.emplace(field.first, f);
+		}
+		_Fields = newfields;
+	}
+
+	void ScriptObject::Invoke(const std::string& name)
+	{
+		if (_Methods.find(name) != _Methods.end())
+		{
+			_Methods[name]->Invoke(nullptr,this);
 		}
 		else
 		{
-			MonoMethod* method = mono_method_desc_search_in_class(desc, _scriptclass->GetHandle());
-
-			mono_runtime_invoke(method, _Handle, nullptr, nullptr);
+			CORE_LOG("method" << name << " not found");
 		}
+
 
 	}
 

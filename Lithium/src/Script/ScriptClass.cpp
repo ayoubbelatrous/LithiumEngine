@@ -13,8 +13,8 @@ namespace Lithium
 		Ref<ScriptObject> object = CreateRef<ScriptObject>();
 		object->SetHandle(mono_object_new(klass->_DomainHandle, klass->_Handle));
 		object->SetClass(klass);
-		glm::vec2 test(10.0f);
-		mono_field_set_value(object->GetHandle(), klass->GetFields()["test"]->_fieldHandle,&test);
+		object->SetMethods(klass->GetMethods());
+		object->SetFields(klass->GetFields());
 		return object;
 		
  	}
@@ -62,12 +62,27 @@ namespace Lithium
 			std::string name = mono_field_get_name(field);
 			
 			uint32_t type = (uint32_t)mono_field_get_type(field);
-			Ref<ScriptClassField> _field = CreateRef<ScriptClassField>();
+			Ref<ScriptClassField> _field = CreateRef<ScriptClassField>(field,nullptr);
 			_field->name = name;
 			_field->type = type;
-			_field->_fieldHandle = field;
+			_field->_ComponentClass = _ComponentClass;
+			_field->CheckIfSubClassOfComponent();
+			
 			_Fields.emplace(name,_field);
 			
+		}
+
+		MonoMethod* method;
+		iter = nullptr;
+		_Methods.clear();
+
+		while ((method = mono_class_get_methods(_Handle, &iter)) != nullptr)
+		{
+
+
+			Ref<ScriptMethod> _method = CreateRef<ScriptMethod>(method);
+			std::string methodname = mono_method_get_name(method);
+			_Methods.emplace(methodname,_method);
 		}
 		
 	}
@@ -75,6 +90,11 @@ namespace Lithium
 	std::unordered_map <std::string, Ref<ScriptClassField>> ScriptClass::GetFields()
 	{
 		return _Fields;
+	}
+
+	std::unordered_map <std::string, Ref<ScriptMethod>> ScriptClass::GetMethods()
+	{
+		return _Methods;
 	}
 
 }

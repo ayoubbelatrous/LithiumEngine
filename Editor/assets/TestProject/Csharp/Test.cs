@@ -45,16 +45,37 @@ public struct Vector3
 
 }
 
+
+
+[StructLayout(LayoutKind.Sequential)]
+public struct Transform
+{
+
+    public Vector3 pos;
+    public Vector3 rot;
+    public Vector3 sca;
+    public override string ToString()
+    {
+        string str = "POS : " + pos +
+            "\n ROT : " + rot +
+            "\n SCA : " + sca
+            ;
+        return str;
+    }
+}
+
+
 class Test : Component
 {
-    public Vector3 test;
+    public Transform test;
+    public PlayerScript playerscript;
     void Start()
     {
-
+        
     }
 
    void Update()
-   { 
-      Debug.Log("TEST : " + test);
-   }
+   {
+        Debug.Log(test);
+    }
 }

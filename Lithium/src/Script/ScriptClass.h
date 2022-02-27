@@ -2,7 +2,7 @@
 #include "Core/Base.h"
 #include "Script/ScriptClassField.h"
 #include "Script/ScriptObject.h"
-
+#include "Script/ScriptMethod.h"
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -21,9 +21,10 @@ namespace Lithium
 		std::string _Name;
 		MonoClass* _Handle;
 		MonoDomain* _DomainHandle;
-		std::unordered_map <std::string,uint32_t> _Properties;
-		std::unordered_map <std::string,uint32_t> _Methods;
+		MonoClass* _ComponentClass;
 		std::unordered_map <std::string,Ref<ScriptClassField>> _Fields;
+		std::unordered_map <std::string,Ref<ScriptClassField>> _Properties;
+		std::unordered_map <std::string,Ref<ScriptMethod>> _Methods;
 		
 	public:
 		static Ref<ScriptObject> CreateInstance(const Ref<ScriptClass>& klass);
@@ -39,5 +40,12 @@ namespace Lithium
 		void Reload();
 		void LoadFields();
 		std::unordered_map <std::string, Ref<ScriptClassField>> GetFields();
+		std::unordered_map <std::string, Ref<ScriptMethod>> GetMethods();
+		bool IsSubClassFromComponent = false;
+
+		void SetComponentClass(MonoClass* compClass)
+		{
+			_ComponentClass = compClass;
+		}
 	};
 }

@@ -17,15 +17,11 @@ namespace Lithium
 		MonoDomain* _MonoAppDomain = nullptr;
 		MonoAssembly* _MonoAssembly = nullptr;
 		MonoImage* _MonoImage = nullptr;
-	
+		MonoClass* _ComponentBaseClass;
 		char* _assemblyData;
 		std::string _Path = "assets/TestProject/Assem/Csharp.dll";
 		std::string _BinPath = "assets/TestProject/bin/Csharp.dll";
-
-
-
 		std::filesystem::file_time_type lastassemblytime;
-
 		void Bindinternals();
 		public:
 			MonoServer();

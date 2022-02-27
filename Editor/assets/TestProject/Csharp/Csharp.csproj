@@ -45,6 +45,7 @@
     <Compile Include="Engine\Compiler.cs" />
     <Compile Include="Engine\Entity.cs" />
     <Compile Include="Lithium.cs" />
+    <Compile Include="PlayerScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Test.cs" />

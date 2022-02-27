@@ -33,7 +33,8 @@ namespace Lithium
 		FrameBufferAttachmentDescriptor mainframebufferspec(
 			{
 				FramebufferTextureFormat::RGBA8,
-			    FramebufferTextureFormat::RED_INTEGER
+			    FramebufferTextureFormat::RED_INTEGER,
+			    FramebufferTextureFormat::Depth,
 			}
 		);
 
@@ -169,7 +170,7 @@ namespace Lithium
 				for (auto entity : view)
 				{
 
-					ScriptComponent& scc = view.get<ScriptComponent>(entity);
+					ScriptComponent scc = view.get<ScriptComponent>(entity);
 					std::string name = scc._name;
 
 					Entity ent((entt::entity)entity, _MainScene.get());
@@ -269,10 +270,7 @@ namespace Lithium
 		{
 			if (control)
 			{
-				_EditorStatus = "Saving Scene...";
-				Serializer ser(_MainScene);
-				ser.SerializeScene("assets/scenes/test.lis");
-				_EditorStatus = "";
+				
 			}
 		}
 		
@@ -523,6 +521,10 @@ namespace Lithium
 		}
 		ImGui::Text(_EditorStatus.c_str());
 		ImGui::End();
+
+		
+		
+		
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

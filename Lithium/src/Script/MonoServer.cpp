@@ -80,7 +80,7 @@ namespace Lithium
 
 			assert("");
 		}
-	
+		_ComponentBaseClass =  mono_class_from_name(_MonoImage, "", "Component");
 	}
 
 
@@ -103,6 +103,7 @@ namespace Lithium
 
 		Bindinternals();
 		_ClassCache.clear();
+		_ComponentBaseClass = mono_class_from_name(_MonoImage, "", "Component");
 
 		
 
@@ -148,12 +149,19 @@ namespace Lithium
 		else
 		{
 			MonoClass* klass = mono_class_from_name(_MonoImage, "", name.c_str());
+			
 			if (klass == NULL)
 			{
 				CORE_LOG("class not found : '" << name << "'");
 				return nullptr;
 			}
+
 			Ref<ScriptClass> _scriptclass = CreateRef<ScriptClass>(klass,_MonoAppDomain);
+			if (mono_class_is_subclass_of(klass, _ComponentBaseClass, false))
+			{
+				_scriptclass->IsSubClassFromComponent = true;
+			}
+			_scriptclass->SetComponentClass(_ComponentBaseClass);
 			_scriptclass->SetName(name);
 			_scriptclass->LoadFields();
 			_ClassCache.emplace(name,_scriptclass);

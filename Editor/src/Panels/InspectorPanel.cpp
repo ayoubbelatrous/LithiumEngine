@@ -186,7 +186,9 @@ namespace Lithium
 			ScriptComponent scriptComponent = _Selection.GetComponent<ScriptComponent>();
 			for (auto t : scriptComponent._Scriptclass->GetFields())
 			{
-				ImGui::Text(t.second->name.c_str());
+				ImGui::Text(t.second->name.c_str()); 
+				ImGui::SameLine();
+				ImGui::Button(t.second->name.c_str(), {100,20});
 			}
 			
 		}

@@ -152,6 +152,7 @@ namespace Lithium
 		Ref<ScriptObject> _Scriptobject = nullptr;
 
 		bool created = false;
+		
 	};
 }
 

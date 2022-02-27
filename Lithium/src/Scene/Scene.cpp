@@ -4,7 +4,21 @@
 #include "Entity.h"
 #include "Renderer/Renderer2D.h"
 #include "Script/MonoServer.h"
+#include "gtc/type_ptr.hpp"
+struct Transform
+{
+	Transform()
+	{
+		pos = glm::vec3(110.5f);
+		rot = glm::vec3(202.5f);
+		sca = glm::vec3(202.5f);
+	}
+	glm::vec3 pos;
+	glm::vec3 rot;
+	glm::vec3 sca;
+	
 
+};
 namespace Lithium
 {
 
@@ -94,8 +108,12 @@ namespace Lithium
 					scc._Scriptobject = ScriptClass::CreateInstance(scc._Scriptclass);
 					ScriptClass::InitObjectRuntime(scc._Scriptobject);
 					scc.created = true;
+					Transform t = Transform();
+					scc._Scriptobject->SetField("test", &t);
+					scc._Scriptobject->Invoke("Start");
+					
 				}
-				scc._Scriptobject->Invoke();
+				scc._Scriptobject->Invoke("Update");
 				
 			}
 		}

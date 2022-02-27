@@ -1,7 +1,7 @@
 Scene: NONE
 Entities:
-  - Entity: 317593265
-    Name: name
+  - Entity: 2320038300
+    Name: hello
     Transform:
       Position: [0, 0, 0]
       Rotation: [0, 0, 0]
@@ -9,7 +9,7 @@ Entities:
     Sprite Renderer:
       Color: [1, 1, 1, 1]
       Texture Path: ""
-  - Entity: 3477099670
+  - Entity: 1823210327
     Name: dod
     Transform:
       Position: [0, 0, 0]
@@ -18,10 +18,10 @@ Entities:
     Sprite Renderer:
       Color: [1, 1, 1, 1]
       Texture Path: ""
-  - Entity: 1793844807
-    Name: hello
+  - Entity: 856585356
+    Name: name
     Transform:
-      Position: [-2.29349756, -0.105448097, 0]
+      Position: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:
