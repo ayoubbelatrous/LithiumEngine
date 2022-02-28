@@ -152,7 +152,14 @@ namespace Lithium
 		Ref<ScriptObject> _Scriptobject = nullptr;
 
 		bool created = false;
-		
+	public:
+		void OnCreate(uint32_t ID)
+		{
+			if (created == true)
+			{
+				_Scriptobject->SetProp("ID", &ID);
+			}
+		}
 	};
 }
 

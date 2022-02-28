@@ -1,0 +1,6 @@
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\LithiumCore\Lithium.Core\Lithium.Core\bin\Debug\Lithium.Core.dll
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\LithiumCore\Lithium.Core\Lithium.Core\bin\Debug\Lithium.Core.pdb
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\LithiumCore\Lithium.Core\Lithium.Core\obj\Debug\Lithium.Core.csproj.AssemblyReference.cache
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\LithiumCore\Lithium.Core\Lithium.Core\obj\Debug\Lithium.Core.csproj.CoreCompileInputs.cache
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\LithiumCore\Lithium.Core\Lithium.Core\obj\Debug\Lithium.Core.dll
+C:\Users\ayoub\Documents\LithiumEngine\Editor\assets\TestProject\LithiumCore\Lithium.Core\Lithium.Core\obj\Debug\Lithium.Core.pdb

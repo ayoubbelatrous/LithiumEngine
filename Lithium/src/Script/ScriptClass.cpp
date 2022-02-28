@@ -15,6 +15,7 @@ namespace Lithium
 		object->SetClass(klass);
 		object->SetMethods(klass->GetMethods());
 		object->SetFields(klass->GetFields());
+		object->SetProperties(klass->GetProperties());
 		return object;
 		
  	}
@@ -65,8 +66,8 @@ namespace Lithium
 			Ref<ScriptClassField> _field = CreateRef<ScriptClassField>(field,nullptr);
 			_field->name = name;
 			_field->type = type;
-			_field->_ComponentClass = _ComponentClass;
-			_field->CheckIfSubClassOfComponent();
+			_field->_ScriptClass = _ScriptClass;
+			_field->CheckIfSubClassOfScript();
 			
 			_Fields.emplace(name,_field);
 			
@@ -78,11 +79,20 @@ namespace Lithium
 
 		while ((method = mono_class_get_methods(_Handle, &iter)) != nullptr)
 		{
-
-
 			Ref<ScriptMethod> _method = CreateRef<ScriptMethod>(method);
 			std::string methodname = mono_method_get_name(method);
 			_Methods.emplace(methodname,_method);
+		}
+
+		MonoProperty* prop;
+		iter = nullptr;
+		_Properties.clear();
+
+		while ((prop = mono_class_get_properties(_Handle, &iter)) != nullptr)
+		{
+			Ref<ScriptProperty> _Prop = CreateRef<ScriptProperty>(prop,nullptr);
+			std::string propName = mono_property_get_name(prop);
+			_Properties.emplace(propName, _Prop);
 		}
 		
 	}
@@ -95,6 +105,11 @@ namespace Lithium
 	std::unordered_map <std::string, Ref<ScriptMethod>> ScriptClass::GetMethods()
 	{
 		return _Methods;
+	}
+
+	std::unordered_map <std::string, Ref<ScriptProperty>> ScriptClass::GetProperties()
+	{
+		return _Properties;
 	}
 
 }

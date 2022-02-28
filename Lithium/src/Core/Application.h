@@ -28,7 +28,7 @@ namespace Lithium
 		GUIlayer* GetImguiLayer() { return _ImguiLayer; }
 		Window& GetWindow();
 		Ref<AssetManager> assetManager;
-		Ref<AssetManager> _sceneManager;
+		Ref<SceneManager> _sceneManager;
 		static Application& GetInstance() { return *instance; };
 		static Application* instance;
 	};

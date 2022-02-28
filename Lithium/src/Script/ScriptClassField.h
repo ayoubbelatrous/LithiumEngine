@@ -16,7 +16,7 @@ namespace Lithium
 		std::string name;
 		MonoClassField* _fieldHandle = nullptr;
 		MonoObject* _Object = nullptr;
-		MonoClass* _ComponentClass = nullptr;
+		MonoClass* _ScriptClass = nullptr;
 		bool IsSubClassOfComponent= false;
 		ScriptClassField(MonoClassField* field, MonoObject* object)
 			:_fieldHandle(field), _Object(object)
@@ -36,7 +36,7 @@ namespace Lithium
 			return value;
 		}
 
-		void CheckIfSubClassOfComponent();
+		void CheckIfSubClassOfScript();
 
 	};
 }

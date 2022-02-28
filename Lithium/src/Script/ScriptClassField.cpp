@@ -5,11 +5,11 @@
 namespace Lithium
 {
 
-	void ScriptClassField::CheckIfSubClassOfComponent()
+	void ScriptClassField::CheckIfSubClassOfScript()
 	{
 		MonoType* type = mono_field_get_type(_fieldHandle);
 		MonoClass * klass = mono_class_from_mono_type(type);
-		if (mono_class_is_subclass_of(klass, _ComponentClass, false))
+		if (mono_class_is_subclass_of(klass, _ScriptClass, false))
 		{
 			CORE_LOG("field : " << name << " is component");
 			IsSubClassOfComponent = true;

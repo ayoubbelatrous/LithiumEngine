@@ -1,8 +1,7 @@
 #include "lipch.h"
-#include "Scene/SceneManager.h"
+#include "Script/ScriptProperty.h"
 
 namespace Lithium
 {
-	
 
 }

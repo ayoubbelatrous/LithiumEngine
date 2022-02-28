@@ -108,8 +108,7 @@ namespace Lithium
 					scc._Scriptobject = ScriptClass::CreateInstance(scc._Scriptclass);
 					ScriptClass::InitObjectRuntime(scc._Scriptobject);
 					scc.created = true;
-					Transform t = Transform();
-					scc._Scriptobject->SetField("test", &t);
+					scc.OnCreate((uint32_t)entity);
 					scc._Scriptobject->Invoke("Start");
 					
 				}

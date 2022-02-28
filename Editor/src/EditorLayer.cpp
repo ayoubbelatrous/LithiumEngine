@@ -29,6 +29,8 @@ namespace Lithium
 		
 		_MainScene = CreateRef<Scene>();
 		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
+		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
+
 		_Selection = Entity(entt::null, _MainScene.get());
 		FrameBufferAttachmentDescriptor mainframebufferspec(
 			{
@@ -70,7 +72,7 @@ namespace Lithium
 		entity3.AddComponent<ScriptComponent>("Test");
 		ScriptComponent& sco = entity3.GetComponent<ScriptComponent>();
 		sco._Scriptclass = _monoserver->GetClass(sco._name);
-		Ref<ScriptClass> scc = sco._Scriptclass;
+		//Ref<ScriptClass> scc = sco._Scriptclass;
 		
 
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
@@ -547,12 +549,15 @@ namespace Lithium
 	{
 		_EditorScene = Scene::Copy(_MainScene);
 		_sceneState = SceneState::RUNTIME;
+		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
 	}
 
 	void EditorLayer::StopRuntime()
 	{
 		_MainScene = _EditorScene;
 		_sceneState = SceneState::EDITOR;
+		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
+
 	}
 
 }

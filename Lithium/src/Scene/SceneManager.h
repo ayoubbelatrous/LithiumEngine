@@ -6,7 +6,6 @@ namespace Lithium
 	class SceneManager
 	{
 	public:
-		SceneManager();
 		Ref<Scene> GetActiveScene()
 		{
 			return m_ActiveScene;

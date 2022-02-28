@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Base.h"
 #include "Script/ScriptClassField.h"
+#include "Script/ScriptProperty.h"
 #include "Script/ScriptObject.h"
 #include "Script/ScriptMethod.h"
 
@@ -21,9 +22,9 @@ namespace Lithium
 		std::string _Name;
 		MonoClass* _Handle;
 		MonoDomain* _DomainHandle;
-		MonoClass* _ComponentClass;
+		MonoClass* _ScriptClass;
 		std::unordered_map <std::string,Ref<ScriptClassField>> _Fields;
-		std::unordered_map <std::string,Ref<ScriptClassField>> _Properties;
+		std::unordered_map <std::string,Ref<ScriptProperty>> _Properties;
 		std::unordered_map <std::string,Ref<ScriptMethod>> _Methods;
 		
 	public:
@@ -41,11 +42,12 @@ namespace Lithium
 		void LoadFields();
 		std::unordered_map <std::string, Ref<ScriptClassField>> GetFields();
 		std::unordered_map <std::string, Ref<ScriptMethod>> GetMethods();
-		bool IsSubClassFromComponent = false;
+		std::unordered_map <std::string, Ref<ScriptProperty>> GetProperties();
+		bool IsSubClassFromScript = false;
 
-		void SetComponentClass(MonoClass* compClass)
+		void SetScriptBaseClass(MonoClass* scriptClass)
 		{
-			_ComponentClass = compClass;
+			_ScriptClass = scriptClass;
 		}
 	};
 }

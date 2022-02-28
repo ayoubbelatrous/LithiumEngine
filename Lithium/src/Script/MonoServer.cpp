@@ -1,8 +1,10 @@
 #include "lipch.h"
 
 #include "Script/MonoServer.h"
-
-
+#include "Scene/Scene.h"
+#include "Scene/Entity.h"
+#include "Core/Application.h"
+#include "Scene/Components.h"
 #include <chrono>
 #include <assert.h>
 
@@ -18,10 +20,29 @@ namespace Lithium
 		const char* text = mono_string_to_utf8(log);
 		_BufferLog.push_back(text);
 	}
+
+	bool MonoServer::HasComponent_Interal(int entityID, MonoObject* type)
+	{
+		Entity entity((entt::entity)0, Application::GetInstance()._sceneManager->GetActiveScene().get());
+		MonoClass* klass = mono_object_get_class(type);
+		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
+		const char* name = mono_string_to_utf8(monostring);
+			if (strcmp(name,"Transform"))
+			{
+				return entity.HasComponent<TransformComponent>();
+			}
+			if (strcmp(name, "NameComponent"))
+			{
+				return entity.HasComponent<NameComponent>();
+			}
+		return false;
+	}
+
 	void MonoServer::Bindinternals()
 	{
 		
-		mono_add_internal_call("Debug::Log", MonoServer::Log);
+		mono_add_internal_call("Lithium.Core.Debug::Log", MonoServer::Log);
+		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
 	}
 
 	MonoServer::MonoServer()
@@ -42,6 +63,7 @@ namespace Lithium
 	{
 	
 		std::filesystem::copy_file(_Path.c_str(),_BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
+
 		mono_set_dirs("assets/CsharpAssemblies/", ".");
 
 		_MonoRootDomain = mono_jit_init("RootDomain");
@@ -80,7 +102,7 @@ namespace Lithium
 
 			assert("");
 		}
-		_ComponentBaseClass =  mono_class_from_name(_MonoImage, "", "Component");
+		_ScriptBaseClass =  mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 	}
 
 
@@ -103,7 +125,7 @@ namespace Lithium
 
 		Bindinternals();
 		_ClassCache.clear();
-		_ComponentBaseClass = mono_class_from_name(_MonoImage, "", "Component");
+		_ScriptBaseClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 
 		
 
@@ -140,6 +162,12 @@ namespace Lithium
 
 
 	}
+
+	void MonoServer::SetActiveScene(const Ref<Scene>& scene)
+	{
+		m_ActiveScene = scene;
+	}
+
 	Ref<ScriptClass> MonoServer::GetClass(const std::string& name)
 	{
 		if (_ClassCache.find(name) != _ClassCache.end())
@@ -157,11 +185,11 @@ namespace Lithium
 			}
 
 			Ref<ScriptClass> _scriptclass = CreateRef<ScriptClass>(klass,_MonoAppDomain);
-			if (mono_class_is_subclass_of(klass, _ComponentBaseClass, false))
+			if (mono_class_is_subclass_of(klass, _ScriptBaseClass, false))
 			{
-				_scriptclass->IsSubClassFromComponent = true;
+				_scriptclass->IsSubClassFromScript = true;
 			}
-			_scriptclass->SetComponentClass(_ComponentBaseClass);
+			_scriptclass->SetScriptBaseClass(_ScriptBaseClass);
 			_scriptclass->SetName(name);
 			_scriptclass->LoadFields();
 			_ClassCache.emplace(name,_scriptclass);

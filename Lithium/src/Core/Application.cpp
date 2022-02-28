@@ -3,6 +3,7 @@
 #include "Debug/Profiler.h"
 #include "glm.hpp"
 #include "Math.h"
+
 namespace Lithium
 {
 	Application* Application::instance = nullptr;
