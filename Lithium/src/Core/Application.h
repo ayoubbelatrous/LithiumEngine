@@ -17,9 +17,12 @@ namespace Lithium
 		Scope<Window> _Window;
 		bool _running = true;
 		GUIlayer* _ImguiLayer;
+		double m_PreviousTime = 0;
+		double m_DeltaTime = 0;
 	public:
 		Application();
 		~Application();
+		double GetDeltaTime() const { return m_DeltaTime; }
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
 		void Run();
