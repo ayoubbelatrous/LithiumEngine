@@ -24,6 +24,8 @@ namespace Lithium
 		std::string _BinPath = "assets/TestProject/bin/Csharp.dll";
 		std::filesystem::file_time_type lastassemblytime;
 		void Bindinternals();
+		std::unordered_map<std::string, std::string> _AllClassesInImage;
+		void LoadAllClassesInImage();
 		public:
 			MonoServer();
 			~MonoServer();
@@ -38,7 +40,7 @@ namespace Lithium
 			void Reload();
 			void DeleteAssemblies();
 			bool CheckForChange();
-
+			bool CheckIfClassExists(const std::string& name);
 
 			Ref<Scene> m_ActiveScene;
 			Ref<ScriptClass> GetClass(const std::string& name);

@@ -9,6 +9,7 @@ class Test : Script
         {
             Debug.Log("yes it does");
         }
+
    }
 
    void Update()

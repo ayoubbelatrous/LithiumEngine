@@ -8,6 +8,7 @@
 #include <chrono>
 #include <assert.h>
 
+#include <mono/metadata/tokentype.h>
 
 
 
@@ -43,6 +44,23 @@ namespace Lithium
 		
 		mono_add_internal_call("Lithium.Core.Debug::Log", MonoServer::Log);
 		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
+	}
+
+	void MonoServer::LoadAllClassesInImage()
+	{
+		_AllClassesInImage.clear();
+		MonoClass* klass;
+		int i;
+
+		int rows = mono_image_get_table_rows(_MonoImage, MONO_TABLE_TYPEDEF);
+
+		/* we start the count from 1 because we skip the special type <Module> */
+		for (i = 1; i < rows; ++i) {
+			klass = mono_class_get(_MonoImage, (i + 1) | MONO_TOKEN_TYPE_DEF);
+			std::string _Nspace = mono_class_get_namespace(klass);
+			std::string name = mono_class_get_name(klass);
+			_AllClassesInImage.emplace(name, name + "." + _Nspace);
+		}
 	}
 
 	MonoServer::MonoServer()
@@ -128,8 +146,6 @@ namespace Lithium
 		_ScriptBaseClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 
 		
-
-		
 	}
 	void MonoServer::DeleteAssemblies()
 	{
@@ -163,6 +179,11 @@ namespace Lithium
 
 	}
 
+	bool MonoServer::CheckIfClassExists(const std::string& name)
+	{
+		return (_AllClassesInImage.find(name) == _AllClassesInImage.end());
+	}
+
 	void MonoServer::SetActiveScene(const Ref<Scene>& scene)
 	{
 		m_ActiveScene = scene;
@@ -170,6 +191,8 @@ namespace Lithium
 
 	Ref<ScriptClass> MonoServer::GetClass(const std::string& name)
 	{
+
+		
 		if (_ClassCache.find(name) != _ClassCache.end())
 		{
 			return _ClassCache[name];
