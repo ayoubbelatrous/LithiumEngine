@@ -2,13 +2,12 @@
 using System.Runtime.CompilerServices;
 
 
-namespace Lithium
+namespace Lithium.Core
 {
     public class Entity
     {
-        public uint ID { get; private set; }
-
-
+        public int ID = -1;
+        public Entity(int id) { ID = id; }
         public bool HasComponent<T>() where T : Component, new()
         {
             return HasComponent_Internal(ID, typeof(T));
@@ -31,9 +30,10 @@ namespace Lithium
         }
 
 
+
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void AddComponent_Internal(uint entityID,Type type); 
+        extern public static void AddComponent_Internal(int entityID, Type type);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static bool HasComponent_Internal(uint entityID,Type type);
+        extern public static bool HasComponent_Internal(int entityID, Type type);
     }
 }
