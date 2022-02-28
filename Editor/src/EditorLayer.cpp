@@ -73,7 +73,6 @@ namespace Lithium
 		ScriptComponent& sco = entity3.GetComponent<ScriptComponent>();
 		sco._Scriptclass = _monoserver->GetClass(sco._name);
 		//Ref<ScriptClass> scc = sco._Scriptclass;
-		
 
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
@@ -155,7 +154,7 @@ namespace Lithium
 		}
 		framebuffer->Bind();
 	
-		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
+		RendererCommand::ClearColor(glm::vec4(0.2, 0.15, 0.2, 1.0));
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);

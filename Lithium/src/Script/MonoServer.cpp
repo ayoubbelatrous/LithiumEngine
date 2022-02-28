@@ -5,9 +5,10 @@
 #include "Scene/Entity.h"
 #include "Core/Application.h"
 #include "Scene/Components.h"
+#include "Input/Input.h"
 #include <chrono>
 #include <assert.h>
-
+#include "gtc/type_ptr.hpp"
 #include <mono/metadata/tokentype.h>
 
 
@@ -51,6 +52,21 @@ namespace Lithium
 		memcpy(vector, &trans.Position,sizeof(glm::vec3));
 	}
 
+	bool MonoServer::MouseKey_Internal(int button)
+	{
+		return Input::IsMouseKeyPressed(button);
+	}
+
+	void MonoServer::MousePosition_Internal(glm::vec2* pos)
+	{
+		memcpy(pos, &Input::MousePosition(), sizeof(glm::vec2));
+	}
+
+	bool MonoServer::KeyPressed_Internal(uint16_t button)
+	{
+		return Input::IsKeyPressed((KeyCode)button);
+	}
+
 	void MonoServer::Bindinternals()
 	{
 
@@ -58,6 +74,9 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
 		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", MonoServer::SetPosition_Internal);
 		mono_add_internal_call("Lithium.Core.Transform::GetPosition_Internal", MonoServer::GetPosition_Internal);
+		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
+		mono_add_internal_call("Lithium.Core.Input::IsKeyPressed", MonoServer::KeyPressed_Internal);
+		mono_add_internal_call("Lithium.Core.Input::MousePosition_Internal", MonoServer::MousePosition_Internal);
 	}
 
 	void MonoServer::LoadAllClassesInImage()

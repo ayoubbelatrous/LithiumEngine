@@ -37,6 +37,9 @@ namespace Lithium
 			static bool HasComponent_Interal(int entityID,MonoObject* type);
 			static void SetPosition_Internal(int entityID, glm::vec3* vector);
 			static void GetPosition_Internal(int entityID, glm::vec3* vector);
+			static bool MouseKey_Internal(int button);
+			static void MousePosition_Internal(glm::vec2* pos);
+			static bool KeyPressed_Internal(uint16_t button);
 			static std::vector<const char*> _BufferLog;
 
 			void Reload();
