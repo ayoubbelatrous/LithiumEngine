@@ -67,6 +67,11 @@ namespace Lithium
 		return Input::IsKeyPressed((KeyCode)button);
 	}
 
+	double MonoServer::DeltaTime_Internal()
+	{
+		return Application::GetInstance().GetDeltaTime();
+	}
+
 	void MonoServer::Bindinternals()
 	{
 
@@ -77,6 +82,7 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::IsKeyPressed", MonoServer::KeyPressed_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MousePosition_Internal", MonoServer::MousePosition_Internal);
+		mono_add_internal_call("Lithium.Core.Time::DeltaTime_Internal", MonoServer::DeltaTime_Internal);
 	}
 
 	void MonoServer::LoadAllClassesInImage()

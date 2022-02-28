@@ -47,6 +47,7 @@
     <Compile Include="Core\Input.cs" />
     <Compile Include="Core\KeyCode.cs" />
     <Compile Include="Core\Script.cs" />
+    <Compile Include="Core\Time.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -154,7 +154,7 @@ namespace Lithium
 		}
 		framebuffer->Bind();
 	
-		RendererCommand::ClearColor(glm::vec4(0.2, 0.15, 0.2, 1.0));
+		RendererCommand::ClearColor(glm::vec4(0.2, 0.2, 0.5, 1.0));
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);

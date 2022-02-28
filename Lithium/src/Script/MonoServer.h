@@ -40,6 +40,7 @@ namespace Lithium
 			static bool MouseKey_Internal(int button);
 			static void MousePosition_Internal(glm::vec2* pos);
 			static bool KeyPressed_Internal(uint16_t button);
+			static double DeltaTime_Internal();
 			static std::vector<const char*> _BufferLog;
 
 			void Reload();

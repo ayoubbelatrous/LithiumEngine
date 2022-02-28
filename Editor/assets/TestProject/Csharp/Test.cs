@@ -3,8 +3,8 @@ using Lithium.Core;
 using Lithium.Math;
 class Test : Script
 {
-    public Transform transform;
-    public float speed = 0.05f;
+   public Transform transform;
+   public float speed = 0.05f;
    void Start()
    {
         transform = entity.GetComponent<Transform>();
@@ -31,6 +31,8 @@ class Test : Script
         {
             transform.Position = new Vector3(transform.Position.X + 1 * speed, transform.Position.Y, 0);
         }
+
+        Debug.Log("dt is " +  Time.deltaTime);
 
     }
 }
