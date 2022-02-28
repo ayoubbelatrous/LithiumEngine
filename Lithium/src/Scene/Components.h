@@ -157,7 +157,7 @@ namespace Lithium
 		{
 			if (created == true)
 			{
-				_Scriptobject->SetProp("ID", &ID);
+				_Scriptobject->SetProp("ID", ID);
 			}
 		}
 	};

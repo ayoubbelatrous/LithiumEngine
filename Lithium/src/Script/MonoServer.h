@@ -8,7 +8,7 @@
 #include <mono/metadata/object.h>
 #include <mono/metadata/environment.h>
 #include <mono/metadata/attrdefs.h>
-
+#include "glm.hpp"
 namespace Lithium
 {
 	class Scene;
@@ -35,6 +35,8 @@ namespace Lithium
 			//internal calls
 			static void Log(MonoString* log);
 			static bool HasComponent_Interal(int entityID,MonoObject* type);
+			static void SetPosition_Internal(int entityID, glm::vec3* vector);
+			static void GetPosition_Internal(int entityID, glm::vec3* vector);
 			static std::vector<const char*> _BufferLog;
 
 			void Reload();

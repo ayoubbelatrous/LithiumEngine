@@ -23,6 +23,7 @@ namespace Lithium.Core
             if (HasComponent<T>())
             {
                 T _Component = new T();
+                _Component.Entity = this;
                 return _Component;
             }
 

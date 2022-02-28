@@ -24,7 +24,7 @@ namespace Lithium
 
 	bool MonoServer::HasComponent_Interal(int entityID, MonoObject* type)
 	{
-		Entity entity((entt::entity)0, Application::GetInstance()._sceneManager->GetActiveScene().get());
+		Entity entity((entt::entity)entityID, Application::GetInstance()._sceneManager->GetActiveScene().get());
 		MonoClass* klass = mono_object_get_class(type);
 		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
 		const char* name = mono_string_to_utf8(monostring);
@@ -38,12 +38,26 @@ namespace Lithium
 			}
 		return false;
 	}
+	void MonoServer::SetPosition_Internal(int entityID, glm::vec3* vector)
+	{
+		Entity entity((entt::entity)(uint32_t)entityID, Application::GetInstance()._sceneManager->GetActiveScene().get());
+		entity.GetComponent<TransformComponent>().Position = *vector;
+	}
+
+	void MonoServer::GetPosition_Internal(int entityID, glm::vec3* vector)
+	{
+		Entity entity((entt::entity)entityID, Application::GetInstance()._sceneManager->GetActiveScene().get());
+		TransformComponent& trans = entity.GetComponent<TransformComponent>();
+		memcpy(vector, &trans.Position,sizeof(glm::vec3));
+	}
 
 	void MonoServer::Bindinternals()
 	{
-		
+
 		mono_add_internal_call("Lithium.Core.Debug::Log", MonoServer::Log);
 		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
+		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", MonoServer::SetPosition_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::GetPosition_Internal", MonoServer::GetPosition_Internal);
 	}
 
 	void MonoServer::LoadAllClassesInImage()

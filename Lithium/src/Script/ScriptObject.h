@@ -49,22 +49,24 @@ namespace Lithium
 				CORE_LOG("field not found");
 			}
 		}
-		void SetProp(const std::string name, void* value)
+		template<typename T>
+		void SetProp(const std::string name, T value)
 		{
 			if (_Properties.find(name) != _Properties.end())
 			{
-				_Properties[name]->Set<void*>(value);
+				_Properties[name]->Set(value);
 			}
 			else
 			{
 				MonoClass* _pClass = mono_object_get_class(_Handle);
 				MonoProperty* _pProp = nullptr;
 				_pProp = mono_class_get_property_from_name(_pClass, name.c_str());
+				_Properties.emplace(name, CreateRef<ScriptProperty>(_pProp, _Handle));
 				if (_pProp == nullptr)
 				{
 					CORE_LOG("couldn't find property with name : " << name);
 				}
-
+				_Properties[name]->Set(value);
 			}
 		}
 	private:

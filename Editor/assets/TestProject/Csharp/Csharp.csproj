@@ -45,6 +45,7 @@
     <Compile Include="Core\Debug.cs" />
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\Script.cs" />
+    <Compile Include="Math\Vector3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
   </ItemGroup>

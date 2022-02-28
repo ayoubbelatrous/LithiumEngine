@@ -25,7 +25,9 @@ namespace Lithium
 		template<typename T>
 		void Set(T value)
 		{
-			mono_property_set_value(m_Prop,m_Object, &value,nullptr);
+			void* params[1];
+			params[0] = &value;
+			mono_property_set_value(m_Prop,m_Object, params,nullptr);
 		}
 		template<typename T>
 		T Get()

@@ -14,7 +14,18 @@ namespace Lithium.Core
         {
             entity = new Entity(-1);
         }
-        public int ID { get { return entity.ID; } set { entity.ID = ID; } }
+        public int ID
+        {
+            get
+            {
+                return entity.ID;
+            }
+            set
+            {
+
+                entity.ID = value;
+            }
+        }
     }
 
 }
