@@ -62,11 +62,11 @@ namespace Lithium
 				continue;
 			std::string name = mono_field_get_name(field);
 			
-			uint32_t type = (uint32_t)mono_field_get_type(field);
 			Ref<ScriptClassField> _field = CreateRef<ScriptClassField>(field,nullptr);
+			MonoType* monotype = mono_field_get_type(field);
+			_field->SetType(Types::GetFieldType(monotype));
 			_field->name = name;
-			_field->type = type;
-			_field->_ScriptClass = _ScriptClass;
+			_field->SetClass(_ScriptClass);
 			_field->CheckIfSubClassOfScript();
 			
 			_Fields.emplace(name,_field);

@@ -19,8 +19,8 @@ namespace Lithium
 		std::unordered_map<std::string, Ref<ScriptClassField>> newfields;
 		for (auto field : fields)
 		{
-			Ref<ScriptClassField> f = CreateRef<ScriptClassField>(field.second->_fieldHandle, _Handle);
-			f->_ScriptClass = field.second->_ScriptClass;
+			Ref<ScriptClassField> f = CreateRef<ScriptClassField>(field.second->GetFieldHandle(), _Handle);
+			f->SetClass(field.second->GetClass());
 			f->CheckIfSubClassOfScript();
 			newfields.emplace(field.first, f);
 		}

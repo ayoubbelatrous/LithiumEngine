@@ -110,6 +110,8 @@ namespace Lithium
 					scc.created = true;
 					scc.OnCreate((uint32_t)entity);
 					scc._Scriptobject->Invoke("Start");
+					auto test = glm::vec3(1.2f);
+					scc._Scriptobject->SetField("test", &test);
 					
 				}
 				scc._Scriptobject->Invoke("Update");

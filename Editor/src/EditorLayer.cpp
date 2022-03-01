@@ -36,7 +36,6 @@ namespace Lithium
 			{
 				FramebufferTextureFormat::RGBA8,
 			    FramebufferTextureFormat::RED_INTEGER,
-			    FramebufferTextureFormat::Depth,
 			}
 		);
 
@@ -203,7 +202,7 @@ namespace Lithium
 	    my = vs.y - my;
 		mouseX = (int)mx;
 		mouseY = (int)my;
-		if ( !ImGuizmo::IsUsing() && Input::IsMouseKeyPressed(0) )
+		if ( !ImGuizmo::IsOver() && Input::IsMouseKeyPressed(0) && _ViewportFocus)
 		{
 			int pixeldata = framebuffer->ReadPixel(1, mouseX, mouseY);
 			
@@ -215,7 +214,7 @@ namespace Lithium
 			}
 			else if (pixeldata <= -1)
 			{
-				
+
 			}
 			else
 			{

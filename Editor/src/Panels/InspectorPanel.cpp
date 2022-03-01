@@ -183,12 +183,28 @@ namespace Lithium
 		if (_Selection.HasComponent<ScriptComponent>())
 		{
 			ImGui::Selectable("Script Renderer");
-			ScriptComponent scriptComponent = _Selection.GetComponent<ScriptComponent>();
+			ScriptComponent& scriptComponent = _Selection.GetComponent<ScriptComponent>();
 			for (auto t : scriptComponent._Scriptclass->GetFields())
 			{
-				ImGui::Text(t.second->name.c_str()); 
-				ImGui::SameLine();
-				ImGui::Button(t.second->name.c_str(), {100,20});
+				switch (t.second->GetType())
+				{
+				case Types::ScriptType::Vec3:
+					{
+					ImGui::Text(t.second->name.c_str());
+					ImGui::SameLine();
+					ImGui::Button(t.second->name.c_str(), { 100,20 });
+					break;
+					}
+				case Types::ScriptType::Transform:
+				{
+					ImGui::Text(t.second->name.c_str());
+					ImGui::SameLine();
+					ImGui::Button(t.second->name.c_str(), { 100,20 });
+					break;
+				}
+				
+				}
+				
 			}
 			
 		}
