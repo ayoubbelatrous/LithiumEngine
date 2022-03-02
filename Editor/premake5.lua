@@ -6,7 +6,8 @@ project "Editor"
 
 	targetdir ("%{wks.location}/bin/")
 	objdir ("%{wks.location}/bin-int/")
-
+	pchheader "lipch.h"
+	pchsource "src/lipch.cpp"
 	files
 	{
 		"src/**.h",

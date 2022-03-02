@@ -11,8 +11,6 @@
 #include "gtc/type_ptr.hpp"
 #include <mono/metadata/tokentype.h>
 
-
-
 namespace Lithium
 {
 	std::vector<const char*> MonoServer::_BufferLog = std::vector<const char*>();

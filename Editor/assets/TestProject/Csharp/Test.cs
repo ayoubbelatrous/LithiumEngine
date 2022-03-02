@@ -6,16 +6,17 @@ class Test : Script
    public Transform transform;
    public float speed = 1.5f;
    public Vector3 test;
+   public int inttest = 24;
 
    void Start()
    {
         transform = entity.GetComponent<Transform>();
-        Debug.Log("test is " + test.X);
    }
 
    void Update()
    {
-        Debug.Log("test is " + test.X);
+        Debug.Log("test is " + inttest);
+
 
         if (Input.IsKeyPressed(KeyCode.W))
         {

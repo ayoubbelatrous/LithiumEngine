@@ -1,3 +1,4 @@
+#include "lipch.h"
 #include "InspectorPanel.h"
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -6,10 +7,11 @@
 #include "glm.hpp"
 #include "gtc/type_ptr.hpp"
 #include "Core/Base.h"
-#include <filesystem>
 #include "AssetManager/AssetManager.h"
-#include <iostream>
 #include "Script/ScriptClass.h"
+
+#include <filesystem>
+#include <iostream>
 
 namespace Lithium
 {
@@ -78,6 +80,17 @@ namespace Lithium
 		ImGui::Columns(1);
 
 		ImGui::PopID();
+	}
+
+	static bool Property(const std::string& name,int* value)
+	{
+		bool modified = false;
+		if (ImGui::DragInt(name.c_str(), value))
+		{
+			modified = true;
+		}
+
+		return modified;
 	}
 	void InspectorPanel::OnCreate()
 	{
@@ -182,31 +195,14 @@ namespace Lithium
 
 		if (_Selection.HasComponent<ScriptComponent>())
 		{
-			ImGui::Selectable("Script Renderer");
-			ScriptComponent& scriptComponent = _Selection.GetComponent<ScriptComponent>();
-			for (auto t : scriptComponent._Scriptclass->GetFields())
+			ImGui::Selectable("Script");
+			auto& scc = _Selection.GetComponent<ScriptComponent>();
+			int value =  scc._Scriptobject->GetFields()["inttest"]->GetValue<int>();
+			if (Property("inttest", &value))
 			{
-				switch (t.second->GetType())
-				{
-				case Types::ScriptType::Vec3:
-					{
-					ImGui::Text(t.second->name.c_str());
-					ImGui::SameLine();
-					ImGui::Button(t.second->name.c_str(), { 100,20 });
-					break;
-					}
-				case Types::ScriptType::Transform:
-				{
-					ImGui::Text(t.second->name.c_str());
-					ImGui::SameLine();
-					ImGui::Button(t.second->name.c_str(), { 100,20 });
-					break;
-				}
-				
-				}
-				
+				scc._Scriptobject->SetField("inttest", value);
 			}
-			
+
 		}
 
 	

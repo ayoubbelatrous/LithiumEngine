@@ -1,3 +1,6 @@
+#include "lipch.h"
+#include "SpriteEditor.h"
+#if 0
 #include "SpriteEditor.h"
 #include "imgui.h"
 #include <filesystem>
@@ -183,3 +186,4 @@ namespace Lithium
 		ImGui::End();
 	}
 }
+#endif

@@ -1,3 +1,4 @@
+#include "lipch.h"
 #include "EditorLayer.h"
 
 #include "ImGuizmo.h"
@@ -178,6 +179,13 @@ namespace Lithium
 					ent.AddComponent<ScriptComponent>(name);
 					ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
 					newscc._Scriptclass = _monoserver->GetClass(name);
+					newscc.created = true;
+					newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
+					ScriptClass::InitObjectRuntime(newscc._Scriptobject);
+					for (auto t : scc._Scriptobject->GetFields())
+					{
+						newscc._Scriptobject->GetFields()[t.first]->SetValue<int>(t.second->GetValue<int>());
+					}
 				}
 			}
 			break;
@@ -202,17 +210,19 @@ namespace Lithium
 	    my = vs.y - my;
 		mouseX = (int)mx;
 		mouseY = (int)my;
-		if ( !ImGuizmo::IsOver() && Input::IsMouseKeyPressed(0) && _ViewportFocus)
+		
+
+		if (!ImGuizmo::IsOver() && Input::IsMouseKeyPressed(0) && _ViewportFocus)
 		{
 			int pixeldata = framebuffer->ReadPixel(1, mouseX, mouseY);
-			
+
 			if (pixeldata == -1)
 			{
 				Entity entity(entt::null, _MainScene.get());
 
 				_Selection = entity;
 			}
-			else if (pixeldata <= -1)
+			else if (pixeldata < -1)
 			{
 
 			}
@@ -223,8 +233,6 @@ namespace Lithium
 				_Selection = entity;
 			}
 		}
-
-
 		framebuffer->UnBind();
 		
 
@@ -545,7 +553,44 @@ namespace Lithium
 
 	void EditorLayer::StartRuntime()
 	{
+		/*std::unordered_map<std::string, ScriptComponent> Scriptmap;
+
+		{
+		 auto view = _MainScene->GetRegistry().view<ScriptComponent>();
+		 for (auto entity : view)
+		 {
+			 Entity ent(entity, _MainScene.get());
+			 ScriptComponent scc = ent.GetComponent<ScriptComponent>();
+			 Scriptmap.emplace(scc._name, scc);
+		 }
+		}*/
 		_EditorScene = Scene::Copy(_MainScene);
+
+
+		/*{
+			auto view = _MainScene->GetRegistry().view<ScriptComponent>();
+			for (auto entity : view)
+			{
+				Entity ent(entity, _MainScene.get());
+				ScriptComponent& scc = ent.GetComponent<ScriptComponent>();
+				scc.created = false;
+				scc._Scriptclass = _monoserver->GetClass(scc._name);
+				scc._Scriptobject = nullptr;
+				std::unordered_map<std::string, Ref<ScriptClassField>> Fieldtmap;
+				auto script = Scriptmap[scc._name];
+				for (auto t : scc._Scriptclass->GetFields())
+				{
+					auto field =script._Scriptobject->GetFields()[t.first];
+					Ref<ScriptClassField> newfield = CreateRef<ScriptClassField>(field->GetFieldHandle(),nullptr);
+					newfield->SetValue(field->GetValue());
+					newfield->SetClass(field->GetClass());
+
+					Fieldtmap.emplace(t.first, newfield);
+				}
+				scc._Scriptclass->SetFields(Fieldtmap);
+			}
+		}*/
+
 		_sceneState = SceneState::RUNTIME;
 		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
 	}

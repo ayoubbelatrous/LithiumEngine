@@ -2,13 +2,7 @@
 
 #include <filesystem>
 #include "Script/ScriptClass.h"
-#include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
-#include <mono/metadata/assembly.h>
-#include <mono/metadata/object.h>
-#include <mono/metadata/environment.h>
-#include <mono/metadata/attrdefs.h>
-#include "glm.hpp"
+
 namespace Lithium
 {
 	class Scene;

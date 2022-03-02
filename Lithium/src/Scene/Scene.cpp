@@ -68,21 +68,40 @@ namespace Lithium
 
 	void Scene::onEditorUpdate()
 	{
-		auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
-		
-		for (auto entity : view)
 		{
-		
-			auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-			BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(),(uint32_t)entity);
+			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
+
+			for (auto entity : view)
+			{
+				auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
+				BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(), (uint32_t)entity);
+			}
+		}
+
+		{
+			auto view = GetRegistry().view<ScriptComponent>();
+
+			for (auto entity : view)
+			{
+
+
+				auto& scc = view.get<ScriptComponent>(entity);
+				if (scc.created == false)
+				{
+					scc._Scriptobject = ScriptClass::CreateInstance(scc._Scriptclass);
+					ScriptClass::InitObjectRuntime(scc._Scriptobject);
+					scc.created = true;
+					scc.OnCreate((uint32_t)entity);
+				}
+			
+
+			}
 		}
 	}
 
 	void Scene::onUpdate()
 	{
-		//TODO: get script component view.
-		//TODO: instantiate script object from scriptclass if not instatiated and set entity id.
-		//TODO: call onupdate on scriptobject.
+
 		{
 			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
 
@@ -110,8 +129,6 @@ namespace Lithium
 					scc.created = true;
 					scc.OnCreate((uint32_t)entity);
 					scc._Scriptobject->Invoke("Start");
-					auto test = glm::vec3(1.2f);
-					scc._Scriptobject->SetField("test", &test);
 					
 				}
 				scc._Scriptobject->Invoke("Update");

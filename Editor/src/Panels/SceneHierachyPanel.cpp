@@ -1,3 +1,5 @@
+#include "lipch.h"
+
 #include "SceneHierachyPanel.h"
 #include "imgui/imgui.h"
 #include "entt.hpp"

@@ -1,15 +1,9 @@
 #pragma once
-#include <iostream>
 #include "Core/Base.h"
-#include "Script/ScriptClassField.h"
+#include "Script/ScriptField.h"
 #include "Script/ScriptMethod.h"
 #include "Script/ScriptProperty.h"
-#include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
-#include <mono/metadata/object.h>
-#include <mono/metadata/debug-helpers.h>
-#include <mono/metadata/environment.h>
-#include <mono/metadata/attrdefs.h>
+
 namespace Lithium
 {
 
@@ -18,37 +12,12 @@ namespace Lithium
 	class ScriptObject
 	{
 	public:
+
+		ScriptObject(MonoObject* object);
+
 		void SetMethods(std::unordered_map <std::string, Ref<ScriptMethod>> methods);
-		void SetFields(std::unordered_map <std::string, Ref<ScriptClassField>> fields);
 		void SetProperties(std::unordered_map <std::string, Ref<ScriptProperty>> props);
-		void SetHandle(MonoObject* handle)
-		{
-			_Handle = handle;
-		}
-		MonoObject* GetHandle()
-		{
-			return _Handle;
-		}
-		Ref<ScriptClass> GetClass()
-		{
-			return _scriptclass;
-		}
-		void SetClass(const Ref<ScriptClass>& klass)
-		{
-			_scriptclass = klass;
-		}
 		void Invoke(const std::string& name, void* Args = nullptr);
-		void SetField(const std::string name, void* value)
-		{
-			if (_Fields.find(name) != _Fields.end())
-			{
-				_Fields[name]->Set<void*>(value);
-			}
-			else
-			{
-				CORE_LOG("field not found");
-			}
-		}
 		template<typename T>
 		void SetProp(const std::string name, T value)
 		{
@@ -58,10 +27,10 @@ namespace Lithium
 			}
 			else
 			{
-				MonoClass* _pClass = mono_object_get_class(_Handle);
+				MonoClass* _pClass = mono_object_get_class(m_Object);
 				MonoProperty* _pProp = nullptr;
 				_pProp = mono_class_get_property_from_name(_pClass, name.c_str());
-				_Properties.emplace(name, CreateRef<ScriptProperty>(_pProp, _Handle));
+				_Properties.emplace(name, CreateRef<ScriptProperty>(_pProp, m_Object));
 				if (_pProp == nullptr)
 				{
 					CORE_LOG("couldn't find property with name : " << name);
@@ -69,13 +38,27 @@ namespace Lithium
 				_Properties[name]->Set(value);
 			}
 		}
+		MonoObject* GetObjectPtr() { return m_Object; }
+		template<typename T>
+		void SetField(const std::string& name,T value)
+		{
+			if (m_Fields.find(name) != m_Fields.end())
+			{
+				m_Fields[name]->SetValue(value);
+			}
+			else
+			{
+				CORE_LOG(" field : " << name << " not found");
+			}
+		}
+
+		std::unordered_map <std::string, Ref<ScriptField>>& GetFields() { return m_Fields; }
 	private:
-		
-		MonoObject* _Handle;
-		Ref<ScriptClass> _scriptclass;
+		MonoObject* m_Object;
+		MonoClass* m_Class;
 		std::unordered_map <std::string, Ref<ScriptMethod>> _Methods;
-		std::unordered_map <std::string, Ref<ScriptClassField>> _Fields;
 		std::unordered_map <std::string, Ref<ScriptProperty>> _Properties;
+		std::unordered_map <std::string, Ref<ScriptField>> m_Fields;
 
 	};
 }

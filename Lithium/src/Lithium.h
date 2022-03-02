@@ -1,6 +1,4 @@
 #pragma once
-#include "lipch.h"
-
 #include "Core/Application.h"
 #include "Core/Layer.h"
 #include "Core/LayerStack.h"

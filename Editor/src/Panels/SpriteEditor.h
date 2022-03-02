@@ -1,4 +1,6 @@
 #pragma once
+
+#if 0
 #include "Core/Base.h"
 #include "Renderer/Texture.h"
 #include "glm.hpp"
@@ -38,3 +40,4 @@ namespace Lithium
 		EventCallback callback;
 	};
 }
+#endif

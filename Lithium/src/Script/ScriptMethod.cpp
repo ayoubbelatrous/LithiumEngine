@@ -13,7 +13,7 @@ namespace Lithium
 		}
 		else
 		{
-			mono_runtime_invoke(_Handle,object->GetHandle(), nullptr, nullptr);
+			mono_runtime_invoke(_Handle,object->GetObjectPtr(), nullptr, nullptr);
 		}
 	}
 
