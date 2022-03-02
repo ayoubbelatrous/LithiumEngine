@@ -1,8 +1,7 @@
 #include "lipch.h"
-#include "Lithium.h"
 #include "EditorLayer.h"
 #include "Core/Entry.h"
-
+#include "Core/Application.h"
 
 class Editor : public Lithium::Application
 {

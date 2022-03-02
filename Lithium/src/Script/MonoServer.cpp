@@ -85,7 +85,7 @@ namespace Lithium
 
 	void MonoServer::LoadAllClassesInImage()
 	{
-		_AllClassesInImage.clear();
+		m_AllClassesInImage.clear();
 		MonoClass* klass;
 		int i;
 
@@ -96,13 +96,13 @@ namespace Lithium
 			klass = mono_class_get(_MonoImage, (i + 1) | MONO_TOKEN_TYPE_DEF);
 			std::string _Nspace = mono_class_get_namespace(klass);
 			std::string name = mono_class_get_name(klass);
-			_AllClassesInImage.emplace(name, name + "." + _Nspace);
+			m_AllClassesInImage.emplace(name, name + "." + _Nspace);
 		}
 	}
 
 	MonoServer::MonoServer()
 	{
-		lastassemblytime = std::filesystem::last_write_time(_Path);
+		m_LastAssemblyTime = std::filesystem::last_write_time(_Path);
 
 		InitMono();
 		Bindinternals();
@@ -179,7 +179,7 @@ namespace Lithium
 
 
 		Bindinternals();
-		_ClassCache.clear();
+		m_ClassCache.clear();
 		_ScriptBaseClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 
 		
@@ -194,9 +194,9 @@ namespace Lithium
 
 		//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
-		if (std::filesystem::last_write_time(_Path) != lastassemblytime)
+		if (std::filesystem::last_write_time(_Path) != m_LastAssemblyTime)
 		{
-			lastassemblytime = std::filesystem::last_write_time(_Path);
+			m_LastAssemblyTime = std::filesystem::last_write_time(_Path);
 			
 			DeleteAssemblies();
 			std::filesystem::copy_file(_Path.c_str(), _BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
@@ -218,7 +218,19 @@ namespace Lithium
 
 	bool MonoServer::CheckIfClassExists(const std::string& name)
 	{
-		return (_AllClassesInImage.find(name) == _AllClassesInImage.end());
+		return (m_AllClassesInImage.find(name) == m_AllClassesInImage.end());
+	}
+
+	void MonoServer::ForceReload()
+	{
+		DeleteAssemblies();
+		std::filesystem::copy_file(_Path.c_str(), _BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
+
+		Reload();
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
+		//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() << "[ns]" << std::endl;
+		CORE_LOG("updated assembly");
 	}
 
 	void MonoServer::SetActiveScene(const Ref<Scene>& scene)
@@ -230,9 +242,9 @@ namespace Lithium
 	{
 
 		
-		if (_ClassCache.find(name) != _ClassCache.end())
+		if (m_ClassCache.find(name) != m_ClassCache.end())
 		{
-			return _ClassCache[name];
+			return m_ClassCache[name];
 		}
 		else
 		{
@@ -252,9 +264,9 @@ namespace Lithium
 			_scriptclass->SetScriptBaseClass(_ScriptBaseClass);
 			_scriptclass->SetName(name);
 			_scriptclass->LoadFields();
-			_ClassCache.emplace(name,_scriptclass);
+			m_ClassCache.emplace(name,_scriptclass);
 		
-			return _ClassCache[name];
+			return m_ClassCache[name];
 		}
 	}
 

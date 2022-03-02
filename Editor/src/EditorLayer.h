@@ -89,9 +89,6 @@ namespace Lithium
 		Ref<SceneHierachyPanel> _shp;
 		Ref<InspectorPanel> _InspectorPanel;
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
-		//Serializer sz;
-		//Ref<Texture> tex2;
-		//Ref<Texture> tex3;
 		int mouseX = 0;
 		int mouseY = 0;
 		int pixelData; 
@@ -117,5 +114,7 @@ namespace Lithium
 		Ref<Texture> _PauseTexture;
 		SceneState _sceneState = SceneState::EDITOR;
 		Serializer _SceneSerilizer = Serializer(_MainScene);
+
+		Ref<Timer> timer;
 	};
 }

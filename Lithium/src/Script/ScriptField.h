@@ -15,15 +15,20 @@ namespace Lithium
 			m_Type = Types::GetFieldType(mono_field_get_type(field));
 			m_Name = mono_field_get_name(field);
 		}
-	
-		std::string GetName()
-		{
-			return m_Name;
-		}
 		template<typename T>
 		void SetValue(T value)
 		{
 		}
+		template<typename T>
+		T GetValue()
+		{
+		}
+
+		std::string GetName()
+		{
+			return m_Name;
+		}
+		
 
 		template<>
 		void SetValue(int value)
@@ -31,13 +36,8 @@ namespace Lithium
 			mono_field_set_value(m_Object, m_Field, &value);
 			m_Value = malloc(4);
 			memcpy(m_Value, &value, 4);
-
 		}
-		template<typename T>
-		T GetValue()
-		{
-		}
-
+		
 		template<>
 		int GetValue()
 		{
@@ -53,7 +53,6 @@ namespace Lithium
 				memcpy(&value, m_Value, 4);
 				return value;
 			}
-			
 		}
 	private:
 		Types::ScriptType m_Type;

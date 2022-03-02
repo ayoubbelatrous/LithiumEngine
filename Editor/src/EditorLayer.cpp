@@ -6,8 +6,8 @@
 #include "Core/Math.h"
 #include "Font/Font.h"
 #include "Script/MonoServer.h"
-
-
+#include <atomic>
+static std::atomic_bool canCheckAssembly;
 
 namespace Lithium
 {
@@ -17,7 +17,7 @@ namespace Lithium
 	{
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
 		_monoserver = CreateRef<MonoServer>();
-
+		_monoserver->ForceReload();
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
@@ -26,7 +26,7 @@ namespace Lithium
 		_InspectorPanel->OnCreate();
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
-
+		timer = CreateRef<Timer>();
 		
 		_MainScene = CreateRef<Scene>();
 		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
@@ -106,7 +106,10 @@ namespace Lithium
 
 		_PlayButtonTexture = CreateRef<Texture>("assets/Editor/icons/playbutton.png");
 		_StopButtonTexture = CreateRef<Texture>("assets/Editor/icons/stopbutton.png");
-
+		timer->SetInterval([=]()
+		{
+				canCheckAssembly.store(true);
+		}, std::chrono::milliseconds(100));
 	}
 
 	void EditorLayer::OnUpdate()
@@ -164,30 +167,35 @@ namespace Lithium
 		case (SceneState::EDITOR):
 			{
 			_MainScene->onEditorUpdate();
-			if (_monoserver->CheckForChange())
+			if (canCheckAssembly)
 			{
-				auto view = _MainScene->GetRegistry().view<ScriptComponent>();
-
-				for (auto entity : view)
+				if (_monoserver->CheckForChange())
 				{
+					auto view = _MainScene->GetRegistry().view<ScriptComponent>();
 
-					ScriptComponent scc = view.get<ScriptComponent>(entity);
-					std::string name = scc._name;
-
-					Entity ent((entt::entity)entity, _MainScene.get());
-					ent.RemoveComponent<ScriptComponent>();
-					ent.AddComponent<ScriptComponent>(name);
-					ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
-					newscc._Scriptclass = _monoserver->GetClass(name);
-					newscc.created = true;
-					newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
-					ScriptClass::InitObjectRuntime(newscc._Scriptobject);
-					for (auto t : scc._Scriptobject->GetFields())
+					for (auto entity : view)
 					{
-						newscc._Scriptobject->GetFields()[t.first]->SetValue<int>(t.second->GetValue<int>());
+
+						ScriptComponent scc = view.get<ScriptComponent>(entity);
+						std::string name = scc._name;
+
+						Entity ent((entt::entity)entity, _MainScene.get());
+						ent.RemoveComponent<ScriptComponent>();
+						ent.AddComponent<ScriptComponent>(name);
+						ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
+						newscc._Scriptclass = _monoserver->GetClass(name);
+						newscc.created = true;
+						newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
+						ScriptClass::InitObjectRuntime(newscc._Scriptobject);
+						for (auto t : scc._Scriptobject->GetFields())
+						{
+							newscc._Scriptobject->GetFields()[t.first]->SetValue<int>(t.second->GetValue<int>());
+						}
 					}
 				}
+				canCheckAssembly.store(false);
 			}
+			
 			break;
 			}
 		case (SceneState::RUNTIME):
