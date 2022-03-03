@@ -43,20 +43,20 @@ namespace Lithium.Core
             set => SetScale_Internal(Entity.ID, ref value);
         }
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void SetPosition_Internal(int entityID,ref Vector3 pos);
+        extern public static void SetPosition_Internal(UInt64 entityID,ref Vector3 pos);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void GetPosition_Internal(int entityID,out Vector3 pos);
+        extern public static void GetPosition_Internal(UInt64 entityID,out Vector3 pos);
 
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void SetRotation_Internal(int entityID, ref Vector3 pos);
+        extern public static void SetRotation_Internal(UInt64 entityID, ref Vector3 pos);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static Vector3 GetRotation_Internal(int entityID, out Vector3 pos);
+        extern public static Vector3 GetRotation_Internal(UInt64 entityID, out Vector3 pos);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void SetScale_Internal(int entityID, ref Vector3 pos);
+        extern public static void SetScale_Internal(UInt64 entityID, ref Vector3 pos);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static Vector3 GetScale_Internal(int entityID, out Vector3 pos);
+        extern public static Vector3 GetScale_Internal(UInt64 entityID, out Vector3 pos);
     }
 
     public class SpriteRenderer : Component

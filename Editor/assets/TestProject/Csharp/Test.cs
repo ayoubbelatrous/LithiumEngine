@@ -3,16 +3,21 @@ using Lithium.Core;
 using Lithium.Math;
 class Test : Script
 {
-   public int inttest = 27;
+   public int inttest = 1;
    Transform transform;
    void Start()
    {
+        Debug.Log("entity id is " + entity.ID);
         transform = entity.GetComponent<Transform>();
+        Debug.Log("OnStart()");
+        if(transform == null)
+        {
+            Debug.Log("transform is null");
+        }
    }
 
    void Update()
    {
-      
-       Debug.Log("test is " + inttest + " transform is " + transform.Position.X);
+        transform.Position = new Vector3(inttest, 0, 0);
    }
 }

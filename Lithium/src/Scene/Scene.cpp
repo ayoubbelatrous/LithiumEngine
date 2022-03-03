@@ -128,7 +128,7 @@ namespace Lithium
 				{	
 					IDComponent& idc = ent.GetComponent<IDComponent>();
 					scc.created = true;
-					scc.OnCreate((uint64_t)idc.ID);
+					scc.OnCreate(idc.ID);
 					scc._Scriptobject->Invoke("Start");
 					
 				}
@@ -144,6 +144,21 @@ namespace Lithium
 	
 
 
+
+	std::unordered_map<UUID, entt::entity> Scene::GetUUIDMap()
+	{
+		std::unordered_map<UUID, entt::entity> enttMap;
+
+		auto entities = m_Registry.view<IDComponent>();
+
+		for (auto entity : entities)
+		{
+
+			IDComponent idc = m_Registry.get<IDComponent>(entity);
+			enttMap.emplace(idc.ID, entity);
+		}
+		return enttMap;
+	}
 
 	Ref<Scene> Scene::Copy(const Ref<Scene>& src)
 	{

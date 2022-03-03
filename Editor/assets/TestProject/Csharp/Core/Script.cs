@@ -12,9 +12,9 @@ namespace Lithium.Core
 
         protected Script()
         {
-            entity = new Entity(-1);
+            entity = new Entity(0);
         }
-        public int ID
+        public UInt64 ID
         {
             get
             {

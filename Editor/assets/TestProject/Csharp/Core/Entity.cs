@@ -6,8 +6,8 @@ namespace Lithium.Core
 {
     public class Entity
     {
-        public int ID = -1;
-        public Entity(int id) { ID = id; }
+        public UInt64 ID = 0;
+        public Entity(UInt64 id) { ID = id; }
         public bool HasComponent<T>() where T : Component, new()
         {
             return HasComponent_Internal(ID, typeof(T));
@@ -33,8 +33,8 @@ namespace Lithium.Core
 
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void AddComponent_Internal(int entityID, Type type);
+        extern public static void AddComponent_Internal(UInt64 entityID, Type type);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static bool HasComponent_Internal(int entityID, Type type);
+        extern public static bool HasComponent_Internal(UInt64 entityID, Type type);
     }
 }

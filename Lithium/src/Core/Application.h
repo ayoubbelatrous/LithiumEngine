@@ -33,7 +33,7 @@ namespace Lithium
 		GUIlayer* GetImguiLayer() { return _ImguiLayer; }
 		Window& GetWindow();
 		Ref<AssetManager> assetManager;
-		Ref<SceneManager> _sceneManager;
+		Ref<SceneManager> sceneManager;
 		static Application& GetInstance() { return *instance; };
 		static Application* instance;
 	};

@@ -31,7 +31,7 @@ namespace Lithium
 		
 		_MainScene = CreateRef<Scene>();
 		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
-		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
+		Application::GetInstance().sceneManager->SetActiveScene(_MainScene);
 
 		_Selection = Entity(entt::null, _MainScene.get());
 		FrameBufferAttachmentDescriptor mainframebufferspec(
@@ -613,14 +613,14 @@ namespace Lithium
 		
 	
 		_sceneState = SceneState::RUNTIME;
-		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
+		Application::GetInstance().sceneManager->SetActiveScene(_MainScene);
 	}
 
 	void EditorLayer::StopRuntime()
 	{
 		_MainScene = _EditorScene;
 		_sceneState = SceneState::EDITOR;
-		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
+		Application::GetInstance().sceneManager->SetActiveScene(_MainScene);
 		//force reload assemblies
 		_monoserver->ForceReload();
 		{

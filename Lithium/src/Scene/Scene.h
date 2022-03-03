@@ -26,6 +26,7 @@ namespace Lithium
 		void onEditorUpdate();
 		void onUpdate();
 		void SetEventCallback(const EventCallback& e) { m_Callback = e; }
+		std::unordered_map<UUID, entt::entity> GetUUIDMap();
 		template<typename Comp>
 	    void CopyComponent(Entity src, Entity dst)
 	    {

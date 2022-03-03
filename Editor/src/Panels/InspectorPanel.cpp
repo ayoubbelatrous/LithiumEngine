@@ -85,7 +85,8 @@ namespace Lithium
 	static bool Property(const std::string& name,int* value)
 	{
 		bool modified = false;
-		if (ImGui::DragInt(name.c_str(), value))
+		
+		if (ImGui::DragInt(name.c_str(), value,0.1f))
 		{
 			modified = true;
 		}

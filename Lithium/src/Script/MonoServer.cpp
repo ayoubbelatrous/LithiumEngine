@@ -21,37 +21,49 @@ namespace Lithium
 		_BufferLog.push_back(text);
 	}
 
-	bool MonoServer::HasComponent_Interal(int entityID, MonoObject* type)
+	bool MonoServer::HasComponent_Interal(uint64_t entityID, MonoObject* type)
 	{
-		if (!Application::GetInstance()._sceneManager->GetActiveScene()->GetRegistry().valid((entt::entity)entityID))
-		{
-			return false;
-		}
-		
+		std::unordered_map<UUID, entt::entity> enttMap;
 
-		Entity entity((entt::entity)entityID, Application::GetInstance()._sceneManager->GetActiveScene().get());
+		auto& registry = Application::GetInstance().sceneManager->GetActiveScene()->GetRegistry();
+		auto entities = registry.view<IDComponent>();
+		
+		for (auto entity : entities)
+		{
+			
+			IDComponent idc = registry.get<IDComponent>(entity);
+			enttMap.emplace(idc.ID,entity);
+		}
+		UUID uuid = UUID(entityID);
+		Entity entity(enttMap[uuid], Application::GetInstance().sceneManager->GetActiveScene().get());
+
+
 		MonoClass* klass = mono_object_get_class(type);
 		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
 		const char* name = mono_string_to_utf8(monostring);
-			if (strcmp(name,"Transform"))
-			{
-				return entity.HasComponent<TransformComponent>();
-			}
-			if (strcmp(name, "NameComponent"))
-			{
-				return entity.HasComponent<NameComponent>();
-			}
+
+		if (strcmp(name, "Transform"))
+		{
+			return entity.HasComponent<TransformComponent>();
+
+		}
+		else if (strcmp(name, "NameComponent"))
+		{
+			return entity.HasComponent<NameComponent>();
+
+		}
 		return false;
 	}
-	void MonoServer::SetPosition_Internal(int entityID, glm::vec3* vector)
+	void MonoServer::SetPosition_Internal(uint64_t entityID, glm::vec3* vector)
 	{
-		Entity entity((entt::entity)(uint32_t)entityID, Application::GetInstance()._sceneManager->GetActiveScene().get());
+		
+		Entity entity(Application::GetInstance().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::GetInstance().sceneManager->GetActiveScene().get());
 		entity.GetComponent<TransformComponent>().Position = *vector;
 	}
 
-	void MonoServer::GetPosition_Internal(int entityID, glm::vec3* vector)
+	void MonoServer::GetPosition_Internal(uint64_t entityID, glm::vec3* vector)
 	{
-		Entity entity((entt::entity)entityID, Application::GetInstance()._sceneManager->GetActiveScene().get());
+		Entity entity(Application::GetInstance().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::GetInstance().sceneManager->GetActiveScene().get());
 		TransformComponent& trans = entity.GetComponent<TransformComponent>();
 		memcpy(vector, &trans.Position,sizeof(glm::vec3));
 	}
