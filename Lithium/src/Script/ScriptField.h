@@ -53,8 +53,6 @@ namespace Lithium
 				return m_Value = val;
 				break;
 			}
-				
-				
 			default:
 				break;
 			}

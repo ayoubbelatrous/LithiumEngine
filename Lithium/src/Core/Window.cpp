@@ -26,6 +26,7 @@ namespace Lithium
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+
 		window = glfwCreateWindow(1280, 780, "Lithium", NULL, NULL);
 		glfwMakeContextCurrent(window);
 		

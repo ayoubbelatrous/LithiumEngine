@@ -30,5 +30,19 @@ namespace Lithium.Math
             Y = y;
             Z = z;
         }
+
+        public Vector3(Vector2 vector2, float z)
+        {
+            X = vector2.X;
+            Y = vector2.Y;
+            Z = z;
+        }
+
+        public Vector3(Vector2 vector2)
+        {
+            X = vector2.X;
+            Y = vector2.Y;
+            Z = 0;
+        }
     }
 }

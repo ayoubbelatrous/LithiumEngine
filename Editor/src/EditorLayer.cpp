@@ -220,7 +220,7 @@ namespace Lithium
 	    my = vs.y - my;
 		mouseX = (int)mx;
 		mouseY = (int)my;
-		if (Input::IsMouseKeyPressed(0) && _ViewportHovered && !ImGuizmo::IsOver())
+		if (Input::IsMouseKeyPressed(0) && _ViewportFocus && !ImGuizmo::IsOver())
 		{
 
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
@@ -229,12 +229,6 @@ namespace Lithium
 				int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
 				Entity entity((entt::entity)pixelData, _MainScene.get());
 				_Selection = entity;
-			}
-			else
-			{
-				Entity entity(entt::null, _MainScene.get());
-				_Selection = entity;
-
 			}
 		}
 
@@ -555,7 +549,7 @@ namespace Lithium
 
 		
 		
-		
+		ImGuiRenderToolBar();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -567,6 +561,12 @@ namespace Lithium
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
+	}
+
+	void EditorLayer::ImGuiRenderToolBar()
+	{
+
+		
 	}
 
 	void EditorLayer::SceneEvent(Event& e)
@@ -639,7 +639,10 @@ namespace Lithium
 				//set the fields
 				for (auto t : scc._Scriptobject->GetFields())
 				{
-					newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
+					if (newscc._Scriptobject->GetFields().find(t.first) != newscc._Scriptobject->GetFields().end())
+					{
+						newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
+					}
 				}
 			}
 		}
