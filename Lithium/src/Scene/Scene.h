@@ -21,11 +21,11 @@ namespace Lithium
 		Entity CreateEntityWithUUID(UUID uuid,const std::string& name);
 		void DeleteEntity(Entity entity);
 		
-		entt::registry& GetRegistry() { return _Registry; }
+		entt::registry& GetRegistry() { return m_Registry; }
 
 		void onEditorUpdate();
 		void onUpdate();
-		void SetEventCallback(const EventCallback& e) { callback = e; }
+		void SetEventCallback(const EventCallback& e) { m_Callback = e; }
 		template<typename Comp>
 	    void CopyComponent(Entity src, Entity dst)
 	    {
@@ -35,8 +35,8 @@ namespace Lithium
 		static Ref<Scene> Copy(const Ref<Scene>& src);
 	Entity DuplicateEntity(Entity src);
 	private:
-		entt::registry _Registry;
-		EventCallback callback;
+		entt::registry m_Registry;
+		EventCallback m_Callback;
 
 	};
 

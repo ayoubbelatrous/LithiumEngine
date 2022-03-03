@@ -8,7 +8,10 @@ namespace Lithium.Core
     public class Debug
     {
 
-
+        public static void OnException(Exception exc)
+        {
+            Debug.Log(exc.ToString());
+        }
         public static void Log(string message, params object[] objects)
         {
             string _FinalMessage = message;

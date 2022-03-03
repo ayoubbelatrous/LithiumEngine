@@ -17,6 +17,7 @@ namespace Lithium
 	{
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
 		_monoserver = CreateRef<MonoServer>();
+		Application::GetInstance().MonoServer = _monoserver;
 		_monoserver->ForceReload();
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
@@ -114,6 +115,7 @@ namespace Lithium
 
 	void EditorLayer::OnUpdate()
 	{
+		LT_PROFILE_FUNCTION("OnUpdate");
 		//TODO: reload all classes in scriptcomponent if assembly changes
 		
 #pragma region CalculateProjection
@@ -189,7 +191,7 @@ namespace Lithium
 						ScriptClass::InitObjectRuntime(newscc._Scriptobject);
 						for (auto t : scc._Scriptobject->GetFields())
 						{
-							newscc._Scriptobject->GetFields()[t.first]->SetValue<int>(t.second->GetValue<int>());
+							newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
 						}
 					}
 				}
@@ -224,6 +226,7 @@ namespace Lithium
 		{
 			int pixeldata = framebuffer->ReadPixel(1, mouseX, mouseY);
 
+			
 			if (pixeldata == -1)
 			{
 				Entity entity(entt::null, _MainScene.get());
@@ -362,6 +365,7 @@ namespace Lithium
 	void EditorLayer::RenderImgui()
 	{
 
+		LT_PROFILE_FUNCTION("RenderImGui()");
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -413,9 +417,24 @@ namespace Lithium
 		}
 
 		ImGui::End();
-		_shp->OnUpdate();
-		_InspectorPanel->OnUpdate();
-		_AssetBrowerPanel->OnUpdate();
+		{
+			LT_PROFILE_SCOPE("SceneHierachyPanel()")
+			_shp->OnUpdate();
+			LT_END_SCOPE();
+		}
+	
+		{
+
+			LT_PROFILE_SCOPE("inspector()")
+			_InspectorPanel->OnUpdate();
+			LT_END_SCOPE();
+		}
+		{
+			LT_PROFILE_SCOPE("assetbrowser()")
+			_AssetBrowerPanel->OnUpdate();
+			LT_END_SCOPE();
+
+		}
 	
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
 
@@ -455,16 +474,14 @@ namespace Lithium
 		glm::mat4 _view = view;
 		glm::mat4 _proj = proj;
 
-
-
+		ImGuizmo::SetGizmoSizeClipSpace(0.2f);
+		ImGuizmo::SetOrthographic(true);
+		ImGuizmo::SetDrawlist();
+		ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
 		if (_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
 		{
 			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
-			ImGuizmo::SetGizmoSizeClipSpace(0.2f);
-			ImGuizmo::SetOrthographic(true);
-			ImGuizmo::SetDrawlist();
-
-			ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
+			
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
 				(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
 
@@ -498,6 +515,9 @@ namespace Lithium
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 0,0 });
+		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 11);
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 11);
+		
 		if (_sceneState == SceneState::RUNTIME) {
 			if (ImGui::ImageButton((ImTextureID*)_StopButtonTexture->GetID(), { 30, 35 }))
 			{
@@ -512,7 +532,7 @@ namespace Lithium
 			}
 		}
 	
-		ImGui::PopStyleVar(2);
+		ImGui::PopStyleVar(4);
 		ImGui::End();
 
 		ImGui::End();
@@ -561,44 +581,37 @@ namespace Lithium
 
 	void EditorLayer::StartRuntime()
 	{
-		/*std::unordered_map<std::string, ScriptComponent> Scriptmap;
-
-		{
-		 auto view = _MainScene->GetRegistry().view<ScriptComponent>();
-		 for (auto entity : view)
-		 {
-			 Entity ent(entity, _MainScene.get());
-			 ScriptComponent scc = ent.GetComponent<ScriptComponent>();
-			 Scriptmap.emplace(scc._name, scc);
-		 }
-		}*/
 		_EditorScene = Scene::Copy(_MainScene);
-
-
-		/*{
+		//force reload assemblies
+		_monoserver->ForceReload();
+		{
 			auto view = _MainScene->GetRegistry().view<ScriptComponent>();
+
 			for (auto entity : view)
 			{
-				Entity ent(entity, _MainScene.get());
-				ScriptComponent& scc = ent.GetComponent<ScriptComponent>();
-				scc.created = false;
-				scc._Scriptclass = _monoserver->GetClass(scc._name);
-				scc._Scriptobject = nullptr;
-				std::unordered_map<std::string, Ref<ScriptClassField>> Fieldtmap;
-				auto script = Scriptmap[scc._name];
-				for (auto t : scc._Scriptclass->GetFields())
+
+				ScriptComponent scc = view.get<ScriptComponent>(entity);
+				std::string name = scc._name;
+				//take a copy and reload class from mono
+				Entity ent((entt::entity)entity, _MainScene.get());
+				ent.RemoveComponent<ScriptComponent>();
+				ent.AddComponent<ScriptComponent>(name);
+				ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
+				newscc._Scriptclass = _monoserver->GetClass(name);
+				newscc.created = false;
+				newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
+				ScriptClass::InitObjectRuntime(newscc._Scriptobject);
+				//now all fields are reset
+				//set the fields
+				for (auto t : scc._Scriptobject->GetFields())
 				{
-					auto field =script._Scriptobject->GetFields()[t.first];
-					Ref<ScriptClassField> newfield = CreateRef<ScriptClassField>(field->GetFieldHandle(),nullptr);
-					newfield->SetValue(field->GetValue());
-					newfield->SetClass(field->GetClass());
-
-					Fieldtmap.emplace(t.first, newfield);
+					newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
 				}
-				scc._Scriptclass->SetFields(Fieldtmap);
 			}
-		}*/
-
+		}
+		
+		
+	
 		_sceneState = SceneState::RUNTIME;
 		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
 	}
@@ -608,7 +621,33 @@ namespace Lithium
 		_MainScene = _EditorScene;
 		_sceneState = SceneState::EDITOR;
 		Application::GetInstance()._sceneManager->SetActiveScene(_MainScene);
+		//force reload assemblies
+		_monoserver->ForceReload();
+		{
+			auto view = _MainScene->GetRegistry().view<ScriptComponent>();
 
+			for (auto entity : view)
+			{
+
+				ScriptComponent scc = view.get<ScriptComponent>(entity);
+				std::string name = scc._name;
+				//take a copy and reload class from mono
+				Entity ent((entt::entity)entity, _MainScene.get());
+				ent.RemoveComponent<ScriptComponent>();
+				ent.AddComponent<ScriptComponent>(name);
+				ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
+				newscc._Scriptclass = _monoserver->GetClass(name);
+				newscc.created = true;
+				newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
+				ScriptClass::InitObjectRuntime(newscc._Scriptobject);
+				//now all fields are reset
+				//set the fields
+				for (auto t : scc._Scriptobject->GetFields())
+				{
+					newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
+				}
+			}
+		}
 	}
 
 }

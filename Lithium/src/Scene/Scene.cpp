@@ -23,8 +23,10 @@ namespace Lithium
 {
 
 	Scene::Scene()
-		:_Registry(entt::registry())
-	{}
+		:m_Registry(entt::registry())
+	{
+		
+	}
 	
 	template<typename Component>
 	static void CopyComponentAll(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
@@ -43,7 +45,7 @@ namespace Lithium
 	
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		Entity ent(_Registry.create(), this);
+		Entity ent(m_Registry.create(), this);
 		ent.AddComponent<IDComponent>(UUID());
 		ent.AddComponent<NameComponent>(name);
 		CreateEntityEvent e = CreateEntityEvent();
@@ -53,7 +55,7 @@ namespace Lithium
 
 	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
 	{
-		Entity ent(_Registry.create(), this);
+		Entity ent(m_Registry.create(), this);
 		ent.AddComponent<IDComponent>(uuid);
 		ent.AddComponent<NameComponent>(name);
 		CreateEntityEvent e = CreateEntityEvent();
@@ -63,7 +65,7 @@ namespace Lithium
 
 	void Scene::DeleteEntity(Entity entity)
 	{
-		_Registry.destroy(entity.GetHandle());
+		m_Registry.destroy(entity.GetHandle());
 	}
 
 	void Scene::onEditorUpdate()
@@ -120,14 +122,13 @@ namespace Lithium
 			for (auto entity : view)
 			{
 
-				
+				Entity ent(entity, this);
 				auto& scc = view.get<ScriptComponent>(entity);
 				if (scc.created == false)
-				{
-					scc._Scriptobject = ScriptClass::CreateInstance(scc._Scriptclass);
-					ScriptClass::InitObjectRuntime(scc._Scriptobject);
+				{	
+					IDComponent& idc = ent.GetComponent<IDComponent>();
 					scc.created = true;
-					scc.OnCreate((uint32_t)entity);
+					scc.OnCreate((uint64_t)idc.ID);
 					scc._Scriptobject->Invoke("Start");
 					
 				}

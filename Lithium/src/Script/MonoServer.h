@@ -13,6 +13,7 @@ namespace Lithium
 		MonoAssembly* _MonoAssembly = nullptr;
 		MonoImage* _MonoImage = nullptr;
 		MonoClass* _ScriptBaseClass;
+		MonoMethod* m_ExceptionMethod;
 		char* _assemblyData;
 
 
@@ -41,7 +42,7 @@ namespace Lithium
 			static bool KeyPressed_Internal(uint16_t button);
 			static double DeltaTime_Internal();
 			//--------------------------------------------------------------------------
-
+			void ForwardMonoException(MonoObject* object);
 			static std::vector<const char*> _BufferLog;
 
 			void Reload();

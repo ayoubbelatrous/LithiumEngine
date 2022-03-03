@@ -153,7 +153,7 @@ namespace Lithium
 
 		bool created = false;
 	public:
-		void OnCreate(uint32_t ID)
+		void OnCreate(uint64_t ID)
 		{
 			if (created == true)
 			{

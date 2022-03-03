@@ -31,9 +31,8 @@ namespace Lithium
 			case MONO_TYPE_VALUETYPE:
 			{
 				char* name = mono_type_get_name(monoType);
-				//if (strcmp(name, "Lithium.Math.Vector2") == 0) return FieldType::Vec2;
+				if (strcmp(name, "Lithium.Math.Vector2") == 0) return ScriptType::Vec2;
 				if (strcmp(name, "Lithium.Math.Vector3") == 0) return ScriptType::Vec3;
-				if (strcmp(name, "Lithium.Math.Vector4") == 0) return ScriptType::Vec4;
 			}
 			case MONO_TYPE_CLASS:
 			{

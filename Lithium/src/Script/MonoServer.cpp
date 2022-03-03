@@ -23,6 +23,12 @@ namespace Lithium
 
 	bool MonoServer::HasComponent_Interal(int entityID, MonoObject* type)
 	{
+		if (!Application::GetInstance()._sceneManager->GetActiveScene()->GetRegistry().valid((entt::entity)entityID))
+		{
+			return false;
+		}
+		
+
 		Entity entity((entt::entity)entityID, Application::GetInstance()._sceneManager->GetActiveScene().get());
 		MonoClass* klass = mono_object_get_class(type);
 		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
@@ -68,6 +74,13 @@ namespace Lithium
 	double MonoServer::DeltaTime_Internal()
 	{
 		return Application::GetInstance().GetDeltaTime();
+	}
+
+	void MonoServer::ForwardMonoException(MonoObject* object)
+	{
+		void* Args[1];
+		Args[0] = object;
+		mono_runtime_invoke(m_ExceptionMethod, nullptr,Args, nullptr);
 	}
 
 	void MonoServer::Bindinternals()
@@ -158,6 +171,8 @@ namespace Lithium
 			assert("");
 		}
 		_ScriptBaseClass =  mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
+		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException(object)", true);
+		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
 	}
 
 
@@ -181,7 +196,8 @@ namespace Lithium
 		Bindinternals();
 		m_ClassCache.clear();
 		_ScriptBaseClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
-
+		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException", true);
+		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
 		
 	}
 	void MonoServer::DeleteAssemblies()
@@ -205,7 +221,6 @@ namespace Lithium
 			std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() << "[ns]" << std::endl;
-			CORE_LOG("updated assembly");
 			return true;
 		}
 		else

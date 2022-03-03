@@ -92,6 +92,37 @@ namespace Lithium
 
 		return modified;
 	}
+	static bool Property(const std::string& name, float* value)
+	{
+		bool modified = false;
+		if (ImGui::DragFloat(name.c_str(), value))
+		{
+			modified = true;
+		}
+
+		return modified;
+	}
+	static bool Property(const std::string& name, glm::vec2* value)
+	{
+		bool modified = false;
+		if (ImGui::DragFloat2(name.c_str(), (float*)value))
+		{
+			modified = true;
+		}
+
+		return modified;
+	}
+	static bool Property(const std::string& name, glm::vec3* value)
+	{
+		bool modified = false;
+		if (ImGui::DragFloat3(name.c_str(), (float*)value))
+		{
+			modified = true;
+		}
+
+		return modified;
+	}
+
 	void InspectorPanel::OnCreate()
 	{
 
@@ -197,12 +228,48 @@ namespace Lithium
 		{
 			ImGui::Selectable("Script");
 			auto& scc = _Selection.GetComponent<ScriptComponent>();
-			int value =  scc._Scriptobject->GetFields()["inttest"]->GetValue<int>();
-			if (Property("inttest", &value))
+			for (auto& field : scc._Scriptobject->GetFields())
 			{
-				scc._Scriptobject->SetField("inttest", value);
+				
+				switch (field.second->GetType())
+				{
+				case Lithium::Types::ScriptType::Int:
+				{
+					FieldValue value = field.second->GetValue();
+					if (Property(field.second->GetName(), &std::get<int>(value)))
+					field.second->SetValue(value);
+					break;
+				}
+				
+				case Lithium::Types::ScriptType::Float:
+				{
+					FieldValue value = field.second->GetValue();
+					if (Property(field.second->GetName(), &std::get<float>(value)))
+					field.second->SetValue(value);
+					break;
+				}
+				
+				case Lithium::Types::ScriptType::Vec2:
+				{
+					FieldValue value = field.second->GetValue();
+					if (Property(field.second->GetName(), &std::get<glm::vec2>(value)))
+						field.second->SetValue(value);
+					break;
+				}
+
+
+				case Lithium::Types::ScriptType::Transform:
+				{
+					ImGui::Button(field.first.c_str());
+					break;
+				}
+
+				default:
+					break;
+				}
 			}
 
+		
 		}
 
 	

@@ -39,8 +39,8 @@ namespace Lithium
 			}
 		}
 		MonoObject* GetObjectPtr() { return m_Object; }
-		template<typename T>
-		void SetField(const std::string& name,T value)
+		
+		void SetField(const std::string& name,FieldValue value)
 		{
 			if (m_Fields.find(name) != m_Fields.end())
 			{
