@@ -1,8 +1,8 @@
 project "lua533"
 	kind "StaticLib"
 	language "C"
-	targetdir ("bin/%{prj.name}")
-	objdir ("bin-int/%{prj.name}")
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{

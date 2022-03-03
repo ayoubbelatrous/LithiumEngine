@@ -18,6 +18,7 @@ workspace "Lithium"
 		"BUILD_PROFILER",
 		
 	}
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "%{wks.location}/Lithium/vendor/glfw/include"

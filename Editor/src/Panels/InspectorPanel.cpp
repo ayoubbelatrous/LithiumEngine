@@ -229,6 +229,13 @@ namespace Lithium
 		{
 			ImGui::Selectable("Script");
 			auto& scc = _Selection.GetComponent<ScriptComponent>();
+			char buffer[256];
+			memset(buffer, 0, sizeof(buffer));
+			std::strncpy(buffer,scc.Name.c_str(), sizeof(buffer));
+			if (ImGui::InputText("##ScritpName", buffer, sizeof(buffer)))
+			{
+				scc.Name = std::string(buffer);
+			}
 			for (auto& field : scc._Scriptobject->GetFields())
 			{
 				

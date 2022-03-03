@@ -72,7 +72,7 @@ namespace Lithium
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity3.AddComponent<ScriptComponent>("Test");
 		ScriptComponent& sco = entity3.GetComponent<ScriptComponent>();
-		sco._Scriptclass = _monoserver->GetClass(sco._name);
+		sco._Scriptclass = _monoserver->GetClass(sco.Name);
 		//Ref<ScriptClass> scc = sco._Scriptclass;
 
 		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
@@ -179,7 +179,7 @@ namespace Lithium
 					{
 
 						ScriptComponent scc = view.get<ScriptComponent>(entity);
-						std::string name = scc._name;
+						std::string name = scc.Name;
 
 						Entity ent((entt::entity)entity, _MainScene.get());
 						ent.RemoveComponent<ScriptComponent>();
@@ -591,7 +591,7 @@ namespace Lithium
 			{
 
 				ScriptComponent scc = view.get<ScriptComponent>(entity);
-				std::string name = scc._name;
+				std::string name = scc.Name;
 				//take a copy and reload class from mono
 				Entity ent((entt::entity)entity, _MainScene.get());
 				ent.RemoveComponent<ScriptComponent>();
@@ -630,7 +630,7 @@ namespace Lithium
 			{
 
 				ScriptComponent scc = view.get<ScriptComponent>(entity);
-				std::string name = scc._name;
+				std::string name = scc.Name;
 				//take a copy and reload class from mono
 				Entity ent((entt::entity)entity, _MainScene.get());
 				ent.RemoveComponent<ScriptComponent>();

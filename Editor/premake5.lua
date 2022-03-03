@@ -4,8 +4,8 @@ project "Editor"
 	cppdialect "C++17"
 	staticruntime "off"
 
-	targetdir ("%{wks.location}/bin/")
-	objdir ("%{wks.location}/bin-int/")
+	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 	pchheader "lipch.h"
 	pchsource "src/lipch.cpp"
 	files

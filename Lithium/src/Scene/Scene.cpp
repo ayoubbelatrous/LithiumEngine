@@ -24,9 +24,7 @@ namespace Lithium
 
 	Scene::Scene()
 		:m_Registry(entt::registry())
-	{
-		
-	}
+	{}
 	
 	template<typename Component>
 	static void CopyComponentAll(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
@@ -200,6 +198,12 @@ namespace Lithium
 		if (src.HasComponent<NameComponent>())
 		{
 			CopyComponent<NameComponent>(src, entity);
+
+		}
+
+		if (src.HasComponent<NameComponent>())
+		{
+			CopyComponent<ScriptComponent>(src, entity);
 
 		}
 

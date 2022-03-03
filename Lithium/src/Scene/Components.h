@@ -143,10 +143,10 @@ namespace Lithium
 		ScriptComponent() = default;
 		ScriptComponent(const ScriptComponent& other) = default;
 		ScriptComponent(const std::string& name)
-			:_name(name)
+			:Name(name)
 		{}
 		
-		std::string _name;
+		std::string Name;
 		Ref<ScriptClass> _Scriptclass = nullptr;
 		
 		Ref<ScriptObject> _Scriptobject = nullptr;

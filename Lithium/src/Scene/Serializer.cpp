@@ -118,7 +118,7 @@ namespace Lithium
 		{
 			ScriptComponent& scc = entity.GetComponent<ScriptComponent>();
 			emitter << YAML::Key << "Script" << YAML::BeginMap;
-			emitter << YAML::Key << "ClassName" << YAML::Value << scc._name;
+			emitter << YAML::Key << "ClassName" << YAML::Value << scc.Name;
 			emitter << YAML::EndMap;
 		}
 
@@ -203,7 +203,7 @@ namespace Lithium
 				deserEntity.AddComponent<ScriptComponent>();
 				ScriptComponent& scc = deserEntity.GetComponent<ScriptComponent>();
 				std::string ScriptName = sprite["ScriptName"].as<std::string>();
-				scc._name = ScriptName;
+				scc.Name = ScriptName;
 			}
 
 		}
