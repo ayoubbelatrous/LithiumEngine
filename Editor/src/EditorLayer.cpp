@@ -220,30 +220,24 @@ namespace Lithium
 	    my = vs.y - my;
 		mouseX = (int)mx;
 		mouseY = (int)my;
-		
-
-		if (!ImGuizmo::IsOver() && Input::IsMouseKeyPressed(0) && _ViewportFocus)
+		if (Input::IsMouseKeyPressed(0) && _ViewportHovered && !ImGuizmo::IsOver())
 		{
-			int pixeldata = framebuffer->ReadPixel(1, mouseX, mouseY);
 
-			
-			if (pixeldata == -1)
+			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
-				Entity entity(entt::null, _MainScene.get());
 
+				int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
+				Entity entity((entt::entity)pixelData, _MainScene.get());
 				_Selection = entity;
-			}
-			else if (pixeldata < -1)
-			{
-
 			}
 			else
 			{
-				Entity entity((entt::entity)pixeldata, _MainScene.get());
-
+				Entity entity(entt::null, _MainScene.get());
 				_Selection = entity;
+
 			}
 		}
+
 		framebuffer->UnBind();
 		
 
@@ -441,6 +435,7 @@ namespace Lithium
 		ImGui::Begin("Scene");
 		_ViewportHovered = ImGui::IsWindowHovered();
 		_ViewportFocus = ImGui::IsWindowFocused();
+
 		if (_ViewportFocus)
 		{
 			Application::GetInstance().GetImguiLayer()->SetBlockEvent(false);
