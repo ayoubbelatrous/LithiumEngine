@@ -64,6 +64,7 @@ namespace Lithium
 		void SceneEvent(Event& e);
 		void StartRuntime();
 		void StopRuntime();
+		void ReloadMonoServer();
 	private:
 		glm::mat4 proj;
 		glm::mat4 view;

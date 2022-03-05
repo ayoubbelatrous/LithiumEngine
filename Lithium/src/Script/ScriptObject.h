@@ -1,4 +1,5 @@
 #pragma once
+#include "Script/ScriptField.h"
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -12,9 +13,21 @@ namespace Lithium
 	class ScriptObject
 	{
 	public:
-		ScriptObject() = default;
+		
 		ScriptObject(MonoObject* object);
+		std::unordered_map<std::string, Ref<ScriptField>>& GetFields()
+		{
+			return m_FieldMap;
+		}
+
+		void SetFields(const std::unordered_map<std::string, Ref<ScriptField>>& fieldmap)
+		{
+			m_FieldMap = fieldmap;
+		}
+
+		void LoadFields();
 	private:
-		MonoObject* m_MonoObject;
+		MonoObject* m_MonoObject = nullptr;
+		std::unordered_map<std::string, Ref<ScriptField>> m_FieldMap;
 	};
 }

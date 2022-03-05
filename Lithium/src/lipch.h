@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <thread>
 #include <chrono>
+#include <assert.h>
 #include "Core/Base.h"
 #include "glm.hpp"
 #include <mono/jit/jit.h>

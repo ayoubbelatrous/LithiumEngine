@@ -10,6 +10,7 @@
 #include "AssetManager/AssetManager.h"
 #include <filesystem>
 #include <iostream>
+#include "Script/ScriptObject.h"
 
 namespace Lithium
 {
@@ -130,56 +131,31 @@ namespace Lithium
 	void InspectorPanel::OnUpdate()
 	{
 
-		
+
 		ImGui::Begin("Inspector");
-		
+
 		if (_Selection.GetHandle() != entt::null && _Selection.getScene() != nullptr)
 		{
-		
-		if (_Selection.HasComponent<NameComponent>())
-		{
-			NameComponent& namec =  _Selection.GetComponent<NameComponent>();
-				
-			char buffer[256];
-			memset(buffer, 0, sizeof(buffer));
-			std::strncpy(buffer, namec.GetName().c_str(), sizeof(buffer));
-			if (ImGui::InputText("##Name", buffer, sizeof(buffer)))
-			{
-				namec.GetName() = std::string(buffer);
-			}
-			
-		}
 
-		if (_Selection.HasComponent<TransformComponent>())
-		{
-			
-			ImGui::Selectable("Transform");
-
-			if (ImGui::BeginPopupContextItem())
+			if (_Selection.HasComponent<NameComponent>())
 			{
-				if (ImGui::MenuItem("Remove Component"))
+				NameComponent& namec = _Selection.GetComponent<NameComponent>();
+
+				char buffer[256];
+				memset(buffer, 0, sizeof(buffer));
+				std::strncpy(buffer, namec.GetName().c_str(), sizeof(buffer));
+				if (ImGui::InputText("##Name", buffer, sizeof(buffer)))
 				{
-				}
-				if (ImGui::MenuItem("Copy Component"))
-				{
+					namec.GetName() = std::string(buffer);
 				}
 
-				ImGui::EndPopup();
 			}
 
-			ImGui::Separator();
-			DrawVec3Control("Position", _Selection.GetComponent<TransformComponent>().Position);
-			ImGui::Separator();
-			DrawVec3Control("Rotation", _Selection.GetComponent<TransformComponent>().Rotation);
-			ImGui::Separator();
-			DrawVec3Control("Scale", _Selection.GetComponent<TransformComponent>().Scale);
-			ImGui::Separator();
-		}
-		if (_Selection.HasComponent<SpriteRendererComponent>())
-		{
-			ImGui::Selectable("Sprite Renderer");
-			
-		
+			if (_Selection.HasComponent<TransformComponent>())
+			{
+
+				ImGui::Selectable("Transform");
+
 				if (ImGui::BeginPopupContextItem())
 				{
 					if (ImGui::MenuItem("Remove Component"))
@@ -192,104 +168,144 @@ namespace Lithium
 					ImGui::EndPopup();
 				}
 
+				ImGui::Separator();
+				DrawVec3Control("Position", _Selection.GetComponent<TransformComponent>().Position);
+				ImGui::Separator();
+				DrawVec3Control("Rotation", _Selection.GetComponent<TransformComponent>().Rotation);
+				ImGui::Separator();
+				DrawVec3Control("Scale", _Selection.GetComponent<TransformComponent>().Scale);
+				ImGui::Separator();
+			}
+
+			if (_Selection.HasComponent<SpriteRendererComponent>())
+			{
+				ImGui::Selectable("Sprite Renderer");
+
+
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+					}
+					if (ImGui::MenuItem("Copy Component"))
+					{
+					}
+
+					ImGui::EndPopup();
+				}
+
+
+
+				ImGui::Separator();
+				ImGui::ColorEdit4("Color", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().Color));
+				if (_Selection.GetComponent<SpriteRendererComponent>().tex->loaded)
+				{
+					ImGui::Image((ImTextureID)_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });
+				}
+				else
+				{
+					ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,50 });
+				}
+
+
+				if (ImGui::BeginDragDropTarget())
+				{
+
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+					{
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path texturepath = root / path;
+						std::filesystem::path _path = _Selection.GetComponent<SpriteRendererComponent>().tex->GetPath();
+
+
+						//CORE_LOG(_path);
+					}
+					ImGui::EndDragDropTarget();
+				}
+				ImGui::InputFloat2("Tex Index", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().texIndex));
+			}
+
+
+			if (_Selection.HasComponent<ScriptComponent>())
+			{
+				ImGui::Selectable("Script");
+
+				ScriptComponent& script = _Selection.GetComponent<ScriptComponent>();
+				char* buffer = new char[256];
+				memset(buffer, 0, 256);
+				memcpy(buffer, script.Name.c_str(), 256);
+
+				if (ImGui::InputText("Class", buffer, 256))
+				{
+					script.Name = buffer;
+					script.Loaded = false;
+				}
 				
-				
-			ImGui::Separator();
-			ImGui::ColorEdit4("Color", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().Color));
-			if (_Selection.GetComponent<SpriteRendererComponent>().tex->loaded)
-			{
-				ImGui::Image((ImTextureID)_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), {75,75});
-			}
-			else
-			{
-				ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,50 });
-			}
-			
-			
-			if (ImGui::BeginDragDropTarget())
-			{
-
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+				for (auto& field : script.Scriptobject->GetFields())
 				{
-					const wchar_t* path = (const wchar_t*)payload->Data;
-					std::filesystem::path texturepath = root/path;
-					std::filesystem::path _path = _Selection.GetComponent<SpriteRendererComponent>().tex->GetPath();
+					
+					switch (field.second->GetType())
+					{
+					case (ScriptType::Int):
+					{
+						int val = field.second->GetValue<int>();
+						if (Property(field.first, &val))
+						{
+							field.second->SetValue<int>(val);
+						}
+						break;
+					}
+					case (ScriptType::Float):
+					{
+						float val = 0;
+						val = field.second->GetValue<float>();
+						if (Property(field.first, &val))
+						{
+							field.second->SetValue(val);
+						}
+						break;
+					}
+					case (ScriptType::Vec2):
+					{
+						glm::vec2 val = glm::vec2(0);
+						val = field.second->GetValue<glm::vec2>();
+						if (Property(field.first, &val))
+						{
+							field.second->SetValue(val);
+						}
+						break;
+					}
 
 
-					//CORE_LOG(_path);
+					case (ScriptType::Vec3):
+					{
+						glm::vec3 val = glm::vec3(0);
+						val = field.second->GetValue<glm::vec3>();
+						if (Property(field.first, &val))
+						{
+							field.second->SetValue(val);
+						}
+						break;
+					}
+
+
+					case (ScriptType::Vec4):
+					{
+						glm::vec4 val = glm::vec4(0);
+						val = field.second->GetValue<glm::vec4>();
+					}
+					break;
+
+					case ScriptType::String:
+						break;
+					}
 				}
-				ImGui::EndDragDropTarget();
-			}
-			ImGui::InputFloat2("Tex Index", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().texIndex));
-		  }
 
-		
+			}
+
+
 		}
 
-	
-		if (ImGui::Button("Add Component"))
-		{
-			ImGui::OpenPopup("add_componenet_popup");
-		}
-
-
-		if (ImGui::BeginPopup("add_componenet_popup"))
-		{
-			if (!_Selection.HasComponent<SpriteRendererComponent>())
-			{
-
-			  if (ImGui::MenuItem("Sprite Renderer"))
-			  {
-			
-				_Selection.AddComponent<SpriteRendererComponent>();
-			  }
-			}
-
-
-			if (!_Selection.HasComponent<TransformComponent>())
-			{
-
-				if (ImGui::MenuItem("Transform"))
-				{
-
-					_Selection.AddComponent<TransformComponent>();
-				}
-			}
-
-			/*
-			if (!_Selection.HasComponent<MeshComponent>())
-			{
-
-				if (ImGui::MenuItem("Mesh"))
-				{
-
-					_Selection.AddComponent<MeshComponent>();
-				}
-			}
-
-			if (!_Selection.HasComponent<MeshRendererComponent>())
-			{
-
-				if (ImGui::MenuItem("Mesh Renderer"))
-				{
-
-					_Selection.AddComponent<MeshRendererComponent>();
-				}
-			}
-
-			if (!_Selection.HasComponent<MaterialComponent>())
-			{
-
-				if (ImGui::MenuItem("Material"))
-				{
-
-					_Selection.AddComponent<MaterialComponent>();
-				}
-			}
-			*/
-			ImGui::EndPopup();
-
-		}
 		ImGui::End();
 	}
 }

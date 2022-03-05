@@ -220,11 +220,6 @@ namespace Lithium
 		if (std::filesystem::last_write_time(_Path) != m_LastAssemblyTime)
 		{
 			m_LastAssemblyTime = std::filesystem::last_write_time(_Path);
-			
-			DeleteAssemblies();
-			std::filesystem::copy_file(_Path.c_str(), _BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
-
-			Reload();
 			std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() << "[ns]" << std::endl;
@@ -247,12 +242,7 @@ namespace Lithium
 	{
 		DeleteAssemblies();
 		std::filesystem::copy_file(_Path.c_str(), _BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
-
 		Reload();
-		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-		//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
-		//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() << "[ns]" << std::endl;
-		CORE_LOG("updated assembly");
 	}
 
 	void MonoServer::SetActiveScene(const Ref<Scene>& scene)
@@ -292,6 +282,11 @@ namespace Lithium
 		mono_runtime_object_init(monoobject);
 		scriptObject = CreateRef<ScriptObject>(monoobject);
 		return scriptObject;
+	}
+
+	Ref<ScriptObject> MonoServer::CopyObject(const Ref<ScriptObject>& object)
+	{
+		return nullptr;
 	}
 
 }

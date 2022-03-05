@@ -13,6 +13,8 @@
 #include "Mesh/Material.h"
 #include "Core/UUID.h"
 #include "Script/ScriptObject.h"
+
+
 namespace Lithium
 {
 	enum class CameraMode
@@ -136,18 +138,6 @@ namespace Lithium
 
 
 
-	struct ScriptComponent
-	{
-		ScriptComponent() = default;
-		ScriptComponent(const ScriptComponent& other) = default;
-		ScriptComponent(const std::string& name)
-			:Name(name)
-		{}
-		std::string Name;
-		bool Loaded = false;
-		bool Created = false;
-		Ref<ScriptObject> Scriptobject;
-	};
 
 
 	struct RigidBody2DComponent
@@ -172,6 +162,22 @@ namespace Lithium
 		void* RuntimeFixture = nullptr;
 
 	
+	};
+	struct ScriptComponent
+	{
+		Ref<ScriptObject> Scriptobject = nullptr;
+		std::string Name;
+		bool Loaded = false;
+		bool Created = false;
+		bool Valid = false;
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent& other) = default;
+		ScriptComponent(const std::string& name)
+			:Name(name)
+		{}
+
+
+
 	};
 
 

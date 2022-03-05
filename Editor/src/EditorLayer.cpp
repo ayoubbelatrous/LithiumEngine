@@ -22,8 +22,12 @@ namespace Lithium
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		m_SceneHierachyPanel = CreateRef<SceneHierachyPanel>();
 		m_SceneHierachyPanel->OnCreate();
+
+
 		m_InspectorPanel = CreateRef<InspectorPanel>();
 		m_InspectorPanel->OnCreate();
+
+
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 		timer = CreateRef<Timer>();
 		
@@ -66,14 +70,8 @@ namespace Lithium
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity2.AddComponent<TransformComponent>();
 		entity2.AddComponent<ScriptComponent>("Test");
-
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity3.AddComponent<ScriptComponent>("Test");
-
-
-// 		ScriptComponent& sco = entity3.GetComponent<ScriptComponent>();
-// 		sco._Scriptclass = _monoserver->GetClass(sco.Name);
-		//Ref<ScriptClass> scc = sco._Scriptclass;
 
 		m_MainScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
@@ -111,7 +109,6 @@ namespace Lithium
 		{
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
-
 	}
 
 	void EditorLayer::OnUpdate()
@@ -172,30 +169,10 @@ namespace Lithium
 			m_MainScene->onEditorUpdate();
 			if (canCheckAssembly)
 			{
-// 				if (_monoserver->CheckForChange())
-// 				{
-// 					auto view = _MainScene->GetRegistry().view<ScriptComponent>();
-// 
-// 					for (auto entity : view)
-// 					{
-// 
-// 						ScriptComponent scc = view.get<ScriptComponent>(entity);
-// 						std::string name = scc.Name;
-// 
-// 						Entity ent((entt::entity)entity, _MainScene.get());
-// 						ent.RemoveComponent<ScriptComponent>();
-// 						ent.AddComponent<ScriptComponent>(name);
-// 						ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
-// 						newscc._Scriptclass = _monoserver->GetClass(name);
-// 						newscc.created = true;
-// 						newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
-// 						ScriptClass::InitObjectRuntime(newscc._Scriptobject);
-// 						for (auto t : scc._Scriptobject->GetFields())
-// 						{
-// 							newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
-// 						}
-// 					}
-// 				}
+				if (Application::Get().Monoserver->CheckForChange())
+				{
+					ReloadMonoServer();
+				}		
 				canCheckAssembly.store(false);
 			}
 			
@@ -604,6 +581,25 @@ namespace Lithium
 
 
 
+	}
+
+	void EditorLayer::ReloadMonoServer()
+	{
+		_EditorStatus = "Reloading Assembly";
+
+
+		Application::Get().Monoserver->ForceReload();
+
+
+		auto view = m_MainScene->GetRegistry().view<ScriptObject>();
+		for (auto entity : view)
+		{
+
+		}
+
+
+
+		_EditorStatus = "";
 	}
 
 }

@@ -70,6 +70,7 @@ namespace Lithium
 		}
 
 		
+		
 		{
 			auto view = GetRegistry().view<ScriptComponent>();
 			for (auto entity : view)
@@ -79,7 +80,19 @@ namespace Lithium
 
 				if (!script.Loaded)
 				{
-					script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
+					if (Application::Get().Monoserver->CheckIfClassExists(script.Name))
+					{
+						script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
+
+						script.Loaded = true;
+						script.Valid = true;
+					}
+					else
+					{
+						script.Loaded = false;
+						script.Valid = false;
+					}
+				
 				}
 
 			}
@@ -153,6 +166,7 @@ namespace Lithium
 		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<RigidBody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<ScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		return newscene;
 	}
 

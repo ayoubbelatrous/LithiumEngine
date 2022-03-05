@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include <assert.h>
+
 namespace Lithium
 {
 	
@@ -27,5 +29,5 @@ namespace Lithium
 	
 
 #define BIND_EVENT(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
-
+#define ASSERT(cond) {assert(cond);}
 }

@@ -59,7 +59,8 @@ namespace Lithium
 			void SetActiveScene(const Ref<Scene>& scene);
 
 			Ref<ScriptObject> GetObject(const std::string& name);
-
+			Ref<ScriptObject> CopyObject(const Ref<ScriptObject>& object);
+			
 			
 	};
 	
