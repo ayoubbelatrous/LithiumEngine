@@ -23,7 +23,7 @@ namespace Lithium
 	public:
 		Application();
 		~Application();
-		Ref<MonoServer> MonoServer;
+	
 		double GetDeltaTime() const {return m_DeltaTime; }
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);

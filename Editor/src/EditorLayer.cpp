@@ -16,9 +16,6 @@ namespace Lithium
 	void EditorLayer::OnCreate()
 	{
 		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
-		_monoserver = CreateRef<MonoServer>();
-		Application::GetInstance().MonoServer = _monoserver;
-		_monoserver->ForceReload();
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
@@ -553,10 +550,6 @@ namespace Lithium
 		ImGui::Begin("Stats");
 		//CORE_LOG(Renderer2D::GetStats().DrawCalls);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		if (ImGui::Button("update assembly"))
-		{
-			_monoserver->CheckForChange();
-		}
 		ImGui::Text(_EditorStatus.c_str());
 
 	

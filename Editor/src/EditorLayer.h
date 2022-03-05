@@ -29,8 +29,6 @@
 #include <thread>
 #include "Mesh/Mesh.h"
 #include "Script/MonoServer.h"
-#include "Script/ScriptClass.h"
-#include "Script/ScriptObject.h"
 #include "Core/Timer.h"
 
 namespace Lithium
@@ -103,8 +101,6 @@ namespace Lithium
 
 		Ref<VertexArray> vertarray;
 		Ref<VertexBuffer> vertbuffer;
-
-		Ref<MonoServer> _monoserver;
 
 		Ref<Texture> _PlayButtonTexture;
 		Ref<Texture> _StopButtonTexture;

@@ -8,8 +8,6 @@
 #include "gtc/type_ptr.hpp"
 #include "Core/Base.h"
 #include "AssetManager/AssetManager.h"
-#include "Script/ScriptClass.h"
-
 #include <filesystem>
 #include <iostream>
 
@@ -225,59 +223,6 @@ namespace Lithium
 			ImGui::InputFloat2("Tex Index", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().texIndex));
 		  }
 
-		if (_Selection.HasComponent<ScriptComponent>())
-		{
-			ImGui::Selectable("Script");
-			auto& scc = _Selection.GetComponent<ScriptComponent>();
-			char buffer[256];
-			memset(buffer, 0, sizeof(buffer));
-			std::strncpy(buffer,scc.Name.c_str(), sizeof(buffer));
-			if (ImGui::InputText("##ScritpName", buffer, sizeof(buffer)))
-			{
-				scc.Name = std::string(buffer);
-			}
-			
-			for (auto& field : scc._Scriptobject->GetFields())
-			{
-				
-				switch (field.second->GetType())
-				{
-				case Lithium::Types::ScriptType::Int:
-				{
-					FieldValue value = field.second->GetValue();
-					if (Property(field.second->GetName(), &std::get<int>(value)))
-					field.second->SetValue(value);
-					break;
-				}
-				
-				case Lithium::Types::ScriptType::Float:
-				{
-					FieldValue value = field.second->GetValue();
-					if (Property(field.second->GetName(), &std::get<float>(value)))
-					field.second->SetValue(value);
-					break;
-				}
-				
-				case Lithium::Types::ScriptType::Vec2:
-				{
-					FieldValue value = field.second->GetValue();
-					if (Property(field.second->GetName(), &std::get<glm::vec2>(value)))
-						field.second->SetValue(value);
-					break;
-				}
-
-
-				case Lithium::Types::ScriptType::Transform:
-				{
-					ImGui::Button(field.first.c_str());
-					break;
-				}
-
-				default:
-					break;
-				}
-			}
-
 		
 		}
 
@@ -345,10 +290,11 @@ namespace Lithium
 			ImGui::EndPopup();
 
 		}
-		}
-		
 		ImGui::End();
 	}
+		
+	
+	
 
 }
 

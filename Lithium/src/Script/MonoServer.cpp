@@ -9,6 +9,7 @@
 #include <chrono>
 #include <assert.h>
 #include "gtc/type_ptr.hpp"
+
 #include <mono/metadata/tokentype.h>
 
 namespace Lithium
@@ -198,15 +199,9 @@ namespace Lithium
 			CORE_LOG("error domain");
 		}
 
-		
-
 		_MonoAssembly = mono_domain_assembly_open(mono_domain_get(), _BinPath.c_str());
-	
 		_MonoImage = mono_assembly_get_image(_MonoAssembly);
-
-
 		Bindinternals();
-		m_ClassCache.clear();
 		_ScriptBaseClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException", true);
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
@@ -265,37 +260,6 @@ namespace Lithium
 		m_ActiveScene = scene;
 	}
 
-	Ref<ScriptClass> MonoServer::GetClass(const std::string& name)
-	{
-
-		
-		if (m_ClassCache.find(name) != m_ClassCache.end())
-		{
-			return m_ClassCache[name];
-		}
-		else
-		{
-			MonoClass* klass = mono_class_from_name(_MonoImage, "", name.c_str());
-			
-			if (klass == NULL)
-			{
-				CORE_LOG("class not found : '" << name << "'");
-				return nullptr;
-			}
-
-			Ref<ScriptClass> _scriptclass = CreateRef<ScriptClass>(klass,_MonoAppDomain);
-			if (mono_class_is_subclass_of(klass, _ScriptBaseClass, false))
-			{
-				_scriptclass->IsSubClassFromScript = true;
-			}
-			_scriptclass->SetScriptBaseClass(_ScriptBaseClass);
-			_scriptclass->SetName(name);
-			_scriptclass->LoadFields();
-			m_ClassCache.emplace(name,_scriptclass);
-		
-			return m_ClassCache[name];
-		}
-	}
 
 
 }

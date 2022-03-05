@@ -69,25 +69,6 @@ namespace Lithium
 			}
 		}
 
-		{
-			auto view = GetRegistry().view<ScriptComponent>();
-
-			for (auto entity : view)
-			{
-
-
-				auto& scc = view.get<ScriptComponent>(entity);
-				if (scc.created == false)
-				{
-					scc._Scriptobject = ScriptClass::CreateInstance(scc._Scriptclass);
-					ScriptClass::InitObjectRuntime(scc._Scriptobject);
-					scc.created = true;
-					scc.OnCreate((uint32_t)entity);
-				}
-			
-
-			}
-		}
 	}
 
 	void Scene::OnStart()
@@ -101,28 +82,6 @@ namespace Lithium
 
 	void Scene::onUpdate()
 	{
-		
-		{
-			auto view = GetRegistry().view<ScriptComponent>();
-
-			for (auto entity : view)
-			{
-
-				Entity ent(entity, this);
-				auto& scc = view.get<ScriptComponent>(entity);
-				if (scc.created == false)
-				{
-					IDComponent& idc = ent.GetComponent<IDComponent>();
-					scc.created = true;
-					scc.OnCreate(idc.ID);
-					scc._Scriptobject->Invoke("Start");
-
-				}
-				scc._Scriptobject->Invoke("Update");
-
-			}
-		}
-
 		
 		{
 			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
@@ -176,7 +135,6 @@ namespace Lithium
 		CopyComponentAll<MaterialComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
-		CopyComponentAll<ScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<RigidBody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		return newscene;
@@ -207,11 +165,7 @@ namespace Lithium
 
 		}
 
-		if (src.HasComponent<NameComponent>())
-		{
-			CopyComponent<ScriptComponent>(src, entity);
 
-		}
 
 		return entity;
 	}

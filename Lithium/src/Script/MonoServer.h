@@ -1,7 +1,12 @@
 #pragma once
 
 #include <filesystem>
-#include "Script/ScriptClass.h"
+#include <mono/jit/jit.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/object.h>
+#include <mono/metadata/debug-helpers.h>
+#include <mono/metadata/environment.h>
+#include <mono/metadata/attrdefs.h>
 
 namespace Lithium
 {
@@ -51,9 +56,7 @@ namespace Lithium
 			bool CheckIfClassExists(const std::string& name);
 			void ForceReload();
 			Ref<Scene> m_ActiveScene;
-			Ref<ScriptClass> GetClass(const std::string& name);
 			void SetActiveScene(const Ref<Scene>& scene);
-			std::unordered_map<std::string, Ref<ScriptClass>> m_ClassCache;
 	};
 	
 
