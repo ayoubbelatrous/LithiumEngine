@@ -6,6 +6,8 @@
 #include "Event/AppEvents.h"
 #include <functional>
 #include "Core/UUID.h"
+class b2World;
+
 
 namespace Lithium
 {
@@ -24,7 +26,9 @@ namespace Lithium
 		entt::registry& GetRegistry() { return m_Registry; }
 
 		void onEditorUpdate();
+		void OnStart();
 		void onUpdate();
+		void OnStop();
 		void SetEventCallback(const EventCallback& e) { m_Callback = e; }
 		std::unordered_map<UUID, entt::entity> GetUUIDMap();
 		template<typename Comp>
@@ -34,11 +38,12 @@ namespace Lithium
 			dst.AddOrReplaceComponent<Comp>(src.GetComponent<Comp>());
 	    }
 		static Ref<Scene> Copy(const Ref<Scene>& src);
+		void Test();
 	Entity DuplicateEntity(Entity src);
 	private:
+		
 		entt::registry m_Registry;
 		EventCallback m_Callback;
-
 	};
 
 	

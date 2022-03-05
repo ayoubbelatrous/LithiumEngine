@@ -5,27 +5,18 @@
 #include "Renderer/Renderer2D.h"
 #include "Script/MonoServer.h"
 #include "gtc/type_ptr.hpp"
-struct Transform
-{
-	Transform()
-	{
-		pos = glm::vec3(110.5f);
-		rot = glm::vec3(202.5f);
-		sca = glm::vec3(202.5f);
-	}
-	glm::vec3 pos;
-	glm::vec3 rot;
-	glm::vec3 sca;
-	
+#include "COre/Application.h"
 
-};
+
 namespace Lithium
 {
 
 	Scene::Scene()
 		:m_Registry(entt::registry())
-	{}
+	{
+	}
 	
+
 	template<typename Component>
 	static void CopyComponentAll(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
 	{
@@ -99,9 +90,40 @@ namespace Lithium
 		}
 	}
 
+	void Scene::OnStart()
+	{
+		
+
+		auto view = GetRegistry().view<RigidBody2DComponent>();
+
+
+	}
+
 	void Scene::onUpdate()
 	{
+		
+		{
+			auto view = GetRegistry().view<ScriptComponent>();
 
+			for (auto entity : view)
+			{
+
+				Entity ent(entity, this);
+				auto& scc = view.get<ScriptComponent>(entity);
+				if (scc.created == false)
+				{
+					IDComponent& idc = ent.GetComponent<IDComponent>();
+					scc.created = true;
+					scc.OnCreate(idc.ID);
+					scc._Scriptobject->Invoke("Start");
+
+				}
+				scc._Scriptobject->Invoke("Update");
+
+			}
+		}
+
+		
 		{
 			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
 
@@ -112,36 +134,12 @@ namespace Lithium
 				BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(), (uint32_t)entity);
 			}
 		}
-	
-
-		{
-			auto view = GetRegistry().view<ScriptComponent>();
-
-			for (auto entity : view)
-			{
-
-				Entity ent(entity, this);
-				auto& scc = view.get<ScriptComponent>(entity);
-				if (scc.created == false)
-				{	
-					IDComponent& idc = ent.GetComponent<IDComponent>();
-					scc.created = true;
-					scc.OnCreate(idc.ID);
-					scc._Scriptobject->Invoke("Start");
-					
-				}
-				scc._Scriptobject->Invoke("Update");
-				
-			}
-		}
-
-
-	
 	}
 
-	
+	void Scene::OnStop()
+	{
 
-
+	}
 
 	std::unordered_map<UUID, entt::entity> Scene::GetUUIDMap()
 	{
@@ -179,7 +177,15 @@ namespace Lithium
 		CopyComponentAll<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<ScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<RigidBody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		return newscene;
+	}
+
+	void Scene::Test()
+	{
+		
+		
 	}
 
 	Entity Scene::DuplicateEntity(Entity src)

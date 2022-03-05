@@ -10,10 +10,11 @@ namespace Lithium
 	public:
 		void OnCreate();
 		void OnUpdate();
-		void DrawEntity(Entity entity,Entity& _Selection);
+		void DrawEntity(Entity entity);
 		void SetScene(Ref<Scene> scene)
 		{
 			_Scene = scene;
+			_Selection = {};
 		}
 		Entity GetSelection()
 		{

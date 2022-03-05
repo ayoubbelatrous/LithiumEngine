@@ -12,6 +12,7 @@ namespace Lithium
 	{
 		auto* window = Application::GetInstance().GetWindow().GETWindow();
 		auto state = glfwGetKey(window, static_cast<int32_t>(keycode));
+		
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 

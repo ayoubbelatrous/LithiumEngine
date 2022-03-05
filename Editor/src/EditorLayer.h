@@ -74,9 +74,9 @@ namespace Lithium
 
 		Ref<FrameBuffer> framebuffer;
 		Ref<FrameBuffer> DisplayBuffer;
-		Ref<Scene> _MainScene;
-		Ref<Scene> _RuntimeScene;
-		Ref<Scene> _EditorScene;
+		Ref<Scene> m_MainScene;
+		Ref<Scene> m_EditorScene;
+		Ref<Scene> m_RuntimeScene;
 
 		bool _ViewportHovered = false;
 		bool _ViewportFocus = false;
@@ -86,9 +86,6 @@ namespace Lithium
 
 		float orthosize = 5;
 		glm::vec2 _ViewportBounds[2];
-		Entity _Selection;
-		Ref<SceneHierachyPanel> _shp;
-		Ref<InspectorPanel> _InspectorPanel;
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
 		int mouseX = 0;
 		int mouseY = 0;
@@ -98,8 +95,7 @@ namespace Lithium
 		std::string text;
 		glm::vec2 LastMousePosiition;
 		int _GizmoMode = -1;
-		bool hoveringEntity = false;
-		Entity hoveredEntity;
+
 		
 		Ref<Shader> shader;
 		Ref<Shader> frameshader;
@@ -114,8 +110,13 @@ namespace Lithium
 		Ref<Texture> _StopButtonTexture;
 		Ref<Texture> _PauseTexture;
 		SceneState _sceneState = SceneState::EDITOR;
-		Serializer _SceneSerilizer = Serializer(_MainScene);
-
+		Serializer _SceneSerilizer = Serializer(m_MainScene);
+		
 		Ref<Timer> timer;
+
+
+		//Panels 
+		Ref<SceneHierachyPanel> m_SceneHierachyPanel;
+		Ref<InspectorPanel> m_InspectorPanel;
 	};
 }

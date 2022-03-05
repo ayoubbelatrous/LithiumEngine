@@ -7,6 +7,7 @@ static Charset createAsciiCharset() {
     Charset ascii;
     for (unicode_t cp = 0x20; cp < 0x7f; ++cp)
         ascii.add(cp);
+   
     return ascii;
 }
 

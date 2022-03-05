@@ -22,18 +22,20 @@ namespace Lithium
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
-		_shp = CreateRef<SceneHierachyPanel>();
-		_InspectorPanel = CreateRef<InspectorPanel>();
-		_InspectorPanel->OnCreate();
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
+		m_SceneHierachyPanel = CreateRef<SceneHierachyPanel>();
+		m_SceneHierachyPanel->OnCreate();
+		m_InspectorPanel = CreateRef<InspectorPanel>();
+		m_InspectorPanel->OnCreate();
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 		timer = CreateRef<Timer>();
 		
-		_MainScene = CreateRef<Scene>();
-		_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
-		Application::GetInstance().sceneManager->SetActiveScene(_MainScene);
+		m_EditorScene = CreateRef<Scene>();
+		m_MainScene = m_EditorScene;
+		m_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
+		Application::GetInstance().sceneManager->SetActiveScene(m_MainScene);
 
-		_Selection = Entity(entt::null, _MainScene.get());
+		m_SceneHierachyPanel->SetScene(m_MainScene);
 		FrameBufferAttachmentDescriptor mainframebufferspec(
 			{
 				FramebufferTextureFormat::RGBA8,
@@ -55,27 +57,28 @@ namespace Lithium
 		framebuffer->resize(1000, 1000);
 
 	
-		Entity entity = _MainScene->CreateEntity("name");
-		Entity entity3 = _MainScene->CreateEntity("dod");
-		Entity entity2 = _MainScene->CreateEntity("hello");
+		Entity entity = m_MainScene->CreateEntity("name");
+		Entity entity3 = m_MainScene->CreateEntity("dod");
+		Entity entity2 = m_MainScene->CreateEntity("hello");
 
 		//_Selection = entity;
-		_shp->SetScene(_MainScene);
-		_InspectorPanel->SetScene(_MainScene);
 
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity.AddComponent<TransformComponent>();
 
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity2.AddComponent<TransformComponent>();
-
+		entity2.AddComponent<RigidBody2DComponent>();
+		entity2.AddComponent<BoxCollider2DComponent>();
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		entity3.AddComponent<ScriptComponent>("Test");
-		ScriptComponent& sco = entity3.GetComponent<ScriptComponent>();
-		sco._Scriptclass = _monoserver->GetClass(sco.Name);
+		entity3.AddComponent<RigidBody2DComponent>();
+		entity3.AddComponent<BoxCollider2DComponent>();
+// 		entity3.AddComponent<ScriptComponent>("Test");
+// 		ScriptComponent& sco = entity3.GetComponent<ScriptComponent>();
+// 		sco._Scriptclass = _monoserver->GetClass(sco.Name);
 		//Ref<ScriptClass> scc = sco._Scriptclass;
 
-		_MainScene->CopyComponent<TransformComponent>(entity,entity3);
+		m_MainScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
@@ -168,33 +171,33 @@ namespace Lithium
 		{
 		case (SceneState::EDITOR):
 			{
-			_MainScene->onEditorUpdate();
+			m_MainScene->onEditorUpdate();
 			if (canCheckAssembly)
 			{
-				if (_monoserver->CheckForChange())
-				{
-					auto view = _MainScene->GetRegistry().view<ScriptComponent>();
-
-					for (auto entity : view)
-					{
-
-						ScriptComponent scc = view.get<ScriptComponent>(entity);
-						std::string name = scc.Name;
-
-						Entity ent((entt::entity)entity, _MainScene.get());
-						ent.RemoveComponent<ScriptComponent>();
-						ent.AddComponent<ScriptComponent>(name);
-						ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
-						newscc._Scriptclass = _monoserver->GetClass(name);
-						newscc.created = true;
-						newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
-						ScriptClass::InitObjectRuntime(newscc._Scriptobject);
-						for (auto t : scc._Scriptobject->GetFields())
-						{
-							newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
-						}
-					}
-				}
+// 				if (_monoserver->CheckForChange())
+// 				{
+// 					auto view = _MainScene->GetRegistry().view<ScriptComponent>();
+// 
+// 					for (auto entity : view)
+// 					{
+// 
+// 						ScriptComponent scc = view.get<ScriptComponent>(entity);
+// 						std::string name = scc.Name;
+// 
+// 						Entity ent((entt::entity)entity, _MainScene.get());
+// 						ent.RemoveComponent<ScriptComponent>();
+// 						ent.AddComponent<ScriptComponent>(name);
+// 						ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
+// 						newscc._Scriptclass = _monoserver->GetClass(name);
+// 						newscc.created = true;
+// 						newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
+// 						ScriptClass::InitObjectRuntime(newscc._Scriptobject);
+// 						for (auto t : scc._Scriptobject->GetFields())
+// 						{
+// 							newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
+// 						}
+// 					}
+// 				}
 				canCheckAssembly.store(false);
 			}
 			
@@ -202,7 +205,7 @@ namespace Lithium
 			}
 		case (SceneState::RUNTIME):
 		{
-			_MainScene->onUpdate();
+			m_MainScene->onUpdate();
 			break;
 
 		}
@@ -220,16 +223,29 @@ namespace Lithium
 	    my = vs.y - my;
 		mouseX = (int)mx;
 		mouseY = (int)my;
-		if (Input::IsMouseKeyPressed(0) && _ViewportFocus && !ImGuizmo::IsOver())
-		{
 
+		
+		if (Input::IsMouseKeyPressed(0) && _ViewportHovered && !ImGuizmo::IsOver()/*&&*/)
+		{
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
-
-				int pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
-				Entity entity((entt::entity)pixelData, _MainScene.get());
-				_Selection = entity;
+				pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
+				if (pixelData == -1)
+				{
+					Entity ent{ entt::null,m_MainScene.get() };
+					m_SceneHierachyPanel->SetSelection(ent);
+				}
+				else
+				{
+					Entity ent{(entt::entity)pixelData,m_MainScene.get() };
+					m_SceneHierachyPanel->SetSelection(ent);
+				}
+			
 			}
+			else
+			{
+			}
+
 		}
 
 		framebuffer->UnBind();
@@ -246,7 +262,7 @@ namespace Lithium
 		RendererCommand::Draw(6);
 
 		DisplayBuffer->UnBind();
-		_InspectorPanel->SetSelection(_Selection);
+
 		RenderImgui();
 	}
 
@@ -288,8 +304,7 @@ namespace Lithium
 				Ref<Scene> scene = CreateRef<Scene>();
 				Serializer sz = Serializer(scene);
 				sz.DeserializeScene("assets/scenes/test.lis");
-				_MainScene = scene;
-				_Selection = Entity(entt::null, nullptr);
+				m_MainScene = scene;
 			}
 		}
 		
@@ -315,24 +330,24 @@ namespace Lithium
 			{
 				
 				{
-					Entity e = _MainScene->CreateEntity("new Entity");
+					Entity e = m_MainScene->CreateEntity("new Entity");
 					e.AddComponent<TransformComponent>();
 				}
 
 			}
 		}
 
-		if (e.keycode == KEYCODE_D && _Selection)
-		{
-			if (control)
-			{
-				if (e.action == GLFW_PRESS)
-				{
-					_MainScene->DuplicateEntity(_Selection);
-				}
-
-			}
-		}
+// 		if (e.keycode == KEYCODE_D && _Selection)
+// 		{
+// 			if (control)
+// 			{
+// 				if (e.action == GLFW_PRESS)
+// 				{
+// 					_MainScene->DuplicateEntity(_Selection);
+// 				}
+// 
+// 			}
+// 		}
 	
 
 
@@ -404,17 +419,58 @@ namespace Lithium
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
 
-		ImGui::End();
+		if (ImGui::BeginMenuBar())
+		{
+			
+			if (ImGui::BeginMenu("File"))
+			{
+				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
+				// which we can't undo at the moment without finer window depth/z control.
+				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);1
+				if (ImGui::MenuItem("New", "Ctrl+N"));
+
+
+				if (ImGui::MenuItem("Open...", "Ctrl+O"));
+					
+
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"));
+				ImGui::EndMenu();
+			}
+			if (_sceneState == SceneState::RUNTIME) {
+				if (ImGui::ImageButton((ImTextureID*)_StopButtonTexture->GetID(), { 20,20 }))
+				{
+
+					StopRuntime();
+					m_SceneHierachyPanel->SetScene(m_MainScene);
+
+				}
+			}
+			else if (_sceneState == SceneState::EDITOR)
+			{
+				if (ImGui::ImageButton((ImTextureID*)_PlayButtonTexture->GetID(), { 20,20 }))
+				{
+				
+					StartRuntime();
+					m_SceneHierachyPanel->SetScene(m_MainScene);
+
+				}
+			}
+			ImGui::EndMenuBar();
+
+
+		}
+
 		{
 			LT_PROFILE_SCOPE("SceneHierachyPanel()")
-			_shp->OnUpdate();
+				m_SceneHierachyPanel->OnUpdate();
 			LT_END_SCOPE();
 		}
 	
 		{
 
 			LT_PROFILE_SCOPE("inspector()")
-			_InspectorPanel->OnUpdate();
+				m_InspectorPanel->SetSelection(m_SceneHierachyPanel->GetSelection());
+				m_InspectorPanel->OnUpdate();
 			LT_END_SCOPE();
 		}
 		{
@@ -439,22 +495,7 @@ namespace Lithium
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
 		ImGui::Image(reinterpret_cast<void*>(DisplayBuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
-		if (ImGui::BeginDragDropTarget())
-		{
 
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
-			{
-
-				const wchar_t* path = (const wchar_t*)payload->Data;
-				std::filesystem::path texturepath = root / path;
-				if (hoveringEntity && hoveredEntity.HasComponent<SpriteRendererComponent>())
-				{
-					
-				}
-
-			}
-			ImGui::EndDragDropTarget();
-		}
 		ImVec2 viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		ImVec2 viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		ImVec2 viewportOffset = ImGui::GetWindowPos();
@@ -463,13 +504,15 @@ namespace Lithium
 		glm::mat4 _view = view;
 		glm::mat4 _proj = proj;
 
+		Entity selected = m_SceneHierachyPanel->GetSelection();
+
 		ImGuizmo::SetGizmoSizeClipSpace(0.2f);
 		ImGuizmo::SetOrthographic(true);
 		ImGuizmo::SetDrawlist();
 		ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
-		if (_Selection.GetHandle() != entt::null && _Selection.HasComponent<TransformComponent>())
+		if (selected.GetHandle() != entt::null && selected.HasComponent<TransformComponent>())
 		{
-			glm::mat4 matri = _Selection.GetComponent<TransformComponent>().GetMatrix();
+			glm::mat4 matri = selected.GetComponent<TransformComponent>().GetMatrix();
 			
 			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
 				(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
@@ -480,10 +523,10 @@ namespace Lithium
 				Math::DecomposeTransform(matri, translation, rotation, scale);
 				//_Selection.GetComponent<TransformComponent>().Position = matri[3];
 
-				glm::vec3 deltaRotation = rotation - _Selection.GetComponent<TransformComponent>().Rotation;
-				_Selection.GetComponent<TransformComponent>().Position = translation;
-				_Selection.GetComponent<TransformComponent>().Rotation += deltaRotation;
-				_Selection.GetComponent<TransformComponent>().Scale = scale;
+				glm::vec3 deltaRotation = rotation - selected.GetComponent<TransformComponent>().Rotation;
+				selected.GetComponent<TransformComponent>().Position = translation;
+				selected.GetComponent<TransformComponent>().Rotation += deltaRotation;
+				selected.GetComponent<TransformComponent>().Scale = scale;
 				UsingGizmos = true;
 			}
 			else
@@ -493,36 +536,6 @@ namespace Lithium
 
 		}
 
-		window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-		ImGui::SetNextWindowBgAlpha(0.10f);
-		float padding = 10;
-		ImVec2 pos = ImVec2(_ViewportBounds[0].x + padding, _ViewportBounds[0].y + padding);
-		ImGui::SetNextWindowPos(pos );
-		//ImGui::SetNextWindowSize({ 30,30 });
-
-		ImGui::Begin("win",(bool*)true,window_flags);
-
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 0,0 });
-		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 11);
-		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 11);
-		
-		if (_sceneState == SceneState::RUNTIME) {
-			if (ImGui::ImageButton((ImTextureID*)_StopButtonTexture->GetID(), { 30, 35 }))
-			{
-				StopRuntime();
-			}
-		}
-		else if(_sceneState == SceneState::EDITOR)
-		{
-			if (ImGui::ImageButton((ImTextureID*)_PlayButtonTexture->GetID(), { 30, 35 }))
-			{
-				StartRuntime();
-			}
-		}
-	
-		ImGui::PopStyleVar(4);
-		ImGui::End();
 
 		ImGui::End();
 
@@ -545,11 +558,15 @@ namespace Lithium
 			_monoserver->CheckForChange();
 		}
 		ImGui::Text(_EditorStatus.c_str());
+
+	
+		ImGui::End();
+
+
 		ImGui::End();
 
 		
 		
-		ImGuiRenderToolBar();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -566,7 +583,7 @@ namespace Lithium
 	void EditorLayer::ImGuiRenderToolBar()
 	{
 
-		
+
 	}
 
 	void EditorLayer::SceneEvent(Event& e)
@@ -576,76 +593,27 @@ namespace Lithium
 
 	void EditorLayer::StartRuntime()
 	{
-		_EditorScene = Scene::Copy(_MainScene);
-		//force reload assemblies
-		_monoserver->ForceReload();
-		{
-			auto view = _MainScene->GetRegistry().view<ScriptComponent>();
-
-			for (auto entity : view)
-			{
-
-				ScriptComponent scc = view.get<ScriptComponent>(entity);
-				std::string name = scc.Name;
-				//take a copy and reload class from mono
-				Entity ent((entt::entity)entity, _MainScene.get());
-				ent.RemoveComponent<ScriptComponent>();
-				ent.AddComponent<ScriptComponent>(name);
-				ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
-				newscc._Scriptclass = _monoserver->GetClass(name);
-				newscc.created = false;
-				newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
-				ScriptClass::InitObjectRuntime(newscc._Scriptobject);
-				//now all fields are reset
-				//set the fields
-				for (auto t : scc._Scriptobject->GetFields())
-				{
-					newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
-				}
-			}
-		}
+		m_RuntimeScene = Scene::Copy(m_EditorScene);
+		m_MainScene = m_RuntimeScene;
+		m_MainScene->OnStart();
 		
-		
-	
 		_sceneState = SceneState::RUNTIME;
-		Application::GetInstance().sceneManager->SetActiveScene(_MainScene);
+	
+		Application::GetInstance().sceneManager->SetActiveScene(m_MainScene);
+		
 	}
 
 	void EditorLayer::StopRuntime()
 	{
-		_MainScene = _EditorScene;
+		m_MainScene->OnStop();
+		m_MainScene = m_EditorScene;
+		m_RuntimeScene = nullptr;
 		_sceneState = SceneState::EDITOR;
-		Application::GetInstance().sceneManager->SetActiveScene(_MainScene);
-		//force reload assemblies
-		_monoserver->ForceReload();
-		{
-			auto view = _MainScene->GetRegistry().view<ScriptComponent>();
+		
+		Application::GetInstance().sceneManager->SetActiveScene(m_MainScene);
 
-			for (auto entity : view)
-			{
 
-				ScriptComponent scc = view.get<ScriptComponent>(entity);
-				std::string name = scc.Name;
-				//take a copy and reload class from mono
-				Entity ent((entt::entity)entity, _MainScene.get());
-				ent.RemoveComponent<ScriptComponent>();
-				ent.AddComponent<ScriptComponent>(name);
-				ScriptComponent& newscc = ent.GetComponent<ScriptComponent>();
-				newscc._Scriptclass = _monoserver->GetClass(name);
-				newscc.created = true;
-				newscc._Scriptobject = ScriptClass::CreateInstance(newscc._Scriptclass);
-				ScriptClass::InitObjectRuntime(newscc._Scriptobject);
-				//now all fields are reset
-				//set the fields
-				for (auto t : scc._Scriptobject->GetFields())
-				{
-					if (newscc._Scriptobject->GetFields().find(t.first) != newscc._Scriptobject->GetFields().end())
-					{
-						newscc._Scriptobject->GetFields()[t.first]->SetValue(t.second->GetValueLocal());
-					}
-				}
-			}
-		}
+
 	}
 
 }

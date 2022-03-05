@@ -17,6 +17,7 @@ namespace Lithium
 		MonoClass* _Handle;
 		MonoDomain* _DomainHandle;
 		MonoClass* _ScriptClass;
+
 		std::unordered_map <std::string,Ref<ScriptProperty>> _Properties;
 		std::unordered_map <std::string,Ref<ScriptMethod>> _Methods;
 
@@ -27,21 +28,25 @@ namespace Lithium
 			:_Handle(handle), _DomainHandle(domainHandle)
 		{}
 		ScriptClass() = default;
-		void SetName(const std::string& name);
+
+
 		std::string GetName();
+		void SetName(const std::string& name);
+
 		MonoClass* GetHandle();
 		MonoDomain* GetDomainHandle();
+
 		void Reload();
 		void LoadFields();
 
-		std::unordered_map <std::string, Ref<ScriptMethod>> GetMethods();
-		std::unordered_map <std::string, Ref<ScriptProperty>> GetProperties();
 		bool IsSubClassFromScript = false;
-
 		void SetScriptBaseClass(MonoClass* scriptClass)
 		{
 			_ScriptClass = scriptClass;
 		}
+
+		std::unordered_map <std::string, Ref<ScriptMethod>> GetMethods();
+		std::unordered_map <std::string, Ref<ScriptProperty>> GetProperties();
 
 		
 	};

@@ -14,7 +14,7 @@
 #include "Core/UUID.h"
 #include "Script/ScriptClass.h"
 #include "Script/ScriptObject.h"
-
+#include "physics/PhysicsTypes.h"
 namespace Lithium
 {
 	enum class CameraMode
@@ -160,6 +160,31 @@ namespace Lithium
 				_Scriptobject->SetProp<uint64_t>("ID", ID);
 			}
 		}
+	};
+
+
+	struct RigidBody2DComponent
+	{
+		
+		Physics::BodyType BodyType = Physics::BodyType::Static;
+		bool FixedRotation = false;
+		void* RuntimeBody = nullptr;
+		RigidBody2DComponent() = default;
+		RigidBody2DComponent(const RigidBody2DComponent & other) = default;
+	};
+
+
+	struct BoxCollider2DComponent
+	{
+		BoxCollider2DComponent() = default;
+		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		glm::vec2 Size = { 0.5f, 0.5f };
+
+		// Storage for runtime
+		void* RuntimeFixture = nullptr;
+
+	
 	};
 }
 

@@ -32,25 +32,28 @@ namespace Lithium
 			{
 			case Lithium::Types::ScriptType::Int:
 			{
-				int val;
-				mono_field_get_value(m_Object, m_Field, &val);
-				return m_Value = val;
+				FieldValue val;
+				mono_field_get_value(m_Object, m_Field, &std::get<int>(val));
+				m_Value = val;
+				return val;
 				break;
 			}
 				
 			case Lithium::Types::ScriptType::Float:
 			{
-				float val;
-				mono_field_get_value(m_Object, m_Field, &val);
-				return m_Value = val;
+				FieldValue val;
+				mono_field_get_value(m_Object, m_Field, &std::get<float>(val));
+				m_Value = val;
+				return val;
 				break;
 			}
 
 			case Lithium::Types::ScriptType::Vec2:
 			{
-				glm::vec2 val;
-				mono_field_get_value(m_Object, m_Field, glm::value_ptr(val));
-				return m_Value = val;
+				FieldValue val;
+				mono_field_get_value(m_Object, m_Field, &std::get<glm::vec2>(val));
+				m_Value = val;
+				return val;
 				break;
 			}
 			default:

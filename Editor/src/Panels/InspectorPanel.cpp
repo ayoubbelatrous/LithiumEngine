@@ -236,6 +236,7 @@ namespace Lithium
 			{
 				scc.Name = std::string(buffer);
 			}
+			
 			for (auto& field : scc._Scriptobject->GetFields())
 			{
 				

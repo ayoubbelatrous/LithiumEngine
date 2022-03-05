@@ -52,6 +52,7 @@ namespace Lithium
 			double time = (double)glfwGetTime();
 			m_DeltaTime = time - m_PreviousTime;
 			m_PreviousTime = time;
+
 			for (Layer* layer:_Stack)
 			{
 				layer->OnUpdate();

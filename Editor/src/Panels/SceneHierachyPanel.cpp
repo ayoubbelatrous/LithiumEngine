@@ -20,12 +20,12 @@ namespace Lithium
 		_Scene->GetRegistry().each([&](auto entityID)
 		{
 				Entity entity{ entityID , _Scene.get() };
-				DrawEntity(entity,_Selection);
+				DrawEntity(entity);
 		});
 		ImGui::End();
 	}
 	
-	 void SceneHierachyPanel::DrawEntity(Entity entity,Entity& _Selection) {
+	 void SceneHierachyPanel::DrawEntity(Entity entity) {
 
 		/*
 		 if(entity.HasComponent<ChildManagerComponent>())
