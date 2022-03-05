@@ -34,7 +34,8 @@ namespace Lithium
 		Window& GetWindow();
 		Ref<AssetManager> assetManager;
 		Ref<SceneManager> sceneManager;
-		static Application& GetInstance() { return *instance; };
+		Ref<MonoServer> Monoserver;
+		static Application& Get() { return *instance; };
 		static Application* instance;
 	};
 	

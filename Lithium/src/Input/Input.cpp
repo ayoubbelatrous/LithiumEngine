@@ -10,7 +10,7 @@ namespace Lithium
 
 	bool Input::IsKeyPressed(const KeyCode keycode)
 	{
-		auto* window = Application::GetInstance().GetWindow().GETWindow();
+		auto* window = Application::Get().GetWindow().GETWindow();
 		auto state = glfwGetKey(window, static_cast<int32_t>(keycode));
 		
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
@@ -18,7 +18,7 @@ namespace Lithium
 
 	bool Input::IsMouseKeyPressed(int mousekey)
 	{
-		auto* window = Application::GetInstance().GetWindow().GETWindow();
+		auto* window = Application::Get().GetWindow().GETWindow();
 		auto state = glfwGetMouseButton(window, static_cast<int32_t>(mousekey));
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 		
@@ -26,7 +26,7 @@ namespace Lithium
 
 	glm::vec2 Input::MousePosition()
 	{
-		auto* window = Application::GetInstance().GetWindow().GETWindow();
+		auto* window = Application::Get().GetWindow().GETWindow();
 		double x;
 		double y;
 		glfwGetCursorPos(window, &x, &y);

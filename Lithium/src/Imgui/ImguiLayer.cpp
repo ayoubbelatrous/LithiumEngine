@@ -14,7 +14,7 @@ namespace Lithium
 
 	void GUIlayer::OnCreate()
 	{
-		Application& app = Application::GetInstance();
+		Application& app = Application::Get();
 		
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();

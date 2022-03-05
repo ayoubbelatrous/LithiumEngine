@@ -45,7 +45,7 @@ namespace Lithium {
 		_framebuffer = CreateRef<FrameBuffer>(framebufferspec);
 		_framebuffer->Bind();
 
-		glm::vec2 size = Application::GetInstance().GetWindow().getSize();
+		glm::vec2 size = Application::Get().GetWindow().getSize();
 		_framebuffer->resize((int)size.x, (int)size.y);
 		proj = glm::perspective(glm::radians(30.0f), (float)size.x / (float)size.y, 0.1f, 100.0f);
 		//view = glm::mat4(1.0f);

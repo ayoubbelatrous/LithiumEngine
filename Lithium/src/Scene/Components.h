@@ -12,7 +12,7 @@
 #include "Mesh/Mesh.h"
 #include "Mesh/Material.h"
 #include "Core/UUID.h"
-
+#include "Script/ScriptObject.h"
 namespace Lithium
 {
 	enum class CameraMode
@@ -140,6 +140,13 @@ namespace Lithium
 	{
 		ScriptComponent() = default;
 		ScriptComponent(const ScriptComponent& other) = default;
+		ScriptComponent(const std::string& name)
+			:Name(name)
+		{}
+		std::string Name;
+		bool Loaded = false;
+		bool Created = false;
+		Ref<ScriptObject> Scriptobject;
 	};
 
 
@@ -166,5 +173,7 @@ namespace Lithium
 
 	
 	};
+
+
 }
 

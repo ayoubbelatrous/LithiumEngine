@@ -15,7 +15,7 @@ namespace Lithium
 
 	void EditorLayer::OnCreate()
 	{
-		Application::GetInstance().GetImguiLayer()->SetBlockEvent(true);
+		Application::Get().GetImguiLayer()->SetBlockEvent(true);
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
@@ -30,7 +30,7 @@ namespace Lithium
 		m_EditorScene = CreateRef<Scene>();
 		m_MainScene = m_EditorScene;
 		m_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
-		Application::GetInstance().sceneManager->SetActiveScene(m_MainScene);
+		Application::Get().sceneManager->SetActiveScene(m_MainScene);
 
 		m_SceneHierachyPanel->SetScene(m_MainScene);
 		FrameBufferAttachmentDescriptor mainframebufferspec(
@@ -65,12 +65,12 @@ namespace Lithium
 
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity2.AddComponent<TransformComponent>();
-		entity2.AddComponent<RigidBody2DComponent>();
-		entity2.AddComponent<BoxCollider2DComponent>();
+		entity2.AddComponent<ScriptComponent>("Test");
+
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		entity3.AddComponent<RigidBody2DComponent>();
-		entity3.AddComponent<BoxCollider2DComponent>();
-// 		entity3.AddComponent<ScriptComponent>("Test");
+		entity3.AddComponent<ScriptComponent>("Test");
+
+
 // 		ScriptComponent& sco = entity3.GetComponent<ScriptComponent>();
 // 		sco._Scriptclass = _monoserver->GetClass(sco.Name);
 		//Ref<ScriptClass> scc = sco._Scriptclass;
@@ -111,6 +111,7 @@ namespace Lithium
 		{
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
+
 	}
 
 	void EditorLayer::OnUpdate()
@@ -345,10 +346,6 @@ namespace Lithium
 // 
 // 			}
 // 		}
-	
-
-
-
 	}
 
 	void EditorLayer::onMouseWheelEvent(MouseWheelEvent& e)
@@ -485,7 +482,7 @@ namespace Lithium
 
 		if (_ViewportFocus)
 		{
-			Application::GetInstance().GetImguiLayer()->SetBlockEvent(false);
+			Application::Get().GetImguiLayer()->SetBlockEvent(false);
 		}
 
 
@@ -592,7 +589,7 @@ namespace Lithium
 		
 		_sceneState = SceneState::RUNTIME;
 	
-		Application::GetInstance().sceneManager->SetActiveScene(m_MainScene);
+		Application::Get().sceneManager->SetActiveScene(m_MainScene);
 		
 	}
 
@@ -603,7 +600,7 @@ namespace Lithium
 		m_RuntimeScene = nullptr;
 		_sceneState = SceneState::EDITOR;
 		
-		Application::GetInstance().sceneManager->SetActiveScene(m_MainScene);
+		Application::Get().sceneManager->SetActiveScene(m_MainScene);
 
 
 

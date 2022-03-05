@@ -292,9 +292,5 @@ namespace Lithium
 		}
 		ImGui::End();
 	}
-		
-	
-	
-
 }
 

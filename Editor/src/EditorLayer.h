@@ -106,7 +106,7 @@ namespace Lithium
 		Ref<Texture> _StopButtonTexture;
 		Ref<Texture> _PauseTexture;
 		SceneState _sceneState = SceneState::EDITOR;
-		Serializer _SceneSerilizer = Serializer(m_MainScene);
+		Serializer m_SceneSerilizer = Serializer(m_MainScene);
 		
 		Ref<Timer> timer;
 

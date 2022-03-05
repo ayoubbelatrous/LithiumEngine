@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Script/ScriptClass.h"
+#include "Script/ScriptObject.h"
+
 #include <filesystem>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -7,7 +10,6 @@
 #include <mono/metadata/debug-helpers.h>
 #include <mono/metadata/environment.h>
 #include <mono/metadata/attrdefs.h>
-
 namespace Lithium
 {
 	class Scene;
@@ -26,11 +28,12 @@ namespace Lithium
 		std::string _BinPath = "assets/TestProject/bin/Csharp.dll";
 		std::filesystem::file_time_type m_LastAssemblyTime;
 		std::unordered_map<std::string, std::string> m_AllClassesInImage;
-
+		std::unordered_map<std::string, Ref<ScriptClass>> m_ScriptClassMap;
 
 		void Bindinternals();
 		void LoadAllClassesInImage();
-
+		void Reload();
+		void DeleteAssemblies();
 		public:
 			MonoServer();
 			~MonoServer();
@@ -39,7 +42,7 @@ namespace Lithium
 
 			//-----internal-calls------------------------------------------------------
 			static void Log(MonoString* log);
-			static bool HasComponent_Interal(uint64_t entityID,MonoObject* type);
+			static bool HasComponent_Interal(uint64_t entityID, MonoObject* type);
 			static void SetPosition_Internal(uint64_t entityID, glm::vec3* vector);
 			static void GetPosition_Internal(uint64_t entityID, glm::vec3* vector);
 			static bool MouseKey_Internal(int button);
@@ -49,14 +52,15 @@ namespace Lithium
 			//--------------------------------------------------------------------------
 			void ForwardMonoException(MonoObject* object);
 			static std::vector<const char*> _BufferLog;
-
-			void Reload();
-			void DeleteAssemblies();
 			bool CheckForChange();
 			bool CheckIfClassExists(const std::string& name);
 			void ForceReload();
 			Ref<Scene> m_ActiveScene;
 			void SetActiveScene(const Ref<Scene>& scene);
+
+			Ref<ScriptObject> GetObject(const std::string& name);
+
+			
 	};
 	
 

@@ -26,7 +26,7 @@ namespace Lithium
 	{
 		std::unordered_map<UUID, entt::entity> enttMap;
 
-		auto& registry = Application::GetInstance().sceneManager->GetActiveScene()->GetRegistry();
+		auto& registry = Application::Get().sceneManager->GetActiveScene()->GetRegistry();
 		auto entities = registry.view<IDComponent>();
 		
 		for (auto entity : entities)
@@ -36,7 +36,7 @@ namespace Lithium
 			enttMap.emplace(idc.ID,entity);
 		}
 		UUID uuid = UUID(entityID);
-		Entity entity(enttMap[uuid], Application::GetInstance().sceneManager->GetActiveScene().get());
+		Entity entity(enttMap[uuid], Application::Get().sceneManager->GetActiveScene().get());
 
 
 		MonoClass* klass = mono_object_get_class(type);
@@ -58,13 +58,13 @@ namespace Lithium
 	void MonoServer::SetPosition_Internal(uint64_t entityID, glm::vec3* vector)
 	{
 		
-		Entity entity(Application::GetInstance().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::GetInstance().sceneManager->GetActiveScene().get());
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		entity.GetComponent<TransformComponent>().Position = *vector;
 	}
 
 	void MonoServer::GetPosition_Internal(uint64_t entityID, glm::vec3* vector)
 	{
-		Entity entity(Application::GetInstance().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::GetInstance().sceneManager->GetActiveScene().get());
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		TransformComponent& trans = entity.GetComponent<TransformComponent>();
 		memcpy(vector, &trans.Position,sizeof(glm::vec3));
 	}
@@ -86,7 +86,7 @@ namespace Lithium
 
 	double MonoServer::DeltaTime_Internal()
 	{
-		return Application::GetInstance().GetDeltaTime();
+		return Application::Get().GetDeltaTime();
 	}
 
 	void MonoServer::ForwardMonoException(MonoObject* object)
@@ -205,7 +205,7 @@ namespace Lithium
 		_ScriptBaseClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException", true);
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
-		
+		m_ScriptClassMap.clear();
 	}
 	void MonoServer::DeleteAssemblies()
 	{
@@ -261,5 +261,37 @@ namespace Lithium
 	}
 
 
+
+	Ref<ScriptObject> MonoServer::GetObject(const std::string& name)
+	{
+		Ref<ScriptClass> scriptClass;
+		Ref<ScriptObject> scriptObject;
+		//TODO: add class to scriptclass map and search in map
+		MonoClass* monoklass;
+		if (m_ScriptClassMap.find(name) == m_ScriptClassMap.end())
+		{
+			monoklass = mono_class_from_name(_MonoImage, "", name.c_str());
+			if (monoklass == nullptr)
+			{
+				CORE_LOG("mono class not found");
+				return scriptObject;
+			}
+			else
+			{
+				scriptClass = CreateRef<ScriptClass>(monoklass);
+				m_ScriptClassMap.emplace(name, scriptClass);
+			}
+		}
+		else
+		{
+			scriptClass = m_ScriptClassMap[name];
+		}
+
+	
+		MonoObject* monoobject = mono_object_new(_MonoAppDomain, scriptClass->GetClassPtr());
+		mono_runtime_object_init(monoobject);
+		scriptObject = CreateRef<ScriptObject>(monoobject);
+		return scriptObject;
+	}
 
 }
