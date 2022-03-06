@@ -13,21 +13,24 @@ namespace Lithium
 	class ScriptObject
 	{
 	public:
-		
 		ScriptObject(MonoObject* object);
 		std::unordered_map<std::string, Ref<ScriptField>>& GetFields()
 		{
 			return m_FieldMap;
 		}
-
 		void SetFields(const std::unordered_map<std::string, Ref<ScriptField>>& fieldmap)
 		{
 			m_FieldMap = fieldmap;
 		}
-
 		void LoadFields();
+		std::string GetClassName()
+		{
+			return m_ClassName;
+		}
+
 	private:
 		MonoObject* m_MonoObject = nullptr;
 		std::unordered_map<std::string, Ref<ScriptField>> m_FieldMap;
+		std::string m_ClassName;
 	};
 }

@@ -570,21 +570,21 @@ namespace Lithium
 
 	void EditorLayer::ReloadMonoServer()
 	{
-		_EditorStatus = "Reloading Assembly";
-
-
+		
 		Application::Get().Monoserver->ForceReload();
 
-
-		auto view = m_MainScene->GetRegistry().view<ScriptObject>();
-		for (auto entity : view)
 		{
-
+			auto view = m_MainScene->GetRegistry().view<ScriptComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e,m_MainScene.get() };
+				ScriptComponent& script = entity.GetComponent<ScriptComponent>();
+				Ref<ScriptObject> OldScriptobject = script.Scriptobject;
+				script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+			}
 		}
+	
 
-
-
-		_EditorStatus = "";
 	}
 
 }

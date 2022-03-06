@@ -26,6 +26,7 @@ namespace Lithium
 		template<typename T>
 		void SetValue(T value)
 		{
+			ASSERT(false);
 		}
 
 		template<typename T>
@@ -34,46 +35,25 @@ namespace Lithium
 			 T val;
 			 GetMonoValue(&val);
 			 return val;
-
 		}
 
 		template<>
 		std::string GetValue()
 		{
-			return GetMonoString();
+			std::string val = GetMonoString();
+			return val;
 		}
 
 
 		template<typename T>
 		T GetLocalValue()
 		{
-			T val;
-			switch (m_Type)
-			{
-			case Lithium::ScriptType::Int:
-				ASSERT(m_Type == ScriptType::Int);
-				val = std::get<int>(m_Value);
-				break;
-			case Lithium::ScriptType::Float:
-				ASSERT(m_Type == ScriptType::Float);
-				val = std::get<float>(m_Value);
-				break;
-			case Lithium::ScriptType::Vec2:
-				ASSERT(m_Type == ScriptType::Vec2);
-				val = std::get<glm::vec2>(m_Value);
-				break;
-			case Lithium::ScriptType::Vec3:
-				ASSERT(m_Type == ScriptType::Vec3);
-				val = std::get<glm::vec3>(m_Value);
-				break;
-			case Lithium::ScriptType::Vec4:
-				ASSERT(m_Type == ScriptType::Vec4);
-				val = std::get<glm::vec4>(m_Value);
-				break;
-			case Lithium::ScriptType::String:
-				return std::get<std::string>(m_Value);
-				break;
-			}
+			return std::get<T>(m_Value);
+		}
+
+		std::string GetLocalValue()
+		{
+			return std::get<std::string>(m_Value);
 		}
 
 		template<>

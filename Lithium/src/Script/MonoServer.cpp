@@ -279,16 +279,66 @@ namespace Lithium
 			scriptClass = m_ScriptClassMap[name];
 		}
 
-	
+
 		MonoObject* monoobject = mono_object_new(_MonoAppDomain, scriptClass->GetClassPtr());
 		mono_runtime_object_init(monoobject);
 		scriptObject = CreateRef<ScriptObject>(monoobject);
 		return scriptObject;
 	}
-
+	static void CopyFieldValue(Ref<ScriptField>& Dst, const Ref<ScriptField>& Src)
+	{
+		ASSERT(Dst->GetType() == Src->GetType());
+		switch (Dst->GetType())
+		{
+		case(ScriptType::Int):
+		{
+			Dst->SetValue<int>(Src->GetLocalValue<int>());
+			break;
+		}
+		case(ScriptType::Float):
+		{
+			Dst->SetValue<float>(Src->GetLocalValue<float>());
+			break;
+		}
+		case(ScriptType::Vec2):
+		{
+			Dst->SetValue<glm::vec2>(Src->GetLocalValue<glm::vec2>());
+			break;
+		}
+		case(ScriptType::Vec3):
+		{
+			Dst->SetValue<glm::vec3>(Src->GetLocalValue<glm::vec3>());
+			break;
+		}
+		case(ScriptType::Vec4):
+		{
+			Dst->SetValue<glm::vec4>(Src->GetLocalValue<glm::vec4>());
+			break;
+		}
+		case(ScriptType::String):
+		{
+			Dst->SetValue<std::string>(Src->GetLocalValue<std::string>());
+			break;
+		}
+		}
+	}
+	//creates a new object and copies the fields
 	Ref<ScriptObject> MonoServer::CopyObject(const Ref<ScriptObject>& object)
 	{
-		return nullptr;
+
+		Ref<ScriptObject> newObject = GetObject(object->GetClassName());
+
+		auto& newFields = newObject->GetFields();
+		auto& oldFields = object->GetFields();
+
+		for (auto& field : newObject->GetFields())
+		{
+			if (oldFields.find(field.first) != oldFields.end())
+			{
+				CopyFieldValue(field.second, oldFields[field.first]);
+			}
+		}
+		return newObject;
 	}
 
 	void* MonoServer::CreateMonoString(const char* str)

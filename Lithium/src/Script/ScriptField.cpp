@@ -6,11 +6,58 @@ namespace Lithium
 {
 
 	ScriptField::ScriptField(MonoClassField* field, MonoObject* object)
-		:m_MonoField(field),m_MonoObject(object)
+		:m_MonoField(field), m_MonoObject(object)
 	{
 		MonoType* type = mono_field_get_type(field);
 		m_Type = GetFieldType(type);
 		m_Name = mono_field_get_name(field);
+	
+		switch (m_Type)
+		{
+		case(ScriptType::Int):
+		{
+			int val = 0;
+			GetMonoValue(&val);
+			m_Value = val;
+			break;
+		}
+		case(ScriptType::Float):
+		{
+			float val = 0.0f;
+			GetMonoValue(&val);
+			m_Value = val;
+			break;
+		}
+		case(ScriptType::Vec2):
+		{
+			glm::vec2 val = glm::vec2(0.0);
+			GetMonoValue(&val);
+			m_Value = val;
+			break;
+		}
+		case(ScriptType::Vec3):
+		{
+			glm::vec3 val = glm::vec3(0.0);
+			GetMonoValue(&val);
+			m_Value = val;
+
+			break;
+		}
+		case(ScriptType::Vec4):
+		{
+			glm::vec4 val = glm::vec4(0.0);
+			GetMonoValue(&val);
+			m_Value = val;
+			break;
+		}
+		case(ScriptType::String):
+		{
+			std::string val = "";
+			val = GetMonoString();
+			m_Value = val;
+			break;
+		}
+		}
 	}
 
 	ScriptType ScriptField::GetType()

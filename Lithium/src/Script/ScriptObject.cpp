@@ -7,6 +7,7 @@ namespace Lithium
 	ScriptObject::ScriptObject(MonoObject* monoObject)
 		:m_MonoObject(monoObject)
 	{
+		m_ClassName = mono_class_get_name(mono_object_get_class(m_MonoObject));
 		LoadFields();
 	}
 
