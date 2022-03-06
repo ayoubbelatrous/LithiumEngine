@@ -186,6 +186,7 @@ namespace Lithium
 		_ScriptBaseClass =  mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException(object)", true);
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
+		LoadAllClassesInImage();
 	}
 
 
@@ -206,6 +207,7 @@ namespace Lithium
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException", true);
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
 		m_ScriptClassMap.clear();
+		LoadAllClassesInImage();
 	}
 	void MonoServer::DeleteAssemblies()
 	{

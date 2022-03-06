@@ -170,14 +170,15 @@ namespace Lithium
 		bool Loaded = false;
 		bool Created = false;
 		bool Valid = false;
+
 		ScriptComponent() = default;
-		ScriptComponent(const ScriptComponent& other) = default;
+		ScriptComponent(const ScriptComponent& other)
+		{
+			Name = other.Name;
+		}
 		ScriptComponent(const std::string& name)
 			:Name(name)
 		{}
-
-
-
 	};
 
 

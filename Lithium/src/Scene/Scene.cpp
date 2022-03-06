@@ -80,19 +80,10 @@ namespace Lithium
 
 				if (!script.Loaded)
 				{
-					if (Application::Get().Monoserver->CheckIfClassExists(script.Name))
-					{
-						script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
+					
+					script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
 
-						script.Loaded = true;
-						script.Valid = true;
-					}
-					else
-					{
-						script.Loaded = false;
-						script.Valid = false;
-					}
-				
+					script.Loaded = true;
 				}
 
 			}
@@ -195,7 +186,11 @@ namespace Lithium
 
 		}
 
+		if (src.HasComponent<ScriptComponent>())
+		{
+			CopyComponent<ScriptComponent>(src, entity);
 
+		}
 
 		return entity;
 	}

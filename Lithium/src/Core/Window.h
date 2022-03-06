@@ -5,6 +5,7 @@
 #include "Event/AppEvents.h"
 #include "Event/Event.h"
 #include "glm.hpp"
+
 namespace Lithium
 {
 	class Window
@@ -42,7 +43,10 @@ namespace Lithium
 			return glm::vec2(width, height);
 		}
 
+
 		void SetAppEventCallback(const EventCallback& e)  { _Data.callback = e; }
+
+		void* GetNativeWindow() const { return window; }
 	private:
 		GLFWwindow* window;
 

@@ -31,11 +31,23 @@ namespace Lithium
 		T GetValue()
 		{
 			 T val;
-			
 			 mono_field_get_value(m_MonoObject, m_MonoField, &val);
-			 
 			 return val;
+
 		}
+
+		template<>
+		std::string GetValue()
+		{
+			MonoString* val = nullptr;
+			mono_field_get_value(m_MonoObject, m_MonoField, val);
+			ScriptString utf8(val);
+			
+			return utf8.GetString();
+
+		}
+
+
 		template<typename T>
 		T GetLocalValue()
 		{

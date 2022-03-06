@@ -123,6 +123,21 @@ namespace Lithium
 		return modified;
 	}
 
+	static bool Property(const std::string& name, std::string& value)
+	{
+		bool modified = false;
+		char buffer[256];
+		memset(buffer, 0, sizeof(buffer));
+		std::strncpy(buffer, value.c_str(), sizeof(buffer));
+		if (ImGui::InputText(name.c_str(), buffer, sizeof(buffer)))
+		{
+			value = std::string(buffer);
+			modified = true;
+		}
+
+		return modified;
+	}
+
 	void InspectorPanel::OnCreate()
 	{
 
@@ -231,19 +246,10 @@ namespace Lithium
 				ImGui::Selectable("Script");
 
 				ScriptComponent& script = _Selection.GetComponent<ScriptComponent>();
-				char* buffer = new char[256];
-				memset(buffer, 0, 256);
-				memcpy(buffer, script.Name.c_str(), 256);
 
-				if (ImGui::InputText("Class", buffer, 256))
-				{
-					script.Name = buffer;
-					script.Loaded = false;
-				}
-				
 				for (auto& field : script.Scriptobject->GetFields())
 				{
-					
+
 					switch (field.second->GetType())
 					{
 					case (ScriptType::Int):
@@ -296,11 +302,18 @@ namespace Lithium
 					}
 					break;
 
-					case ScriptType::String:
+					case (ScriptType::String):
+					{
+						
+						std::string val = field.second->GetValue<std::string>();
+						if (Property(field.first, val))
+						{
+							field.second->SetValue(val);
+						}
 						break;
 					}
+					}
 				}
-
 			}
 
 
