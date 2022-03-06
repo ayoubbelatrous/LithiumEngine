@@ -42,23 +42,6 @@ namespace Lithium
 		}
 		return ScriptType::None;
 	}
-	
 
-	class ScriptString
-	{
-	public:
-		ScriptString(MonoString* str)
-			:m_pString(str)
-		{}
-
-		std::string GetString()
-		{
-			char* str =mono_string_to_utf8(m_pString);
-
-			return std::string(str);
-		}
-	private:
-		MonoString* m_pString = nullptr;
-	};
 	
 }

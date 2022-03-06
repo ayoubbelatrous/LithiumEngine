@@ -61,7 +61,8 @@ namespace Lithium
 			Ref<ScriptObject> GetObject(const std::string& name);
 			Ref<ScriptObject> CopyObject(const Ref<ScriptObject>& object);
 			
-			
+			//Utils
+			void* CreateMonoString(const char* str);
 	};
 	
 

@@ -291,4 +291,9 @@ namespace Lithium
 		return nullptr;
 	}
 
+	void* MonoServer::CreateMonoString(const char* str)
+	{
+		return mono_string_new(_MonoAppDomain, str);
+	}
+
 }

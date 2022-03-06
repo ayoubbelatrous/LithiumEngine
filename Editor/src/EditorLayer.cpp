@@ -536,8 +536,6 @@ namespace Lithium
 
 	void EditorLayer::ImGuiRenderToolBar()
 	{
-
-
 	}
 
 	void EditorLayer::SceneEvent(Event& e)

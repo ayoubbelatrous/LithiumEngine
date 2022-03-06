@@ -2,6 +2,7 @@
 
 #include "ScriptTypes.h"
 #include "Core/Base.h"
+
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/object.h>
@@ -31,7 +32,7 @@ namespace Lithium
 		T GetValue()
 		{
 			 T val;
-			 mono_field_get_value(m_MonoObject, m_MonoField, &val);
+			 GetMonoValue(&val);
 			 return val;
 
 		}
@@ -39,12 +40,7 @@ namespace Lithium
 		template<>
 		std::string GetValue()
 		{
-			MonoString* val = nullptr;
-			mono_field_get_value(m_MonoObject, m_MonoField, val);
-			ScriptString utf8(val);
-			
-			return utf8.GetString();
-
+			return GetMonoString();
 		}
 
 
@@ -75,7 +71,7 @@ namespace Lithium
 				val = std::get<glm::vec4>(m_Value);
 				break;
 			case Lithium::ScriptType::String:
-				return std::string("TO BE implemented");
+				return std::get<std::string>(m_Value);
 				break;
 			}
 		}
@@ -130,16 +126,16 @@ namespace Lithium
 		{
 			ASSERT(m_Type == ScriptType::String);
 			m_Value = value;
-			char* str;
-			memcpy(str, value.c_str(), value.size());
 			Initilized = true;
-			SetMonoValue(str);
+			SetMonoString(value);
 		}
 
 
 	private:
 		void SetMonoValue(void* value);
+		void SetMonoString(const std::string& value);
 		void GetMonoValue(void* val);
+		std::string GetMonoString();
 		std::string m_Name;
 		MonoClassField* m_MonoField = nullptr;
 		MonoObject* m_MonoObject = nullptr;
