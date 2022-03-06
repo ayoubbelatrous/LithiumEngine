@@ -60,7 +60,6 @@ group "Dependencies"
 	include "Lithium/vendor/yaml"
 	include "Lithium/vendor/msdf-atlas-gen"
 	include "Lithium/vendor/assimp"
-	include "Lithium/vendor/lua533"
 group ""
 
 include "Lithium"

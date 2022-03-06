@@ -42,7 +42,6 @@ includedirs
     "%{IncludeDir.msdf}",
     "%{IncludeDir.msdfatlasgen}",
     "%{IncludeDir.assimp}",
-    "%{IncludeDir.lua533}",
     "%{IncludeDir.mono}",
 
     
@@ -62,7 +61,6 @@ links
 	"opengl32.lib",
     "msdf-atlas-gen",
       "assimp",
-      "lua533",
       "%{LibDir.mono}/mono-2.0-sgen.lib",
 }
 

@@ -22,3 +22,7 @@ MakeFile
 Makefile
 makefile
 **.ini
+Editor/Lithium-Runtime.json
+*.json
+*.dll
+*.pdb

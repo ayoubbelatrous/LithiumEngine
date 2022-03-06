@@ -8,6 +8,7 @@ class Test : Script
    void Start()
    {
       
+
    }
 
    void Update()
