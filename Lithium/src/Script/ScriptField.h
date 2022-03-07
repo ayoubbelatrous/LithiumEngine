@@ -21,7 +21,7 @@ namespace Lithium
 		ScriptField() = default;
 		ScriptField(MonoClassField* field,MonoObject* object);
 		ScriptType GetType();
-		bool Initilized = false;
+		
 
 		template<typename T>
 		void SetValue(T value)
@@ -60,7 +60,6 @@ namespace Lithium
 		void SetValue(int value)
 		{
 			ASSERT(m_Type == ScriptType::Int);
-			Initilized = true;
 			m_Value = value;
 			SetMonoValue(&value);
 		}
@@ -70,7 +69,6 @@ namespace Lithium
 		{
 			ASSERT(m_Type == ScriptType::Float);
 			m_Value = value;
-			Initilized = true;
 			SetMonoValue(&value);
 		}
 
@@ -79,7 +77,6 @@ namespace Lithium
 		{
 			ASSERT(m_Type == ScriptType::Vec2);
 			m_Value = value;
-			Initilized = true;
 			SetMonoValue(&value);
 		}
 
@@ -88,7 +85,6 @@ namespace Lithium
 		{
 			ASSERT(m_Type == ScriptType::Vec3);
 			m_Value = value;
-			Initilized = true;
 			SetMonoValue(&value);
 		}
 
@@ -97,7 +93,6 @@ namespace Lithium
 		{
 			ASSERT(m_Type == ScriptType::Vec4);
 			m_Value = value;
-			Initilized = true;
 			SetMonoValue(&value);
 		}
 
@@ -106,7 +101,6 @@ namespace Lithium
 		{
 			ASSERT(m_Type == ScriptType::String);
 			m_Value = value;
-			Initilized = true;
 			SetMonoString(value);
 		}
 

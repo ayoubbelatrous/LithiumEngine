@@ -113,6 +113,26 @@ namespace Lithium
 				BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(), (uint32_t)entity);
 			}
 		}
+
+
+		{
+			auto view = GetRegistry().view<ScriptComponent>();
+			for (auto entity : view)
+			{
+				Entity ent = { entity,this };
+				ScriptComponent& script = ent.GetComponent<ScriptComponent>();
+
+				if (!script.Loaded)
+				{
+
+					script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
+
+					script.Loaded = true;
+				}
+
+			}
+		}
+
 	}
 
 	void Scene::OnStop()

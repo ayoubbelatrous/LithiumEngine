@@ -545,14 +545,22 @@ namespace Lithium
 
 	void EditorLayer::StartRuntime()
 	{
+		
 		m_RuntimeScene = Scene::Copy(m_EditorScene);
 		m_MainScene = m_RuntimeScene;
 		m_MainScene->OnStart();
-		
 		_sceneState = SceneState::RUNTIME;
-	
+
 		Application::Get().sceneManager->SetActiveScene(m_MainScene);
-		
+		Application::Get().Monoserver->ForceReload();
+		auto view = m_MainScene->GetRegistry().view<ScriptComponent>();
+		for (auto e : view)
+		{
+			Entity entity = { e,m_MainScene.get() };
+			ScriptComponent& script = entity.GetComponent<ScriptComponent>();
+			Ref<ScriptObject> OldScriptobject = script.Scriptobject;
+			script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+		}
 	}
 
 	void EditorLayer::StopRuntime()
@@ -561,18 +569,21 @@ namespace Lithium
 		m_MainScene = m_EditorScene;
 		m_RuntimeScene = nullptr;
 		_sceneState = SceneState::EDITOR;
-		
 		Application::Get().sceneManager->SetActiveScene(m_MainScene);
-
-
-
+		Application::Get().Monoserver->ForceReload();
+		auto view = m_MainScene->GetRegistry().view<ScriptComponent>();
+		for (auto e : view)
+		{
+			Entity entity = { e,m_MainScene.get() };
+			ScriptComponent& script = entity.GetComponent<ScriptComponent>();
+			Ref<ScriptObject> OldScriptobject = script.Scriptobject;
+			script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+		}
 	}
 
 	void EditorLayer::ReloadMonoServer()
 	{
-		
 		Application::Get().Monoserver->ForceReload();
-
 		{
 			auto view = m_MainScene->GetRegistry().view<ScriptComponent>();
 			for (auto e : view)
@@ -583,8 +594,6 @@ namespace Lithium
 				script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
 			}
 		}
-	
-
 	}
 
 }
