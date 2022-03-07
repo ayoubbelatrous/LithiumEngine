@@ -28,6 +28,8 @@ namespace Lithium
 		{
 			return m_ClassName;
 		}
+		//Invokes a method from the method map stored in class
+		void* InvokeMethod(const std::string& name,void* Params);
 
 	private:
 		MonoObject* m_MonoObject = nullptr;

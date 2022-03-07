@@ -126,9 +126,11 @@ namespace Lithium
 				{
 
 					script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
-
 					script.Loaded = true;
 				}
+
+				script.Scriptobject->InvokeMethod("Update", nullptr);
+
 
 			}
 		}

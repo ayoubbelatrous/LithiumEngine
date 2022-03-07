@@ -44,4 +44,13 @@ namespace Lithium
 		}
 	}
 
+	void* ScriptObject::InvokeMethod(const std::string& name, void* Params)
+	{
+		if (m_MethodMap.find(name) != m_MethodMap.end())
+		{
+			return m_MethodMap[name]->Invoke(Params);
+		}
+		return nullptr;
+	}
+
 }
