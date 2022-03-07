@@ -1,6 +1,6 @@
 #include "lipch.h"
 #include "Script/ScriptObject.h"
-
+#include "Core/Application.h"
 
 namespace Lithium
 {
@@ -53,6 +53,25 @@ namespace Lithium
 			return m_MethodMap[name]->Invoke(Params);
 		}
 		return nullptr;
+	}
+
+	void ScriptObject::SetProperty(const std::string& name,void** Parmas)
+	{
+		MonoClass* klass = mono_object_get_class(m_MonoObject);
+		MonoProperty* Monoproperty = nullptr;
+	    Monoproperty = mono_class_get_property_from_name(klass, name.c_str());
+		if (Monoproperty == nullptr)
+		{
+			CORE_LOG("property with name : " << name << " was not found");
+			return;
+		}
+		MonoObject* exception = nullptr;
+		mono_property_set_value(Monoproperty, m_MonoObject, Parmas, &exception);
+		if (exception != nullptr)
+		{
+			Application::Get().Monoserver->ForwardMonoException(exception);
+
+		}
 	}
 
 }

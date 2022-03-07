@@ -30,6 +30,8 @@ namespace Lithium
 		}
 		//Invokes a method from the method map stored in class
 		void* InvokeMethod(const std::string& name,void* Params);
+		//sets a property
+		void SetProperty(const std::string& name,void** Parmas);
 
 	private:
 		MonoObject* m_MonoObject = nullptr;

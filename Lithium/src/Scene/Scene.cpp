@@ -84,6 +84,7 @@ namespace Lithium
 					script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
 
 					script.Loaded = true;
+					
 				}
 
 			}
@@ -127,7 +128,24 @@ namespace Lithium
 
 					script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
 					script.Loaded = true;
+					
+					
 				}
+				else
+				{
+					if (!script.Created)
+					{
+						IDComponent& idcomp = ent.GetComponent<IDComponent>();
+
+						
+						void* Args[1];
+						Args[0] = &idcomp.ID;
+						script.Scriptobject->SetProperty("ID", Args);
+						script.Scriptobject->InvokeMethod("Start", nullptr);
+						script.Created = true;
+					}
+				}
+				
 
 				script.Scriptobject->InvokeMethod("Update", nullptr);
 
