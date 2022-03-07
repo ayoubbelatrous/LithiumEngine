@@ -17,7 +17,7 @@ namespace Lithium
 		{
 			Application::Get().Monoserver->ForwardMonoException(exception);
 		}
-
+		return nullptr;
 	}
 
 }
