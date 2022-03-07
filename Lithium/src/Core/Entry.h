@@ -10,7 +10,7 @@ int main()
 {
 	auto app = Lithium::CreateApp();
 
-	LT_BEGIN_SESSION("Runtime", "Lithium-Runtime.json");
+	LT_BEGIN_SESSION("Runtime", "Lithium-Runtime.log");
 	app->Run();
 	LT_END_SESSION();
 	delete app;

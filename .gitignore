@@ -26,6 +26,5 @@ Editor/assets/TestProject/Assem/**.pdb
 Editor/assets/TestProject/Assem/**.dll
 Editor/assets/TestProject/Assem/**.pdb
 Editor/assets/TestProject/Assem/**.dll
-#ignore all json files
-**.json
+
 

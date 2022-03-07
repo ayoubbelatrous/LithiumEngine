@@ -42,7 +42,7 @@ public:
 		WriteHeader();
 		m_CurrentSession = new InstrumentationSession{ name };
 	}
-
+	
 	void EndSession()
 	{
 		WriteFooter();

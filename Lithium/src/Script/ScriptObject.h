@@ -1,6 +1,6 @@
 #pragma once
 #include "Script/ScriptField.h"
-
+#include "Script/ScriptMethod.h"
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/object.h>
@@ -23,6 +23,7 @@ namespace Lithium
 			m_FieldMap = fieldmap;
 		}
 		void LoadFields();
+		void LoadMethods();
 		std::string GetClassName()
 		{
 			return m_ClassName;
@@ -31,6 +32,7 @@ namespace Lithium
 	private:
 		MonoObject* m_MonoObject = nullptr;
 		std::unordered_map<std::string, Ref<ScriptField>> m_FieldMap;
+		std::unordered_map<std::string, Ref<ScriptMethod>> m_MethodMap;
 		std::string m_ClassName;
 	};
 }
