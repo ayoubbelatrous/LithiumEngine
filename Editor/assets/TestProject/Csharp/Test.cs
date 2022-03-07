@@ -4,17 +4,17 @@ using Lithium.Math;
 class Test : Script
 {
 
-   public string playerName = "player1";
-    private Transform transform;
+   public int IntegerTest = 100;
+   public float FloatTest = 100.0f;
+   public Vector2 Vector2Test = new Vector2(150.0f,120.0f);
+   public Vector3 Vector3Test = new Vector3(150.0f,120.0f);
+   public string playerName = "String Test";
    void Start()
    {
-        transform = entity.GetComponent<Transform>();
-        transform.Position = new Vector3(10, 0, 0);
    }
 
    void Update()
    {
-       
    }
 
 }

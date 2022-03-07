@@ -136,8 +136,6 @@ namespace Lithium
 					if (!script.Created)
 					{
 						IDComponent& idcomp = ent.GetComponent<IDComponent>();
-
-						
 						void* Args[1];
 						Args[0] = &idcomp.ID;
 						script.Scriptobject->SetProperty("ID", Args);

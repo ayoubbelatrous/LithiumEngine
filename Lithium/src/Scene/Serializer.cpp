@@ -12,6 +12,29 @@
 namespace YAML {
 
 	template<>
+	struct convert<glm::vec2>
+	{
+		static Node encode(const glm::vec2& rhs)
+		{
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+
+		static bool decode(const Node& node, glm::vec2& rhs)
+		{
+			if (!node.IsSequence() || node.size() != 3)
+				return false;
+
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
+
+	template<>
 	struct convert<glm::vec3>
 	{
 		static Node encode(const glm::vec3& rhs)
@@ -80,6 +103,14 @@ namespace Lithium
 		emitter << YAML::BeginSeq << vector.x << vector.y << vector.z << YAML::EndSeq;
 		return emitter;
 	}
+
+	YAML::Emitter& operator <<(YAML::Emitter& emitter, const glm::vec2& vector)
+	{
+		emitter << YAML::Flow;
+		emitter << YAML::BeginSeq << vector.x << vector.y << YAML::EndSeq;
+		return emitter;
+	}
+
 	static void SerializeEntity(YAML::Emitter& emitter, Entity entity)
 	{
 		IDComponent& idc = entity.GetComponent<IDComponent>();
@@ -114,13 +145,85 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
-// 		if (entity.HasComponent<ScriptComponent>())
-// 		{
-// 			ScriptComponent& scc = entity.GetComponent<ScriptComponent>();
-// 			emitter << YAML::Key << "Script" << YAML::BeginMap;
-// 			emitter << YAML::Key << "ClassName" << YAML::Value << scc.Name;
-// 			emitter << YAML::EndMap;
-// 		}
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			ScriptComponent& scc = entity.GetComponent<ScriptComponent>();
+			emitter << YAML::Key << "Script" << YAML::BeginMap;
+			emitter << YAML::Key << "ClassName" << YAML::Value << scc.Name;
+			emitter << YAML::Key << "Fields" << YAML::Value << YAML::BeginSeq;
+
+			for (auto& field : scc.Scriptobject->GetFields())
+			{
+				emitter  << YAML::BeginMap;
+
+				switch (field.second->GetType())
+				{
+				case (ScriptType::Int):
+				{
+					int val = field.second->GetLocalValue<int>();
+					emitter << YAML::Key << "Name" << YAML::Value << field.first;
+					emitter << YAML::Key << "Type" << YAML::Value << "INT";
+					emitter << YAML::Key << "Value" << YAML::Value << val;
+					break;
+				}
+				case (ScriptType::Float):
+				{
+					float val = 0;
+					val = field.second->GetLocalValue<float>();
+					emitter << YAML::Key << "Name" << YAML::Value << field.first;
+					emitter << YAML::Key << "Type" << YAML::Value << "FLOAT";
+					emitter << YAML::Key << "Value" << YAML::Value << val;
+					break;
+				}
+				case (ScriptType::Vec2):
+				{
+					glm::vec2 val = glm::vec2(0);
+					val = field.second->GetLocalValue<glm::vec2>();
+					emitter << YAML::Key << "Name" << YAML::Value << field.first;
+					emitter << YAML::Key << "Type" << YAML::Value << "VEC2";
+					emitter << YAML::Key << "Value" << YAML::Value << val;
+					break;
+				}
+
+
+				case (ScriptType::Vec3):
+				{
+					glm::vec3 val = glm::vec3(0);
+					val = field.second->GetValue<glm::vec3>();
+					emitter << YAML::Key << "Name" << YAML::Value << field.first;
+					emitter << YAML::Key << "Type" << YAML::Value << "VEC3";
+					emitter << YAML::Key << "Value" << YAML::Value << val;
+					break;
+				}
+
+
+				case (ScriptType::Vec4):
+				{
+					glm::vec4 val = glm::vec4(0);
+					val = field.second->GetValue<glm::vec4>();
+					emitter << YAML::Key << "Name" << YAML::Value << field.first;
+					emitter << YAML::Key << "Type" << YAML::Value << "VEC4";
+					emitter << YAML::Key << "Value" << YAML::Value << val;
+				}
+				break;
+
+				case (ScriptType::String):
+				{
+
+					std::string val = field.second->GetValue<std::string>();
+					emitter << YAML::Key << "Name" << YAML::Value << field.first;
+					emitter << YAML::Key << "Type" << YAML::Value << "STRING";
+					emitter << YAML::Key << "Value" << YAML::Value << val;
+					break;
+				}
+				}
+				emitter << YAML::EndMap;
+
+			}
+			
+			emitter << YAML::EndSeq;
+			emitter << YAML::EndMap;
+		}
 
 		emitter << YAML::EndMap;
 	}
@@ -196,15 +299,15 @@ namespace Lithium
 				
 			}
 
-			//auto script = entity["Script"];
+			auto script = entity["Script"];
 
-// 			if (script)
-// 			{
-// 				deserEntity.AddComponent<ScriptComponent>();
-// 				ScriptComponent& scc = deserEntity.GetComponent<ScriptComponent>();
-// 				std::string ScriptName = sprite["ScriptName"].as<std::string>();
-// 				scc.Name = ScriptName;
-// 			}
+			if (script)
+			{
+				deserEntity.AddComponent<ScriptComponent>();
+				ScriptComponent& scc = deserEntity.GetComponent<ScriptComponent>();
+				std::string ScriptName = script["ClassName"].as<std::string>();
+				scc.Name = ScriptName;
+			}
 
 		}
 	}

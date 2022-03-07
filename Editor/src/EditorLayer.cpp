@@ -270,7 +270,8 @@ namespace Lithium
 		{
 			if (control)
 			{
-				
+				Serializer ser(m_MainScene);
+				ser.SerializeScene("assets/scenes/script.scene");
 			}
 		}
 		
@@ -280,8 +281,11 @@ namespace Lithium
 			{
 				Ref<Scene> scene = CreateRef<Scene>();
 				Serializer sz = Serializer(scene);
-				sz.DeserializeScene("assets/scenes/test.lis");
+				sz.DeserializeScene("assets/scenes/script.scene");
 				m_MainScene = scene;
+				m_SceneHierachyPanel->SetScene(m_MainScene);
+				Application::Get().sceneManager->SetActiveScene(m_MainScene);
+
 			}
 		}
 		
