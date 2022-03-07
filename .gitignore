@@ -22,10 +22,10 @@ MakeFile
 Makefile
 makefile
 **.ini
-Editor/Lithium-Runtime.json
 Editor/assets/TestProject/Assem/**.pdb
 Editor/assets/TestProject/Assem/**.dll
 Editor/assets/TestProject/Assem/**.pdb
 Editor/assets/TestProject/Assem/**.dll
-Editor/Lithium-Runtime.json
-Editor/Lithium-Runtime.json
+#ignore all json files
+**.json
+
