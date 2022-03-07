@@ -8,7 +8,7 @@
 #include "entt.hpp"
 #include "Core/Base.h"
 #include "Scene.h"
-
+#include "Core/Application.h"
 namespace YAML {
 
 	template<>
@@ -25,7 +25,7 @@ namespace YAML {
 
 		static bool decode(const Node& node, glm::vec2& rhs)
 		{
-			if (!node.IsSequence() || node.size() != 3)
+			if (!node.IsSequence() || node.size() != 2)
 				return false;
 
 			rhs.x = node[0].as<float>();
@@ -154,7 +154,7 @@ namespace Lithium
 
 			for (auto& field : scc.Scriptobject->GetFields())
 			{
-				emitter  << YAML::BeginMap;
+				emitter << YAML::BeginMap;
 
 				switch (field.second->GetType())
 				{
@@ -220,7 +220,7 @@ namespace Lithium
 				emitter << YAML::EndMap;
 
 			}
-			
+
 			emitter << YAML::EndSeq;
 			emitter << YAML::EndMap;
 		}
@@ -235,9 +235,9 @@ namespace Lithium
 		emitter << YAML::Key << "Scene" << YAML::Value << "NONE";
 		emitter << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		_Scene->GetRegistry().each([&](auto entity)
-		{
+			{
 				SerializeEntity(emitter, { entity,_Scene.get() });
-		});
+			});
 		emitter << YAML::EndSeq;
 		emitter << YAML::EndMap;
 		std::ofstream output(path);
@@ -260,11 +260,11 @@ namespace Lithium
 
 
 		auto entities = data["Entities"];
-		
+
 		for (auto entity : entities)
 		{
 			Entity deserEntity;
-			
+
 			uint64_t uuid = entity["Entity"].as<uint64_t>();
 			std::string name = entity["Name"].as<std::string>();
 			deserEntity = _Scene->CreateEntityWithUUID(UUID(uuid), name);
@@ -296,7 +296,7 @@ namespace Lithium
 				{
 					sp.tex = CreateRef<Texture>();
 				}
-				
+
 			}
 
 			auto script = entity["Script"];
@@ -307,9 +307,113 @@ namespace Lithium
 				ScriptComponent& scc = deserEntity.GetComponent<ScriptComponent>();
 				std::string ScriptName = script["ClassName"].as<std::string>();
 				scc.Name = ScriptName;
+				scc.Scriptobject = Application::Get().Monoserver->GetObject(ScriptName);
+				scc.Loaded = true;
+				auto Fields = script["Fields"];
+
+				for (auto field : Fields)
+				{
+
+					auto name = field["Name"].as<std::string>();
+					std::string type = field["Type"].as<std::string>();
+
+					//convert string to script type 
+
+					ScriptType FieldType = ConvertStringToScriptType(type);
+
+					//convert value to the proper type
+					FieldValue Value;
+					{
+						switch (FieldType)
+						{
+						case(ScriptType::Int):
+						{
+							Value = field["Value"].as<int>();
+							break;
+						}
+						case(ScriptType::Float):
+						{
+							Value = field["Value"].as<float>();
+							break;
+						}
+						case(ScriptType::Vec2):
+						{
+							Value = field["Value"].as<glm::vec2>();
+
+							break;
+						}
+						case(ScriptType::Vec3):
+						{
+							Value = field["Value"].as<glm::vec3>();
+
+							break;
+						}
+						case(ScriptType::Vec4):
+						{
+							Value = field["Value"].as<glm::vec4>();
+
+							break;
+						}
+						case(ScriptType::String):
+						{
+							Value = field["Value"].as<std::string>();
+							break;
+						}
+						}
+
+
+
+						auto& ScriptFields = scc.Scriptobject->GetFields();
+						if (ScriptFields.find(name) != ScriptFields.end())
+						{
+
+							switch (FieldType)
+							{
+							case(ScriptType::Int):
+							{
+								ScriptFields[name]->SetValue<int>(std::get<int>(Value));
+
+								break;
+							}
+							case(ScriptType::Float):
+							{
+								ScriptFields[name]->SetValue<float>(std::get<float>(Value));
+								break;
+							}
+							case(ScriptType::Vec2):
+							{
+								ScriptFields[name]->SetValue<glm::vec2>(std::get<glm::vec2>(Value));
+
+
+								break;
+							}
+							case(ScriptType::Vec3):
+							{
+								ScriptFields[name]->SetValue<glm::vec3>(std::get<glm::vec3>(Value));
+
+
+								break;
+							}
+							case(ScriptType::Vec4):
+							{
+								ScriptFields[name]->SetValue<glm::vec4>(std::get<glm::vec4>(Value));
+
+
+								break;
+							}
+							case(ScriptType::String):
+							{
+								ScriptFields[name]->SetValue<std::string>(std::get<std::string>(Value));
+
+								break;
+							}
+							}
+						}
+					}
+
+				}
 			}
 
 		}
 	}
-
 }

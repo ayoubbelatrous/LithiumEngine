@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/object.h>
@@ -42,6 +43,38 @@ namespace Lithium
 		}
 		return ScriptType::None;
 	}
+	static ScriptType ConvertStringToScriptType(const std::string& str)
+	{
+		if (strcmp(str.c_str(), "INT") == 0)
+		{
+			return ScriptType::Int;
+		}
 
+		else if (strcmp(str.c_str(), "FLOAT") == 0)
+		{
+			return ScriptType::Float;
+		}
+
+		else if (strcmp(str.c_str(), "VEC2") == 0)
+		{
+			return ScriptType::Vec2;
+		}
+
+		else if (strcmp(str.c_str(), "VEC3") == 0)
+		{
+			return ScriptType::Vec3;
+		}
+
+		else if (strcmp(str.c_str(), "VEC4") == 0)
+		{
+			return ScriptType::Vec4;
+		}
+		else if (strcmp(str.c_str(), "STRING") == 0)
+		{
+			return ScriptType::String;
+		}
+
+		return ScriptType::None;
+	}
 	
 }

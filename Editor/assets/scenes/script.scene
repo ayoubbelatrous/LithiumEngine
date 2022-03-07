@@ -1,34 +1,7 @@
 Scene: NONE
 Entities:
-  - Entity: 2490156642
-    Name: hello
-    Transform:
-      Position: [2.98023224e-08, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
-    Script:
-      ClassName: Test
-      Fields:
-        - Name: FloatTest
-          Type: FLOAT
-          Value: 100
-        - Name: IntegerTest
-          Type: INT
-          Value: 100
-        - Name: Vector2Test
-          Type: VEC2
-          Value: [150, 120]
-        - Name: Vector3Test
-          Type: VEC3
-          Value: [150, 120, 0]
-        - Name: playerName
-          Type: STRING
-          Value: ayoub
-  - Entity: 2699496089
-    Name: dod
+  - Entity: 2635258811
+    Name: GOGO
     Transform:
       Position: [0, 0, 0]
       Rotation: [0, 0, 0]
@@ -41,7 +14,7 @@ Entities:
       Fields:
         - Name: FloatTest
           Type: FLOAT
-          Value: 100
+          Value: 0
         - Name: IntegerTest
           Type: INT
           Value: 100
@@ -53,11 +26,11 @@ Entities:
           Value: [150, 120, 0]
         - Name: playerName
           Type: STRING
-          Value: String Test
-  - Entity: 2061148716
-    Name: name
+          Value: ay
+  - Entity: 1362611024
+    Name: HELo
     Transform:
-      Position: [-2.55338097, -0.275800824, 0]
+      Position: [-1.29893255, -0.38256228, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:
