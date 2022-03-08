@@ -4,17 +4,21 @@ using Lithium.Math;
 class Test : Script
 {
 
-   public int IntegerTest = 100;
-   public float FloatTest = 100.0f;
-   public Vector2 Vector2Test = new Vector2(150.0f,120.0f);
-   public Vector3 Vector3Test = new Vector3(150.0f,120.0f);
-   public string playerName = "String Test";
+    public int speed = 100;
+    public int speed2 = 99;
+
    void Start()
    {
+
+
    }
 
    void Update()
    {
+        if(Input.IsKeyPressed(KeyCode.Space))
+        {
+            Debug.Log("hi");
+        }
    }
 
 }

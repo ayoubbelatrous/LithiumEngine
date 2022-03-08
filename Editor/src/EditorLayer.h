@@ -66,6 +66,7 @@ namespace Lithium
 		void StartRuntime();
 		void StopRuntime();
 		void ReloadMonoServer();
+		void OpenScene();
 	private:
 		glm::mat4 proj;
 		glm::mat4 view;
@@ -74,10 +75,9 @@ namespace Lithium
 
 		Ref<FrameBuffer> framebuffer;
 		Ref<FrameBuffer> DisplayBuffer;
-		Ref<Scene> m_MainScene;
+		Ref<Scene> m_ActiveScene;
 		Ref<Scene> m_EditorScene;
-		Ref<Scene> m_RuntimeScene;
-
+		
 		bool _ViewportHovered = false;
 		bool _ViewportFocus = false;
 		std::string _EditorStatus;
@@ -108,7 +108,7 @@ namespace Lithium
 		Ref<Texture> _StopButtonTexture;
 		Ref<Texture> _PauseTexture;
 		SceneState _sceneState = SceneState::EDITOR;
-		Serializer m_SceneSerilizer = Serializer(m_MainScene);
+		Serializer m_SceneSerilizer = Serializer(m_ActiveScene);
 		
 		Ref<Timer> timer;
 

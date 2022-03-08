@@ -20,6 +20,8 @@ namespace Lithium
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
+		m_EditorScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditorScene;
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		m_SceneHierachyPanel = CreateRef<SceneHierachyPanel>();
 		m_SceneHierachyPanel->OnCreate();
@@ -31,13 +33,10 @@ namespace Lithium
 
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 		timer = CreateRef<Timer>();
-		
-		m_EditorScene = CreateRef<Scene>();
-		m_MainScene = m_EditorScene;
-		m_MainScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
-		Application::Get().sceneManager->SetActiveScene(m_MainScene);
+		m_ActiveScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
+		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
 
-		m_SceneHierachyPanel->SetScene(m_MainScene);
+		m_SceneHierachyPanel->SetScene(m_ActiveScene);
 		FrameBufferAttachmentDescriptor mainframebufferspec(
 			{
 				FramebufferTextureFormat::RGBA8,
@@ -59,9 +58,9 @@ namespace Lithium
 		framebuffer->resize(1000, 1000);
 
 	
-		Entity entity = m_MainScene->CreateEntity("name");
-		Entity entity3 = m_MainScene->CreateEntity("dod");
-		Entity entity2 = m_MainScene->CreateEntity("hello");
+		Entity entity = m_ActiveScene->CreateEntity("name");
+		Entity entity3 = m_ActiveScene->CreateEntity("dod");
+		Entity entity2 = m_ActiveScene->CreateEntity("hello");
 
 		//_Selection = entity;
 
@@ -74,7 +73,7 @@ namespace Lithium
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity3.AddComponent<ScriptComponent>("Test");
 
-		m_MainScene->CopyComponent<TransformComponent>(entity,entity3);
+		m_ActiveScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
@@ -168,7 +167,7 @@ namespace Lithium
 		{
 		case (SceneState::EDITOR):
 			{
-			m_MainScene->onEditorUpdate();
+			m_ActiveScene->onEditorUpdate();
 			if (canCheckAssembly)
 			{
 				if (Application::Get().Monoserver->CheckForChange())
@@ -182,7 +181,7 @@ namespace Lithium
 			}
 		case (SceneState::RUNTIME):
 		{
-			m_MainScene->onUpdate();
+			m_ActiveScene->onUpdate();
 			break;
 
 		}
@@ -209,12 +208,12 @@ namespace Lithium
 				pixelData = framebuffer->ReadPixel(1, mouseX, mouseY);
 				if (pixelData == -1)
 				{
-					Entity ent{ entt::null,m_MainScene.get() };
+					Entity ent{ entt::null,m_ActiveScene.get() };
 					m_SceneHierachyPanel->SetSelection(ent);
 				}
 				else
 				{
-					Entity ent{(entt::entity)pixelData,m_MainScene.get() };
+					Entity ent{(entt::entity)pixelData,m_ActiveScene.get() };
 					m_SceneHierachyPanel->SetSelection(ent);
 				}
 			
@@ -270,7 +269,7 @@ namespace Lithium
 		{
 			if (control)
 			{
-				Serializer ser(m_MainScene);
+				Serializer ser(m_ActiveScene);
 				ser.SerializeScene("assets/scenes/script.scene");
 			}
 		}
@@ -279,12 +278,7 @@ namespace Lithium
 		{
 			if (control)
 			{
-				Ref<Scene> scene = CreateRef<Scene>();
-				Serializer sz = Serializer(scene);
-				sz.DeserializeScene("assets/scenes/script.scene");
-				m_MainScene = scene;
-				m_SceneHierachyPanel->SetScene(m_MainScene);
-				Application::Get().sceneManager->SetActiveScene(m_MainScene);
+				OpenScene();
 
 			}
 		}
@@ -311,7 +305,7 @@ namespace Lithium
 			{
 				
 				{
-					Entity e = m_MainScene->CreateEntity("new Entity");
+					Entity e = m_ActiveScene->CreateEntity("new Entity");
 					e.AddComponent<TransformComponent>();
 				}
 
@@ -324,7 +318,7 @@ namespace Lithium
 			{
 				if (e.action == GLFW_PRESS)
 				{
-					m_MainScene->DuplicateEntity(m_SceneHierachyPanel->GetSelection());
+					m_ActiveScene->DuplicateEntity(m_SceneHierachyPanel->GetSelection());
 				}
 
 			}
@@ -405,7 +399,7 @@ namespace Lithium
 				{
 
 					StopRuntime();
-					m_SceneHierachyPanel->SetScene(m_MainScene);
+					m_SceneHierachyPanel->SetScene(m_ActiveScene);
 
 				}
 			}
@@ -415,7 +409,7 @@ namespace Lithium
 				{
 				
 					StartRuntime();
-					m_SceneHierachyPanel->SetScene(m_MainScene);
+					m_SceneHierachyPanel->SetScene(m_ActiveScene);
 
 				}
 			}
@@ -550,17 +544,17 @@ namespace Lithium
 	void EditorLayer::StartRuntime()
 	{
 		
-		m_RuntimeScene = Scene::Copy(m_EditorScene);
-		m_MainScene = m_RuntimeScene;
-		m_MainScene->OnStart();
+		m_ActiveScene = Scene::Copy(m_EditorScene);
+		m_ActiveScene->OnStart();
+		m_SceneHierachyPanel->SetScene(m_ActiveScene);
 		_sceneState = SceneState::RUNTIME;
 
-		Application::Get().sceneManager->SetActiveScene(m_MainScene);
+		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
 		Application::Get().Monoserver->ForceReload();
-		auto view = m_MainScene->GetRegistry().view<ScriptComponent>();
+		auto view = m_ActiveScene->GetRegistry().view<ScriptComponent>();
 		for (auto e : view)
 		{
-			Entity entity = { e,m_MainScene.get() };
+			Entity entity = { e,m_ActiveScene.get() };
 			ScriptComponent& script = entity.GetComponent<ScriptComponent>();
 			Ref<ScriptObject> OldScriptobject = script.Scriptobject;
 			script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
@@ -569,16 +563,17 @@ namespace Lithium
 
 	void EditorLayer::StopRuntime()
 	{
-		m_MainScene->OnStop();
-		m_MainScene = m_EditorScene;
-		m_RuntimeScene = nullptr;
+		m_ActiveScene->OnStop();
+		m_ActiveScene = m_EditorScene;
 		_sceneState = SceneState::EDITOR;
-		Application::Get().sceneManager->SetActiveScene(m_MainScene);
+		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
+		m_SceneHierachyPanel->SetScene(m_ActiveScene);
+
 		Application::Get().Monoserver->ForceReload();
-		auto view = m_MainScene->GetRegistry().view<ScriptComponent>();
+		auto view = m_ActiveScene->GetRegistry().view<ScriptComponent>();
 		for (auto e : view)
 		{
-			Entity entity = { e,m_MainScene.get() };
+			Entity entity = { e,m_ActiveScene.get() };
 			ScriptComponent& script = entity.GetComponent<ScriptComponent>();
 			Ref<ScriptObject> OldScriptobject = script.Scriptobject;
 			script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
@@ -589,15 +584,27 @@ namespace Lithium
 	{
 		Application::Get().Monoserver->ForceReload();
 		{
-			auto view = m_MainScene->GetRegistry().view<ScriptComponent>();
+			auto view = m_ActiveScene->GetRegistry().view<ScriptComponent>();
 			for (auto e : view)
 			{
-				Entity entity = { e,m_MainScene.get() };
+				Entity entity = { e,m_ActiveScene.get() };
 				ScriptComponent& script = entity.GetComponent<ScriptComponent>();
 				Ref<ScriptObject> OldScriptobject = script.Scriptobject;
 				script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
 			}
 		}
+	}
+
+	void EditorLayer::OpenScene()
+	{
+		Ref<Scene> scene = CreateRef<Scene>();
+		Serializer sz = Serializer(scene);
+		sz.DeserializeScene("assets/scenes/script.scene");
+		m_EditorScene = scene;
+		m_ActiveScene = m_EditorScene;
+		m_SceneHierachyPanel->SetScene(m_ActiveScene);
+		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
+		ReloadMonoServer();
 	}
 
 }
