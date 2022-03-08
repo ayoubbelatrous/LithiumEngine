@@ -6,9 +6,6 @@ Entities:
       Position: [-1.07651258, 0.8540923, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
     Script:
       ClassName: Test
       Fields:

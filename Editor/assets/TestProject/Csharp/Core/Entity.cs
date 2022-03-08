@@ -33,7 +33,7 @@ namespace Lithium.Core
 
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void AddComponent_Internal(UInt64 entityID, Type type);
+        extern public static bool AddComponent_Internal(UInt64 entityID, Type type);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static bool HasComponent_Internal(UInt64 entityID, Type type);
     }

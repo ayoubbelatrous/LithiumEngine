@@ -58,6 +58,53 @@ namespace Lithium
 		}
 		return false;
 	}
+
+	bool MonoServer::AddComponent_Interal(uint64_t entityID, MonoObject* type)
+	{
+		
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+
+
+		MonoClass* klass = mono_object_get_class(type);
+		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
+		const char* name = mono_string_to_utf8(monostring);
+
+		if (strcmp(name, "Transform") == 0)
+		{
+			if (entity.HasComponent<TransformComponent>())
+			{
+				return false;
+			}
+			else
+			{
+				entity.AddComponent<TransformComponent>();
+			}
+		}
+		else if (strcmp(name, "NameComponent") == 0)
+		{
+			if (entity.HasComponent<NameComponent>())
+			{
+				return false;
+			}
+			else
+			{
+				entity.AddComponent<NameComponent>();
+			}
+		}
+		else if (strcmp(name, "SpriteRenderer") == 0)
+		{
+			if (entity.HasComponent<SpriteRendererComponent>())
+			{
+				return false;
+			}
+			else
+			{
+				entity.AddComponent<SpriteRendererComponent>();
+			}
+		}
+		return false;
+	}
+
 	void MonoServer::SetPosition_Internal(uint64_t entityID, glm::vec3* vector)
 	{
 		
@@ -134,6 +181,8 @@ namespace Lithium
 
 		mono_add_internal_call("Lithium.Core.Debug::Log", MonoServer::Log);
 		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
+		mono_add_internal_call("Lithium.Core.Entity::AddComponent_Internal", MonoServer::AddComponent_Interal);
+
 		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", MonoServer::SetPosition_Internal);
 		mono_add_internal_call("Lithium.Core.Transform::GetPosition_Internal", MonoServer::GetPosition_Internal);
 

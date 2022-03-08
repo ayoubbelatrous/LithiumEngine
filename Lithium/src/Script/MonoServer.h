@@ -43,6 +43,7 @@ namespace Lithium
 			//-----internal-calls------------------------------------------------------
 			static void Log(MonoString* log);
 			static bool HasComponent_Interal(uint64_t entityID, MonoObject* type);
+			static bool AddComponent_Interal(uint64_t entityID, MonoObject* type);
 			//name component
 			static MonoString* GetName_Internal(uint64_t entityID);
 			static void SetName_Internal(uint64_t entityID, MonoString* name);
