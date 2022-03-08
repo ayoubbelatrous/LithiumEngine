@@ -10,6 +10,7 @@ namespace Lithium.Core
         public Entity(UInt64 id) { ID = id; }
         public bool HasComponent<T>() where T : Component, new()
         {
+            
             return HasComponent_Internal(ID, typeof(T));
         }
         public T AddComponent<T>() where T : Component, new()
@@ -30,11 +31,15 @@ namespace Lithium.Core
             return null;
         }
 
-
-
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static bool AddComponent_Internal(UInt64 entityID, Type type);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static bool HasComponent_Internal(UInt64 entityID, Type type);
+
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool AddScriptComponent_Internal(UInt64 entityID, Type type);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool HasScriptComponent_Internal(UInt64 entityID, Type type);
     }
 }

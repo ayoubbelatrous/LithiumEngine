@@ -39,6 +39,7 @@ namespace Lithium
 		flags |= ImGuiTreeNodeFlags_FramePadding;
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3.f, 3.f));
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2.0f, 2.0f));
+		
 		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity.GetHandle(), flags, tag.c_str());
 		ImGui::PopStyleVar();
 		ImGui::PopStyleVar();

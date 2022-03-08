@@ -10,6 +10,7 @@
 #include <mono/metadata/debug-helpers.h>
 #include <mono/metadata/environment.h>
 #include <mono/metadata/attrdefs.h>
+
 namespace Lithium
 {
 	class Scene;
@@ -44,6 +45,7 @@ namespace Lithium
 			static void Log(MonoString* log);
 			static bool HasComponent_Interal(uint64_t entityID, MonoObject* type);
 			static bool AddComponent_Interal(uint64_t entityID, MonoObject* type);
+			static uint64_t CopyEntity_Internal(uint64_t entityID);
 			//name component
 			static MonoString* GetName_Internal(uint64_t entityID);
 			static void SetName_Internal(uint64_t entityID, MonoString* name);

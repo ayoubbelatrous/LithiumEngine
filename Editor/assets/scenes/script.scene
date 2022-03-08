@@ -1,5 +1,27 @@
 Scene: NONE
 Entities:
+  - Entity: 4228235248
+    Name: name
+    Transform:
+      Position: [1.93060446, 0.471530497, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""
+  - Entity: 1721936361
+    Name: dod
+    Transform:
+      Position: [-1.55693924, -0.115658343, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""
+    Script:
+      ClassName: Test
+      Fields:
+        []
   - Entity: 3257578630
     Name: hello
     Transform:
@@ -9,48 +31,4 @@ Entities:
     Script:
       ClassName: Test
       Fields:
-        - Name: speed
-          Type: INT
-          Value: 25
-        - Name: acceleration
-          Type: FLOAT
-          Value: 0
-        - Name: Color1
-          Type: VEC4
-          Value: [0, 0, 0, 0]
-        - Name: Color2
-          Type: VEC4
-          Value: [0, 0, 0, 0]
-  - Entity: 1721936361
-    Name: dod
-    Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
-    Script:
-      ClassName: Test
-      Fields:
-        - Name: speed
-          Type: INT
-          Value: 0
-        - Name: acceleration
-          Type: FLOAT
-          Value: 0
-        - Name: Color1
-          Type: VEC4
-          Value: [0, 0, 0, 0]
-        - Name: Color2
-          Type: VEC4
-          Value: [0, 0, 0, 0]
-  - Entity: 4228235248
-    Name: name
-    Transform:
-      Position: [-1.98398614, -0.293594062, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
+        []

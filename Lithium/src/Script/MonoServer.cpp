@@ -105,6 +105,13 @@ namespace Lithium
 		return false;
 	}
 
+	uint64_t MonoServer::CopyEntity_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		Entity dupedEntity = Application::Get().sceneManager->GetActiveScene()->DuplicateEntity(entity);
+		return dupedEntity.GetComponent<IDComponent>().ID;
+	}
+
 	void MonoServer::SetPosition_Internal(uint64_t entityID, glm::vec3* vector)
 	{
 		
@@ -182,6 +189,7 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.Debug::Log", MonoServer::Log);
 		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
 		mono_add_internal_call("Lithium.Core.Entity::AddComponent_Internal", MonoServer::AddComponent_Interal);
+		mono_add_internal_call("Lithium.Core.Script::CopyEntity_Internal", MonoServer::CopyEntity_Internal);
 
 		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", MonoServer::SetPosition_Internal);
 		mono_add_internal_call("Lithium.Core.Transform::GetPosition_Internal", MonoServer::GetPosition_Internal);
