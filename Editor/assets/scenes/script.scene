@@ -1,32 +1,5 @@
 Scene: NONE
 Entities:
-  - Entity: 3690323698
-    Name: name
-    Transform:
-      Position: [-2.98932362, -0.275800526, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
-  - Entity: 1690486030
-    Name: dod
-    Transform:
-      Position: [-0.400356352, -0.489323765, 0]
-      Rotation: [0, 0, -0.902067304]
-      Scale: [0.999999881, 0.999999881, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
-    Script:
-      ClassName: Test
-      Fields:
-        - Name: speed
-          Type: INT
-          Value: 88
-        - Name: speed2
-          Type: INT
-          Value: 99
   - Entity: 424645966
     Name: hello
     Transform:
@@ -34,7 +7,7 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 0.99999994, 1]
     Sprite Renderer:
-      Color: [1, 1, 1, 1]
+      Color: [0, 0.0509803928, 1, 0.654901981]
       Texture Path: ""
     Script:
       ClassName: Test
@@ -45,3 +18,30 @@ Entities:
         - Name: speed2
           Type: INT
           Value: 99
+  - Entity: 1690486030
+    Name: dod
+    Transform:
+      Position: [-1.09430659, 0.275800884, 0]
+      Rotation: [0, 0, -0.902067304]
+      Scale: [0.999999881, 0.999999881, 1]
+    Sprite Renderer:
+      Color: [1, 0, 0, 0.470588237]
+      Texture Path: ""
+    Script:
+      ClassName: Test
+      Fields:
+        - Name: speed
+          Type: INT
+          Value: 88
+        - Name: speed2
+          Type: INT
+          Value: 99
+  - Entity: 3690323698
+    Name: name
+    Transform:
+      Position: [-2.98932362, -0.275800526, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.0798484087, 1, 0.0042194128, 1]
+      Texture Path: ""

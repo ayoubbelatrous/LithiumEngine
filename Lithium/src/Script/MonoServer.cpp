@@ -16,6 +16,7 @@ namespace Lithium
 {
 	std::vector<const char*> MonoServer::_BufferLog = std::vector<const char*>();
 
+
 	void MonoServer::Log(MonoString* log)
 	{
 		const char* text = mono_string_to_utf8(log);
@@ -43,15 +44,13 @@ namespace Lithium
 		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
 		const char* name = mono_string_to_utf8(monostring);
 
-		if (strcmp(name, "Transform"))
+		if (strcmp(name, "Transform") == 0)
 		{
 			return entity.HasComponent<TransformComponent>();
-
 		}
-		else if (strcmp(name, "NameComponent"))
+		else if (strcmp(name, "NameComponent") == 0)
 		{
 			return entity.HasComponent<NameComponent>();
-
 		}
 		return false;
 	}
@@ -67,6 +66,21 @@ namespace Lithium
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		TransformComponent& trans = entity.GetComponent<TransformComponent>();
 		memcpy(vector, &trans.Position,sizeof(glm::vec3));
+	}
+
+	MonoString* MonoServer::GetName_Internal(uint64_t entityID)
+	{
+		
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		NameComponent& namecomp = entity.GetComponent<NameComponent>();
+		return (MonoString*)Application::Get().Monoserver->CreateMonoString(namecomp.GetName().c_str());
+	}
+
+	void MonoServer::SetName_Internal(uint64_t entityID, MonoString* name)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		NameComponent& namecomp = entity.GetComponent<NameComponent>();
+		namecomp.Name = mono_string_to_utf8(name);
 	}
 
 	bool MonoServer::MouseKey_Internal(int button)
@@ -103,6 +117,10 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
 		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", MonoServer::SetPosition_Internal);
 		mono_add_internal_call("Lithium.Core.Transform::GetPosition_Internal", MonoServer::GetPosition_Internal);
+
+		mono_add_internal_call("Lithium.Core.NameComponent::SetName_Internal", MonoServer::SetName_Internal);
+		mono_add_internal_call("Lithium.Core.NameComponent::GetName_Internal", MonoServer::GetName_Internal);
+
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::IsKeyPressed", MonoServer::KeyPressed_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MousePosition_Internal", MonoServer::MousePosition_Internal);

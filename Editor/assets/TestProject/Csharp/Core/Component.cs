@@ -8,7 +8,25 @@ namespace Lithium.Core
     {
         public Entity Entity { get; set; }
     }
+    public class NameComponent : Component
+    {
+        public String Tag
+        {
+            get
+            {
+                return GetName_Internal(Entity.ID);
+            }
+            set => SetName_Internal(Entity.ID, value);
+        }
 
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetName_Internal(UInt64 entityID, String name);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static String GetName_Internal(UInt64 entityID);
+
+    }
     public class Transform : Component
     {
         
@@ -42,6 +60,7 @@ namespace Lithium.Core
             }
             set => SetScale_Internal(Entity.ID, ref value);
         }
+        //Transform Comp
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static void SetPosition_Internal(UInt64 entityID,ref Vector3 pos);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -57,15 +76,14 @@ namespace Lithium.Core
         extern public static void SetScale_Internal(UInt64 entityID, ref Vector3 pos);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static Vector3 GetScale_Internal(UInt64 entityID, out Vector3 pos);
+
+
     }
 
     public class SpriteRenderer : Component
     {
     }
 
-    public class NameComponent : Component
-    {
-    }
 
 
 
