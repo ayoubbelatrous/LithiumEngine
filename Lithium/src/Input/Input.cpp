@@ -16,12 +16,25 @@ namespace Lithium
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
+	bool Input::IsKeyDown(const KeyCode keycode)
+ 	{
+		auto* window = Application::Get().GetWindow().GETWindow();
+		auto state = glfwGetKey(window, static_cast<int32_t>(keycode));
+		return state == GLFW_RELEASE && state == GLFW_PRESS;
+	}
+
 	bool Input::IsMouseKeyPressed(int mousekey)
 	{
 		auto* window = Application::Get().GetWindow().GETWindow();
 		auto state = glfwGetMouseButton(window, static_cast<int32_t>(mousekey));
-		return state == GLFW_PRESS || state == GLFW_REPEAT;
-		
+		return false;
+	}
+
+	bool Input::IsMouseKeyDown(int mousekey)
+	{
+		auto* window = Application::Get().GetWindow().GETWindow();
+		auto state = glfwGetMouseButton(window, static_cast<int32_t>(mousekey));
+		return state == GLFW_PRESS;
 	}
 
 	glm::vec2 Input::MousePosition()

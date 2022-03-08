@@ -1,12 +1,9 @@
-﻿using System;
-using Lithium.Core;
+﻿using Lithium.Core;
 using Lithium.Math;
-
-
 
 class Test : Script
 {
-
+    
     void Start()
     {
         
@@ -14,8 +11,10 @@ class Test : Script
 
     void Update()
     {
-        if(Input.IsKeyPressed(KeyCode.Space))
-        Instantiate(entity);
+        if(Input.IsKeyDown(KeyCode.Space))
+        {
+            Debug.Log("entity");
+        }
     }
 
 }

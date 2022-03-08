@@ -6,9 +6,6 @@ Entities:
       Position: [1.93060446, 0.471530497, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
   - Entity: 1721936361
     Name: dod
     Transform:

@@ -11,7 +11,7 @@ namespace Lithium
 		MonoType* type = mono_field_get_type(field);
 		m_Type = GetFieldType(type);
 		m_Name = mono_field_get_name(field);
-	
+		
 		switch (m_Type)
 		{
 		case(ScriptType::Int):

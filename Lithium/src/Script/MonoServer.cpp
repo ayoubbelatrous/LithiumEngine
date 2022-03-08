@@ -161,6 +161,12 @@ namespace Lithium
 		return Input::IsMouseKeyPressed(button);
 	}
 
+	bool MonoServer::MouseKeyDown_Internal(int button)
+	{
+		return Input::IsMouseKeyDown(button);
+
+	}
+
 	void MonoServer::MousePosition_Internal(glm::vec2* pos)
 	{
 		memcpy(pos, &Input::MousePosition(), sizeof(glm::vec2));
@@ -169,6 +175,12 @@ namespace Lithium
 	bool MonoServer::KeyPressed_Internal(uint16_t button)
 	{
 		return Input::IsKeyPressed((KeyCode)button);
+	}
+
+	bool MonoServer::KeyPressedDown_Internal(uint16_t button)
+	{
+		return Input::IsKeyDown((KeyCode)button);
+
 	}
 
 	double MonoServer::DeltaTime_Internal()
@@ -201,7 +213,9 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.SpriteRenderer::GetColor_Internal", MonoServer::GetColor_Internal);
 
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
+		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", MonoServer::MouseKeyDown_Internal);
 		mono_add_internal_call("Lithium.Core.Input::IsKeyPressed", MonoServer::KeyPressed_Internal);
+		mono_add_internal_call("Lithium.Core.Input::IsKeyDown", MonoServer::KeyPressedDown_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MousePosition_Internal", MonoServer::MousePosition_Internal);
 		mono_add_internal_call("Lithium.Core.Time::DeltaTime_Internal", MonoServer::DeltaTime_Internal);
 	}

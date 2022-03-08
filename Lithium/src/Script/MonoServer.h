@@ -59,8 +59,10 @@ namespace Lithium
 			
 			//input
 			static bool MouseKey_Internal(int button);
+			static bool MouseKeyDown_Internal(int button);
 			static void MousePosition_Internal(glm::vec2* pos);
 			static bool KeyPressed_Internal(uint16_t button);
+			static bool KeyPressedDown_Internal(uint16_t button);
 			static double DeltaTime_Internal();
 			//--------------------------------------------------------------------------
 			void ForwardMonoException(MonoObject* object);

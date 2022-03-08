@@ -22,9 +22,13 @@ namespace Lithium.Core
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static bool MouseKeyPressed(int keycode);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool MouseKeyDown(int keycode);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static bool IsKeyPressed(KeyCode keycode);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool IsKeyDown(KeyCode keycode);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static void MousePosition_Internal(out Vector2 pos);
