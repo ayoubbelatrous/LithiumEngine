@@ -82,6 +82,21 @@ namespace Lithium.Core
 
     public class SpriteRenderer : Component
     {
+        public Texture MainTexture;
+        public Vector4 Color
+        {
+            get
+            {
+                Vector4 res;
+                GetColor_Internal(Entity.ID, out res);
+                return res;
+            }
+            set => SetColor_Internal(Entity.ID, ref value);
+        }
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetColor_Internal(UInt64 entityID, ref Vector4 color);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void GetColor_Internal(UInt64 entityID, out Vector4 color);
     }
 
 

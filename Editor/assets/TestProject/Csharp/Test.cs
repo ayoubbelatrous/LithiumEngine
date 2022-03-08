@@ -9,8 +9,7 @@ class Test : Script
 
    void Start()
    {
-
-
+        entity.GetComponent<SpriteRenderer>().Color = new Vector4(1, 0, 1, 1);
    }
 
    void Update()

@@ -52,6 +52,10 @@ namespace Lithium
 		{
 			return entity.HasComponent<NameComponent>();
 		}
+		else if (strcmp(name, "SpriteRenderer") == 0)
+		{
+			return entity.HasComponent<SpriteRendererComponent>();
+		}
 		return false;
 	}
 	void MonoServer::SetPosition_Internal(uint64_t entityID, glm::vec3* vector)
@@ -66,6 +70,21 @@ namespace Lithium
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		TransformComponent& trans = entity.GetComponent<TransformComponent>();
 		memcpy(vector, &trans.Position,sizeof(glm::vec3));
+	}
+
+	void MonoServer::SetColor_Internal(uint64_t entityID, glm::vec4* color)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<SpriteRendererComponent>().Color = *color;
+	
+	}
+
+	void MonoServer::GetColor_Internal(uint64_t entityID, glm::vec4* color)
+	{
+
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		SpriteRendererComponent& renderer = entity.GetComponent<SpriteRendererComponent>();
+		memcpy(color, &renderer.Color, sizeof(glm::vec4));
 	}
 
 	MonoString* MonoServer::GetName_Internal(uint64_t entityID)
@@ -120,6 +139,9 @@ namespace Lithium
 
 		mono_add_internal_call("Lithium.Core.NameComponent::SetName_Internal", MonoServer::SetName_Internal);
 		mono_add_internal_call("Lithium.Core.NameComponent::GetName_Internal", MonoServer::GetName_Internal);
+
+		mono_add_internal_call("Lithium.Core.SpriteRenderer::SetColor_Internal", MonoServer::SetColor_Internal);
+		mono_add_internal_call("Lithium.Core.SpriteRenderer::GetColor_Internal", MonoServer::GetColor_Internal);
 
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::IsKeyPressed", MonoServer::KeyPressed_Internal);

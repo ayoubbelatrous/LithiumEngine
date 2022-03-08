@@ -43,12 +43,17 @@ namespace Lithium
 			//-----internal-calls------------------------------------------------------
 			static void Log(MonoString* log);
 			static bool HasComponent_Interal(uint64_t entityID, MonoObject* type);
+			//name component
+			static MonoString* GetName_Internal(uint64_t entityID);
+			static void SetName_Internal(uint64_t entityID, MonoString* name);
 			//transform component
 			static void SetPosition_Internal(uint64_t entityID, glm::vec3* vector);
 			static void GetPosition_Internal(uint64_t entityID, glm::vec3* vector);
-			//name componenet
-			static MonoString* GetName_Internal(uint64_t entityID);
-			static void SetName_Internal(uint64_t entityID,MonoString* name);
+
+			//sprite renderer component
+			static void SetColor_Internal(uint64_t entityID, glm::vec4* color);
+			static void GetColor_Internal(uint64_t entityID, glm::vec4* color);
+			
 			//input
 			static bool MouseKey_Internal(int button);
 			static void MousePosition_Internal(glm::vec2* pos);
