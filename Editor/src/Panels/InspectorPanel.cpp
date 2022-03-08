@@ -123,6 +123,17 @@ namespace Lithium
 		return modified;
 	}
 
+	static bool Property(const std::string& name, glm::vec4* value)
+	{
+		bool modified = false;
+		if (ImGui::DragFloat4(name.c_str(), (float*)value))
+		{
+			modified = true;
+		}
+
+		return modified;
+	}
+
 	static bool Property(const std::string& name, std::string& value)
 	{
 		bool modified = false;
@@ -299,8 +310,12 @@ namespace Lithium
 					{
 						glm::vec4 val = glm::vec4(0);
 						val = field.second->GetValue<glm::vec4>();
+						if (Property(field.first, &val))
+						{
+							field.second->SetValue(val);
+						}
+				     	break;
 					}
-					break;
 
 					case (ScriptType::String):
 					{

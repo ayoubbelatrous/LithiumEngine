@@ -4,6 +4,8 @@ using System.Runtime.CompilerServices;
 
 namespace Lithium.Core
 {
+
+    
     public abstract class Component
     {
         public Entity Entity { get; set; }
@@ -98,9 +100,5 @@ namespace Lithium.Core
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static void GetColor_Internal(UInt64 entityID, out Vector4 color);
     }
-
-
-
-
     
 }
