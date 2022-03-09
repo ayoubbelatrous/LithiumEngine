@@ -11,7 +11,7 @@ namespace Lithium
 	bool Input::IsKeyPressed(const KeyCode keycode)
 	{
 		auto* window = Application::Get().GetWindow().GETWindow();
-		auto state = glfwGetKey(window, static_cast<int32_t>(keycode));
+		int state = glfwGetKey(window, static_cast<int32_t>(keycode));
 		
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
@@ -19,15 +19,15 @@ namespace Lithium
 	bool Input::IsKeyDown(const KeyCode keycode)
  	{
 		auto* window = Application::Get().GetWindow().GETWindow();
-		auto state = glfwGetKey(window, static_cast<int32_t>(keycode));
-		return state == GLFW_RELEASE && state == GLFW_PRESS;
+		int state = glfwGetKey(window, static_cast<int32_t>(keycode));
+		return state == GLFW_PRESS;
 	}
 
 	bool Input::IsMouseKeyPressed(int mousekey)
 	{
 		auto* window = Application::Get().GetWindow().GETWindow();
-		auto state = glfwGetMouseButton(window, static_cast<int32_t>(mousekey));
-		return false;
+		int state = glfwGetMouseButton(window, static_cast<int32_t>(mousekey));
+		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
 	bool Input::IsMouseKeyDown(int mousekey)

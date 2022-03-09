@@ -262,6 +262,10 @@ namespace Lithium
 
 	void EditorLayer::onKeyEvent(KeyEvent& e)
 	{
+		if (e.action == GLFW_REPEAT)
+		{
+			return;
+		}
 		bool control = Input::IsKeyPressed(Key::LeftControl);
 		bool shift = Input::IsKeyPressed(Key::LeftShift);
 
@@ -273,16 +277,6 @@ namespace Lithium
 				ser.SerializeScene("assets/scenes/script.scene");
 			}
 		}
-		
-		if (e.keycode == KEYCODE_R)
-		{
-			if (control)
-			{
-				OpenScene();
-
-			}
-		}
-		
 
 		if (e.keycode == KEYCODE_E)
 		{
@@ -438,9 +432,10 @@ namespace Lithium
 
 		}
 	
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2,2 });
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 5,5 });
 
 		ImGui::Begin("Scene");
+		
 		_ViewportHovered = ImGui::IsWindowHovered();
 		_ViewportFocus = ImGui::IsWindowFocused();
 
@@ -450,9 +445,24 @@ namespace Lithium
 		}
 
 
+
+	
 		viewportSize[0] = ImGui::GetContentRegionAvail().x;
 		viewportSize[1] = ImGui::GetContentRegionAvail().y;
 		ImGui::Image(reinterpret_cast<void*>(DisplayBuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
+
+		//Drag And Drop
+		if (ImGui::BeginDragDropTarget())
+		{
+
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				std::filesystem::path ScenePath = root / path;
+				OpenScene(ScenePath.string());
+			}
+			ImGui::EndDragDropTarget();
+		}
 
 		ImVec2 viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		ImVec2 viewportMaxRegion = ImGui::GetWindowContentRegionMax();
@@ -595,11 +605,11 @@ namespace Lithium
 		}
 	}
 
-	void EditorLayer::OpenScene()
+	void EditorLayer::OpenScene(const std::string& path)
 	{
 		Ref<Scene> scene = CreateRef<Scene>();
 		Serializer sz = Serializer(scene);
-		sz.DeserializeScene("assets/scenes/script.scene");
+		sz.DeserializeScene(path);
 		m_EditorScene = scene;
 		m_ActiveScene = m_EditorScene;
 		m_SceneHierachyPanel->SetScene(m_ActiveScene);

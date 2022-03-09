@@ -1,11 +1,15 @@
 Scene: NONE
 Entities:
-  - Entity: 4228235248
-    Name: name
+  - Entity: 3257578630
+    Name: hello
     Transform:
-      Position: [1.93060446, 0.471530497, 0]
+      Position: [-1.07651258, 0.8540923, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
+    Script:
+      ClassName: Test
+      Fields:
+        []
   - Entity: 1721936361
     Name: dod
     Transform:
@@ -19,13 +23,9 @@ Entities:
       ClassName: Test
       Fields:
         []
-  - Entity: 3257578630
-    Name: hello
+  - Entity: 4228235248
+    Name: name
     Transform:
-      Position: [-1.07651258, 0.8540923, 0]
+      Position: [1.93060446, 0.471530497, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
-    Script:
-      ClassName: Test
-      Fields:
-        []

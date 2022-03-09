@@ -11,10 +11,7 @@ class Test : Script
 
     void Update()
     {
-        if(Input.IsKeyDown(KeyCode.Space))
-        {
-            Debug.Log("entity");
-        }
+       
     }
 
 }
