@@ -2,6 +2,7 @@
 #include "Script/ScriptField.h"
 #include "Core/Application.h"
 
+
 namespace Lithium
 {
 
@@ -57,6 +58,14 @@ namespace Lithium
 			m_Value = val;
 			break;
 		}
+		case(ScriptType::Entity):
+		{
+			uint64_t val;
+			val = GetMonoEntity();
+			m_Value = val;
+			break;
+		}
+
 		}
 	}
 
@@ -80,6 +89,31 @@ namespace Lithium
 	void ScriptField::GetMonoValue(void* val)
 	{
 		mono_field_get_value(m_MonoObject, m_MonoField, val);
+	}
+
+	void ScriptField::SetMonoEntity(uint64_t uuid)
+	{
+		MonoObject* entityObj = (MonoObject*)Application::Get().Monoserver->CreateMonoEntity(std::get<uint64_t>(m_Value));
+		mono_field_set_value(m_MonoObject, m_MonoField, entityObj);
+	}
+
+	uint64_t ScriptField::GetMonoEntity()
+	{
+		MonoObject* entityObj = nullptr;
+		mono_field_get_value(m_MonoObject, m_MonoField, &entityObj);
+
+
+		if (entityObj == nullptr)
+		{
+			return 0;
+		}
+		MonoClass* klass = mono_object_get_class(entityObj);
+		MonoClassField* field =mono_class_get_field_from_name(klass, "ID");
+		uint64_t EntityID;
+		mono_field_get_value(entityObj, field,&EntityID);
+		
+
+		return EntityID;
 	}
 
 	std::string ScriptField::GetMonoString()

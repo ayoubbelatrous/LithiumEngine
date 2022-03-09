@@ -20,7 +20,6 @@ namespace Lithium
 		
 			
 		while ((MonoField = mono_class_get_fields(klass, &iter)) != nullptr)
-
 		{
 			if ((mono_field_get_flags(MonoField) & MONO_FIELD_ATTR_PUBLIC) == 0)
 				continue;

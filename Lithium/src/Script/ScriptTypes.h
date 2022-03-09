@@ -38,7 +38,7 @@ namespace Lithium
 		case MONO_TYPE_CLASS:
 		{
 			char* name = mono_type_get_name(monoType);
-			if (strcmp(name, "Lithium.Core.Transform") == 0) return ScriptType::Transform;
+			if (strcmp(name, "Lithium.Core.Entity") == 0) return ScriptType::Entity;
 
 		}
 		}
@@ -73,6 +73,10 @@ namespace Lithium
 		else if (strcmp(str.c_str(), "STRING") == 0)
 		{
 			return ScriptType::String;
+		}
+		else if (strcmp(str.c_str(), "Entity") == 0)
+		{
+			return ScriptType::Entity;
 		}
 
 		return ScriptType::None;

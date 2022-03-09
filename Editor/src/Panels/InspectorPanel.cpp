@@ -151,12 +151,21 @@ namespace Lithium
 
 	static bool Property(const std::string& name, UUID& id)
 	{
-		bool modified = false;
-		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[id],Application::Get().sceneManager->GetActiveScene().get());
-		std::string EntityName = entity.GetComponent<NameComponent>().GetName();
-	
 
-		ImGui::Button((name + " " + EntityName).c_str(), {100,20});
+		bool modified = false;
+
+		std::string EntityName;
+
+		if (id != 0)
+		{
+			Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[id], Application::Get().sceneManager->GetActiveScene().get());
+			EntityName = entity.GetComponent<NameComponent>().GetName();
+		}
+		
+	
+		ImGui::Text("%s", name.c_str());
+		ImGui::SameLine();
+		ImGui::Button(EntityName.c_str(), {100,20});
 		if (ImGui::BeginDragDropTarget())
 		{
 
@@ -283,10 +292,7 @@ namespace Lithium
 				ImGui::Selectable("Script");
 
 				ScriptComponent& script = _Selection.GetComponent<ScriptComponent>();
-				if (Property("ID", _Selection.GetComponent<IDComponent>().ID))
-				{
-					CORE_LOG("modified ");
-				}
+			
 				for (auto& field : script.Scriptobject->GetFields())
 				{
 
@@ -356,7 +362,16 @@ namespace Lithium
 						}
 						break;
 					}
+					case (ScriptType::Entity):
+					{
 
+						UUID val = field.second->GetValue<uint64_t>();
+						if (Property(field.first, val))
+						{
+							field.second->SetValue((uint64_t)val);
+						}
+						break;
+					}
 					}
 				}
 			}

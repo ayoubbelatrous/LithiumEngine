@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ScriptTypes.h"
-#include "Core/Base.h"
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -13,7 +12,7 @@
 
 namespace Lithium
 {
-	using FieldValue = std::variant<int,float,glm::vec2,glm::vec3,glm::vec4,std::string>;
+	using FieldValue = std::variant<int,float,glm::vec2,glm::vec3,glm::vec4,std::string,uint64_t>;
 
 	class ScriptField
 	{
@@ -44,17 +43,31 @@ namespace Lithium
 			return val;
 		}
 
+		template<>
+		uint64_t GetValue()
+		{
+			uint64_t val = GetMonoEntity();
+			return val;
+		}
+
+
 
 		template<typename T>
 		T GetLocalValue()
 		{
 			return std::get<T>(m_Value);
 		}
-
+		template<>
 		std::string GetLocalValue()
 		{
 			return std::get<std::string>(m_Value);
 		}
+		template<>
+		uint64_t GetLocalValue()
+		{
+			return std::get<uint64_t>(m_Value);
+		}
+
 
 		template<>
 		void SetValue(int value)
@@ -104,12 +117,26 @@ namespace Lithium
 			SetMonoString(value);
 		}
 
+		template<>
+		void SetValue(uint64_t value)
+		{
+			ASSERT(m_Type == ScriptType::Entity);
+			m_Value = value;
+			SetMonoEntity(std::get<uint64_t>(m_Value));
+		}
+
 
 	private:
+
+		//mono any type helpers
 		void SetMonoValue(void* value);
-		void SetMonoString(const std::string& value);
 		void GetMonoValue(void* val);
+		//mono string helpers
+		void SetMonoString(const std::string& value);
 		std::string GetMonoString();
+		//entity field helpers
+		void SetMonoEntity(uint64_t uuid);
+		uint64_t GetMonoEntity();
 		std::string m_Name;
 		MonoClassField* m_MonoField = nullptr;
 		MonoObject* m_MonoObject = nullptr;

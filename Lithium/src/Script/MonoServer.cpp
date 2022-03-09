@@ -25,19 +25,8 @@ namespace Lithium
 
 	bool MonoServer::HasComponent_Interal(uint64_t entityID, MonoObject* type)
 	{
-		std::unordered_map<UUID, entt::entity> enttMap;
-
-		auto& registry = Application::Get().sceneManager->GetActiveScene()->GetRegistry();
-		auto entities = registry.view<IDComponent>();
 		
-		for (auto entity : entities)
-		{
-			
-			IDComponent idc = registry.get<IDComponent>(entity);
-			enttMap.emplace(idc.ID,entity);
-		}
-		UUID uuid = UUID(entityID);
-		Entity entity(enttMap[uuid], Application::Get().sceneManager->GetActiveScene().get());
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 
 
 		MonoClass* klass = mono_object_get_class(type);
@@ -431,6 +420,12 @@ namespace Lithium
 			Dst->SetValue<std::string>(Src->GetLocalValue<std::string>());
 			break;
 		}
+
+		case(ScriptType::Entity):
+		{
+			Dst->SetValue<uint64_t>(Src->GetLocalValue<uint64_t>());
+			break;
+		}
 		}
 	}
 	//creates a new object and copies the fields
@@ -454,12 +449,14 @@ namespace Lithium
 
 	void* MonoServer::CreateMonoEntity(UUID id)
 	{
-		MonoClass* EntityClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
+		MonoClass* EntityClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Entity");
 		MonoObject*  EntityObject = mono_object_new(_MonoAppDomain, EntityClass);
 		mono_runtime_object_init(EntityObject);
 		MonoClassField* IDfield = mono_class_get_field_from_name(EntityClass, "ID");
-		uint64_t EntityID = id;
+		uint64_t EntityID = (uint64_t)id;
 		mono_field_set_value(EntityObject, IDfield, &EntityID);
+
+
 		return EntityObject;
 	}
 

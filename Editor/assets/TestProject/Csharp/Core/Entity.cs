@@ -7,6 +7,10 @@ namespace Lithium.Core
     public class Entity
     {
         public UInt64 ID = 0;
+        public Entity()
+        {
+
+        }
         public Entity(UInt64 id) { ID = id; }
         public bool HasComponent<T>() where T : Component, new()
         {

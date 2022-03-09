@@ -216,6 +216,16 @@ namespace Lithium
 					emitter << YAML::Key << "Value" << YAML::Value << val;
 					break;
 				}
+
+				case (ScriptType::Entity):
+				{
+
+					uint64_t val = field.second->GetValue<uint64_t>();
+					emitter << YAML::Key << "Name" << YAML::Value << field.first;
+					emitter << YAML::Key << "Type" << YAML::Value << "ENTITY";
+					emitter << YAML::Key << "Value" << YAML::Value << val;
+					break;
+				}
 				}
 				emitter << YAML::EndMap;
 
@@ -407,6 +417,13 @@ namespace Lithium
 
 								break;
 							}
+							case(ScriptType::Entity):
+							{
+								ScriptFields[name]->SetValue<uint64_t>(std::get<uint64_t>(Value));
+
+								break;
+							}
+
 							}
 						}
 					}
