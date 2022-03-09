@@ -109,7 +109,7 @@ namespace Lithium
 		{
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
-		
+		CORE_LOG("UUID test" << UUID())
 	}
 
 	void EditorLayer::OnUpdate()

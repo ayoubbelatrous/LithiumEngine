@@ -10,10 +10,11 @@
 #include "Scene.h"
 #include "Core/Application.h"
 namespace YAML {
-
+	
 	template<>
 	struct convert<glm::vec2>
 	{
+		
 		static Node encode(const glm::vec2& rhs)
 		{
 			Node node;
@@ -116,7 +117,7 @@ namespace Lithium
 		IDComponent& idc = entity.GetComponent<IDComponent>();
 
 		emitter << YAML::BeginMap;
-		emitter << YAML::Key << "Entity" << YAML::Value << (uint32_t)idc.ID;
+		emitter << YAML::Key << "Entity" << YAML::Value << (uint64_t)idc.ID;
 		NameComponent& name = entity.GetComponent<NameComponent>();
 		emitter << YAML::Key << "Name" << YAML::Value << name.GetName();
 
@@ -147,6 +148,7 @@ namespace Lithium
 
 		if (entity.HasComponent<ScriptComponent>())
 		{
+			//NOTE: use local value instead of mono value in scene
 			ScriptComponent& scc = entity.GetComponent<ScriptComponent>();
 			emitter << YAML::Key << "Script" << YAML::BeginMap;
 			emitter << YAML::Key << "ClassName" << YAML::Value << scc.Name;
@@ -219,11 +221,12 @@ namespace Lithium
 
 				case (ScriptType::Entity):
 				{
-
 					uint64_t val = field.second->GetValue<uint64_t>();
+					uint64_t test = 2525252525252525252;
 					emitter << YAML::Key << "Name" << YAML::Value << field.first;
 					emitter << YAML::Key << "Type" << YAML::Value << "ENTITY";
 					emitter << YAML::Key << "Value" << YAML::Value << val;
+
 					break;
 				}
 				}
