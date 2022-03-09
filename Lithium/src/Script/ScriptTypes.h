@@ -74,7 +74,7 @@ namespace Lithium
 		{
 			return ScriptType::String;
 		}
-		else if (strcmp(str.c_str(), "Entity") == 0)
+		else if (strcmp(str.c_str(), "ENTITY") == 0)
 		{
 			return ScriptType::Entity;
 		}

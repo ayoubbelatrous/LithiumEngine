@@ -531,15 +531,18 @@ namespace Lithium
 			ImGui::Text("Save Scene As..");
 			char buffer[256];
 			memset(buffer, 0, 256);
-
-			ImGui::InputText("Path", buffer, 256);
+			strcpy(buffer,m_ScenePath.c_str());
+			if (ImGui::InputText("Path", buffer, 256))
+			{
+				m_ScenePath = buffer;
+			}
 
 
 			if (ImGui::Button("Save"))
 			{
 				CORE_LOG(buffer);
 				Serializer serilizer(m_ActiveScene);
-				serilizer.SerializeScene(std::string(buffer));
+				serilizer.SerializeScene(m_ScenePath);
 				m_OpenSceneSaveDialog = false;
 				ImGui::CloseCurrentPopup();
 			}

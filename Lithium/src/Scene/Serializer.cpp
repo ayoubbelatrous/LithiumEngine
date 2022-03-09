@@ -369,6 +369,12 @@ namespace Lithium
 							Value = field["Value"].as<std::string>();
 							break;
 						}
+
+						case(ScriptType::Entity):
+						{
+							Value = field["Value"].as<uint64_t>();
+							break;
+						}
 						}
 
 

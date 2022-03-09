@@ -117,5 +117,6 @@ namespace Lithium
 		//Panels 
 		Ref<SceneHierachyPanel> m_SceneHierachyPanel;
 		Ref<InspectorPanel> m_InspectorPanel;
+		std::string m_ScenePath = "assets/scenes/";
 	};
 }
