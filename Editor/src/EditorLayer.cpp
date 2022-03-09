@@ -273,8 +273,7 @@ namespace Lithium
 		{
 			if (control)
 			{
-				Serializer ser(m_ActiveScene);
-				ser.SerializeScene("assets/scenes/script.scene");
+				m_OpenSceneSaveDialog = true;
 			}
 		}
 
@@ -524,6 +523,35 @@ namespace Lithium
 	
 		ImGui::End();
 
+		if (m_OpenSceneSaveDialog)
+			ImGui::OpenPopup("Scene Save");
+
+		if (ImGui::BeginPopupModal("Scene Save"))
+		{
+			ImGui::Text("Save Scene As..");
+			char buffer[256];
+			memset(buffer, 0, 256);
+
+			ImGui::InputText("Path", buffer, 256);
+
+
+			if (ImGui::Button("Save"))
+			{
+				CORE_LOG(buffer);
+				Serializer serilizer(m_ActiveScene);
+				serilizer.SerializeScene(std::string(buffer));
+				m_OpenSceneSaveDialog = false;
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::Button("Close"))
+			{
+				ImGui::CloseCurrentPopup();
+				m_OpenSceneSaveDialog = false;
+			}
+			ImGui::EndPopup();
+		}
+		
 
 		ImGui::End();
 

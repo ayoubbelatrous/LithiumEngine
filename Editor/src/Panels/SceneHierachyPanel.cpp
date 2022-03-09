@@ -26,7 +26,6 @@ namespace Lithium
 	}
 	
 	 void SceneHierachyPanel::DrawEntity(Entity entity) {
-
 		/*
 		 if(entity.HasComponent<ChildManagerComponent>())
 		 if (entity.GetComponent<ChildManagerComponent>().Children.empty())
@@ -41,13 +40,22 @@ namespace Lithium
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2.0f, 2.0f));
 		
 		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity.GetHandle(), flags, tag.c_str());
-		ImGui::PopStyleVar();
-		ImGui::PopStyleVar();
-		if (ImGui::IsItemClicked())
+		if (ImGui::IsItemClicked() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{
 			_Selection = entity;
 		}
+		if (ImGui::BeginDragDropSource())
+		{
+			UUID id = entity.GetComponent<IDComponent>().ID;
+			ImGui::SetDragDropPayload("ENTITY", &id, sizeof(UUID));
+			ImGui::Text("%s", tag.c_str());
+			ImGui::EndDragDropSource();
+		}
+		ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
+		
 
+		
 		bool entityDeleted = false;
 		if (ImGui::BeginPopupContextItem())
 		{

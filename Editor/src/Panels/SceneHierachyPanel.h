@@ -25,8 +25,11 @@ namespace Lithium
 		{
 			_Selection = selec;
 		}
+		bool isDraging = false;
+
 	private:
 		Ref<Scene> _Scene;
 		Entity _Selection;
+
 	};
 }

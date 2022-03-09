@@ -11,7 +11,7 @@
 #include <filesystem>
 #include <iostream>
 #include "Script/ScriptObject.h"
-
+#include "Core/Application.h"
 namespace Lithium
 {
 	extern const std::filesystem::path root;
@@ -149,6 +149,32 @@ namespace Lithium
 		return modified;
 	}
 
+	static bool Property(const std::string& name, UUID& id)
+	{
+		bool modified = false;
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[id],Application::Get().sceneManager->GetActiveScene().get());
+		std::string EntityName = entity.GetComponent<NameComponent>().GetName();
+	
+
+		ImGui::Button((name + " " + EntityName).c_str(), {100,20});
+		if (ImGui::BeginDragDropTarget())
+		{
+
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+			{
+				const UUID* uuid = (UUID*)payload->Data;
+				id = *uuid;
+				modified = true;
+			}
+			else
+			{
+				modified = false;
+			}
+			ImGui::EndDragDropTarget();
+		}
+		return modified;
+	}
+
 	void InspectorPanel::OnCreate()
 	{
 
@@ -257,7 +283,10 @@ namespace Lithium
 				ImGui::Selectable("Script");
 
 				ScriptComponent& script = _Selection.GetComponent<ScriptComponent>();
-
+				if (Property("ID", _Selection.GetComponent<IDComponent>().ID))
+				{
+					CORE_LOG("modified ");
+				}
 				for (auto& field : script.Scriptobject->GetFields())
 				{
 
@@ -327,6 +356,7 @@ namespace Lithium
 						}
 						break;
 					}
+
 					}
 				}
 			}

@@ -4,6 +4,7 @@ using Lithium.Math;
 class Test2 : Script
 {
     public double speed;
+    public Entity Camera;
     void Start()
     {
 
@@ -11,6 +12,7 @@ class Test2 : Script
 
     void Update()
     {
+        Debug.Log(Camera.ID);
         Random random = new Random();
         double rand = random.NextDouble();
         speed += 0.0002f;
