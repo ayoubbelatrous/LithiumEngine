@@ -2,7 +2,7 @@
 
 #include "Script/ScriptClass.h"
 #include "Script/ScriptObject.h"
-
+#include "Core/UUID.h"
 #include <filesystem>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -75,7 +75,7 @@ namespace Lithium
 
 			Ref<ScriptObject> GetObject(const std::string& name);
 			Ref<ScriptObject> CopyObject(const Ref<ScriptObject>& object);
-			
+			void* CreateMonoEntity(UUID id);
 			//Utils
 			void* CreateMonoString(const char* str);
 	};

@@ -452,6 +452,17 @@ namespace Lithium
 		return newObject;
 	}
 
+	void* MonoServer::CreateMonoEntity(UUID id)
+	{
+		MonoClass* EntityClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
+		MonoObject*  EntityObject = mono_object_new(_MonoAppDomain, EntityClass);
+		mono_runtime_object_init(EntityObject);
+		MonoClassField* IDfield = mono_class_get_field_from_name(EntityClass, "ID");
+		uint64_t EntityID = id;
+		mono_field_set_value(EntityObject, IDfield, &EntityID);
+		return EntityObject;
+	}
+
 	void* MonoServer::CreateMonoString(const char* str)
 	{
 		return mono_string_new(_MonoAppDomain, str);
