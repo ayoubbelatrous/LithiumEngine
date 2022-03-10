@@ -21,7 +21,7 @@ namespace Lithium
 			
 		}
 		template<typename T>
-		Handle<T> LoadAsset(const std::string& path);
+		Asset<T> LoadAsset(const std::string& path);
 		void CheckForRefrences();
 		uint32_t GetTextureCount() { return _TextureCache.size(); };
 		

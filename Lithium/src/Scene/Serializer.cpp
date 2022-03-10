@@ -111,6 +111,95 @@ namespace Lithium
 		emitter << YAML::BeginSeq << vector.x << vector.y << YAML::EndSeq;
 		return emitter;
 	}
+	static void SerializeScript(YAML::Emitter& emitter,const ScriptComponent& script)
+	{
+		emitter << YAML::BeginMap;
+		emitter << YAML::Key << "ClassName" << YAML::Value << script.Name;
+		emitter << YAML::Key << "Fields" << YAML::Value << YAML::BeginSeq;
+
+		for (auto& field : script.Scriptobject->GetFields())
+		{
+			emitter << YAML::BeginMap;
+
+			switch (field.second->GetType())
+			{
+			case (ScriptType::Int):
+			{
+				int val = field.second->GetLocalValue<int>();
+				emitter << YAML::Key << "Name" << YAML::Value << field.first;
+				emitter << YAML::Key << "Type" << YAML::Value << "INT";
+				emitter << YAML::Key << "Value" << YAML::Value << val;
+				break;
+			}
+			case (ScriptType::Float):
+			{
+				float val = 0;
+				val = field.second->GetLocalValue<float>();
+				emitter << YAML::Key << "Name" << YAML::Value << field.first;
+				emitter << YAML::Key << "Type" << YAML::Value << "FLOAT";
+				emitter << YAML::Key << "Value" << YAML::Value << val;
+				break;
+			}
+			case (ScriptType::Vec2):
+			{
+				glm::vec2 val = glm::vec2(0);
+				val = field.second->GetLocalValue<glm::vec2>();
+				emitter << YAML::Key << "Name" << YAML::Value << field.first;
+				emitter << YAML::Key << "Type" << YAML::Value << "VEC2";
+				emitter << YAML::Key << "Value" << YAML::Value << val;
+				break;
+			}
+
+
+			case (ScriptType::Vec3):
+			{
+				glm::vec3 val = glm::vec3(0);
+				val = field.second->GetValue<glm::vec3>();
+				emitter << YAML::Key << "Name" << YAML::Value << field.first;
+				emitter << YAML::Key << "Type" << YAML::Value << "VEC3";
+				emitter << YAML::Key << "Value" << YAML::Value << val;
+				break;
+			}
+
+
+			case (ScriptType::Vec4):
+			{
+				glm::vec4 val = glm::vec4(0);
+				val = field.second->GetValue<glm::vec4>();
+				emitter << YAML::Key << "Name" << YAML::Value << field.first;
+				emitter << YAML::Key << "Type" << YAML::Value << "VEC4";
+				emitter << YAML::Key << "Value" << YAML::Value << val;
+			}
+			break;
+
+			case (ScriptType::String):
+			{
+
+				std::string val = field.second->GetValue<std::string>();
+				emitter << YAML::Key << "Name" << YAML::Value << field.first;
+				emitter << YAML::Key << "Type" << YAML::Value << "STRING";
+				emitter << YAML::Key << "Value" << YAML::Value << val;
+				break;
+			}
+
+			case (ScriptType::Entity):
+			{
+				uint64_t val = field.second->GetValue<uint64_t>();
+				uint64_t test = 2525252525252525252;
+				emitter << YAML::Key << "Name" << YAML::Value << field.first;
+				emitter << YAML::Key << "Type" << YAML::Value << "ENTITY";
+				emitter << YAML::Key << "Value" << YAML::Value << val;
+
+				break;
+			}
+			}
+			emitter << YAML::EndMap;
+		}
+
+		emitter << YAML::EndSeq;
+		emitter << YAML::EndMap;
+	}
+
 
 	static void SerializeEntity(YAML::Emitter& emitter, Entity entity)
 	{
@@ -146,95 +235,23 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
-		if (entity.HasComponent<ScriptComponent>())
+		if (entity.HasComponent<ScriptGroupeComponent>())
 		{
 			//NOTE: use local value instead of mono value in scene
-			ScriptComponent& scc = entity.GetComponent<ScriptComponent>();
-			emitter << YAML::Key << "Script" << YAML::BeginMap;
-			emitter << YAML::Key << "ClassName" << YAML::Value << scc.Name;
-			emitter << YAML::Key << "Fields" << YAML::Value << YAML::BeginSeq;
+			ScriptGroupeComponent& ScriptGroupe = entity.GetComponent<ScriptGroupeComponent>();
 
-			for (auto& field : scc.Scriptobject->GetFields())
+			emitter << YAML::Key << "ScriptGroupe" << YAML::Value << YAML::BeginMap;
+
+			emitter << YAML::Key << "Scripts" << YAML::Value << YAML::BeginSeq;
+			for (auto& scc:ScriptGroupe.Scripts)
 			{
-				emitter << YAML::BeginMap;
-
-				switch (field.second->GetType())
-				{
-				case (ScriptType::Int):
-				{
-					int val = field.second->GetLocalValue<int>();
-					emitter << YAML::Key << "Name" << YAML::Value << field.first;
-					emitter << YAML::Key << "Type" << YAML::Value << "INT";
-					emitter << YAML::Key << "Value" << YAML::Value << val;
-					break;
-				}
-				case (ScriptType::Float):
-				{
-					float val = 0;
-					val = field.second->GetLocalValue<float>();
-					emitter << YAML::Key << "Name" << YAML::Value << field.first;
-					emitter << YAML::Key << "Type" << YAML::Value << "FLOAT";
-					emitter << YAML::Key << "Value" << YAML::Value << val;
-					break;
-				}
-				case (ScriptType::Vec2):
-				{
-					glm::vec2 val = glm::vec2(0);
-					val = field.second->GetLocalValue<glm::vec2>();
-					emitter << YAML::Key << "Name" << YAML::Value << field.first;
-					emitter << YAML::Key << "Type" << YAML::Value << "VEC2";
-					emitter << YAML::Key << "Value" << YAML::Value << val;
-					break;
-				}
-
-
-				case (ScriptType::Vec3):
-				{
-					glm::vec3 val = glm::vec3(0);
-					val = field.second->GetValue<glm::vec3>();
-					emitter << YAML::Key << "Name" << YAML::Value << field.first;
-					emitter << YAML::Key << "Type" << YAML::Value << "VEC3";
-					emitter << YAML::Key << "Value" << YAML::Value << val;
-					break;
-				}
-
-
-				case (ScriptType::Vec4):
-				{
-					glm::vec4 val = glm::vec4(0);
-					val = field.second->GetValue<glm::vec4>();
-					emitter << YAML::Key << "Name" << YAML::Value << field.first;
-					emitter << YAML::Key << "Type" << YAML::Value << "VEC4";
-					emitter << YAML::Key << "Value" << YAML::Value << val;
-				}
-				break;
-
-				case (ScriptType::String):
-				{
-
-					std::string val = field.second->GetValue<std::string>();
-					emitter << YAML::Key << "Name" << YAML::Value << field.first;
-					emitter << YAML::Key << "Type" << YAML::Value << "STRING";
-					emitter << YAML::Key << "Value" << YAML::Value << val;
-					break;
-				}
-
-				case (ScriptType::Entity):
-				{
-					uint64_t val = field.second->GetValue<uint64_t>();
-					uint64_t test = 2525252525252525252;
-					emitter << YAML::Key << "Name" << YAML::Value << field.first;
-					emitter << YAML::Key << "Type" << YAML::Value << "ENTITY";
-					emitter << YAML::Key << "Value" << YAML::Value << val;
-
-					break;
-				}
-				}
-				emitter << YAML::EndMap;
-
+				
+				SerializeScript(emitter, scc);
+				
 			}
 
 			emitter << YAML::EndSeq;
+
 			emitter << YAML::EndMap;
 		}
 
@@ -312,133 +329,143 @@ namespace Lithium
 
 			}
 
-			auto script = entity["Script"];
-
-			if (script)
+			
+			auto ScriptGroupe = entity["ScriptGroupe"];
+			if (ScriptGroupe)
 			{
-				deserEntity.AddComponent<ScriptComponent>();
-				ScriptComponent& scc = deserEntity.GetComponent<ScriptComponent>();
-				std::string ScriptName = script["ClassName"].as<std::string>();
-				scc.Name = ScriptName;
-				scc.Scriptobject = Application::Get().Monoserver->GetObject(ScriptName);
-				scc.Loaded = true;
-				auto Fields = script["Fields"];
-
-				for (auto field : Fields)
+				deserEntity.AddComponent<ScriptGroupeComponent>();
+				ScriptGroupeComponent& scriptgroupe = deserEntity.GetComponent<ScriptGroupeComponent>();
+				auto Scripts = ScriptGroupe["Scripts"];
+				for (auto script : Scripts)
 				{
+					
+					ScriptComponent& scc = ScriptComponent();
+					std::string ScriptName = script["ClassName"].as<std::string>();
+					scc.Name = ScriptName;
+					scc.Scriptobject = Application::Get().Monoserver->GetObject(ScriptName);
+					scc.Loaded = true;
+					auto Fields = script["Fields"];
 
-					auto name = field["Name"].as<std::string>();
-					std::string type = field["Type"].as<std::string>();
-
-					//convert string to script type 
-
-					ScriptType FieldType = ConvertStringToScriptType(type);
-
-					//convert value to the proper type
-					FieldValue Value;
+					for (auto field : Fields)
 					{
-						switch (FieldType)
-						{
-						case(ScriptType::Int):
-						{
-							Value = field["Value"].as<int>();
-							break;
-						}
-						case(ScriptType::Float):
-						{
-							Value = field["Value"].as<float>();
-							break;
-						}
-						case(ScriptType::Vec2):
-						{
-							Value = field["Value"].as<glm::vec2>();
 
-							break;
-						}
-						case(ScriptType::Vec3):
+						auto name = field["Name"].as<std::string>();
+						std::string type = field["Type"].as<std::string>();
+
+						//convert string to script type 
+
+						ScriptType FieldType = ConvertStringToScriptType(type);
+
+						//convert value to the proper type
+						FieldValue Value;
 						{
-							Value = field["Value"].as<glm::vec3>();
-
-							break;
-						}
-						case(ScriptType::Vec4):
-						{
-							Value = field["Value"].as<glm::vec4>();
-
-							break;
-						}
-						case(ScriptType::String):
-						{
-							Value = field["Value"].as<std::string>();
-							break;
-						}
-
-						case(ScriptType::Entity):
-						{
-							Value = field["Value"].as<uint64_t>();
-							break;
-						}
-						}
-
-
-
-						auto& ScriptFields = scc.Scriptobject->GetFields();
-						if (ScriptFields.find(name) != ScriptFields.end())
-						{
-
 							switch (FieldType)
 							{
 							case(ScriptType::Int):
 							{
-								ScriptFields[name]->SetValue<int>(std::get<int>(Value));
-
+								Value = field["Value"].as<int>();
 								break;
 							}
 							case(ScriptType::Float):
 							{
-								ScriptFields[name]->SetValue<float>(std::get<float>(Value));
+								Value = field["Value"].as<float>();
 								break;
 							}
 							case(ScriptType::Vec2):
 							{
-								ScriptFields[name]->SetValue<glm::vec2>(std::get<glm::vec2>(Value));
-
+								Value = field["Value"].as<glm::vec2>();
 
 								break;
 							}
 							case(ScriptType::Vec3):
 							{
-								ScriptFields[name]->SetValue<glm::vec3>(std::get<glm::vec3>(Value));
-
+								Value = field["Value"].as<glm::vec3>();
 
 								break;
 							}
 							case(ScriptType::Vec4):
 							{
-								ScriptFields[name]->SetValue<glm::vec4>(std::get<glm::vec4>(Value));
-
+								Value = field["Value"].as<glm::vec4>();
 
 								break;
 							}
 							case(ScriptType::String):
 							{
-								ScriptFields[name]->SetValue<std::string>(std::get<std::string>(Value));
-
+								Value = field["Value"].as<std::string>();
 								break;
 							}
+
 							case(ScriptType::Entity):
 							{
-								ScriptFields[name]->SetValue<uint64_t>(std::get<uint64_t>(Value));
-
+								Value = field["Value"].as<uint64_t>();
 								break;
 							}
+							}
 
+
+
+							auto& ScriptFields = scc.Scriptobject->GetFields();
+							if (ScriptFields.find(name) != ScriptFields.end())
+							{
+
+								switch (FieldType)
+								{
+								case(ScriptType::Int):
+								{
+									ScriptFields[name]->SetValue<int>(std::get<int>(Value));
+
+									break;
+								}
+								case(ScriptType::Float):
+								{
+									ScriptFields[name]->SetValue<float>(std::get<float>(Value));
+									break;
+								}
+								case(ScriptType::Vec2):
+								{
+									ScriptFields[name]->SetValue<glm::vec2>(std::get<glm::vec2>(Value));
+
+
+									break;
+								}
+								case(ScriptType::Vec3):
+								{
+									ScriptFields[name]->SetValue<glm::vec3>(std::get<glm::vec3>(Value));
+
+
+									break;
+								}
+								case(ScriptType::Vec4):
+								{
+									ScriptFields[name]->SetValue<glm::vec4>(std::get<glm::vec4>(Value));
+
+
+									break;
+								}
+								case(ScriptType::String):
+								{
+									ScriptFields[name]->SetValue<std::string>(std::get<std::string>(Value));
+
+									break;
+								}
+								case(ScriptType::Entity):
+								{
+									ScriptFields[name]->SetValue<uint64_t>(std::get<uint64_t>(Value));
+
+									break;
+								}
+
+								}
 							}
 						}
-					}
 
+					}
+				   scriptgroupe.AddScript(scc);
 				}
+
 			}
+
+				
 
 		}
 	}

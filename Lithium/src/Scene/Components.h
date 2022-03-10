@@ -178,6 +178,23 @@ namespace Lithium
 		{}
 	};
 
+	struct ScriptGroupeComponent
+	{
+		std::vector<ScriptComponent> Scripts;
+		void AddScript(const std::string& name)
+		{
+		
+			Scripts.push_back(ScriptComponent(name));
+		}
+		void AddScript(ScriptComponent& script)
+		{
+			Scripts.push_back(script);
+		}
+		ScriptGroupeComponent() = default;
+		ScriptGroupeComponent(const ScriptGroupeComponent& other) = default;
+		
+	};
+
 
 }
 

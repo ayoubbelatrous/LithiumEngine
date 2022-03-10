@@ -7,29 +7,29 @@ namespace Lithium {
 
 
 	template<>
-	Handle<Ref<Mesh>> AssetManager::LoadAsset(const std::string& path)
+	Asset<Ref<Mesh>> AssetManager::LoadAsset(const std::string& path)
 	{
 		Ref<Mesh> mesh = CreateRef<Mesh>();
-		Handle<Ref<Mesh>> m(path);
+		Asset<Ref<Mesh>> m(path);
 		m.SetAsset(mesh);
 
 		return m;
 	}
 
 	template<>
-	Handle<Ref<Material>> AssetManager::LoadAsset(const std::string& path)
+	Asset<Ref<Material>> AssetManager::LoadAsset(const std::string& path)
 	{
 		Ref<Material> material = Material::MaterialFromFile(path);
-		Handle<Ref<Material>> m(path);
+		Asset<Ref<Material>> m(path);
 		m.SetAsset(material);
 
 		return m;
 	}
 
 	template<>
-	Handle<Ref<Texture>> AssetManager::LoadAsset(const std::string& path)
+	Asset<Ref<Texture>> AssetManager::LoadAsset(const std::string& path)
 	{
-		Handle<Ref<Texture>> asset(path);
+		Asset<Ref<Texture>> asset(path);
 
 		if (_PathTable.find(path) != _PathTable.end())
 		{

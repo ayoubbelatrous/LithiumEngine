@@ -1,17 +1,18 @@
-﻿using Lithium.Core;
+﻿using System;
+using Lithium.Core;
 using Lithium.Math;
-
 class Test : Script
 {
-    public Entity Player;
+    public float speed;
+    public float speed2;
+    public Entity Camera;
+
     void Start()
     {
-        Debug.Log("Player Entity Name is " + Player.GetComponent<NameComponent>().Tag);
+        
     }
 
     void Update()
     {
-       
     }
-
 }

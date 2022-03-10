@@ -69,9 +69,11 @@ namespace Lithium
 
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity2.AddComponent<TransformComponent>();
-		entity2.AddComponent<ScriptComponent>("Test");
+
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		entity3.AddComponent<ScriptComponent>("Test");
+		entity3.AddComponent<ScriptGroupeComponent>();
+		entity3.GetComponent<ScriptGroupeComponent>().AddScript("Test");
+		entity3.GetComponent<ScriptGroupeComponent>().AddScript("Player");
 
 		m_ActiveScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
@@ -592,13 +594,19 @@ namespace Lithium
 
 		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
 		Application::Get().Monoserver->ForceReload();
-		auto view = m_ActiveScene->GetRegistry().view<ScriptComponent>();
+
+
+		auto view = m_ActiveScene->GetRegistry().view<ScriptGroupeComponent>();
 		for (auto e : view)
 		{
 			Entity entity = { e,m_ActiveScene.get() };
-			ScriptComponent& script = entity.GetComponent<ScriptComponent>();
-			Ref<ScriptObject> OldScriptobject = script.Scriptobject;
-			script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+			ScriptGroupeComponent& ScriptGroupe = entity.GetComponent<ScriptGroupeComponent>();
+			for (auto& script : ScriptGroupe.Scripts)
+			{
+				Ref<ScriptObject> OldScriptobject = script.Scriptobject;
+				script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+
+			}
 		}
 	}
 
@@ -611,13 +619,17 @@ namespace Lithium
 		m_SceneHierachyPanel->SetScene(m_ActiveScene);
 
 		Application::Get().Monoserver->ForceReload();
-		auto view = m_ActiveScene->GetRegistry().view<ScriptComponent>();
+		auto view = m_ActiveScene->GetRegistry().view<ScriptGroupeComponent>();
 		for (auto e : view)
 		{
 			Entity entity = { e,m_ActiveScene.get() };
-			ScriptComponent& script = entity.GetComponent<ScriptComponent>();
-			Ref<ScriptObject> OldScriptobject = script.Scriptobject;
-			script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+			ScriptGroupeComponent& ScriptGroupe = entity.GetComponent<ScriptGroupeComponent>();
+			for (auto& script : ScriptGroupe.Scripts)
+			{
+				Ref<ScriptObject> OldScriptobject = script.Scriptobject;
+				script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+
+			}
 		}
 	}
 
@@ -625,13 +637,17 @@ namespace Lithium
 	{
 		Application::Get().Monoserver->ForceReload();
 		{
-			auto view = m_ActiveScene->GetRegistry().view<ScriptComponent>();
+			auto view = m_ActiveScene->GetRegistry().view<ScriptGroupeComponent>();
 			for (auto e : view)
 			{
 				Entity entity = { e,m_ActiveScene.get() };
-				ScriptComponent& script = entity.GetComponent<ScriptComponent>();
-				Ref<ScriptObject> OldScriptobject = script.Scriptobject;
-				script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+				ScriptGroupeComponent& ScriptGroupe = entity.GetComponent<ScriptGroupeComponent>();
+				for (auto& script:ScriptGroupe.Scripts)
+				{
+					Ref<ScriptObject> OldScriptobject = script.Scriptobject;
+					script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+
+				}
 			}
 		}
 	}

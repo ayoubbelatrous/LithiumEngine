@@ -287,93 +287,99 @@ namespace Lithium
 			}
 
 
-			if (_Selection.HasComponent<ScriptComponent>())
+			if (_Selection.HasComponent<ScriptGroupeComponent>())
 			{
-				ImGui::Selectable("Script");
-
-				ScriptComponent& script = _Selection.GetComponent<ScriptComponent>();
 			
-				for (auto& field : script.Scriptobject->GetFields())
+				ScriptGroupeComponent& scriptGroupe = _Selection.GetComponent<ScriptGroupeComponent>();
+				for (auto& script : scriptGroupe.Scripts)
 				{
-
-					switch (field.second->GetType())
-					{
-					case (ScriptType::Int):
-					{
-						int val = field.second->GetValue<int>();
-						if (Property(field.first, &val))
-						{
-							field.second->SetValue<int>(val);
-						}
-						break;
-					}
-					case (ScriptType::Float):
-					{
-						float val = 0;
-						val = field.second->GetValue<float>();
-						if (Property(field.first, &val))
-						{
-							field.second->SetValue(val);
-						}
-						break;
-					}
-					case (ScriptType::Vec2):
-					{
-						glm::vec2 val = glm::vec2(0);
-						val = field.second->GetValue<glm::vec2>();
-						if (Property(field.first, &val))
-						{
-							field.second->SetValue(val);
-						}
-						break;
-					}
-
-
-					case (ScriptType::Vec3):
-					{
-						glm::vec3 val = glm::vec3(0);
-						val = field.second->GetValue<glm::vec3>();
-						if (Property(field.first, &val))
-						{
-							field.second->SetValue(val);
-						}
-						break;
-					}
-
-
-					case (ScriptType::Vec4):
-					{
-						glm::vec4 val = glm::vec4(0);
-						val = field.second->GetValue<glm::vec4>();
-						if (Property(field.first, &val))
-						{
-							field.second->SetValue(val);
-						}
-				     	break;
-					}
-
-					case (ScriptType::String):
-					{
-						
-						std::string val = field.second->GetValue<std::string>();
-						if (Property(field.first, val))
-						{
-							field.second->SetValue(val);
-						}
-						break;
-					}
-					case (ScriptType::Entity):
+					ImGui::Selectable(script.Name.c_str());
+					for (auto& field : script.Scriptobject->GetFields())
 					{
 
-						UUID val = field.second->GetValue<uint64_t>();
-						if (Property(field.first, val))
+						switch (field.second->GetType())
 						{
-							field.second->SetValue((uint64_t)val);
+						case (ScriptType::Int):
+						{
+							int val = field.second->GetValue<int>();
+							if (Property(field.first, &val))
+							{
+								field.second->SetValue<int>(val);
+							}
+							break;
 						}
-						break;
-					}
+						case (ScriptType::Float):
+						{
+							float val = 0;
+							val = field.second->GetValue<float>();
+							if (Property(field.first, &val))
+							{
+								field.second->SetValue(val);
+							}
+							break;
+						}
+						case (ScriptType::Vec2):
+						{
+							glm::vec2 val = glm::vec2(0);
+							val = field.second->GetValue<glm::vec2>();
+							if (Property(field.first, &val))
+							{
+								field.second->SetValue(val);
+							}
+							break;
+						}
+
+
+						case (ScriptType::Vec3):
+						{
+							glm::vec3 val = glm::vec3(0);
+							val = field.second->GetValue<glm::vec3>();
+							if (Property(field.first, &val))
+							{
+								field.second->SetValue(val);
+							}
+							break;
+						}
+
+
+						case (ScriptType::Vec4):
+						{
+							glm::vec4 val = glm::vec4(0);
+							val = field.second->GetValue<glm::vec4>();
+							if (Property(field.first, &val))
+							{
+								field.second->SetValue(val);
+							}
+							break;
+						}
+
+						case (ScriptType::String):
+						{
+
+							std::string val = field.second->GetValue<std::string>();
+							if (Property(field.first, val))
+							{
+								field.second->SetValue(val);
+							}
+							break;
+						}
+						case (ScriptType::Entity):
+						{
+
+							UUID val = field.second->GetValue<uint64_t>();
+							if (Property(field.first, val))
+							{
+								field.second->SetValue((uint64_t)val);
+							}
+							break;
+						}
+						}
+					
 					}
 				}
+			
+				
+			
 			}
 
 

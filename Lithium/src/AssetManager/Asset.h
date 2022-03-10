@@ -4,22 +4,22 @@
 namespace Lithium
 {
 	template<typename T>
-	class Handle
+	class Asset
 	{
 		T _Asset;
 	public:
-		Handle(const std::string& path)
+		Asset(const std::string& path)
 			:Path(path)
 		{}
-		Handle() = default;
-		~Handle()
+		Asset() = default;
+		~Asset()
 		{
 			*ref -= 1;
 			deleteCallBack();
 		}
 		
-		std::string Path;
 		uint32_t Id;
+		std::string Path;
 		
 		T& GetAsset()
 		{

@@ -72,20 +72,23 @@ namespace Lithium
 		
 		
 		{
-			auto view = GetRegistry().view<ScriptComponent>();
+			auto view = GetRegistry().view<ScriptGroupeComponent>();
 			for (auto entity : view)
 			{
 				Entity ent = { entity,this };
-				ScriptComponent& script = ent.GetComponent<ScriptComponent>();
+				ScriptGroupeComponent& ScriptGroupe = ent.GetComponent<ScriptGroupeComponent>();
 
-				if (!script.Loaded)
-				{
-					
-					script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
+				for (auto& script : ScriptGroupe.Scripts) {
+					if (!script.Loaded)
+					{
 
-					script.Loaded = true;
-					
+						script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
+
+						script.Loaded = true;
+
+					}
 				}
+				
 
 			}
 		}
@@ -117,37 +120,41 @@ namespace Lithium
 
 
 		{
-			auto view = GetRegistry().view<ScriptComponent>();
+			auto view = GetRegistry().view<ScriptGroupeComponent>();
+
 			for (auto entity : view)
 			{
 				Entity ent = { entity,this };
-				ScriptComponent& script = ent.GetComponent<ScriptComponent>();
 
-				if (!script.Loaded)
+				for (auto& script:ent.GetComponent<ScriptGroupeComponent>().Scripts )
 				{
 
-					script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
-					script.Loaded = true;
-					
-					
-				}
-				else
-				{
-					if (!script.Created)
+					if (!script.Loaded)
 					{
-						IDComponent& idcomp = ent.GetComponent<IDComponent>();
-						void* Args[1];
-						Args[0] = &idcomp.ID;
-						script.Scriptobject->SetProperty("ID", Args);
-						script.Scriptobject->InvokeMethod("Start", nullptr);
-						script.Created = true;
+
+						script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
+						script.Loaded = true;
+
+
 					}
+					else
+					{
+						if (!script.Created)
+						{
+							IDComponent& idcomp = ent.GetComponent<IDComponent>();
+							void* Args[1];
+							Args[0] = &idcomp.ID;
+							script.Scriptobject->SetProperty("ID", Args);
+							script.Scriptobject->InvokeMethod("Start", nullptr);
+							script.Created = true;
+						}
+					}
+
+
+					script.Scriptobject->InvokeMethod("Update", nullptr);
+
+
 				}
-				
-
-				script.Scriptobject->InvokeMethod("Update", nullptr);
-
-
 			}
 		}
 
@@ -195,7 +202,7 @@ namespace Lithium
 		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<RigidBody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
-		CopyComponentAll<ScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<ScriptGroupeComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		return newscene;
 	}
 

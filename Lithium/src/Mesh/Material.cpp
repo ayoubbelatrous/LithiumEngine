@@ -97,7 +97,7 @@ namespace YAML {
 namespace Lithium
 {
 
-	typedef uint32_t Handle;
+	typedef uint32_t Asset;
 	YAML::Emitter& operator <<(YAML::Emitter& emitter, const glm::vec4& vector)
 	{
 		emitter << YAML::Flow;
