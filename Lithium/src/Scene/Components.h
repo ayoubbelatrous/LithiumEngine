@@ -54,7 +54,7 @@ namespace Lithium
 
 		glm::mat4 GetMatrix()
 		{
-			glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
+			glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(Rotation)));
 			return glm::translate(glm::mat4(1), Position) * rotation * glm::scale(glm::mat4(1), Scale);
 		}
 	};

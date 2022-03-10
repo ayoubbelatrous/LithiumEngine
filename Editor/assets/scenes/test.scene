@@ -1,0 +1,50 @@
+Scene: NONE
+Entities:
+  - Entity: 15802659902239185670
+    Name: hello
+    Transform:
+      Position: [1.63349926, -0.796019673, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""
+  - Entity: 17496111170439141927
+    Name: dod
+    Transform:
+      Position: [-0.845771313, -1.84079587, 0]
+      Rotation: [0, 0, 0]
+      Scale: [14.7187443, 0.592920303, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""
+    ScriptGroupe:
+      Scripts:
+        - ClassName: Test
+          Fields:
+            - Name: speed
+              Type: FLOAT
+              Value: 0
+            - Name: Camera
+              Type: ENTITY
+              Value: 0
+            - Name: speed2
+              Type: FLOAT
+              Value: 0
+        - ClassName: Player
+          Fields:
+            - Name: Origin
+              Type: ENTITY
+              Value: 0
+            - Name: vec2
+              Type: VEC2
+              Value: [100, 69]
+  - Entity: 1751175517160166038
+    Name: name
+    Transform:
+      Position: [-2.69485927, -0.207296908, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""

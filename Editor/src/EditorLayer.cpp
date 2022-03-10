@@ -475,10 +475,13 @@ namespace Lithium
 
 		Entity selected = m_SceneHierachyPanel->GetSelection();
 
+
 		ImGuizmo::SetGizmoSizeClipSpace(0.2f);
 		ImGuizmo::SetOrthographic(true);
 		ImGuizmo::SetDrawlist();
 		ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
+
+
 		if (selected.GetHandle() != entt::null && selected.HasComponent<TransformComponent>())
 		{
 			glm::mat4 matri = selected.GetComponent<TransformComponent>().GetMatrix();
@@ -492,7 +495,7 @@ namespace Lithium
 				Math::DecomposeTransform(matri, translation, rotation, scale);
 				glm::vec3 deltaRotation = rotation - selected.GetComponent<TransformComponent>().Rotation;
 				selected.GetComponent<TransformComponent>().Position = translation;
-				selected.GetComponent<TransformComponent>().Rotation += deltaRotation;
+				selected.GetComponent<TransformComponent>().Rotation = glm::degrees(rotation);
 				selected.GetComponent<TransformComponent>().Scale = scale;
 				UsingGizmos = true;
 			}
