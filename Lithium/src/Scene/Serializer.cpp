@@ -227,9 +227,9 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
-		if (entity.HasComponent<ChildManagerComponent>())
+		if (entity.HasComponent<RelationShipComponent>())
 		{
-			ChildManagerComponent& cm = entity.GetComponent<ChildManagerComponent>();
+			RelationShipComponent& cm = entity.GetComponent<RelationShipComponent>();
 			emitter << YAML::Key << "Child Manager" << YAML::BeginMap;
 			emitter << YAML::Key << "children" << YAML::Value << "ids go here";
 			emitter << YAML::EndMap;

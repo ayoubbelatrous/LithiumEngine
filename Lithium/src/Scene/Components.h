@@ -85,17 +85,16 @@ namespace Lithium
 
 
 
-	struct ChildManagerComponent
+	struct RelationShipComponent
 	{
-		std::vector<entt::entity> Children;
-		ChildManagerComponent() = default;
-		ChildManagerComponent(const ChildManagerComponent& other) = default;
-
-
-		void AddChild(Entity& entity)
+		std::vector<UUID> Children;
+		UUID Parent = 0;
+		void AddChild(UUID id)
 		{
-			Children.push_back(entity.GetHandle());
+			Children.push_back(id);
 		}
+		RelationShipComponent() = default;
+		RelationShipComponent(const RelationShipComponent& other) = default;
 
 	};
 

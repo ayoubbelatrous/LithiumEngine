@@ -58,9 +58,14 @@ namespace Lithium
 		framebuffer->resize(1000, 1000);
 
 	
-		Entity entity = m_ActiveScene->CreateEntity("name");
-		Entity entity3 = m_ActiveScene->CreateEntity("dod");
-		Entity entity2 = m_ActiveScene->CreateEntity("hello");
+		Entity entity = m_ActiveScene->CreateEntity("Player");
+		Entity entity3 = m_ActiveScene->CreateEntity("Camera");
+		Entity entity2 = m_ActiveScene->CreateEntity("Pos");
+// 
+// 		entity.GetComponent<RelationShipComponent>().AddChild(entity2.GetComponent<IDComponent>().ID);
+// 		entity2.GetComponent<RelationShipComponent>().Parent = entity.GetComponent<IDComponent>().ID; 
+// 		entity.GetComponent<RelationShipComponent>().AddChild(entity3.GetComponent<IDComponent>().ID);
+// 		entity3.GetComponent<RelationShipComponent>().Parent = entity.GetComponent<IDComponent>().ID;
 
 		//_Selection = entity;
 
@@ -412,7 +417,7 @@ namespace Lithium
 
 
 		}
-
+		ImGui::ShowDemoWindow();
 		{
 			LT_PROFILE_SCOPE("SceneHierachyPanel()")
 				m_SceneHierachyPanel->OnUpdate();
@@ -486,8 +491,7 @@ namespace Lithium
 		{
 			glm::mat4 matri = selected.GetComponent<TransformComponent>().GetMatrix();
 			
-			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),
-				(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
+			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
 
 			if (ImGuizmo::IsUsing())
 			{

@@ -27,6 +27,7 @@ namespace Lithium
 
 		void onEditorUpdate();
 		void OnStart();
+		void UpdateTransform(Entity entity);
 		void onUpdate();
 		void OnStop();
 		void SetEventCallback(const EventCallback& e) { m_Callback = e; }

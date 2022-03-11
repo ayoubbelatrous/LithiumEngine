@@ -6,7 +6,7 @@
 #include "Script/MonoServer.h"
 #include "gtc/type_ptr.hpp"
 #include "COre/Application.h"
-
+#include "Core/Math.h"
 
 namespace Lithium
 {
@@ -37,6 +37,7 @@ namespace Lithium
 		Entity ent(m_Registry.create(), this);
 		ent.AddComponent<IDComponent>(UUID());
 		ent.AddComponent<NameComponent>(name);
+		ent.AddComponent<RelationShipComponent>();
 		CreateEntityEvent e = CreateEntityEvent();
 		//callback(e);
 		return ent;
@@ -47,6 +48,7 @@ namespace Lithium
 		Entity ent(m_Registry.create(), this);
 		ent.AddComponent<IDComponent>(uuid);
 		ent.AddComponent<NameComponent>(name);
+		ent.AddComponent<RelationShipComponent>();
 		CreateEntityEvent e = CreateEntityEvent();
 		//callback(e);
 		return ent;
@@ -57,8 +59,65 @@ namespace Lithium
 		m_Registry.destroy(entity.GetHandle());
 	}
 
+	glm::mat4 getLocalModelMatrix(glm::vec3 position,glm::vec3 rotation,glm::vec3 scale)
+	{
+		const glm::mat4 transformX = glm::rotate(glm::mat4(1.0f),
+			glm::radians(rotation.x),
+			glm::vec3(1.0f, 0.0f, 0.0f));
+		const glm::mat4 transformY = glm::rotate(glm::mat4(1.0f),
+			glm::radians(rotation.y),
+			glm::vec3(0.0f, 1.0f, 0.0f));
+		const glm::mat4 transformZ = glm::rotate(glm::mat4(1.0f),
+			glm::radians(rotation.z),
+			glm::vec3(0.0f, 0.0f, 1.0f));
+
+		// Y * X * Z
+		const glm::mat4 roationMatrix = transformY * transformX * transformZ;
+
+		// translation * rotation * scale (also know as TRS matrix)
+		return glm::translate(glm::mat4(1.0f), position) *
+			roationMatrix *
+			glm::scale(glm::mat4(1.0f), scale);
+	}
+	void Scene::UpdateTransform(Entity entity)
+	{
+		RelationShipComponent& rc = entity.GetComponent<RelationShipComponent>();
+		TransformComponent& tc = entity.GetComponent<TransformComponent>();
+
+		for (auto& child : rc.Children)
+		{
+			Entity childEntity (GetUUIDMap()[child],this);
+			TransformComponent& ctc = childEntity.GetComponent<TransformComponent>();
+
+			glm::mat4 matrix = glm::mat4(0);
+			matrix = tc.GetMatrix() * getLocalModelMatrix(ctc.Position,ctc.Rotation,ctc.Scale);
+
+			glm::vec3 pos = glm::vec3(0);
+			glm::vec3 rot;
+			glm::vec3 scale;
+			if (Math::DecomposeTransform(matrix, pos, rot, scale))
+			{
+			ctc.Position = pos;
+			}
+
+			UpdateTransform(childEntity);
+		}
+	}
 	void Scene::onEditorUpdate()
 	{
+		{
+			auto view = GetRegistry().view<RelationShipComponent>();
+			
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+				if (entity.GetComponent<RelationShipComponent>().Parent == 0)
+				{
+					//UpdateTransform(entity);
+				}
+			}
+		}	
+		
 		{
 			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
 
@@ -106,7 +165,7 @@ namespace Lithium
 
 	void Scene::onUpdate()
 	{
-		
+
 		{
 			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
 
@@ -114,7 +173,7 @@ namespace Lithium
 			{
 
 				auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-				BatchRenderer::DrawQuad(tc.GetMatrix(), sp.GetColor(), (uint32_t)entity);
+				BatchRenderer::DrawQuad(tc.GetMatrix() , sp.GetColor(), (uint32_t)entity);
 			}
 		}
 
@@ -197,6 +256,7 @@ namespace Lithium
 		}
 		entt::registry& dstSceneRegistry = newscene->GetRegistry();
 		CopyComponentAll<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<RelationShipComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<MaterialComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
@@ -220,6 +280,12 @@ namespace Lithium
 			CopyComponent<TransformComponent>(src, entity);
 		}
 
+		if (src.HasComponent<RelationShipComponent>())
+		{
+			CopyComponent<RelationShipComponent>(src, entity);
+
+		}
+
 		if (src.HasComponent<SpriteRendererComponent>())
 		{
 			CopyComponent<SpriteRendererComponent>(src, entity);
@@ -236,6 +302,8 @@ namespace Lithium
 			CopyComponent<ScriptComponent>(src, entity);
 
 		}
+
+		
 
 		return entity;
 	}
