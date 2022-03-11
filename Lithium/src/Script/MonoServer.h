@@ -45,6 +45,10 @@ namespace Lithium
 			static void Log(MonoString* log);
 			static bool HasComponent_Interal(uint64_t entityID, MonoObject* type);
 			static bool AddComponent_Interal(uint64_t entityID, MonoObject* type);
+			
+			static bool HasScript_Interal(uint64_t entityID, MonoObject* type);
+			static bool AddScript_Interal(uint64_t entityID, MonoObject* type);
+			static MonoObject* GetScript_Internal(uint64_t entityID, MonoObject* type);
 			static uint64_t CopyEntity_Internal(uint64_t entityID);
 			//name component
 			static MonoString* GetName_Internal(uint64_t entityID);

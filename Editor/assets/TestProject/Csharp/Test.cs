@@ -9,7 +9,13 @@ class Test : Script
 
     void Start()
     {
-        
+        if(entity.HasScript<Player>())
+        {
+
+            Player player = entity.GetScript<Player>();
+            player.Origin = this.entity;
+        }
+
     }
 
     void Update()

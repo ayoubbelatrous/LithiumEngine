@@ -45,6 +45,7 @@ namespace Lithium
 		{
 			return entity.HasComponent<SpriteRendererComponent>();
 		}
+
 		return false;
 	}
 
@@ -92,6 +93,51 @@ namespace Lithium
 			}
 		}
 		return false;
+	}
+
+	bool MonoServer::HasScript_Interal(uint64_t entityID, MonoObject* type)
+	{
+
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+
+		MonoClass* klass = mono_object_get_class(type);
+		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
+		const char* name = mono_string_to_utf8(monostring);
+
+		for (auto script : entity.GetComponent<ScriptGroupeComponent>().Scripts)
+		{
+			if (strcmp(name, script.Name.c_str()) == 0)
+			{
+				return true;
+
+			}
+		}
+		return false;
+	}
+
+	bool MonoServer::AddScript_Interal(uint64_t entityID, MonoObject* type)
+	{
+		return false;
+	}
+
+	MonoObject* MonoServer::GetScript_Internal(uint64_t entityID, MonoObject* type)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+
+		MonoClass* klass = mono_object_get_class(type);
+		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
+		const char* name = mono_string_to_utf8(monostring);
+
+		for (auto script : entity.GetComponent<ScriptGroupeComponent>().Scripts)
+		{
+			if (strcmp(name, script.Name.c_str()) == 0)
+			{
+				return (MonoObject*)script.Scriptobject->GetObjectPtr();
+
+			}
+		}
+
+		return nullptr;
 	}
 
 	uint64_t MonoServer::CopyEntity_Internal(uint64_t entityID)
@@ -190,6 +236,10 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.Debug::Log", MonoServer::Log);
 		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
 		mono_add_internal_call("Lithium.Core.Entity::AddComponent_Internal", MonoServer::AddComponent_Interal);
+
+		mono_add_internal_call("Lithium.Core.Entity::HasScript_Internal", MonoServer::HasScript_Interal);
+		mono_add_internal_call("Lithium.Core.Entity::GetScript_Internal", MonoServer::GetScript_Internal);
+
 		mono_add_internal_call("Lithium.Core.Script::CopyEntity_Internal", MonoServer::CopyEntity_Internal);
 
 		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", MonoServer::SetPosition_Internal);

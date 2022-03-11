@@ -35,6 +35,16 @@ namespace Lithium.Core
             return null;
         }
 
+        public bool HasScript<T>() where T : Script, new()
+        {
+            return HasScript_Internal(ID, typeof(T));
+
+        }
+        public T GetScript<T>() where T : Script
+        {
+            return (T)GetScript_Internal(ID, typeof(T));
+        }
+
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static bool AddComponent_Internal(UInt64 entityID, Type type);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -42,8 +52,11 @@ namespace Lithium.Core
 
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static bool AddScriptComponent_Internal(UInt64 entityID, Type type);
+        extern public static bool AddScript_Internal(UInt64 entityID, Type type);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static bool HasScriptComponent_Internal(UInt64 entityID, Type type);
+        extern public static bool HasScript_Internal(UInt64 entityID, Type type);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static Script GetScript_Internal(UInt64 entityID, Type type);
     }
 }

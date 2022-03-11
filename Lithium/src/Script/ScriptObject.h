@@ -32,7 +32,10 @@ namespace Lithium
 		void* InvokeMethod(const std::string& name,void* Params);
 		//sets a property
 		void SetProperty(const std::string& name,void** Parmas);
-
+		void* GetObjectPtr()
+		{
+			return m_MonoObject;
+		}
 	private:
 		MonoObject* m_MonoObject = nullptr;
 		std::unordered_map<std::string, Ref<ScriptField>> m_FieldMap;

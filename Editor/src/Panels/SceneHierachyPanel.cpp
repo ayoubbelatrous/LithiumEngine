@@ -32,6 +32,19 @@ namespace Lithium
 			{
 				const UUID* uuid = (UUID*)payload->Data;
 				Entity DroppedEntity(_Scene->GetUUIDMap()[*uuid], _Scene.get());
+				UUID parent = DroppedEntity.GetComponent<RelationShipComponent>().Parent;
+				Entity ParentEntity(_Scene->GetUUIDMap()[parent], _Scene.get());
+				RelationShipComponent& parentRC = ParentEntity.GetComponent<RelationShipComponent>();
+				for (size_t i = 0; i < parentRC.Children.size(); i++)
+				{
+					if (parentRC.Children[i] == DroppedEntity.GetComponent<IDComponent>().ID)
+					{
+						parentRC.Children.erase(std::next(parentRC.Children.begin(), i));
+						break;
+					}
+
+				}
+
 				DroppedEntity.GetComponent<RelationShipComponent>().Parent = 0;
 			}
 			ImGui::EndDragDropTarget();

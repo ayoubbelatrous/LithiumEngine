@@ -41,6 +41,11 @@ namespace Lithium
 		EDITOR,
 		RUNTIME
 	};
+
+	struct assetRegistry
+	{
+		std::unordered_map<int, std::string> m_Registry;
+	};
 	struct Data
 	{
 		std::string name = "entity";
