@@ -417,7 +417,6 @@ namespace Lithium
 
 
 		}
-		ImGui::ShowDemoWindow();
 		{
 			LT_PROFILE_SCOPE("SceneHierachyPanel()")
 				m_SceneHierachyPanel->OnUpdate();

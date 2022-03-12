@@ -8,7 +8,7 @@
 #include "Entity.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <gtx/quaternion.hpp>
-#include "OrthographicCamera.h"
+
 #include "Mesh/Mesh.h"
 #include "Mesh/Material.h"
 #include "Core/UUID.h"
@@ -98,19 +98,6 @@ namespace Lithium
 
 	};
 
-
-	struct CameraComponent
-	{
-		CameraComponent() = default;
-		CameraMode mode;
-		OrthographicCamera camera;
-		const OrthographicCamera& GetCamera()
-		{
-			return camera;
-		}
-		CameraComponent(const CameraComponent& other) = default;
-
-	};
 
 	struct MeshComponent
 	{

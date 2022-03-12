@@ -259,7 +259,6 @@ namespace Lithium
 		CopyComponentAll<RelationShipComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<MaterialComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
-		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<RigidBody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<ScriptGroupeComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);

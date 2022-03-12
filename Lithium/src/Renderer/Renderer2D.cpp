@@ -100,10 +100,10 @@ namespace Lithium
 
 	void BatchRenderer::Begin(const glm::mat4& transform, const glm::mat4& projection)
 	{
-		;
+
 		_Data.projection = projection * transform;
 		_Data._IndexCount = 0;
-		_Data._VertexBufferPtr= _Data._VertexBufferBase;
+		_Data._VertexBufferPtr = _Data._VertexBufferBase;
 		_Data.TextureSlotIndex = 1;
 		_Data._VertexArray->Bind();
 		_Data._VertexBuffer->Bind();

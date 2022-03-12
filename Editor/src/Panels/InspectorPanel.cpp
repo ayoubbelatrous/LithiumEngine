@@ -197,7 +197,7 @@ namespace Lithium
 
 		if (_Selection.GetHandle() != entt::null && _Selection.getScene() != nullptr)
 		{
-
+			
 			if (_Selection.HasComponent<NameComponent>())
 			{
 				NameComponent& namec = _Selection.GetComponent<NameComponent>();
@@ -293,7 +293,17 @@ namespace Lithium
 				ScriptGroupeComponent& scriptGroupe = _Selection.GetComponent<ScriptGroupeComponent>();
 				for (auto& script : scriptGroupe.Scripts)
 				{
-					ImGui::Selectable(script.Name.c_str());
+
+					//ImGui::Selectable(script.Name.c_str());
+					const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+					ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+
+					bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}(script.Name) + (size_t)_Selection.GetHandle()), treeNodeFlags, script.Name.c_str());
+					ImGui::PopStyleVar(
+					);
+					if (open)
+					{
 					for (auto& field : script.Scriptobject->GetFields())
 					{
 
@@ -375,6 +385,8 @@ namespace Lithium
 						}
 						}
 					
+					}
+					  ImGui::TreePop();
 					}
 				}
 			
