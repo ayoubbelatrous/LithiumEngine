@@ -39,7 +39,6 @@ namespace Lithium
 			dst.AddOrReplaceComponent<Comp>(src.GetComponent<Comp>());
 	    }
 		static Ref<Scene> Copy(const Ref<Scene>& src);
-		void Test();
 	Entity DuplicateEntity(Entity src);
 	private:
 		

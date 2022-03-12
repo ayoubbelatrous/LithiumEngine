@@ -265,12 +265,6 @@ namespace Lithium
 		return newscene;
 	}
 
-	void Scene::Test()
-	{
-		
-		
-	}
-
 	Entity Scene::DuplicateEntity(Entity src)
 	{
 		Entity entity = CreateEntity("new Entity");
