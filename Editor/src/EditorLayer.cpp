@@ -159,7 +159,7 @@ namespace Lithium
 		
 
 #pragma endregion
-		if (_ViewportFocus)
+		if (m_ViewportFocus)
 		{
 			float speed = 0.01f;
 			if (Input::IsKeyPressed(Key::W))
@@ -228,7 +228,7 @@ namespace Lithium
 		mouseY = (int)my;
 
 		
-		if (Input::IsMouseKeyPressed(0) && _ViewportHovered && !ImGuizmo::IsOver()/*&&*/)
+		if (Input::IsMouseKeyPressed(0) && m_ViewportHovered && !ImGuizmo::IsOver()/*&&*/)
 		{
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
@@ -298,26 +298,40 @@ namespace Lithium
 
 		if (e.keycode == KEYCODE_S)
 		{
-			if (control)
+			if (control && shift)
 			{
 				m_OpenSceneSaveDialog = true;
 			}
 		}
 
-		if (e.keycode == KEYCODE_E)
+		if (m_ViewportFocus)
 		{
-			_GizmoMode = ImGuizmo::OPERATION::ROTATE;
-		}
-		if (e.keycode == KEYCODE_R)
-		{
-			_GizmoMode = ImGuizmo::OPERATION::SCALE;
-		}
-		if (e.keycode == KEYCODE_W)
-		{
-			_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
-		}
+			if (e.keycode == KEYCODE_E)
+			{
+				_GizmoMode = ImGuizmo::OPERATION::ROTATE;
+				m_UseBoundsGizmo = false;
 
+			}
+			if (e.keycode == KEYCODE_R)
+			{
+				_GizmoMode = ImGuizmo::OPERATION::SCALE;
+				m_UseBoundsGizmo = false;
 
+			}
+			if (e.keycode == KEYCODE_W)
+			{
+				_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
+				m_UseBoundsGizmo = false;
+
+			}
+
+			if (e.keycode == KEYCODE_T)
+			{
+				_GizmoMode = ImGuizmo::OPERATION::BOUNDS;
+				m_UseBoundsGizmo = true;
+			}
+
+		}
 
 		if (e.keycode == KEYCODE_E)
 		{
@@ -466,10 +480,10 @@ namespace Lithium
 
 		ImGui::Begin("Scene");
 		
-		_ViewportHovered = ImGui::IsWindowHovered();
-		_ViewportFocus = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		m_ViewportFocus = ImGui::IsWindowFocused();
 
-		if (_ViewportFocus)
+		if (m_ViewportFocus)
 		{
 			Application::Get().GetImguiLayer()->SetBlockEvent(false);
 		}
@@ -505,7 +519,7 @@ namespace Lithium
 		Entity selected = m_SceneHierachyPanel->GetSelection();
 
 
-		ImGuizmo::SetGizmoSizeClipSpace(0.2f);
+		//ImGuizmo::SetGizmoSizeClipSpace(0.2f);
 		ImGuizmo::SetOrthographic(true);
 		ImGuizmo::SetDrawlist();
 		ImGuizmo::SetRect(_ViewportBounds[0].x, _ViewportBounds[0].y, _ViewportBounds[1].x - _ViewportBounds[0].x, _ViewportBounds[1].y - _ViewportBounds[0].y);
@@ -517,7 +531,9 @@ namespace Lithium
 			UUID parentUUID = selected.GetComponent<RelationShipComponent>().Parent;
 			Entity ParentEntity(m_ActiveScene->GetUUIDMap()[parentUUID], m_ActiveScene.get());
 			TransformComponent& ParentTransform = ParentEntity.GetComponent<TransformComponent>();
-			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
+			float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD
+				, glm::value_ptr(matri),NULL,NULL,m_UseBoundsGizmo ? bounds : NULL);
 
 			if (ImGuizmo::IsUsing())
 			{
@@ -643,8 +659,13 @@ namespace Lithium
 			ScriptGroupeComponent& ScriptGroupe = entity.GetComponent<ScriptGroupeComponent>();
 			for (auto& script : ScriptGroupe.Scripts)
 			{
+				
 				Ref<ScriptObject> OldScriptobject = script.Scriptobject;
-				script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+				if (script.Loaded)
+				{
+					script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+
+				}
 
 			}
 		}
@@ -667,8 +688,10 @@ namespace Lithium
 			for (auto& script : ScriptGroupe.Scripts)
 			{
 				Ref<ScriptObject> OldScriptobject = script.Scriptobject;
-				script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
-
+				if (script.Loaded)
+				{
+					script.Scriptobject = Application::Get().Monoserver->CopyObject(OldScriptobject);
+				}
 			}
 		}
 	}

@@ -11,9 +11,9 @@ namespace Lithium
 		void OnUpdate();
 		void SetSelection(Entity& selection)
 		{
-			_Selection = selection;
+			m_Selection = selection;
 		}
 	private:
-		Entity _Selection;
+		Entity m_Selection;
 	};
 }

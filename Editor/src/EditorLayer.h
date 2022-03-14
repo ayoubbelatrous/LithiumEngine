@@ -83,8 +83,8 @@ namespace Lithium
 		Ref<Scene> m_ActiveScene;
 		Ref<Scene> m_EditorScene;
 		
-		bool _ViewportHovered = false;
-		bool _ViewportFocus = false;
+		bool m_ViewportHovered = false;
+		bool m_ViewportFocus = false;
 		bool m_OpenSceneSaveDialog = false;
 		std::string _EditorStatus;
 
@@ -101,7 +101,7 @@ namespace Lithium
 		std::string text;
 		glm::vec2 LastMousePosiition;
 		int _GizmoMode = -1;
-
+		bool m_UseBoundsGizmo = false;
 		
 		Ref<Shader> shader;
 		Ref<Shader> frameshader;

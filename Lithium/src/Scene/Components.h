@@ -157,11 +157,11 @@ namespace Lithium
 		bool Loaded = false;
 		bool Created = false;
 		bool Valid = false;
-
+		UUID uuid = 0;
 		ScriptComponent() = default;
 		ScriptComponent(const ScriptComponent& other) = default;
 		ScriptComponent(const std::string& name)
-			:Name(name)
+			:Name(name),uuid(UUID())
 		{}
 	};
 

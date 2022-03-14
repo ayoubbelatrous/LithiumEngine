@@ -33,6 +33,7 @@ IncludeDir["msdfatlasgen"] = "%{wks.location}/Lithium/vendor/msdf-atlas-gen"
 IncludeDir["msdf"] = "%{wks.location}/Lithium/vendor/msdf-atlas-gen/msdfgen"
 IncludeDir["assimp"] = "%{wks.location}/Lithium/vendor/assimp/include"
 IncludeDir["lua533"] = "%{wks.location}/Lithium/vendor/lua533/src"
+IncludeDir["Box2D"] = "%{wks.location}/Lithium/vendor/box2d/include"
 
 if os.getenv("MONO_DIR") then
 	IncludeDir["mono"] = os.getenv("MONO_DIR") .. "include/mono-2.0/"
@@ -60,8 +61,8 @@ group "Dependencies"
 	include "Lithium/vendor/yaml"
 	include "Lithium/vendor/msdf-atlas-gen"
 	include "Lithium/vendor/assimp"
+	include "Lithium/vendor/box2d"
 group ""
 
 include "Lithium"
 include "Editor"
-include "Runtime"

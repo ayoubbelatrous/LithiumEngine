@@ -88,7 +88,10 @@ namespace Lithium
 		memset(buffer, 0, sizeof(buffer));
 		std::strncpy(buffer, value.c_str(), sizeof(buffer));
 		if (error)
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.2f, 1.0f));
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.8f, 0.3f, 0.3f, 1.0f));
+			
+		}
 		if (ImGui::InputText("Module", buffer, 256))
 		{
 			value = std::string(buffer);
@@ -213,12 +216,12 @@ namespace Lithium
 
 		ImGui::Begin("Inspector");
 
-		if (_Selection.GetHandle() != entt::null && _Selection.getScene() != nullptr)
+		if (m_Selection.GetHandle() != entt::null && m_Selection.getScene() != nullptr)
 		{
 			
-			if (_Selection.HasComponent<NameComponent>())
+			if (m_Selection.HasComponent<NameComponent>())
 			{
-				NameComponent& namec = _Selection.GetComponent<NameComponent>();
+				NameComponent& namec = m_Selection.GetComponent<NameComponent>();
 
 				char buffer[256];
 				memset(buffer, 0, sizeof(buffer));
@@ -230,7 +233,7 @@ namespace Lithium
 
 			}
 
-			if (_Selection.HasComponent<TransformComponent>())
+			if (m_Selection.HasComponent<TransformComponent>())
 			{
 
 				ImGui::Selectable("Transform");
@@ -248,15 +251,15 @@ namespace Lithium
 				}
 
 				ImGui::Separator();
-				DrawVec3Control("Position", _Selection.GetComponent<TransformComponent>().Position);
+				DrawVec3Control("Position", m_Selection.GetComponent<TransformComponent>().Position);
 				ImGui::Separator();
-				DrawVec3Control("Rotation", _Selection.GetComponent<TransformComponent>().Rotation);
+				DrawVec3Control("Rotation", m_Selection.GetComponent<TransformComponent>().Rotation);
 				ImGui::Separator();
-				DrawVec3Control("Scale", _Selection.GetComponent<TransformComponent>().Scale);
+				DrawVec3Control("Scale", m_Selection.GetComponent<TransformComponent>().Scale);
 				ImGui::Separator();
 			}
 
-			if (_Selection.HasComponent<SpriteRendererComponent>())
+			if (m_Selection.HasComponent<SpriteRendererComponent>())
 			{
 				ImGui::Selectable("Sprite Renderer");
 
@@ -276,10 +279,10 @@ namespace Lithium
 
 
 				ImGui::Separator();
-				ImGui::ColorEdit4("Color", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().Color));
-				if (_Selection.GetComponent<SpriteRendererComponent>().tex->loaded)
+				ImGui::ColorEdit4("Color", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().Color));
+				if (m_Selection.GetComponent<SpriteRendererComponent>().tex->loaded)
 				{
-					ImGui::Image((ImTextureID)_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });
+					ImGui::Image((ImTextureID)m_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });
 				}
 				else
 				{
@@ -294,29 +297,28 @@ namespace Lithium
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path texturepath = root / path;
-						std::filesystem::path _path = _Selection.GetComponent<SpriteRendererComponent>().tex->GetPath();
+						std::filesystem::path _path = m_Selection.GetComponent<SpriteRendererComponent>().tex->GetPath();
 
 
 						//CORE_LOG(_path);
 					}
 					ImGui::EndDragDropTarget();
 				}
-				ImGui::InputFloat2("Tex Index", glm::value_ptr(_Selection.GetComponent<SpriteRendererComponent>().texIndex));
+				ImGui::InputFloat2("Tex Index", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().texIndex));
 			}
 
 
-			if (_Selection.HasComponent<ScriptGroupeComponent>())
+			if (m_Selection.HasComponent<ScriptGroupeComponent>())
 			{
 			
-				ScriptGroupeComponent& scriptGroupe = _Selection.GetComponent<ScriptGroupeComponent>();
+				ScriptGroupeComponent& scriptGroupe = m_Selection.GetComponent<ScriptGroupeComponent>();
 				for (auto& script : scriptGroupe.Scripts)
 				{
 					const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
 					ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
-
-					//bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}(script.Name) + (size_t)_Selection.GetHandle()), treeNodeFlags, script.Name.c_str());
-					bool open = ImGui::TreeNodeEx((void*)(_Selection.GetHandle()), treeNodeFlags, script.Name.c_str());
+					bool open = ImGui::TreeNodeEx((void*)(std::hash<uint64_t>{}(script.uuid)), treeNodeFlags, script.Name.c_str());
+					
 					ImGui::PopStyleVar();
 					if (open)
 					{
@@ -421,7 +423,43 @@ namespace Lithium
 			
 			}
 
+			if (ImGui::Button("Add Component"))
+				ImGui::OpenPopup("AddComponent");
 
+			if (ImGui::BeginPopup("AddComponent"))
+			{
+				if (!m_Selection.HasComponent<CameraComponent>())
+				{
+					if (ImGui::MenuItem("Camera"))
+					{
+						m_Selection.AddComponent<CameraComponent>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
+
+				if (!m_Selection.HasComponent<SpriteRendererComponent>())
+				{
+					if (ImGui::MenuItem("Sprite Renderer"))
+					{
+						m_Selection.AddComponent<SpriteRendererComponent>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
+
+			
+				if (ImGui::MenuItem("Script"))
+				{
+					if (!m_Selection.HasComponent<ScriptGroupeComponent>())
+						m_Selection.AddComponent<ScriptGroupeComponent>();
+					ScriptComponent script = ScriptComponent();
+					m_Selection.GetComponent<ScriptGroupeComponent>().AddScript("");
+					ImGui::CloseCurrentPopup();
+				}
+				
+
+
+				ImGui::EndPopup();
+			}
 		}
 
 		ImGui::End();

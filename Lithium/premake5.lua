@@ -43,6 +43,7 @@ includedirs
     "%{IncludeDir.msdfatlasgen}",
     "%{IncludeDir.assimp}",
     "%{IncludeDir.mono}",
+    "%{IncludeDir.box2D}",
 
     
 }
@@ -60,8 +61,9 @@ links
     "yaml-cpp",
 	"opengl32.lib",
     "msdf-atlas-gen",
-      "assimp",
-      "%{LibDir.mono}/mono-2.0-sgen.lib",
+    "box2D",
+    "assimp",
+    "%{LibDir.mono}/mono-2.0-sgen.lib",
 }
 
 

@@ -188,9 +188,17 @@ namespace Lithium
 
 					if (!script.Loaded)
 					{
+						if (Application::Get().Monoserver->CheckIfClassExists(script.Name))
+						{
+							script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
 
-						script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
-						script.Loaded = true;
+							script.Loaded = true;
+
+						}
+						else
+						{
+							script.Loaded = false;
+						}
 
 
 					}
@@ -205,10 +213,11 @@ namespace Lithium
 							script.Scriptobject->InvokeMethod("Start", nullptr);
 							script.Created = true;
 						}
+						script.Scriptobject->InvokeMethod("Update", nullptr);
+
 					}
 
 
-					script.Scriptobject->InvokeMethod("Update", nullptr);
 
 
 				}
