@@ -80,6 +80,24 @@ namespace Lithium
 
 		ImGui::PopID();
 	}
+	static bool Property(const char* label, std::string& value, bool error = false)
+	{
+		bool modified = false;
+
+		char buffer[256];
+		memset(buffer, 0, sizeof(buffer));
+		std::strncpy(buffer, value.c_str(), sizeof(buffer));
+		if (error)
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.2f, 1.0f));
+		if (ImGui::InputText("Module", buffer, 256))
+		{
+			value = std::string(buffer);
+			modified = true;
+		}
+		if (error)
+			ImGui::PopStyleColor();
+		return modified;
+	}
 
 	static bool Property(const std::string& name,int* value)
 	{
@@ -293,99 +311,108 @@ namespace Lithium
 				ScriptGroupeComponent& scriptGroupe = _Selection.GetComponent<ScriptGroupeComponent>();
 				for (auto& script : scriptGroupe.Scripts)
 				{
-
-					//ImGui::Selectable(script.Name.c_str());
 					const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
 					ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 
-					bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}(script.Name) + (size_t)_Selection.GetHandle()), treeNodeFlags, script.Name.c_str());
-					ImGui::PopStyleVar(
-					);
+					//bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}(script.Name) + (size_t)_Selection.GetHandle()), treeNodeFlags, script.Name.c_str());
+					bool open = ImGui::TreeNodeEx((void*)(_Selection.GetHandle()), treeNodeFlags, script.Name.c_str());
+					ImGui::PopStyleVar();
 					if (open)
 					{
-					for (auto& field : script.Scriptobject->GetFields())
-					{
+						std::string ModuleName = script.Name;
+						if (Property("Module",ModuleName,!script.Loaded))
+						{
+							script.Name = ModuleName;
+							script.Loaded = false;
+						}
+						if (script.Loaded)
+						{
 
-						switch (field.second->GetType())
-						{
-						case (ScriptType::Int):
-						{
-							int val = field.second->GetValue<int>();
-							if (Property(field.first, &val))
+							for (auto& field : script.Scriptobject->GetFields())
 							{
-								field.second->SetValue<int>(val);
-							}
-							break;
-						}
-						case (ScriptType::Float):
-						{
-							float val = 0;
-							val = field.second->GetValue<float>();
-							if (Property(field.first, &val))
-							{
-								field.second->SetValue(val);
-							}
-							break;
-						}
-						case (ScriptType::Vec2):
-						{
-							glm::vec2 val = glm::vec2(0);
-							val = field.second->GetValue<glm::vec2>();
-							if (Property(field.first, &val))
-							{
-								field.second->SetValue(val);
-							}
-							break;
-						}
+
+								switch (field.second->GetType())
+								{
+								case (ScriptType::Int):
+								{
+									int val = field.second->GetValue<int>();
+									if (Property(field.first, &val))
+									{
+										field.second->SetValue<int>(val);
+									}
+									break;
+								}
+								case (ScriptType::Float):
+								{
+									float val = 0;
+									val = field.second->GetValue<float>();
+									if (Property(field.first, &val))
+									{
+										field.second->SetValue(val);
+									}
+									break;
+								}
+								case (ScriptType::Vec2):
+								{
+									glm::vec2 val = glm::vec2(0);
+									val = field.second->GetValue<glm::vec2>();
+									if (Property(field.first, &val))
+									{
+										field.second->SetValue(val);
+									}
+									break;
+								}
 
 
-						case (ScriptType::Vec3):
-						{
-							glm::vec3 val = glm::vec3(0);
-							val = field.second->GetValue<glm::vec3>();
-							if (Property(field.first, &val))
-							{
-								field.second->SetValue(val);
+								case (ScriptType::Vec3):
+								{
+									glm::vec3 val = glm::vec3(0);
+									val = field.second->GetValue<glm::vec3>();
+									if (Property(field.first, &val))
+									{
+										field.second->SetValue(val);
+									}
+									break;
+								}
+
+
+								case (ScriptType::Vec4):
+								{
+									glm::vec4 val = glm::vec4(0);
+									val = field.second->GetValue<glm::vec4>();
+									if (Property(field.first, &val))
+									{
+										field.second->SetValue(val);
+									}
+									break;
+								}
+
+								case (ScriptType::String):
+								{
+
+									std::string val = field.second->GetValue<std::string>();
+									if (Property(field.first, val))
+									{
+										field.second->SetValue(val);
+									}
+									break;
+								}
+								case (ScriptType::Entity):
+								{
+
+									UUID val = field.second->GetValue<uint64_t>();
+									if (Property(field.first, val))
+									{
+										field.second->SetValue((uint64_t)val);
+									}
+									break;
+								}
+								}
+
 							}
-							break;
-						}
 
-
-						case (ScriptType::Vec4):
-						{
-							glm::vec4 val = glm::vec4(0);
-							val = field.second->GetValue<glm::vec4>();
-							if (Property(field.first, &val))
-							{
-								field.second->SetValue(val);
-							}
-							break;
 						}
-
-						case (ScriptType::String):
-						{
-
-							std::string val = field.second->GetValue<std::string>();
-							if (Property(field.first, val))
-							{
-								field.second->SetValue(val);
-							}
-							break;
-						}
-						case (ScriptType::Entity):
-						{
-
-							UUID val = field.second->GetValue<uint64_t>();
-							if (Property(field.first, val))
-							{
-								field.second->SetValue((uint64_t)val);
-							}
-							break;
-						}
-						}
-					
-					}
 					  ImGui::TreePop();
 					}
 				}

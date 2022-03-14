@@ -54,7 +54,7 @@
     <Compile Include="Math\Vector4.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CameraController.cs" />
-    <Compile Include="Test.cs" />
+    <Compile Include="Pad.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Player.cs" />

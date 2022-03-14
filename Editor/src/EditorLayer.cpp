@@ -62,26 +62,15 @@ namespace Lithium
 		Entity entity = m_ActiveScene->CreateEntity("Player");
 		Entity entity3 = m_ActiveScene->CreateEntity("Camera");
 		Entity entity2 = m_ActiveScene->CreateEntity("Pos");
-// 
-// 		entity.GetComponent<RelationShipComponent>().AddChild(entity2.GetComponent<IDComponent>().ID);
-// 		entity2.GetComponent<RelationShipComponent>().Parent = entity.GetComponent<IDComponent>().ID; 
-// 		entity.GetComponent<RelationShipComponent>().AddChild(entity3.GetComponent<IDComponent>().ID);
-// 		entity3.GetComponent<RelationShipComponent>().Parent = entity.GetComponent<IDComponent>().ID;
-
-		//_Selection = entity;
 
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		entity.AddComponent<TransformComponent>();
 
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		entity2.AddComponent<TransformComponent>();
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity3.AddComponent<ScriptGroupeComponent>();
-		entity3.GetComponent<ScriptGroupeComponent>().AddScript("Test");
-		entity3.GetComponent<ScriptGroupeComponent>().AddScript("Player");
+		entity3.GetComponent<ScriptGroupeComponent>().AddScript("Pad");
 
-		m_ActiveScene->CopyComponent<TransformComponent>(entity,entity3);
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
@@ -118,36 +107,6 @@ namespace Lithium
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
 		
-		{
-
-			glm::mat4 parentmatrix = glm::mat4(1.0f);
-			parentmatrix = glm::translate(glm::mat4(1.0), glm::vec3(0.0f,0,0));
-
-			glm::mat4 testMatrix = glm::mat4(1.0);
-			testMatrix = glm::translate(glm::mat4(1.0), glm::vec3(1.0f,0,0));
-			testMatrix = parentmatrix * testMatrix;
-
-			glm::vec3 testPos;
-			glm::vec3 testRot;
-			glm::vec3 testScale;
-
-			Math::DecomposeTransform(testMatrix, testPos, testRot, testScale);
-			CORE_LOG("global test pos " << glm::to_string(testPos));
-			CORE_LOG("global test Rotation " << glm::to_string(testRot));
-			CORE_LOG("global test Scale " << glm::to_string(testScale));
-
-			parentmatrix = glm::translate(glm::mat4(1.0), glm::vec3(16.0f, 0, 0));
-			testMatrix = glm::translate(glm::mat4(1.0), glm::vec3(1.0f, 0, 0));
-
-			testMatrix = parentmatrix * testMatrix;
-
-			Math::DecomposeTransform(testMatrix, testPos, testRot, testScale);
-
-			CORE_LOG("/-------------------------/");
-			CORE_LOG("global test pos " << glm::to_string(testPos));
-			CORE_LOG("global test Rotation " << glm::to_string(testRot));
-			CORE_LOG("global test Scale " << glm::to_string(testScale));
-		}
 	}
 
 	void EditorLayer::OnUpdate()
@@ -226,7 +185,7 @@ namespace Lithium
 		}
 		framebuffer->Bind();
 	
-		RendererCommand::ClearColor(glm::vec4(0.2, 0.2, 0.5, 1.0));
+		RendererCommand::ClearColor(glm::vec4(0.0, 0.0, 0.00, 1.0));
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
 		BatchRenderer::Begin(view, proj);

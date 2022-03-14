@@ -40,8 +40,7 @@ namespace Lithium
 		ent.AddComponent<IDComponent>(UUID());
 		ent.AddComponent<NameComponent>(name);
 		ent.AddComponent<RelationShipComponent>();
-		CreateEntityEvent e = CreateEntityEvent();
-		//callback(e);
+		ent.AddComponent<TransformComponent>();
 		return ent;
 	}
 
@@ -116,11 +115,18 @@ namespace Lithium
 				for (auto& script : ScriptGroupe.Scripts) {
 					if (!script.Loaded)
 					{
+						if (Application::Get().Monoserver->CheckIfClassExists(script.Name))
+						{
+							script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
 
-						script.Scriptobject = Application::Get().Monoserver->GetObject(script.Name);
+							script.Loaded = true;
 
-						script.Loaded = true;
-
+						}
+						else
+						{
+							script.Loaded = false;
+						}
+						
 					}
 				}
 				
@@ -142,7 +148,21 @@ namespace Lithium
 	void Scene::onUpdate()
 	{
 
-		
+		{
+			auto view = GetRegistry().view<RelationShipComponent>();
+
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+				if (entity.GetComponent<RelationShipComponent>().Parent == 0)
+				{
+					TransformComponent& tc = entity.GetComponent<TransformComponent>();
+					tc.ModelMatrix = tc.GetMatrix();
+
+					UpdateTransform(entity);
+				}
+			}
+		}
 
 		{
 			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();

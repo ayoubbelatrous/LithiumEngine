@@ -62,6 +62,16 @@ namespace Lithium
 			});
 			
 		}
+
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::MenuItem("New Entity"))
+			{
+				_Scene->CreateEntity("Empty");
+			}
+
+			ImGui::EndPopup();
+		}
 		ImGui::End();
 	}
 	

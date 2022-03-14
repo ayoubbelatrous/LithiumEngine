@@ -272,8 +272,10 @@ namespace Lithium
 			klass = mono_class_get(_MonoImage, (i + 1) | MONO_TOKEN_TYPE_DEF);
 			std::string _Nspace = mono_class_get_namespace(klass);
 			std::string name = mono_class_get_name(klass);
-			m_AllClassesInImage.emplace(name, name + "." + _Nspace);
+			m_AllClassesInImage.emplace(name, _Nspace + "." + name);
 		}
+
+		
 	}
 
 	MonoServer::MonoServer()
@@ -387,7 +389,14 @@ namespace Lithium
 
 	bool MonoServer::CheckIfClassExists(const std::string& name)
 	{
-		return (m_AllClassesInImage.find(name) == m_AllClassesInImage.end());
+		if (m_AllClassesInImage.find(name) == m_AllClassesInImage.end())
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	void MonoServer::ForceReload()
@@ -412,6 +421,7 @@ namespace Lithium
 		MonoClass* monoklass;
 		if (m_ScriptClassMap.find(name) == m_ScriptClassMap.end())
 		{
+
 			monoklass = mono_class_from_name(_MonoImage, "", name.c_str());
 			if (monoklass == nullptr)
 			{
