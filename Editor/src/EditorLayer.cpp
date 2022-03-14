@@ -7,7 +7,8 @@
 #include "Font/Font.h"
 #include "Script/MonoServer.h"
 #include <atomic>
-
+#define GLM_ENABLE_EXPERIMENTAL
+#include "gtx/string_cast.hpp"
 static std::atomic_bool canCheckAssembly;
 
 namespace Lithium
@@ -117,10 +118,42 @@ namespace Lithium
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
 		
+		{
+
+			glm::mat4 parentmatrix = glm::mat4(1.0f);
+			parentmatrix = glm::translate(glm::mat4(1.0), glm::vec3(0.0f,0,0));
+
+			glm::mat4 testMatrix = glm::mat4(1.0);
+			testMatrix = glm::translate(glm::mat4(1.0), glm::vec3(1.0f,0,0));
+			testMatrix = parentmatrix * testMatrix;
+
+			glm::vec3 testPos;
+			glm::vec3 testRot;
+			glm::vec3 testScale;
+
+			Math::DecomposeTransform(testMatrix, testPos, testRot, testScale);
+			CORE_LOG("global test pos " << glm::to_string(testPos));
+			CORE_LOG("global test Rotation " << glm::to_string(testRot));
+			CORE_LOG("global test Scale " << glm::to_string(testScale));
+
+			parentmatrix = glm::translate(glm::mat4(1.0), glm::vec3(16.0f, 0, 0));
+			testMatrix = glm::translate(glm::mat4(1.0), glm::vec3(1.0f, 0, 0));
+
+			testMatrix = parentmatrix * testMatrix;
+
+			Math::DecomposeTransform(testMatrix, testPos, testRot, testScale);
+
+			CORE_LOG("/-------------------------/");
+			CORE_LOG("global test pos " << glm::to_string(testPos));
+			CORE_LOG("global test Rotation " << glm::to_string(testRot));
+			CORE_LOG("global test Scale " << glm::to_string(testScale));
+		}
 	}
 
 	void EditorLayer::OnUpdate()
 	{
+
+		
 		LT_PROFILE_FUNCTION("OnUpdate");
 		//TODO: reload all classes in scriptcomponent if assembly changes
 		
@@ -133,12 +166,40 @@ namespace Lithium
 
 		proj = glm::ortho(orthoLeft, orthoRight,
 			orthoBottom, orthoTop);
+
+
+		glm::quat orientation = glm::quat(glm::vec3(0.0f, 0.0f, 0.0f));
+
+	
+
+		const glm::vec2& mouse{ Input::MousePosition() };
+		m_CameraDelta = (mouse - m_InitialMousePosition) * 0.003f;
+		m_InitialMousePosition = mouse;
+
+		if (Input::IsMouseKeyPressed(2))
+		{
+
+			float xSpeed = orthosize * 0.5f;
+			float ySpeed = orthosize * 0.5f;
+
+			m_FocalPoint += -glm::rotate(orientation, glm::vec3(1.0f, 0.0f, 0.0f)) * m_CameraDelta.x * xSpeed;
+			m_FocalPoint += glm::rotate(orientation, glm::vec3(0.0f, 1.0f, 0.0f)) * m_CameraDelta.y * ySpeed;
+
+		}
+
+		m_CameraPosition = m_FocalPoint;// -glm::rotate(orientation, glm::vec3(0.0f, 0.0f, 0.0f));
+		view = glm::translate(glm::mat4(1.0f), m_CameraPosition) * glm::toMat4(orientation);
+		view = glm::inverse(view);
+
+
+
 		framebuffer->resize(viewportSize[0], viewportSize[1]);
 		DisplayBuffer->resize(viewportSize[0], viewportSize[1]);
 
 
+		
+
 #pragma endregion
-#pragma region CameraMovement
 		if (_ViewportFocus)
 		{
 			float speed = 0.01f;
@@ -327,7 +388,12 @@ namespace Lithium
 
 	void EditorLayer::onMouseWheelEvent(MouseWheelEvent& e)
 	{
-		orthosize -= e.GetOffsetY() * 0.5;
+		
+		float distance = orthosize * 0.5f * 0.2f;
+		distance = std::max(distance, 0.0f);
+		float speed = distance * distance;
+		speed = std::min(speed, 5.0f);
+		orthosize -= e.GetOffsetY() * speed;
 	}
 
 	void EditorLayer::onEditorEvent(Event& e)
@@ -489,8 +555,10 @@ namespace Lithium
 		if (selected.GetHandle() != entt::null && selected.HasComponent<TransformComponent>())
 		{
 			glm::mat4 matri = selected.GetComponent<TransformComponent>().GetMatrix();
-			
-			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj),(ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
+			UUID parentUUID = selected.GetComponent<RelationShipComponent>().Parent;
+			Entity ParentEntity(m_ActiveScene->GetUUIDMap()[parentUUID], m_ActiveScene.get());
+			TransformComponent& ParentTransform = ParentEntity.GetComponent<TransformComponent>();
+			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri));
 
 			if (ImGuizmo::IsUsing())
 			{
@@ -524,7 +592,14 @@ namespace Lithium
 		}
 		ImGui::End();
 		ImGui::Begin("Stats");
-		
+		ImGui::DragFloat3("camera", glm::value_ptr(m_CameraPosition));
+		ImGui::DragFloat3("focal point",glm::value_ptr(m_FocalPoint));
+		float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
+
+		ImGui::DragFloat("aspect", &AspectRatio);
+		ImGui::DragFloat("ortho size", &orthosize);
+		ImGui::Text("mouse delta x(%.4f) , y(%.4f)", m_CameraDelta.x * orthosize * 0.5f, m_CameraDelta.y * orthosize * 0.5f);
+
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text(_EditorStatus.c_str());
 

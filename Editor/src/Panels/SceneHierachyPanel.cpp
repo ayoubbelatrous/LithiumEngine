@@ -76,6 +76,8 @@ namespace Lithium
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3.f, 3.f));
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2.0f, 2.0f));
 		
+		
+
 		bool opened = ImGui::TreeNodeEx((void*)entity.GetHandle(), flags, tag.c_str());
 		if (ImGui::BeginDragDropSource())
 		{
@@ -135,7 +137,6 @@ namespace Lithium
 // 			bool opened = ImGui::TreeNodeEx((void*)9817239, flags, tag.c_str());
 // 			if (opened)
 // 				ImGui::TreePop();
-
 			for (auto child : rc.Children)
 			{
 				Entity childEntity(_Scene->GetUUIDMap()[child], _Scene.get());

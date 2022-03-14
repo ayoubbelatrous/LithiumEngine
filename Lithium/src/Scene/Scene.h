@@ -24,10 +24,9 @@ namespace Lithium
 		void DeleteEntity(Entity entity);
 		
 		entt::registry& GetRegistry() { return m_Registry; }
-
+		void Scene::UpdateTransform(Entity entity);
 		void onEditorUpdate();
 		void OnStart();
-		void UpdateTransform(Entity entity);
 		void onUpdate();
 		void OnStop();
 		void SetEventCallback(const EventCallback& e) { m_Callback = e; }
@@ -39,7 +38,8 @@ namespace Lithium
 			dst.AddOrReplaceComponent<Comp>(src.GetComponent<Comp>());
 	    }
 		static Ref<Scene> Copy(const Ref<Scene>& src);
-	Entity DuplicateEntity(Entity src);
+		
+	    Entity DuplicateEntity(Entity src);
 	private:
 		
 		entt::registry m_Registry;

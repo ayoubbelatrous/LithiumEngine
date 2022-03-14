@@ -13,8 +13,8 @@
 #include "Mesh/Material.h"
 #include "Core/UUID.h"
 #include "Script/ScriptObject.h"
-
-
+#include "Camera/SceneCamera.h"
+#include "Core/Math.h"
 namespace Lithium
 {
 	enum class CameraMode
@@ -49,14 +49,20 @@ namespace Lithium
 		glm::vec3 Rotation;
 		glm::vec3 Scale = glm::vec3(1);
 
-		TransformComponent() = default;
-		TransformComponent(const TransformComponent& other) = default;
+		glm::vec3 LocalPosition;
+		glm::vec3 LocalRotation;
+		glm::vec3 LocalScale = glm::vec3(1);
+
+		glm::mat4 ModelMatrix = glm::mat4(1);
 
 		glm::mat4 GetMatrix()
 		{
 			glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(Rotation)));
 			return glm::translate(glm::mat4(1), Position) * rotation * glm::scale(glm::mat4(1), Scale);
 		}
+
+		TransformComponent() = default;
+		TransformComponent(const TransformComponent& other) = default;
 	};
 
 
@@ -181,6 +187,14 @@ namespace Lithium
 		
 	};
 
+	struct CameraComponent
+	{
+		SceneCamera Camera;
+		bool Primary = true;
+		bool FixedAspectRatio = false;
 
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+	};
 }
 

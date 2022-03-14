@@ -84,7 +84,7 @@ namespace Lithium
 				wdata.callback(ev);
 		});
 
-		glfwSwapInterval(0);
+		glfwSwapInterval(1);
 	}
 
 	void Window::OnUpdate()
