@@ -3,21 +3,17 @@
 
 namespace Lithium
 {
-	namespace Physics
+	enum class PhysicsBodyType
 	{
-		enum class BodyType
-		{
-			None = 0,
-			Dynamic,
-			Static
-		};
+		Dynamic,
+		Static,
+		Kinematic,
+	};
 
-		enum class ColliderType
-		{
-			None = 0,
-			BoxCollider,
-			CircleCollider,
-		};
-	}
-	
+	enum class PhysicsColliderType
+	{
+		BoxCollider,
+		CircleCollider,
+    };
+
 }

@@ -66,6 +66,8 @@ namespace Lithium
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
+		entity2.AddComponent<Rigidbody2DComponent>();
+		entity2.AddComponent<BoxCollider2DComponent>();
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 		entity3.AddComponent<ScriptGroupeComponent>();

@@ -1,12 +1,18 @@
 #pragma once
+#include "glm.hpp"
 
+class b2World;
 
 namespace Lithium
 {
-	namespace Physics
+	class PhysicsWorld
 	{
-		
+	public:
+		PhysicsWorld(glm::vec2 gravity);
+		~PhysicsWorld();
 
-
-	}
+		b2World* GetPtr();
+	private:
+		b2World* m_PhysicsWorld = nullptr;
+	};
 }

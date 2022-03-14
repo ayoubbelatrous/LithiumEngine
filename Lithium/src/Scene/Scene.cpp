@@ -9,9 +9,20 @@
 #include "Core/Math.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
-
+#include "box2d/box2d.h"
 namespace Lithium
 {
+
+	static b2BodyType Rigidbody2DTypeToBox2DBody(PhysicsBodyType bodyType)
+	{
+		switch (bodyType)
+		{
+		case PhysicsBodyType::Static:    return b2_staticBody;
+		case PhysicsBodyType::Dynamic:   return b2_dynamicBody;
+		case PhysicsBodyType::Kinematic: return b2_kinematicBody;
+		}
+		return b2_staticBody;
+	}
 
 	Scene::Scene()
 		:m_Registry(entt::registry())
@@ -138,11 +149,7 @@ namespace Lithium
 
 	void Scene::OnStart()
 	{
-		
-
-		auto view = GetRegistry().view<RigidBody2DComponent>();
-
-
+		m_PhysicsWorld = CreateScope<PhysicsWorld>(glm::vec2(0.0f,-9.8f));
 	}
 
 	void Scene::onUpdate()
@@ -163,6 +170,11 @@ namespace Lithium
 				}
 			}
 		}
+
+
+
+
+
 
 		{
 			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
@@ -224,11 +236,66 @@ namespace Lithium
 			}
 		}
 
+
+		{
+			const int32_t velocityIterations = 6;
+			const int32_t positionIterations = 2;
+			float TimeStep = 1.0f / 60.0f;
+			m_PhysicsWorld->GetPtr()->Step(TimeStep,velocityIterations, positionIterations);
+			auto view = GetRegistry().view<Rigidbody2DComponent>();
+
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+
+				Rigidbody2DComponent& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+				auto& transform = entity.GetComponent<TransformComponent>();
+				if (rb2d.Created == false)
+				{
+					b2BodyDef bodyDef;
+					bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
+					bodyDef.position.Set(transform.Position.x, transform.Position.y);
+					bodyDef.angle = transform.Rotation.z;
+
+					b2Body* body = m_PhysicsWorld->GetPtr()->CreateBody(&bodyDef);
+					body->SetFixedRotation(rb2d.FixedRotation);
+					rb2d.RuntimeBody = body;
+					rb2d.Created = true;
+				}
+
+				b2Body* body = (b2Body*)rb2d.RuntimeBody;
+				const auto& position = body->GetPosition();
+				transform.Position.x = position.x;
+				transform.Position.y = position.y;
+				transform.Rotation.z = body->GetAngle();
+				//body->SetTransform({ transform.Position.x ,transform.Position.y }, transform.Rotation.z);
+
+				if (entity.HasComponent<BoxCollider2DComponent>())
+				{
+					auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+					if (bc2d.Created == false)
+					{
+						b2PolygonShape boxShape;
+						boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
+
+						b2FixtureDef fixtureDef;
+						fixtureDef.shape = &boxShape;
+						fixtureDef.density = bc2d.Density;
+						fixtureDef.friction = bc2d.Friction;
+						fixtureDef.restitution = bc2d.Restitution;
+						fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+						bc2d.RuntimeFixture = body->CreateFixture(&fixtureDef);
+						bc2d.Created = true;
+					}
+					}
+
+			}
+		}
+
 	}
 
 	void Scene::OnStop()
 	{
-
 	}
 
 	std::unordered_map<UUID, entt::entity> Scene::GetUUIDMap()
@@ -266,7 +333,7 @@ namespace Lithium
 		CopyComponentAll<RelationShipComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<MaterialComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
-		CopyComponentAll<RigidBody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<ScriptGroupeComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		return newscene;

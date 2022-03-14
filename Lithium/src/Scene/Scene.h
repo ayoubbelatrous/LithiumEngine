@@ -6,8 +6,7 @@
 #include "Event/AppEvents.h"
 #include <functional>
 #include "Core/UUID.h"
-class b2World;
-
+#include "physics/physics.h"
 
 namespace Lithium
 {
@@ -41,7 +40,7 @@ namespace Lithium
 		
 	    Entity DuplicateEntity(Entity src);
 	private:
-		
+		Scope<PhysicsWorld> m_PhysicsWorld;
 		entt::registry m_Registry;
 		EventCallback m_Callback;
 	};

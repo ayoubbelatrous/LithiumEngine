@@ -15,6 +15,8 @@
 #include "Script/ScriptObject.h"
 #include "Camera/SceneCamera.h"
 #include "Core/Math.h"
+#include "Physics/PhysicsTypes.h"
+
 namespace Lithium
 {
 	enum class CameraMode
@@ -127,14 +129,18 @@ namespace Lithium
 
 
 
-	struct RigidBody2DComponent
+	struct Rigidbody2DComponent
 	{
 		
 		
 		bool FixedRotation = false;
 		void* RuntimeBody = nullptr;
-		RigidBody2DComponent() = default;
-		RigidBody2DComponent(const RigidBody2DComponent & other) = default;
+		bool Created;
+		PhysicsBodyType Type = PhysicsBodyType::Dynamic;
+
+
+		Rigidbody2DComponent() = default;
+		Rigidbody2DComponent(const Rigidbody2DComponent& other) = default;
 	};
 
 
@@ -142,13 +148,16 @@ namespace Lithium
 	{
 		BoxCollider2DComponent() = default;
 		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
+
+		bool Created;
 		glm::vec2 Offset = { 0.0f, 0.0f };
 		glm::vec2 Size = { 0.5f, 0.5f };
+		float Density = 1.0f;
+		float Friction = 0.5f;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f;
 
-		// Storage for runtime
 		void* RuntimeFixture = nullptr;
-
-	
 	};
 	struct ScriptComponent
 	{
