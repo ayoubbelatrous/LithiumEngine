@@ -136,6 +136,8 @@ namespace Lithium
 		bool FixedRotation = false;
 		void* RuntimeBody = nullptr;
 		bool Created;
+		void SetVelocity(const glm::vec2 vel);
+		glm::vec2 GetVelocity();
 		PhysicsBodyType Type = PhysicsBodyType::Dynamic;
 
 

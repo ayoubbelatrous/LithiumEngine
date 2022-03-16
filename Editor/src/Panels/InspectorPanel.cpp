@@ -307,7 +307,69 @@ namespace Lithium
 				ImGui::InputFloat2("Tex Index", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().texIndex));
 			}
 
+			if (m_Selection.HasComponent<Rigidbody2DComponent>())
+			{
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("RigidBody 2D")), treeNodeFlags, "RigidBody 2D");
+				ImGui::PopStyleVar();
+
+				if (open)
+				{
+					Rigidbody2DComponent& rb2d = m_Selection.GetComponent<Rigidbody2DComponent>();
+					const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
+					const char* currentBodyTypeString = bodyTypeStrings[(int)rb2d.Type];
+
+					if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
+					{
+						for (int i = 0; i < 2; i++)
+						{
+							bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
+							if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
+							{
+								currentBodyTypeString = bodyTypeStrings[i];
+								rb2d.Type = (PhysicsBodyType)i;
+							}
+
+							if (isSelected)
+								ImGui::SetItemDefaultFocus();
+						}
+
+						ImGui::EndCombo();
+					}
+					ImGui::Checkbox("Fixed Rotation", &rb2d.FixedRotation);
+					ImGui::TreePop();
+				}
+				
+					
+
+			}
+
+			if (m_Selection.HasComponent<BoxCollider2DComponent>())
+			{
+
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("BoxCollider 2D")), treeNodeFlags, "BoxCollider 2D");
+				ImGui::PopStyleVar();
+
+				if (open)
+				{
+					BoxCollider2DComponent& rb2d = m_Selection.GetComponent<BoxCollider2DComponent>();
+
+					ImGui::DragFloat2("Offset", glm::value_ptr(rb2d.Offset));
+					ImGui::DragFloat2("Size", glm::value_ptr(rb2d.Size));
+					ImGui::DragFloat("Density", &rb2d.Density, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Friction", &rb2d.Friction, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Restitution", &rb2d.Restitution, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Restitution Threshold", &rb2d.RestitutionThreshold, 0.01f, 0.0f);
+					ImGui::TreePop();
+				}
+				
+
+			}
 			if (m_Selection.HasComponent<ScriptGroupeComponent>())
 			{
 			
@@ -422,7 +484,7 @@ namespace Lithium
 				
 			
 			}
-
+		
 			if (ImGui::Button("Add Component"))
 				ImGui::OpenPopup("AddComponent");
 
@@ -456,7 +518,23 @@ namespace Lithium
 					ImGui::CloseCurrentPopup();
 				}
 				
+				if (!m_Selection.HasComponent<Rigidbody2DComponent>())
+				{
+					if (ImGui::MenuItem("RigidBody 2D"))
+					{
+						m_Selection.AddComponent<Rigidbody2DComponent>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
 
+				if (!m_Selection.HasComponent<BoxCollider2DComponent>())
+				{
+					if (ImGui::MenuItem("Box Collider 2D"))
+					{
+						m_Selection.AddComponent<BoxCollider2DComponent>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
 
 				ImGui::EndPopup();
 			}

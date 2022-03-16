@@ -3,22 +3,42 @@ using Lithium.Core;
 using Lithium.Math;
 class Pad : Script
 {
-    public float Speed = 1.0f;
-    public Vector3 Velocity = new Vector3(0);
-
+    public Entity PhysicsEntity;
+    public int timer = 0;
     void Start()
     {
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+
+
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
+        Instantiate(PhysicsEntity);
     }
 
     void Update()
     {
-        Transform transform = entity.GetComponent<Transform>();
-        Velocity.X = GetAxialInput().X * (float)Time.deltaTime * Speed;
-        Velocity.Y = GetAxialInput().Y * (float)Time.deltaTime * Speed;
-
-        transform.Position = new Vector3(transform.Position.X + Velocity.X, transform.Position.Y + Velocity.Y);
     }
-
+    
     private Vector2 GetAxialInput()
     {
         Vector2 AxialInput = new Vector2(0);

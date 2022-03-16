@@ -2,9 +2,12 @@
 #include "glm.hpp"
 
 class b2World;
+class b2ContactListener;
+class b2Contact;
 
 namespace Lithium
 {
+	
 	class PhysicsWorld
 	{
 	public:

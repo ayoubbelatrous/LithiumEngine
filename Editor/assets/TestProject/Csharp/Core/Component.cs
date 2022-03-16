@@ -100,5 +100,44 @@ namespace Lithium.Core
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static void GetColor_Internal(UInt64 entityID, out Vector4 color);
     }
-    
+    public class Rigidbody2D : Component
+    {
+     
+        public bool FixedRotation
+        {
+            get
+            {
+                return GetRigidbodyFixedRotation_Internal(Entity.ID);
+            }
+            set => SetRigidbodyFixedRotation_Internal(Entity.ID, ref value);
+        }
+
+        public Vector2 Velocity
+        {
+            get
+            {
+                Vector2 res;
+                GetRigidbodyVelocity_Internal(Entity.ID,out res);
+                return res;
+            }
+            set => SetRigidbodyVelocity_Internal(Entity.ID, ref value);
+        }
+
+
+
+     
+
+
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetRigidbodyFixedRotation_Internal(UInt64 entityID, ref bool fixedRotation);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool GetRigidbodyFixedRotation_Internal(UInt64 entityID);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetRigidbodyVelocity_Internal(UInt64 entityID, ref Vector2 velocity);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void GetRigidbodyVelocity_Internal(UInt64 entityID,out Vector2 velocity);
+    }
 }

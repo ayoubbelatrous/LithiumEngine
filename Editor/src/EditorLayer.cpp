@@ -66,12 +66,8 @@ namespace Lithium
 		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
 
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		entity2.AddComponent<Rigidbody2DComponent>();
-		entity2.AddComponent<BoxCollider2DComponent>();
 
 		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-		entity3.AddComponent<ScriptGroupeComponent>();
-		entity3.GetComponent<ScriptGroupeComponent>().AddScript("Pad");
 
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
@@ -230,7 +226,7 @@ namespace Lithium
 		mouseY = (int)my;
 
 		
-		if (Input::IsMouseKeyPressed(0) && m_ViewportHovered && !ImGuizmo::IsOver()/*&&*/)
+		if (Input::IsMouseKeyPressed(0) && m_ViewportHovered && !ImGuizmo::IsOver())
 		{
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
@@ -275,6 +271,7 @@ namespace Lithium
 	{
 	}
 
+
 	void EditorLayer::onEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
@@ -285,6 +282,7 @@ namespace Lithium
 			WindowFileDropEvent& dropevent = static_cast<WindowFileDropEvent&>(e);
 			std::filesystem::copy(dropevent.getPaths()[0],_AssetBrowerPanel->GetCurrentPath());
 			_AssetBrowerPanel->Refresh();
+
 		}
 
 	}

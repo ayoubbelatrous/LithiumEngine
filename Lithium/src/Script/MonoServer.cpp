@@ -45,6 +45,10 @@ namespace Lithium
 		{
 			return entity.HasComponent<SpriteRendererComponent>();
 		}
+		else if (strcmp(name, "Rigidbody2D") == 0)
+		{
+			return entity.HasComponent<Rigidbody2DComponent>();
+		}
 
 		return false;
 	}
@@ -176,6 +180,33 @@ namespace Lithium
 		memcpy(color, &renderer.Color, sizeof(glm::vec4));
 	}
 
+	void MonoServer::SetRigidbodyFixedRotation_Internal(uint64_t entityID, bool* fixedRotation)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		Rigidbody2DComponent& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		rb2d.FixedRotation = *fixedRotation;
+	}
+
+	bool MonoServer::GetRigidbodyFixedRotation_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		Rigidbody2DComponent& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+		return rb2d.FixedRotation;
+	}
+
+	void MonoServer::SetRigidbodyVelocity_Internal(uint64_t entityID, glm::vec2* velocity)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<Rigidbody2DComponent>().SetVelocity(*velocity);
+	}
+
+	void MonoServer::GetRigidbodyVelocity_Internal(uint64_t entityID, glm::vec2* velocity)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		Rigidbody2DComponent& b2bd = entity.GetComponent<Rigidbody2DComponent>();
+		memcpy(velocity, &b2bd.GetVelocity(), sizeof(glm::vec2));
+	}
+
 	MonoString* MonoServer::GetName_Internal(uint64_t entityID)
 	{
 		
@@ -250,6 +281,12 @@ namespace Lithium
 
 		mono_add_internal_call("Lithium.Core.SpriteRenderer::SetColor_Internal", MonoServer::SetColor_Internal);
 		mono_add_internal_call("Lithium.Core.SpriteRenderer::GetColor_Internal", MonoServer::GetColor_Internal);
+
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyFixedRotation_Internal", MonoServer::SetRigidbodyFixedRotation_Internal);
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyFixedRotation_Internal", MonoServer::GetRigidbodyFixedRotation_Internal);
+
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyVelocity_Internal", MonoServer::SetRigidbodyVelocity_Internal);
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyVelocity_Internal", MonoServer::GetRigidbodyVelocity_Internal);
 
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", MonoServer::MouseKeyDown_Internal);

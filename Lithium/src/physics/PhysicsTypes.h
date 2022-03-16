@@ -5,8 +5,8 @@ namespace Lithium
 {
 	enum class PhysicsBodyType
 	{
+		Static = 0,
 		Dynamic,
-		Static,
 		Kinematic,
 	};
 

@@ -61,6 +61,13 @@ namespace Lithium
 			static void SetColor_Internal(uint64_t entityID, glm::vec4* color);
 			static void GetColor_Internal(uint64_t entityID, glm::vec4* color);
 			
+			//rigid body 2d component
+			static void SetRigidbodyFixedRotation_Internal(uint64_t entityID, bool* fixedRotation);
+			static bool GetRigidbodyFixedRotation_Internal(uint64_t entityID);
+
+			static void SetRigidbodyVelocity_Internal(uint64_t entityID, glm::vec2* velocity);
+			static void GetRigidbodyVelocity_Internal(uint64_t entityID, glm::vec2* velocity);
+
 			//input
 			static bool MouseKey_Internal(int button);
 			static bool MouseKeyDown_Internal(int button);
