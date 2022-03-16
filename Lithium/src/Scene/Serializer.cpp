@@ -283,6 +283,20 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<BoxCollider2DComponent>())
+		{
+			BoxCollider2DComponent& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+			emitter << YAML::Key << "BoxCollider2D" << YAML::BeginMap;
+			emitter << YAML::Key << "Size" << YAML::Value << bc2d.Size;
+			emitter << YAML::Key << "Offset" << YAML::Value << bc2d.Offset;
+			emitter << YAML::Key << "Density" << YAML::Value << bc2d.Density;
+			emitter << YAML::Key << "Friction" << YAML::Value << bc2d.Friction;
+			emitter << YAML::Key << "Restitution" << YAML::Value << bc2d.Restitution;
+			emitter << YAML::Key << "RestitutionThreshold" << YAML::Value << bc2d.RestitutionThreshold;
+			emitter << YAML::EndMap;
+		}
+
+
 		emitter << YAML::EndMap;
 	}
 
@@ -499,7 +513,9 @@ namespace Lithium
 				deserEntity.AddComponent<Rigidbody2DComponent>();
 				Rigidbody2DComponent& rb2d = deserEntity.GetComponent<Rigidbody2DComponent>();
 				rb2d.FixedRotation = rigidbody2d["FixedRotation"].as<bool>();
-				std::string type = transform["Type"].as<std::string>();
+				std::string type = rigidbody2d["Type"].as<std::string>();
+
+
 				if (strcmp("Static", type.c_str()) == 0)
 				{
 					rb2d.Type = PhysicsBodyType::Static;
@@ -514,6 +530,21 @@ namespace Lithium
 				{
 					rb2d.Type = PhysicsBodyType::Kinematic;
 				}
+			}
+
+			auto boxcollider2d = entity["BoxCollider2D"];
+			if (boxcollider2d)
+			{
+				deserEntity.AddComponent<BoxCollider2DComponent>();
+				BoxCollider2DComponent& bc2d = deserEntity.GetComponent<BoxCollider2DComponent>();
+				bc2d.Size = boxcollider2d["Size"].as<glm::vec2>();
+				bc2d.Offset = boxcollider2d["Offset"].as<glm::vec2>();
+				bc2d.Offset = boxcollider2d["Offset"].as<glm::vec2>();
+				bc2d.Density = boxcollider2d["Density"].as<float>();
+				bc2d.Friction = boxcollider2d["Friction"].as<float>();
+				bc2d.Restitution = boxcollider2d["Restitution"].as<float>();
+				bc2d.RestitutionThreshold = boxcollider2d["RestitutionThreshold"].as<float>();
+
 			}
 
 		}

@@ -76,7 +76,7 @@ namespace Lithium
 
 	};
 
-	static ContactListener* CListener = new ContactListener();
+	static ContactListener* CListener;
 
 	static b2BodyType Rigidbody2DTypeToBox2DBody(PhysicsBodyType bodyType)
 	{
@@ -215,7 +215,9 @@ namespace Lithium
 	void Scene::OnStart()
 	{
 		m_PhysicsWorld = CreateScope<PhysicsWorld>(glm::vec2(0.0f,-9.8f));
+		CListener = new ContactListener();
 		m_PhysicsWorld->GetPtr()->SetContactListener(CListener);
+		
 	}
 
 	void Scene::onUpdate()
@@ -274,7 +276,7 @@ namespace Lithium
 					bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
 					bodyDef.position.Set(transform.Position.x, transform.Position.y);
 					bodyDef.angle = glm::radians(transform.Rotation.z);
-					
+					bodyDef.userData.pointer = reinterpret_cast<intptr_t>(&entity.GetComponent<IDComponent>().ID);
 
 					b2Body* body = m_PhysicsWorld->GetPtr()->CreateBody(&bodyDef);
 					body->SetFixedRotation(rb2d.FixedRotation);
@@ -282,7 +284,7 @@ namespace Lithium
 					rb2d.Created = true;
 				}
 				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				body->GetUserData().pointer = reinterpret_cast<intptr_t>(&entity.GetComponent<IDComponent>().ID);
+				
 				//body->SetTransform({ transform.Position.x ,transform.Position.y }, glm::radians(transform.Rotation.z));
 				const auto& position = body->GetPosition();
 				transform.Position.x = position.x;
@@ -376,6 +378,7 @@ namespace Lithium
 
 	void Scene::OnStop()
 	{
+		delete CListener;
 	}
 
 	std::unordered_map<UUID, entt::entity> Scene::GetUUIDMap()
