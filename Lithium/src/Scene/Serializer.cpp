@@ -255,6 +255,34 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<Rigidbody2DComponent>())
+		{
+			Rigidbody2DComponent& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+			emitter << YAML::Key << "Rigidbody2D" << YAML::BeginMap;
+			emitter << YAML::Key << "FixedRotation" << YAML::Value << rb2d.FixedRotation;
+			switch (rb2d.Type)
+			{
+			case (PhysicsBodyType::Static):
+				{
+				emitter << YAML::Key << "Type" << YAML::Value << "Static";
+					break;
+				}
+			case (PhysicsBodyType::Dynamic):
+			{
+				emitter << YAML::Key << "Type" << YAML::Value << "Dynamic";
+
+				break;
+			}
+			case (PhysicsBodyType::Kinematic):
+			{
+				emitter << YAML::Key << "Type" << YAML::Value << "Kinematic";
+
+				break;
+			}
+			}
+			emitter << YAML::EndMap;
+		}
+
 		emitter << YAML::EndMap;
 	}
 
@@ -465,7 +493,28 @@ namespace Lithium
 
 			}
 
-				
+			auto rigidbody2d = entity["Rigidbody2D"];
+			if (rigidbody2d)
+			{
+				deserEntity.AddComponent<Rigidbody2DComponent>();
+				Rigidbody2DComponent& rb2d = deserEntity.GetComponent<Rigidbody2DComponent>();
+				rb2d.FixedRotation = rigidbody2d["FixedRotation"].as<bool>();
+				std::string type = transform["Type"].as<std::string>();
+				if (strcmp("Static", type.c_str()) == 0)
+				{
+					rb2d.Type = PhysicsBodyType::Static;
+				}
+
+				if (strcmp("Dynamic", type.c_str()) == 0)
+				{
+					rb2d.Type = PhysicsBodyType::Dynamic;
+				}
+
+				if (strcmp("Kinematic", type.c_str()) == 0)
+				{
+					rb2d.Type = PhysicsBodyType::Kinematic;
+				}
+			}
 
 		}
 	}
