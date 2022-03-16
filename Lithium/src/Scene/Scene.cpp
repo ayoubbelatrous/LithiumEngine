@@ -10,8 +10,73 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
 #include "box2d/box2d.h"
+
+
+
 namespace Lithium
 {
+	class ContactListener : public b2ContactListener
+	{
+	public:
+		void BeginContact(b2Contact* contact)
+		{
+			UUID* IDA = reinterpret_cast<UUID*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
+			Entity entityA(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[*IDA], Application::Get().sceneManager->GetActiveScene().get());
+			if (entityA.HasComponent<ScriptGroupeComponent>())
+			{
+				ScriptGroupeComponent& scriptgroupeA = entityA.GetComponent<ScriptGroupeComponent>();
+
+				for (auto& script : scriptgroupeA.Scripts)
+				{
+					script.Scriptobject->InvokeMethod("OnCollisionEnter", nullptr);
+				}
+			}
+			
+			UUID* IDB = reinterpret_cast<UUID*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
+			Entity entityB (Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[*IDB], Application::Get().sceneManager->GetActiveScene().get());
+
+			if (entityA.HasComponent<ScriptGroupeComponent>())
+			{
+				ScriptGroupeComponent& scriptgroupeB = entityB.GetComponent<ScriptGroupeComponent>();
+
+				for (auto& script : scriptgroupeB.Scripts)
+				{
+					script.Scriptobject->InvokeMethod("OnCollisionEnter", nullptr);
+				}
+			}
+		}
+		void EndContact(b2Contact* contact)
+		{
+
+			UUID* IDA = reinterpret_cast<UUID*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
+			Entity entityA(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[*IDA], Application::Get().sceneManager->GetActiveScene().get());
+			if (entityA.HasComponent<ScriptGroupeComponent>())
+			{
+				ScriptGroupeComponent& scriptgroupeA = entityA.GetComponent<ScriptGroupeComponent>();
+
+				for (auto& script : scriptgroupeA.Scripts)
+				{
+					script.Scriptobject->InvokeMethod("OnCollisionExit", nullptr);
+				}
+			}
+
+			UUID* IDB = reinterpret_cast<UUID*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
+			Entity entityB(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[*IDB], Application::Get().sceneManager->GetActiveScene().get());
+
+			if (entityA.HasComponent<ScriptGroupeComponent>())
+			{
+				ScriptGroupeComponent& scriptgroupeB = entityB.GetComponent<ScriptGroupeComponent>();
+
+				for (auto& script : scriptgroupeB.Scripts)
+				{
+					script.Scriptobject->InvokeMethod("OnCollisionExit", nullptr);
+				}
+			}
+		}
+
+	};
+
+	static ContactListener* CListener = new ContactListener();
 
 	static b2BodyType Rigidbody2DTypeToBox2DBody(PhysicsBodyType bodyType)
 	{
@@ -150,6 +215,7 @@ namespace Lithium
 	void Scene::OnStart()
 	{
 		m_PhysicsWorld = CreateScope<PhysicsWorld>(glm::vec2(0.0f,-9.8f));
+		m_PhysicsWorld->GetPtr()->SetContactListener(CListener);
 	}
 
 	void Scene::onUpdate()
@@ -187,6 +253,73 @@ namespace Lithium
 			}
 		}
 
+		{
+			const int32_t velocityIterations = 6;
+			const int32_t positionIterations = 2;
+			float TimeStep = 1.0f / 60.0f;
+			m_PhysicsWorld->GetPtr()->Step(TimeStep, velocityIterations, positionIterations);
+			
+			
+			auto view = GetRegistry().view<Rigidbody2DComponent>();
+
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+
+				Rigidbody2DComponent& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+				auto& transform = entity.GetComponent<TransformComponent>();
+				if (rb2d.Created == false)
+				{
+					b2BodyDef bodyDef;
+					bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
+					bodyDef.position.Set(transform.Position.x, transform.Position.y);
+					bodyDef.angle = glm::radians(transform.Rotation.z);
+					
+
+					b2Body* body = m_PhysicsWorld->GetPtr()->CreateBody(&bodyDef);
+					body->SetFixedRotation(rb2d.FixedRotation);
+					rb2d.RuntimeBody = body;
+					rb2d.Created = true;
+				}
+				b2Body* body = (b2Body*)rb2d.RuntimeBody;
+				body->GetUserData().pointer = reinterpret_cast<intptr_t>(&entity.GetComponent<IDComponent>().ID);
+				//body->SetTransform({ transform.Position.x ,transform.Position.y }, glm::radians(transform.Rotation.z));
+				const auto& position = body->GetPosition();
+				transform.Position.x = position.x;
+				transform.Position.y = position.y;
+				transform.Rotation.z = glm::degrees(body->GetAngle());
+
+				if (entity.HasComponent<BoxCollider2DComponent>())
+				{
+					auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+					if (bc2d.Created == false)
+					{
+						b2PolygonShape boxShape;
+						boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
+
+						b2FixtureDef fixtureDef;
+						fixtureDef.shape = &boxShape;
+						fixtureDef.density = bc2d.Density;
+						fixtureDef.friction = bc2d.Friction;
+						fixtureDef.restitution = bc2d.Restitution;
+						fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+						bc2d.RuntimeFixture = body->CreateFixture(&fixtureDef);
+						
+
+						bc2d.Created = true;
+					}
+
+					
+					b2Fixture* fx = (b2Fixture*)bc2d.RuntimeFixture;
+					fx->SetDensity(bc2d.Density);
+					fx->SetFriction(bc2d.Friction);
+					fx->SetRestitution(bc2d.Restitution);
+					fx->SetRestitutionThreshold(bc2d.RestitutionThreshold);
+					
+				}
+
+			}
+		}
 
 		{
 			auto view = GetRegistry().view<ScriptGroupeComponent>();
@@ -237,60 +370,7 @@ namespace Lithium
 		}
 
 
-		{
-			const int32_t velocityIterations = 6;
-			const int32_t positionIterations = 2;
-			float TimeStep = 1.0f / 60.0f;
-			m_PhysicsWorld->GetPtr()->Step(TimeStep,velocityIterations, positionIterations);
-			auto view = GetRegistry().view<Rigidbody2DComponent>();
-
-			for (auto e : view)
-			{
-				Entity entity(e, this);
-
-				Rigidbody2DComponent& rb2d = entity.GetComponent<Rigidbody2DComponent>();
-				auto& transform = entity.GetComponent<TransformComponent>();
-				if (rb2d.Created == false)
-				{
-					b2BodyDef bodyDef;
-					bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
-					bodyDef.position.Set(transform.Position.x, transform.Position.y);
-					bodyDef.angle = transform.Rotation.z;
-
-					b2Body* body = m_PhysicsWorld->GetPtr()->CreateBody(&bodyDef);
-					body->SetFixedRotation(rb2d.FixedRotation);
-					rb2d.RuntimeBody = body;
-					rb2d.Created = true;
-				}
-
-				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				const auto& position = body->GetPosition();
-				transform.Position.x = position.x;
-				transform.Position.y = position.y;
-				transform.Rotation.z = body->GetAngle();
-				//body->SetTransform({ transform.Position.x ,transform.Position.y }, transform.Rotation.z);
-
-				if (entity.HasComponent<BoxCollider2DComponent>())
-				{
-					auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
-					if (bc2d.Created == false)
-					{
-						b2PolygonShape boxShape;
-						boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
-
-						b2FixtureDef fixtureDef;
-						fixtureDef.shape = &boxShape;
-						fixtureDef.density = bc2d.Density;
-						fixtureDef.friction = bc2d.Friction;
-						fixtureDef.restitution = bc2d.Restitution;
-						fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
-						bc2d.RuntimeFixture = body->CreateFixture(&fixtureDef);
-						bc2d.Created = true;
-					}
-					}
-
-			}
-		}
+		
 
 	}
 
@@ -367,6 +447,18 @@ namespace Lithium
 		if (src.HasComponent<ScriptComponent>())
 		{
 			CopyComponent<ScriptComponent>(src, entity);
+
+		}
+
+		if (src.HasComponent<Rigidbody2DComponent>())
+		{
+			CopyComponent<Rigidbody2DComponent>(src, entity);
+
+		}
+
+		if (src.HasComponent<BoxCollider2DComponent>())
+		{
+			CopyComponent<BoxCollider2DComponent>(src, entity);
 
 		}
 
