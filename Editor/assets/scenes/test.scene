@@ -1,50 +1,68 @@
 Scene: NONE
 Entities:
-  - Entity: 15802659902239185670
-    Name: hello
+  - Entity: 1765180871526603980
+    Name: Pos
     Transform:
-      Position: [1.63349926, -0.796019673, 0]
+      Position: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
       Texture Path: ""
-  - Entity: 17496111170439141927
-    Name: dod
+    Child Manager:
+      children: ids go here
+  - Entity: 12028524048966266706
+    Name: Camera
     Transform:
-      Position: [-0.845771313, -1.84079587, 0]
-      Rotation: [0, 0, 0]
-      Scale: [14.7187443, 0.592920303, 1]
+      Position: [-7.0449152, 4.10308409, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
       Texture Path: ""
+    Child Manager:
+      children: ids go here
     ScriptGroupe:
       Scripts:
-        - ClassName: Test
-          Fields:
-            - Name: speed
-              Type: FLOAT
-              Value: 0
-            - Name: Camera
-              Type: ENTITY
-              Value: 0
-            - Name: speed2
-              Type: FLOAT
-              Value: 0
         - ClassName: Player
           Fields:
-            - Name: Origin
-              Type: ENTITY
+            - Name: JumpSpeed
+              Type: FLOAT
               Value: 0
-            - Name: vec2
-              Type: VEC2
-              Value: [100, 69]
-  - Entity: 1751175517160166038
-    Name: name
+            - Name: speed
+              Type: FLOAT
+              Value: 10
+            - Name: AirSpeed
+              Type: FLOAT
+              Value: 2
+    Rigidbody2D:
+      FixedRotation: false
+      Type: Dynamic
+    BoxCollider2D:
+      Size: [0.5, 0.5]
+      Offset: [0, 0]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 14431672905324821606
+    Name: Player
     Transform:
-      Position: [-2.69485927, -0.207296908, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Position: [0.21375972, -6.32115936, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1593.62537, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
       Texture Path: ""
+    Child Manager:
+      children: ids go here
+    Rigidbody2D:
+      FixedRotation: false
+      Type: Static
+    BoxCollider2D:
+      Size: [0.5, 0.5]
+      Offset: [0, 0]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5

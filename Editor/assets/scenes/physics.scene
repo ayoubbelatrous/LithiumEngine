@@ -1,22 +1,11 @@
 Scene: NONE
 Entities:
-  - Entity: 16136751937680711167
-    Name: Pos
+  - Entity: 14431672905324821606
+    Name: Player
     Transform:
-      Position: [1.24031305, -1.56470323, 0]
+      Position: [0.21375972, -6.32115936, 0]
       Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture Path: ""
-    Child Manager:
-      children: ids go here
-  - Entity: 2584159671961516588
-    Name: Camera
-    Transform:
-      Position: [0.495566428, -3.52631116, 0]
-      Rotation: [0, -0, 0]
-      Scale: [100, 0.495418757, 1]
+      Scale: [1593.62537, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
       Texture Path: ""
@@ -32,10 +21,10 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 8722643763814997261
-    Name: Player
+  - Entity: 12028524048966266706
+    Name: Camera
     Transform:
-      Position: [-0.0587245822, -1.72818816, 0]
+      Position: [-7.0449152, 4.10308409, 0]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     Sprite Renderer:
@@ -53,6 +42,9 @@ Entities:
             - Name: speed
               Type: FLOAT
               Value: 10
+            - Name: AirSpeed
+              Type: FLOAT
+              Value: 2
     Rigidbody2D:
       FixedRotation: false
       Type: Dynamic
@@ -63,3 +55,14 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
+  - Entity: 1765180871526603980
+    Name: Pos
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture Path: ""
+    Child Manager:
+      children: ids go here

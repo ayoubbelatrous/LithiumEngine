@@ -4,13 +4,12 @@ using Lithium.Math;
 class Player : Script
 {
 	public float speed = 0.0f;
+	public float AirSpeed = 0.0f;
 	public float JumpSpeed = 0.0f;
     bool Grounded = false;
 
-	void Start()
+    void Start()
 	{
-		
-        
 	}
 
 	void Update()
@@ -18,15 +17,22 @@ class Player : Script
 		Vector2 vel = entity.GetComponent<Rigidbody2D>().Velocity;
 
    
-        if(Input.IsKeyPressed(KeyCode.Space))
+        if(Input.IsKeyPressed(KeyCode.Space) && Grounded)
         {
             vel.Y = speed;
         }
-       
-        entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(speed * GetAxialInput().X, vel.Y);
-        
+        if(Grounded)
+        {
+            entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(speed * GetAxialInput().X, vel.Y);
 
-	}
+        }
+        else
+        {
+            entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(AirSpeed * GetAxialInput().X, vel.Y);
+        }
+
+
+    }
     private Vector2 GetAxialInput()
     {
         Vector2 AxialInput = new Vector2(0);
@@ -57,11 +63,13 @@ class Player : Script
     void OnCollisionEnter()
     {
         entity.GetComponent<SpriteRenderer>().Color = new Vector4(1, 0, 0, 1);
+        Grounded = true;
     }
 
     void OnCollisionExit()
     {
         entity.GetComponent<SpriteRenderer>().Color = new Vector4(1);
+        Grounded = false;
 
     }
 }

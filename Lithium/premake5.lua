@@ -63,7 +63,14 @@ links
     "msdf-atlas-gen",
     "Box2D",
     "assimp",
-    "%{LibDir.mono}/mono-2.0-sgen.lib",
+    "%{LibDir.mono}/libmono-static-sgen.lib",
+
+    "Mswsock.lib",
+    "ws2_32.lib",
+    "psapi.lib",
+    "version.lib",
+    "winmm.lib",
+    "Bcrypt.lib",
 }
 
 
