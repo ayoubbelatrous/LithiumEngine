@@ -9,33 +9,35 @@ namespace Lithium
 	{
 	public:
 		Entity()
-			:_Handle(entt::null), _Scene(nullptr)
+			:_Handle(entt::null), m_Scene(nullptr)
 		{
 
 		}
 		Entity(entt::entity entity,Scene* scene)
-			:_Handle(entity),_Scene(scene)
+			:_Handle(entity),m_Scene(scene)
 		{}
 		template<typename T>
 		bool HasComponent() {
-			return _Scene->GetRegistry().any_of<T>(_Handle);
+			return m_Scene->GetRegistry().any_of<T>(_Handle);
 		}
 		template<typename T,typename... Args>
-		void AddComponent(Args&&... args)
+		T& AddComponent(Args&&... args)
 		{
-			_Scene->GetRegistry().emplace<T>(_Handle, std::forward<Args>(args)...);
+			T& component = m_Scene->GetRegistry().emplace<T>(_Handle, std::forward<Args>(args)...);
 
+			m_Scene->OnComponentAdded<T>(*this, component);
+			return component;
 		}
 
 		template<typename T>
 		T& GetComponent()
 		{
-			return _Scene->GetRegistry().get<T>(_Handle);
+			return m_Scene->GetRegistry().get<T>(_Handle);
 		}
 		template<typename T>
 	    void RemoveComponent()
 		{
-			_Scene->GetRegistry().remove<T>(_Handle);
+			m_Scene->GetRegistry().remove<T>(_Handle);
 		}
 		entt::entity GetHandle()
 		{
@@ -43,14 +45,14 @@ namespace Lithium
 		}
 		Scene* getScene()
 		{
-			return _Scene;
+			return m_Scene;
 		}
 
 
 		template<typename T, typename... Args>
 	    void AddOrReplaceComponent(Args&&... args)
 		{
-			_Scene->GetRegistry().emplace_or_replace<T>(_Handle, std::forward<Args>(args)...);
+			m_Scene->GetRegistry().emplace_or_replace<T>(_Handle, std::forward<Args>(args)...);
 		}
 
 		explicit operator bool() const
@@ -66,6 +68,6 @@ namespace Lithium
 		}
 	private:
 		entt::entity _Handle;
-		Scene* _Scene;
+		Scene* m_Scene;
 	};
 }

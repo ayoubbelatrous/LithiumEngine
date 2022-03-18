@@ -41,6 +41,13 @@ namespace Lithium
 		static Ref<Scene> Copy(const Ref<Scene>& src);
 		
 	    Entity DuplicateEntity(Entity src);
+
+	
+		template<typename T>
+		void OnComponentAdded(Entity entity, T& component);
+
+		void SortScene();
+
 	private:
 		Scope<PhysicsWorld> m_PhysicsWorld;
 		entt::registry m_Registry;

@@ -107,6 +107,8 @@ namespace Lithium
 
 			auto component = src.get<Component>(e);
 			dst.emplace_or_replace<Component>(dstEnttID, component);
+			
+
 		}
 	}
 	
@@ -170,9 +172,6 @@ namespace Lithium
 		}
 
 		{
-			m_Registry.sort<SpriteRendererComponent>([](const SpriteRendererComponent& lhs, const SpriteRendererComponent& rhs) {
-				return lhs.DrawOrder < rhs.DrawOrder;
-				});
 			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 
 			for (auto entity : view)
@@ -230,7 +229,7 @@ namespace Lithium
 		m_PhysicsWorld = CreateScope<PhysicsWorld>(glm::vec2(0.0f,-9.8f));
 		CListener = new ContactListener();
 		m_PhysicsWorld->GetPtr()->SetContactListener(CListener);
-		
+		SortScene();
 	}
 
 	void Scene::onUpdate()
@@ -258,9 +257,7 @@ namespace Lithium
 
 
 		{
-			m_Registry.sort<SpriteRendererComponent>([](const SpriteRendererComponent& lhs, const SpriteRendererComponent& rhs) {
-				return lhs.DrawOrder < rhs.DrawOrder;
-				});
+			
 			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 
 			for (auto entity : view)
@@ -496,5 +493,81 @@ namespace Lithium
 
 		return entity;
 	}
+	void Scene::SortScene()
+	{
+		m_Registry.sort<SpriteRendererComponent>([](const SpriteRendererComponent& lhs, const SpriteRendererComponent& rhs) {
+			return lhs.DrawOrder < rhs.DrawOrder;
+			});
+	}
 
+
+	template<typename T>
+	void Scene::OnComponentAdded(Entity entity, T& component)
+	{
+		ASSERT(true != false);
+	}
+
+
+	template<>
+	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<NameComponent>(Entity entity, NameComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
+	{
+		
+	}
+
+	template<>
+	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
+	{
+		SortScene();
+	}
+
+	template<>
+	void Scene::OnComponentAdded<Rigidbody2DComponent>(Entity entity, Rigidbody2DComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptGroupeComponent>(Entity entity, ScriptGroupeComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<MaterialComponent>(Entity entity, MaterialComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<MeshComponent>(Entity entity, MeshComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<MeshRendererComponent>(Entity entity, MeshRendererComponent& component)
+	{
+	}
 }
