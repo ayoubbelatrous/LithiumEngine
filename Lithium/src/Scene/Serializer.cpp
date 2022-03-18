@@ -234,6 +234,7 @@ namespace Lithium
 			emitter << YAML::Key << "Sprite Renderer" << YAML::BeginMap;
 			emitter << YAML::Key << "Color" << YAML::Value << sprite.Color;
 			emitter << YAML::Key << "Texture ID" << YAML::Value << sprite.TextureAsset.GetUUID();
+			emitter << YAML::Key << "DrawOrder" << YAML::Value << sprite.DrawOrder;
 			emitter << YAML::EndMap;
 		}
 
@@ -369,6 +370,7 @@ namespace Lithium
 				SpriteRendererComponent& sp = deserEntity.GetComponent<SpriteRendererComponent>();
 				glm::vec4 color = sprite["Color"].as<glm::vec4>();
 				uint64_t TextureID = sprite["Texture ID"].as<uint64_t>();
+				sp.DrawOrder = sprite["DrawOrder"].as<int>();
 				sp.Color = color;
 			}
 
