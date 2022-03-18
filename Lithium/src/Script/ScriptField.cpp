@@ -29,6 +29,13 @@ namespace Lithium
 			m_Value = val;
 			break;
 		}
+		case(ScriptType::Bool):
+		{
+			bool val = 0.0f;
+			GetMonoValue(&val);
+			m_Value = val;
+			break;
+		}
 		case(ScriptType::Vec2):
 		{
 			glm::vec2 val = glm::vec2(0.0);

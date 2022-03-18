@@ -16,7 +16,7 @@
 #include "Camera/SceneCamera.h"
 #include "Core/Math.h"
 #include "Physics/PhysicsTypes.h"
-
+#include "AssetManager/Asset.h"
 namespace Lithium
 {
 	enum class CameraMode
@@ -66,23 +66,18 @@ namespace Lithium
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color;
-		Ref<Texture> tex = nullptr;
+		Asset TextureAsset;
 		
-		glm::vec2 texIndex = glm::vec2();
 		SpriteRendererComponent()
 		{
 			Color = glm::vec4(1);
-			tex = CreateRef<Texture>();
 		}
 		SpriteRendererComponent(const glm::vec4 color)
 			:Color(color) {
-			tex = CreateRef<Texture>();
-
 		}
 
 		SpriteRendererComponent(const SpriteRendererComponent& other) = default;
 		glm::vec4 GetColor() const { return Color; }
-		Ref<Texture> GetTexture() const { return tex; }
 	
 	};
 

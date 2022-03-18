@@ -140,6 +140,16 @@ namespace Lithium
 				emitter << YAML::Key << "Value" << YAML::Value << val;
 				break;
 			}
+
+			case (ScriptType::Bool):
+			{
+				float val = 0;
+				val = field.second->GetLocalValue<float>();
+				emitter << YAML::Key << "Name" << YAML::Value << field.first;
+				emitter << YAML::Key << "Type" << YAML::Value << "BOOL";
+				emitter << YAML::Key << "Value" << YAML::Value << val;
+				break;
+			}
 			case (ScriptType::Vec2):
 			{
 				glm::vec2 val = glm::vec2(0);
@@ -223,7 +233,7 @@ namespace Lithium
 			SpriteRendererComponent& sprite = entity.GetComponent<SpriteRendererComponent>();
 			emitter << YAML::Key << "Sprite Renderer" << YAML::BeginMap;
 			emitter << YAML::Key << "Color" << YAML::Value << sprite.Color;
-			emitter << YAML::Key << "Texture Path" << YAML::Value << sprite.tex->GetPath();
+			emitter << YAML::Key << "Texture ID" << YAML::Value << sprite.TextureAsset.GetUUID();
 			emitter << YAML::EndMap;
 		}
 
@@ -358,17 +368,8 @@ namespace Lithium
 				deserEntity.AddComponent<SpriteRendererComponent>();
 				SpriteRendererComponent& sp = deserEntity.GetComponent<SpriteRendererComponent>();
 				glm::vec4 color = sprite["Color"].as<glm::vec4>();
-				std::string path = sprite["Texture Path"].as<std::string>();
+				uint64_t TextureID = sprite["Texture ID"].as<uint64_t>();
 				sp.Color = color;
-				if (path != "")
-				{
-					sp.tex = CreateRef<Texture>(path);
-				}
-				else
-				{
-					sp.tex = CreateRef<Texture>();
-				}
-
 			}
 
 			
@@ -411,6 +412,12 @@ namespace Lithium
 							case(ScriptType::Float):
 							{
 								Value = field["Value"].as<float>();
+								break;
+							}
+
+							case(ScriptType::Bool):
+							{
+								Value = field["Value"].as<bool>();
 								break;
 							}
 							case(ScriptType::Vec2):
@@ -461,6 +468,12 @@ namespace Lithium
 								case(ScriptType::Float):
 								{
 									ScriptFields[name]->SetValue<float>(std::get<float>(Value));
+									break;
+								}
+
+								case(ScriptType::Bool):
+								{
+									ScriptFields[name]->SetValue<bool>(std::get<float>(Value));
 									break;
 								}
 								case(ScriptType::Vec2):

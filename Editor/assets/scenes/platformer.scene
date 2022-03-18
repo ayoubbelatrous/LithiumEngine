@@ -1,0 +1,46 @@
+Scene: NONE
+Entities:
+  - Entity: 13369499912496722229
+    Name: Pos
+    Transform:
+      Position: [-11.86835, 1.90720558, 0]
+      Rotation: [0, -0, 0]
+      Scale: [25.3044014, 15.8954086, 15.8954086]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 16167549121604671843
+    Child Manager:
+      children: ids go here
+  - Entity: 18216150218751828030
+    Name: Player
+    Transform:
+      Position: [-47.1254044, 0.18562746, 0]
+      Rotation: [0, -0, 0]
+      Scale: [22.5503998, 15.6599989, 15.6599989]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 1325821609241459565
+    Name: Camera
+    Transform:
+      Position: [-18.2653427, 0.457952112, 0]
+      Rotation: [0, -0, 0]
+      Scale: [4.47000027, 7.61247969, 4.47000027]
+    Sprite Renderer:
+      Color: [0.383966267, 0.383966267, 0.383966267, 1]
+      Texture ID: 4132725104354304591
+    Child Manager:
+      children: ids go here
+  - Entity: 2589544843965885102
+    Name: Pos
+    Transform:
+      Position: [-18.2564449, -2.21525931, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1.94879997, 1.94879997, 43.6295433]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 564130572566766818
+    Child Manager:
+      children: ids go here

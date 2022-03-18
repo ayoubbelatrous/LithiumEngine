@@ -12,7 +12,7 @@
 
 namespace Lithium
 {
-	using FieldValue = std::variant<int,float,glm::vec2,glm::vec3,glm::vec4,std::string,uint64_t>;
+	using FieldValue = std::variant<int,float,bool,glm::vec2,glm::vec3,glm::vec4,std::string,uint64_t>;
 
 	class ScriptField
 	{
@@ -81,6 +81,14 @@ namespace Lithium
 		void SetValue(float value)
 		{
 			ASSERT(m_Type == ScriptType::Float);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void SetValue(bool value)
+		{
+			ASSERT(m_Type == ScriptType::Bool);
 			m_Value = value;
 			SetMonoValue(&value);
 		}

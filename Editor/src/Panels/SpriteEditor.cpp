@@ -1,11 +1,7 @@
 #include "lipch.h"
 #include "SpriteEditor.h"
 #if 0
-#include "SpriteEditor.h"
-#include "imgui.h"
-#include <filesystem>
-#include "gtc/type_ptr.hpp"
-#include <iostream>
+
 namespace Lithium
 {
 	extern AssetMananger assetManager;

@@ -6,7 +6,7 @@ class Player : Script
 	public float speed = 0.0f;
 	public float AirSpeed = 0.0f;
 	public float JumpSpeed = 0.0f;
-    bool Grounded = false;
+    public bool Grounded = false;
 
     void Start()
 	{
@@ -30,8 +30,6 @@ class Player : Script
         {
             entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(AirSpeed * GetAxialInput().X, vel.Y);
         }
-
-
     }
     private Vector2 GetAxialInput()
     {

@@ -2,6 +2,7 @@
 #include "Scene/Scene.h"
 #include "Scene/Entity.h"
 #include "Core/Base.h"
+
 namespace Lithium
 {
 	class InspectorPanel

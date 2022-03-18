@@ -123,6 +123,17 @@ namespace Lithium
 
 		return modified;
 	}
+
+	static bool Property(const std::string& name, bool* value)
+	{
+		bool modified = false;
+		if (ImGui::Checkbox(name.c_str(), value))
+		{
+			modified = true;
+		}
+
+		return modified;
+	}
 	static bool Property(const std::string& name, glm::vec2* value)
 	{
 		bool modified = false;
@@ -280,11 +291,11 @@ namespace Lithium
 
 				ImGui::Separator();
 				ImGui::ColorEdit4("Color", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().Color));
-				if (m_Selection.GetComponent<SpriteRendererComponent>().tex->loaded)
+				/*if (m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset)
 				{
 					ImGui::Image((ImTextureID)m_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });
-				}
-				else
+				}*/
+				
 				{
 					ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,50 });
 				}
@@ -297,14 +308,11 @@ namespace Lithium
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path texturepath = root / path;
-						std::filesystem::path _path = m_Selection.GetComponent<SpriteRendererComponent>().tex->GetPath();
-
-
-						//CORE_LOG(_path);
+						Asset asset = Application::Get().assetManager->GetAssetFromPath(texturepath.string());
+						m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset = asset;
 					}
 					ImGui::EndDragDropTarget();
 				}
-				ImGui::InputFloat2("Tex Index", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().texIndex));
 			}
 
 			if (m_Selection.HasComponent<Rigidbody2DComponent>())
@@ -411,6 +419,17 @@ namespace Lithium
 								{
 									float val = 0;
 									val = field.second->GetValue<float>();
+									if (Property(field.first, &val))
+									{
+										field.second->SetValue(val);
+									}
+									break;
+								}
+
+								case (ScriptType::Bool):
+								{
+									bool val = 0;
+									val = field.second->GetValue<bool>();
 									if (Property(field.first, &val))
 									{
 										field.second->SetValue(val);

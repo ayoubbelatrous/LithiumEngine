@@ -7,6 +7,7 @@
 #include "Font/Font.h"
 #include "Script/MonoServer.h"
 #include <atomic>
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
 static std::atomic_bool canCheckAssembly;

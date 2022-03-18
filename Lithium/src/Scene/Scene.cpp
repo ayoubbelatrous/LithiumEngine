@@ -5,13 +5,12 @@
 #include "Renderer/Renderer2D.h"
 #include "Script/MonoServer.h"
 #include "gtc/type_ptr.hpp"
-#include "COre/Application.h"
+#include "Core/Application.h"
 #include "Core/Math.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
 #include "box2d/box2d.h"
-
-
+#include "AssetManager/AssetManager.h"
 
 namespace Lithium
 {
@@ -175,7 +174,14 @@ namespace Lithium
 			for (auto entity : view)
 			{
 				auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-				BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity);
+				if (sp.TextureAsset.GetUUID() == 0)
+				{
+					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity);
+				}
+				else
+				{
+					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(),Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset), (uint32_t)entity);
+				}
 			}
 		}
 

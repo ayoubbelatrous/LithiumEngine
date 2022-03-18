@@ -6,6 +6,7 @@
 #include "../EditorEvents.h"
 #include <vector>
 #include <iostream>
+
 namespace Lithium {
 	using EventCallback = std::function<void(Event&)>;
 	class AssetBrowserPanel

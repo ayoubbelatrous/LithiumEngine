@@ -8,7 +8,7 @@ Entities:
       Scale: [1593.62537, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
-      Texture Path: ""
+      Texture ID: 0
     Child Manager:
       children: ids go here
     Rigidbody2D:
@@ -29,7 +29,7 @@ Entities:
       Scale: [1, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
-      Texture Path: ""
+      Texture ID: 0
     Child Manager:
       children: ids go here
     ScriptGroupe:
@@ -63,6 +63,6 @@ Entities:
       Scale: [1, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
-      Texture Path: ""
+      Texture ID: 0
     Child Manager:
       children: ids go here

@@ -8,6 +8,7 @@
 #include "AssetManager/AssetManager.h"
 #include "Scene/SceneManager.h"
 #include "Script/MonoServer.h"
+#include "Core/UUID.h"
 
 namespace Lithium
 {

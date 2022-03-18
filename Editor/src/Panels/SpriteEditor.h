@@ -1,12 +1,7 @@
 #pragma once
 
 #if 0
-#include "Core/Base.h"
-#include "Renderer/Texture.h"
-#include "glm.hpp"
-#include "AssetManager/AssetManager.h"
-#include <functional>
-#include "../EditorEvents.h"
+
 
 namespace Lithium
 {

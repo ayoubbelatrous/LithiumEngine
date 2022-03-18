@@ -36,6 +36,7 @@ namespace Lithium
 	    {
 		if (src.HasComponent<Comp>())
 			dst.AddOrReplaceComponent<Comp>(src.GetComponent<Comp>());
+		Application::Get().assetManager->GetAssetFromPath("");
 	    }
 		static Ref<Scene> Copy(const Ref<Scene>& src);
 		

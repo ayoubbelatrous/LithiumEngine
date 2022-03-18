@@ -28,6 +28,7 @@ namespace Lithium
 		case MONO_TYPE_R4: return ScriptType::Float;
 		case MONO_TYPE_I4: return ScriptType::Int;
 		case MONO_TYPE_STRING: return ScriptType::String;
+		case MONO_TYPE_BOOLEAN: return ScriptType::Bool;
 		case MONO_TYPE_VALUETYPE:
 		{
 			char* name = mono_type_get_name(monoType);
@@ -54,6 +55,11 @@ namespace Lithium
 		else if (strcmp(str.c_str(), "FLOAT") == 0)
 		{
 			return ScriptType::Float;
+		}
+
+		else if (strcmp(str.c_str(), "BOOL") == 0)
+		{
+			return ScriptType::Bool;
 		}
 
 		else if (strcmp(str.c_str(), "VEC2") == 0)

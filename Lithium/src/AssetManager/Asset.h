@@ -1,43 +1,30 @@
 #pragma once
-
+#include "Core/UUID.h"
 
 namespace Lithium
 {
-	template<typename T>
 	class Asset
 	{
-		T _Asset;
+		UUID m_Id;
 	public:
-		Asset(const std::string& path)
-			:Path(path)
-		{}
-		Asset() = default;
-		~Asset()
+		Asset()
+			:m_Id(UUID(0))
 		{
-			*ref -= 1;
-			deleteCallBack();
 		}
-		
-		uint32_t Id;
-		std::string Path;
-		
-		T& GetAsset()
+		Asset(UUID id)
+			:m_Id(id)
 		{
-			return _Asset;
 		}
 
-		void SetAsset(const T& asset)
+		UUID GetUUID()
 		{
-			_Asset = asset;
+			return m_Id;
 		}
-		
-		uint32_t* ref;
 
-		std::function<void()> deleteCallBack;
-		void SetDeleteCallBack(std::function<void()> callback)
-		{
-			deleteCallBack = callback;
+		void SetUUID(UUID id){
+			m_Id = id;
 		}
+
 	};
 }
 
