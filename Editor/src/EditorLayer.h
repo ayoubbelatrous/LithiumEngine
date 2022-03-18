@@ -31,6 +31,7 @@
 #include "Script/MonoServer.h"
 #include "Core/Timer.h"
 #include "Scene/Camera/EditorCamera.h"
+#include "Project/Project.h"
 
 namespace Lithium
 {
@@ -129,5 +130,7 @@ namespace Lithium
 		glm::vec2 m_CameraDelta = { 0.0f,0.0f };
 		glm::vec3 m_FocalPoint = glm::vec3(0);
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
+
+		Ref<Project> m_Project = nullptr;
 	};
 }

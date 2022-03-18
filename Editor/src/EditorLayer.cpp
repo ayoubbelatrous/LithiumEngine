@@ -7,7 +7,7 @@
 #include "Font/Font.h"
 #include "Script/MonoServer.h"
 #include <atomic>
-
+#include "Panels/ProjectWizard.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
 static std::atomic_bool canCheckAssembly;
@@ -110,8 +110,6 @@ namespace Lithium
 
 	void EditorLayer::OnUpdate()
 	{
-
-		
 		LT_PROFILE_FUNCTION("OnUpdate");
 		//TODO: reload all classes in scriptcomponent if assembly changes
 		
@@ -378,12 +376,14 @@ namespace Lithium
 
 	void EditorLayer::RenderImgui()
 	{
-
 		LT_PROFILE_FUNCTION("RenderImGui()");
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+
+	
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
@@ -418,7 +418,22 @@ namespace Lithium
 			ImGuiID dockspace_id = ImGui::GetID("DockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
-		
+		if (m_Project != nullptr)
+		{
+			ProjectWizard::Update();
+			ImGui::End();
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+			{
+				GLFWwindow* backup_current_context = glfwGetCurrentContext();
+				ImGui::UpdatePlatformWindows();
+				ImGui::RenderPlatformWindowsDefault();
+				glfwMakeContextCurrent(backup_current_context);
+			}
+			return;
+		}
 		if (ImGui::BeginMenuBar())
 		{
 			
