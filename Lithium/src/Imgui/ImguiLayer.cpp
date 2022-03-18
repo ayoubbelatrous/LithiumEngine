@@ -28,7 +28,7 @@ namespace Lithium
 
 		ImGui_ImplGlfw_InitForOpenGL(app.GetWindow().GetglfwWindowptr(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
-	
+		
 		ImGuiStyle* style = &ImGui::GetStyle();
 		
 

@@ -6,7 +6,7 @@ class Player : Script
 	public float speed = 0.0f;
 	public float AirSpeed = 0.0f;
 	public float JumpSpeed = 0.0f;
-    public bool Grounded = false;
+    public bool Grounded = true;
 
     void Start()
 	{
@@ -61,13 +61,13 @@ class Player : Script
     void OnCollisionEnter()
     {
         entity.GetComponent<SpriteRenderer>().Color = new Vector4(1, 0, 0, 1);
-        Grounded = true;
+       // Grounded = true;
     }
 
     void OnCollisionExit()
     {
         entity.GetComponent<SpriteRenderer>().Color = new Vector4(1);
-        Grounded = false;
+       // Grounded = false;
 
     }
 }

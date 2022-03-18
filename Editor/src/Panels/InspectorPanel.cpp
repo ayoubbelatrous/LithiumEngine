@@ -291,6 +291,7 @@ namespace Lithium
 
 				ImGui::Separator();
 				ImGui::ColorEdit4("Color", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().Color));
+				ImGui::InputInt("Draw Order",&m_Selection.GetComponent<SpriteRendererComponent>().DrawOrder);
 				/*if (m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset)
 				{
 					ImGui::Image((ImTextureID)m_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });

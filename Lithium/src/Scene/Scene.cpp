@@ -14,6 +14,7 @@
 
 namespace Lithium
 {
+
 	class ContactListener : public b2ContactListener
 	{
 	public:
@@ -169,18 +170,24 @@ namespace Lithium
 		}
 
 		{
-			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
+			m_Registry.sort<SpriteRendererComponent>([](const SpriteRendererComponent& lhs, const SpriteRendererComponent& rhs) {
+				return lhs.DrawOrder < rhs.DrawOrder;
+				});
+			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 
 			for (auto entity : view)
 			{
-				auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
+
+
+				auto& [sp, tc] = view.get<SpriteRendererComponent, TransformComponent>(entity);
+
 				if (sp.TextureAsset.GetUUID() == 0)
 				{
 					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity);
 				}
 				else
 				{
-					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(),Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset), (uint32_t)entity);
+					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset), (uint32_t)entity);
 				}
 			}
 		}
@@ -251,15 +258,29 @@ namespace Lithium
 
 
 		{
-			auto view = GetRegistry().view<TransformComponent, SpriteRendererComponent>();
+			m_Registry.sort<SpriteRendererComponent>([](const SpriteRendererComponent& lhs, const SpriteRendererComponent& rhs) {
+				return lhs.DrawOrder < rhs.DrawOrder;
+				});
+			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 
 			for (auto entity : view)
 			{
+				
 
-				auto& [tc, sp] = view.get<TransformComponent, SpriteRendererComponent>(entity);
-				BatchRenderer::DrawQuad(tc.ModelMatrix , sp.GetColor(), (uint32_t)entity);
+				auto& [sp, tc] = view.get<SpriteRendererComponent, TransformComponent>(entity);
+
+				if (sp.TextureAsset.GetUUID() == 0)
+				{
+					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity);
+				}
+				else
+				{
+					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset), (uint32_t)entity);
+				}
 			}
 		}
+
+
 
 		{
 			const int32_t velocityIterations = 6;
@@ -409,7 +430,7 @@ namespace Lithium
 		Ref<Scene> newscene = CreateRef<Scene>();
 		auto view = src->GetRegistry().view<NameComponent>();
 		entt::registry& srcSceneRegistry = src->GetRegistry();
-
+		
 		for (auto e : view)
 		{
 			UUID uuid = srcSceneRegistry.get<IDComponent>(e).ID;
