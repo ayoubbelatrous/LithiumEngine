@@ -3,8 +3,8 @@ Entities:
   - Entity: 10414433048293152650
     Name: Pos
     Transform:
-      Position: [0.993696034, -1.17552745, 0]
-      Rotation: [180, 5.00895612e-06, 180]
+      Position: [1.38122439, -1.28826284, 0]
+      Rotation: [-180, 5.00895612e-06, -180]
       Scale: [1, 1.39999998, 1]
     Sprite Renderer:
       Color: [0.493670881, 0.493670881, 0.493670881, 1]
@@ -27,12 +27,12 @@ Entities:
   - Entity: 7699374773761216972
     Name: Camera
     Transform:
-      Position: [-0.31631887, -0.991240978, 0]
+      Position: [-1.07070351, -1.43376875, -0.861324906]
       Rotation: [0, -0, 0]
-      Scale: [0.430000007, 0.430000007, 0.430000007]
+      Scale: [0.332793802, 0.593529046, 2.43676448]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
-      Texture ID: 9344715928880079237
+      Texture ID: 3268259082113240235
       DrawOrder: 1
     Child Manager:
       children: ids go here
@@ -65,7 +65,7 @@ Entities:
   - Entity: 17333063651586580139
     Name: Pos
     Transform:
-      Position: [1.81148946, -1.13583302, 0]
+      Position: [-4.08197308, -1.13583302, 0]
       Rotation: [0, 5.0089684e-06, 0]
       Scale: [0.685995042, 0.155314252, 1.22000003]
     Sprite Renderer:
@@ -87,7 +87,7 @@ Entities:
   - Entity: 7071666741615867909
     Name: Pos
     Transform:
-      Position: [-1.53488815, -1.23500383, 0]
+      Position: [-1.65708339, -1.2913717, 0]
       Rotation: [0, -0, 0]
       Scale: [1, 1.39999998, 1]
     Sprite Renderer:
@@ -99,7 +99,7 @@ Entities:
   - Entity: 2689561306853466973
     Name: Pos
     Transform:
-      Position: [-0.955261707, -1.09905744, 0]
+      Position: [-0.736837029, -1.12724137, 0]
       Rotation: [0, -0, 0]
       Scale: [1, 1.39999998, 1]
     Sprite Renderer:
@@ -111,7 +111,7 @@ Entities:
   - Entity: 9408563109210054077
     Name: Pos
     Transform:
-      Position: [0.611544609, -1.08206427, 0]
+      Position: [0.611544609, -1.1032021, 0]
       Rotation: [0, -0, 0]
       Scale: [1, 1.39999998, 1]
     Sprite Renderer:
@@ -131,6 +131,28 @@ Entities:
     Rigidbody2D:
       FixedRotation: false
       Type: Static
+    BoxCollider2D:
+      Size: [0.5, 0.5]
+      Offset: [0, 0]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 11514845678311824899
+    Name: Camera
+    Transform:
+      Position: [3.56187749, -0.176190764, 0]
+      Rotation: [0, -0, 0]
+      Scale: [3.06985569, 3.06985569, 3.06985569]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 11167694175211764772
+      DrawOrder: 1
+    Child Manager:
+      children: ids go here
+    Rigidbody2D:
+      FixedRotation: true
+      Type: Dynamic
     BoxCollider2D:
       Size: [0.5, 0.5]
       Offset: [0, 0]

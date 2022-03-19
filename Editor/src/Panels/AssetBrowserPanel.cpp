@@ -16,7 +16,7 @@ namespace Lithium
 	void AssetBrowserPanel::OnUpdate()
 	{
 
-		float itemwidth = 128;
+		float itemwidth = 78;
 		
 		ImGui::Begin("Project");
 
@@ -60,7 +60,7 @@ namespace Lithium
 		
 			ImTextureID icontexid = entry.is_directory() ? (ImTextureID)_FolderIcon->GetID() : (ImTextureID)_FileIcon->GetID();
 			
-			ImGui::ImageButton(icontexid, { 100,100 }, { 0,1 }, { 1,0 });
+			ImGui::ImageButton(icontexid, { 60,60 }, { 0,1 }, { 1,0 });
 
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{

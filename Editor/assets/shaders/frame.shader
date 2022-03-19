@@ -23,7 +23,7 @@ uniform sampler2D utex;
 
 void main()
 {
-    vec4 fragColor = texture(utex, vtex);
-    float gamma = 2.0;
-    color = vec4(pow(fragColor.rgb, vec3(1.0 / gamma)),1.0);
+    color = texture(utex, vtex);
+    //float gamma = 2.0;
+   // color = vec4(pow(fragColor.rgb, vec3(1.0 / gamma)),1.0);
 }
