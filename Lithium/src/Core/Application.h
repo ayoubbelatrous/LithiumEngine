@@ -21,6 +21,7 @@ namespace Lithium
 		GUIlayer* _ImguiLayer;
 		double m_PreviousTime = 0;
 		double m_DeltaTime = 0;
+		bool m_Minimized = false;
 	public:
 		Application();
 		~Application();

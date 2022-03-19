@@ -54,12 +54,15 @@ namespace Lithium
 			m_DeltaTime = time - m_PreviousTime;
 			m_PreviousTime = time;
 
-			for (Layer* layer:_Stack)
+			if (m_Minimized == false)
 			{
-				layer->OnUpdate();
+				for (Layer* layer : _Stack)
+				{
+					layer->OnUpdate();
+				}
 			}
-
-			_Window->OnUpdate();
+				_Window->OnUpdate();
+			
 		}
 	}
 
@@ -83,7 +86,15 @@ namespace Lithium
 			WindowResizeEvent& resizeevent = static_cast<WindowResizeEvent&>(e);
 			int height = resizeevent.height;
 			int width = resizeevent.width;
-		
+			if (width == 0 && height == 0)
+			{
+				m_Minimized = true;
+			}
+			else
+			{
+				m_Minimized = false;
+			}
+			
 		}
 	}
 
