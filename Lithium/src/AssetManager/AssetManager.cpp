@@ -30,7 +30,6 @@ namespace Lithium {
 
 		if (m_TextureRegistry.find(ID) != m_TextureRegistry.end())
 		{
-			SaveAssetRegistry();
 			return m_TextureRegistry[ID];
 		}
 		else
@@ -41,6 +40,7 @@ namespace Lithium {
 			Ref<Texture> texture = CreateRef<Texture>(path);
 			m_TextureRegistry.emplace(asset.GetUUID(), texture);
 			SaveAssetRegistry();
+
 			return texture;
 		}
 	}

@@ -3,9 +3,11 @@ PathRegistry:
     Path: ""
   - UUID: 8159922648104178881
     Path: assets\sprites\background.png
-  - UUID: 10460744895190112220
-    Path: assets\sprites\tree.png
   - UUID: 3366555710911705089
     Path: assets\sprites\blocks.png
+  - UUID: 10460744895190112220
+    Path: assets\sprites\tree.png
   - UUID: 12114023097513154699
     Path: assets\sprites\man.png
+  - UUID: 9344715928880079237
+    Path: ""
