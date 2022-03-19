@@ -19,7 +19,7 @@ class Player : Script
    
         if(Input.IsKeyPressed(KeyCode.Space) && Grounded)
         {
-            vel.Y = speed;
+            vel.Y = JumpSpeed;
         }
         if(Grounded)
         {
@@ -29,6 +29,16 @@ class Player : Script
         else
         {
             entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(AirSpeed * GetAxialInput().X, vel.Y);
+        }
+        if(GetAxialInput().X == 1)
+        {
+            entity.GetComponent<Transform>().Rotation = new Vector3(0,0,0);
+           
+        }
+        else if(GetAxialInput().X == -1)
+        {
+            entity.GetComponent<Transform>().Rotation = new Vector3(0, -180, 0);
+
         }
     }
     private Vector2 GetAxialInput()
@@ -60,13 +70,13 @@ class Player : Script
 
     void OnCollisionEnter()
     {
-        entity.GetComponent<SpriteRenderer>().Color = new Vector4(1, 0, 0, 1);
+        //entity.GetComponent<SpriteRenderer>().Color = new Vector4(1, 0, 0, 1);
        // Grounded = true;
     }
 
     void OnCollisionExit()
     {
-        entity.GetComponent<SpriteRenderer>().Color = new Vector4(1);
+        //entity.GetComponent<SpriteRenderer>().Color = new Vector4(1);
        // Grounded = false;
 
     }

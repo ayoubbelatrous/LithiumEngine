@@ -143,8 +143,8 @@ namespace Lithium
 
 			case (ScriptType::Bool):
 			{
-				float val = 0;
-				val = field.second->GetLocalValue<float>();
+				bool val = 0;
+				val = field.second->GetLocalValue<bool>();
 				emitter << YAML::Key << "Name" << YAML::Value << field.first;
 				emitter << YAML::Key << "Type" << YAML::Value << "BOOL";
 				emitter << YAML::Key << "Value" << YAML::Value << val;
@@ -476,7 +476,7 @@ namespace Lithium
 
 								case(ScriptType::Bool):
 								{
-									ScriptFields[name]->SetValue<bool>(std::get<float>(Value));
+									ScriptFields[name]->SetValue<bool>(std::get<bool>(Value));
 									break;
 								}
 								case(ScriptType::Vec2):

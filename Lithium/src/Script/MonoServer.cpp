@@ -165,6 +165,32 @@ namespace Lithium
 		memcpy(vector, &trans.Position,sizeof(glm::vec3));
 	}
 
+	void MonoServer::SetRotation_Internal(uint64_t entityID, glm::vec3* vector)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<TransformComponent>().Rotation = *vector;
+	}
+
+	void MonoServer::GetRotation_Internal(uint64_t entityID, glm::vec3* vector)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		TransformComponent& trans = entity.GetComponent<TransformComponent>();
+		memcpy(vector, &trans.Rotation, sizeof(glm::vec3));
+	}
+
+	void MonoServer::SetScale_Internal(uint64_t entityID, glm::vec3* vector)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<TransformComponent>().Scale = *vector;
+	}
+
+	void MonoServer::GetScale_Internal(uint64_t entityID, glm::vec3* vector)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		TransformComponent& trans = entity.GetComponent<TransformComponent>();
+		memcpy(vector, &trans.Scale, sizeof(glm::vec3));
+	}
+
 	void MonoServer::SetColor_Internal(uint64_t entityID, glm::vec4* color)
 	{
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
@@ -275,6 +301,12 @@ namespace Lithium
 
 		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", MonoServer::SetPosition_Internal);
 		mono_add_internal_call("Lithium.Core.Transform::GetPosition_Internal", MonoServer::GetPosition_Internal);
+
+		mono_add_internal_call("Lithium.Core.Transform::SetRotation_Internal", MonoServer::SetRotation_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::GetRotation_Internal", MonoServer::GetRotation_Internal);
+
+		mono_add_internal_call("Lithium.Core.Transform::SetScale_Internal", MonoServer::SetScale_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::GetScale_Internal", MonoServer::GetScale_Internal);
 
 		mono_add_internal_call("Lithium.Core.NameComponent::SetName_Internal", MonoServer::SetName_Internal);
 		mono_add_internal_call("Lithium.Core.NameComponent::GetName_Internal", MonoServer::GetName_Internal);

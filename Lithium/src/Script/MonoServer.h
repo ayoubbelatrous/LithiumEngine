@@ -56,6 +56,11 @@ namespace Lithium
 			//transform component
 			static void SetPosition_Internal(uint64_t entityID, glm::vec3* vector);
 			static void GetPosition_Internal(uint64_t entityID, glm::vec3* vector);
+			static void SetRotation_Internal(uint64_t entityID, glm::vec3* vector);
+			static void GetRotation_Internal(uint64_t entityID, glm::vec3* vector);
+			static void SetScale_Internal(uint64_t entityID, glm::vec3* vector);
+			static void GetScale_Internal(uint64_t entityID, glm::vec3* vector);
+
 
 			//sprite renderer component
 			static void SetColor_Internal(uint64_t entityID, glm::vec4* color);

@@ -37,7 +37,7 @@ namespace Lithium {
 		{
 			
 			std::string path = m_PathRegistry[asset.GetUUID()];
-			CORE_LOG("texture path");
+			
 			Ref<Texture> texture = CreateRef<Texture>(path);
 			m_TextureRegistry.emplace(asset.GetUUID(), texture);
 			SaveAssetRegistry();
