@@ -23,5 +23,6 @@
 #include <mono/metadata/environment.h>
 #include <mono/metadata/attrdefs.h>
 #include <xhash>
+#include "yaml-cpp/yaml.h"
 
 //#include <box2d/box2d.h>

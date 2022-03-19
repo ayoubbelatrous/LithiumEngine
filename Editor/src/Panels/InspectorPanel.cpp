@@ -318,7 +318,7 @@ namespace Lithium
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path texturepath = root / path;
-						Asset asset = Application::Get().assetManager->GetAssetFromPath(texturepath.string());
+						Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(texturepath.string());
 						m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset = asset;
 					}
 					ImGui::EndDragDropTarget();

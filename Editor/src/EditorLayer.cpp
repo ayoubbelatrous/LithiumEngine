@@ -543,7 +543,7 @@ namespace Lithium
 
 		if (selected.GetHandle() != entt::null && selected.HasComponent<TransformComponent>())
 		{
-			glm::mat4 matri = selected.GetComponent<TransformComponent>().GetMatrix();
+			glm::mat4 matri = selected.GetComponent<TransformComponent>().ModelMatrix;
 			UUID parentUUID = selected.GetComponent<RelationShipComponent>().Parent;
 			Entity ParentEntity(m_ActiveScene->GetUUIDMap()[parentUUID], m_ActiveScene.get());
 			TransformComponent& ParentTransform = ParentEntity.GetComponent<TransformComponent>();
@@ -556,9 +556,10 @@ namespace Lithium
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(matri, translation, rotation, scale);
 				glm::vec3 deltaRotation = rotation - selected.GetComponent<TransformComponent>().Rotation;
-				selected.GetComponent<TransformComponent>().Position = translation;
-				selected.GetComponent<TransformComponent>().Rotation = glm::degrees(rotation);
-				selected.GetComponent<TransformComponent>().Scale = scale;
+ 				selected.GetComponent<TransformComponent>().Position = translation;
+ 				selected.GetComponent<TransformComponent>().Rotation = glm::degrees(rotation);
+ 				selected.GetComponent<TransformComponent>().Scale = scale;
+
 				UsingGizmos = true;
 			}
 			else

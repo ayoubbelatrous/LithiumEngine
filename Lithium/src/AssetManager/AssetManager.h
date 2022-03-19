@@ -9,16 +9,25 @@ namespace Lithium
 	class AssetManager
 	{
 	public:
-		AssetManager() = default;
-
+		AssetManager()
+		{
+			LoadAssetRegistry();
+		};
 		
+		template<typename T>
 		Asset GetAssetFromPath(const std::string& path);
 		
 		template<typename T>
 		T GetAsset(Asset asset);
+
 	private:
+
+		void SaveAssetRegistry();
+		void LoadAssetRegistry();
 		std::unordered_map<std::string, uint64_t> m_AssetRegistry;
+		std::unordered_map<uint64_t, std::string> m_PathRegistry;
 		std::unordered_map<uint64_t, Ref<Texture>> m_TextureRegistry;
+		std::string m_AssetRegistryRootPath = "Cache/";
 	};
 
 }

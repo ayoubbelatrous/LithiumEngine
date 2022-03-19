@@ -1,182 +1,38 @@
 Scene: NONE
 Entities:
-  - Entity: 7272764969698665721
-    Name: Block
-    Transform:
-      Position: [5.23301935, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 9736768436792978537
-    Name: Block
-    Transform:
-      Position: [3.69539928, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 5997074541342844911
-    Name: Block
-    Transform:
-      Position: [-4.78631353, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 16150354880894932178
-    Name: Block
-    Transform:
-      Position: [-2.35588074, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 16519284781224865083
-    Name: Block
-    Transform:
-      Position: [-2.30627918, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 16533599029269609666
-    Name: Block
-    Transform:
-      Position: [-1.71107101, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 972958600365625408
-    Name: Block
-    Transform:
-      Position: [-0.867859721, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 17908114037389812337
-    Name: Block
-    Transform:
-      Position: [-0.867859721, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 17979696189600717185
-    Name: Block
-    Transform:
-      Position: [0.0745522976, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 6608922677769136548
-    Name: Block
-    Transform:
-      Position: [2.05857849, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 9735492538803413015
-    Name: Block
-    Transform:
-      Position: [-7.71275187, -0.851184726, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
-    Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
-    Child Manager:
-      children: ids go here
-  - Entity: 10340839352404706971
-    Name: Block
-    Transform:
-      Position: [-7.8417263, -3.10021782, 0]
-      Rotation: [0, -0, 0]
-      Scale: [5.20681477, 1, 1]
-    Sprite Renderer:
-      Color: [0.392405093, 0.392405093, 0.392405093, 1]
-      Texture ID: 12179889522119914834
-      DrawOrder: 1
-    Child Manager:
-      children: ids go here
-  - Entity: 7286004614981701064
+  - Entity: 3537407853964002895
     Name: Player
     Transform:
-      Position: [-9.16200829, -1.9051373, 0]
+      Position: [-1.45134199, 0.956375897, 0]
       Rotation: [0, -0, 0]
-      Scale: [1.52400005, 1.52400005, 1.52400005]
+      Scale: [1, 1, 1]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
-      Texture ID: 2091040195050379071
+      Texture ID: 0
       DrawOrder: 0
     Child Manager:
       children: ids go here
-  - Entity: 3811520048402624000
-    Name: Block
+  - Entity: 12290011451414052829
+    Name: Camera
     Transform:
-      Position: [5.92742872, -2.73600936, 0.24999994]
-      Rotation: [0, -0, 0]
-      Scale: [3.90511107, 5.12840414, 1.12499988]
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
     Sprite Renderer:
-      Color: [0.248945177, 0.248945177, 0.248945177, 1]
-      Texture ID: 8983153462112507414
-      DrawOrder: -1
+      Color: [1, 1, 1, 1]
+      Texture ID: 8159922648104178881
+      DrawOrder: 0
     Child Manager:
       children: ids go here
-  - Entity: 10829231618198598395
-    Name: Player
+  - Entity: 1732893883583744423
+    Name: Pos
     Transform:
-      Position: [-6.07756329, 0, -0.75]
+      Position: [1.27516782, 0.805369377, 0]
       Rotation: [0, -0, 0]
-      Scale: [25.4085197, 15.2941103, 2.5]
+      Scale: [1, 1, 1]
     Sprite Renderer:
-      Color: [0.649789035, 0.638822138, 0.638822138, 1]
-      Texture ID: 17076228061978345929
-      DrawOrder: -10
+      Color: [1, 1, 1, 1]
+      Texture ID: 8159922648104178881
+      DrawOrder: 0
     Child Manager:
       children: ids go here

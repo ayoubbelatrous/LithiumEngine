@@ -370,6 +370,7 @@ namespace Lithium
 				SpriteRendererComponent& sp = deserEntity.GetComponent<SpriteRendererComponent>();
 				glm::vec4 color = sprite["Color"].as<glm::vec4>();
 				uint64_t TextureID = sprite["Texture ID"].as<uint64_t>();
+				sp.TextureAsset = Asset(UUID(TextureID));
 				sp.DrawOrder = sprite["DrawOrder"].as<int>();
 				sp.Color = color;
 			}
