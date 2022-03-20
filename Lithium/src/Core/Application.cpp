@@ -61,7 +61,7 @@ namespace Lithium
 					layer->OnUpdate();
 				}
 			}
-				_Window->OnUpdate();
+			_Window->OnUpdate();
 			
 		}
 	}
