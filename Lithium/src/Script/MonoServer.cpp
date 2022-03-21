@@ -49,6 +49,10 @@ namespace Lithium
 		{
 			return entity.HasComponent<Rigidbody2DComponent>();
 		}
+		else if (strcmp(name, "Camera") == 0)
+		{
+			return entity.HasComponent<CameraComponent>();
+		}
 
 		return false;
 	}
@@ -233,6 +237,57 @@ namespace Lithium
 		memcpy(velocity, &b2bd.GetVelocity(), sizeof(glm::vec2));
 	}
 
+	void MonoServer::SetCameraProjection_Internal(uint64_t entityID, int* projection)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<CameraComponent>().Camera.SetProjectionType((SceneCamera::ProjectionType)*projection);
+	}
+
+	int MonoServer::GetCameraProjection_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		return (int)entity.GetComponent<CameraComponent>().Camera.GetProjectionType();
+	}
+
+	void MonoServer::SetCameraOrthographicSize_Internal(uint64_t entityID, float* size)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<CameraComponent>().Camera.SetOrthographicSize(*size);
+
+	}
+
+	float MonoServer::GetCameraOrthographicSize_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		return entity.GetComponent<CameraComponent>().Camera.GetOrthographicSize();
+
+	}
+
+	void MonoServer::SetCameraPrimary_Internal(uint64_t entityID, bool* primary)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<CameraComponent>().Primary = *primary;
+	}
+
+	bool MonoServer::GetCameraPrimary_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		return entity.GetComponent<CameraComponent>().Primary;
+	}
+
+	void MonoServer::SetCameraFixedAspectRatio_Internal(uint64_t entityID, bool* fixedaspectration)
+	{
+
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<CameraComponent>().FixedAspectRatio = *fixedaspectration;
+	}
+
+	bool MonoServer::GetCameraFixedAspectRatio_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		return entity.GetComponent<CameraComponent>().FixedAspectRatio;
+	}
+
 	MonoString* MonoServer::GetName_Internal(uint64_t entityID)
 	{
 		
@@ -319,6 +374,20 @@ namespace Lithium
 
 		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyVelocity_Internal", MonoServer::SetRigidbodyVelocity_Internal);
 		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyVelocity_Internal", MonoServer::GetRigidbodyVelocity_Internal);
+
+
+
+		mono_add_internal_call("Lithium.Core.Camera::SetCameraProjection_Internal", MonoServer::SetCameraProjection_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::GetCameraProjection_Internal", MonoServer::GetCameraProjection_Internal);
+
+		mono_add_internal_call("Lithium.Core.Camera::SetCameraPrimary_Internal", MonoServer::SetCameraPrimary_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::GetCameraPrimary_Internal", MonoServer::GetCameraPrimary_Internal);
+
+		mono_add_internal_call("Lithium.Core.Camera::SetCameraOrthographicSize_Internal", MonoServer::SetCameraOrthographicSize_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::GetCameraOrthographicSize_Internal", MonoServer::GetCameraOrthographicSize_Internal);
+
+		mono_add_internal_call("Lithium.Core.Camera::SetCameraFixedAspectRatio_Internal", MonoServer::SetCameraFixedAspectRatio_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::GetCameraFixedAspectRatio_Internal", MonoServer::GetCameraFixedAspectRatio_Internal);
 
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", MonoServer::MouseKeyDown_Internal);

@@ -594,18 +594,7 @@ namespace Lithium
 		}
 		ImGui::End();
 		ImGui::Begin("Stats");
-		ImGui::DragFloat3("camera", glm::value_ptr(m_CameraPosition));
-		ImGui::DragFloat3("focal point",glm::value_ptr(m_FocalPoint));
-		float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
-
-		ImGui::DragFloat("aspect", &AspectRatio);
-		ImGui::DragFloat("ortho size", &orthosize);
-		ImGui::Text("mouse delta x(%.4f) , y(%.4f)", m_CameraDelta.x * orthosize * 0.5f, m_CameraDelta.y * orthosize * 0.5f);
-
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::Text(_EditorStatus.c_str());
-
-	
 		ImGui::End();
 
 		if (m_OpenSceneSaveDialog)

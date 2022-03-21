@@ -102,6 +102,7 @@ namespace Lithium.Core
     }
     public class Rigidbody2D : Component
     {
+
      
         public bool FixedRotation
         {
@@ -139,5 +140,81 @@ namespace Lithium.Core
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static void GetRigidbodyVelocity_Internal(UInt64 entityID,out Vector2 velocity);
+    }
+
+    public class Camera : Component
+    {
+        public enum CameraProjection : UInt16
+        {
+            Orthographic = 0,
+            Perspective = 1,
+        }
+
+        public CameraProjection Projection
+        {
+            get
+            {
+                return GetCameraProjection_Internal(Entity.ID);
+            }
+            set => SetCameraProjection_Internal(Entity.ID, ref value);
+        }
+        public float OrthographicSize
+        {
+            get
+            {
+                
+                return GetCameraOrthographicSize_Internal(Entity.ID);
+            }
+            set => SetCameraOrthographicSize_Internal(Entity.ID, ref value);
+        }
+
+        public bool Primary
+        {
+            get
+            {
+                return GetCameraPrimary_Internal(Entity.ID);
+            }
+            set => SetCameraPrimary_Internal(Entity.ID, ref value);
+        }
+
+        public bool FixedAspectRatio
+        {
+            get
+            {
+                return GetCameraFixedAspectRatio_Internal(Entity.ID);
+            }
+            set => SetCameraFixedAspectRatio_Internal(Entity.ID, ref value);
+        }
+
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetCameraProjection_Internal(UInt64 entityID, ref CameraProjection projection);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static CameraProjection GetCameraProjection_Internal(UInt64 entityID);
+
+
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetCameraOrthographicSize_Internal(UInt64 entityID, ref float size);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static float GetCameraOrthographicSize_Internal(UInt64 entityID);
+
+
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetCameraPrimary_Internal(UInt64 entityID, ref bool primary);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool GetCameraPrimary_Internal(UInt64 entityID);
+
+
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetCameraFixedAspectRatio_Internal(UInt64 entityID, ref bool fixedaspectration);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool GetCameraFixedAspectRatio_Internal(UInt64 entityID);
     }
 }

@@ -10,9 +10,13 @@ class Player : Script
 
     void Start()
 	{
+        if(entity.HasComponent<Camera>())
+        {
+            Debug.Log(entity.GetComponent<Camera>().OrthographicSize);
+        }
 	}
 
-	void Update()
+    void Update()
 	{
 		Vector2 vel = entity.GetComponent<Rigidbody2D>().Velocity;
 

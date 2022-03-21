@@ -73,6 +73,16 @@ namespace Lithium
 			static void SetRigidbodyVelocity_Internal(uint64_t entityID, glm::vec2* velocity);
 			static void GetRigidbodyVelocity_Internal(uint64_t entityID, glm::vec2* velocity);
 
+			//camera component
+			static void SetCameraProjection_Internal(uint64_t entityID,int* projection);
+			static int GetCameraProjection_Internal(uint64_t entityID);
+			static void SetCameraOrthographicSize_Internal(uint64_t entityID, float* size);
+			static float GetCameraOrthographicSize_Internal(uint64_t entityID);
+			static void SetCameraPrimary_Internal(uint64_t entityID, bool *primary);
+			static bool GetCameraPrimary_Internal(uint64_t entityID);
+			static void SetCameraFixedAspectRatio_Internal(uint64_t entityID, bool* fixedaspectration);
+			static bool GetCameraFixedAspectRatio_Internal(uint64_t entityID);
+
 			//input
 			static bool MouseKey_Internal(int button);
 			static bool MouseKeyDown_Internal(int button);
