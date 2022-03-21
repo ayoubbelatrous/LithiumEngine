@@ -209,6 +209,17 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<CameraComponent>())
+		{
+			CameraComponent& camera = entity.GetComponent<CameraComponent>();
+			emitter << YAML::Key << "CameraComponent" << YAML::BeginMap;
+			emitter << YAML::Key << "OrhtographicSize" << YAML::Value << camera.Camera.GetOrthographicSize();
+			emitter << YAML::Key << "NearPlane" << YAML::Value << camera.Camera.GetOrthographicNearClip();
+			emitter << YAML::Key << "FarPlane" << YAML::Value << camera.Camera.GetOrthographicFarClip();
+			emitter << YAML::Key << "Primary" << YAML::Value << camera.Primary;
+			emitter << YAML::Key << "FixedAspectRatio" << YAML::Value << camera.FixedAspectRatio;			
+			emitter << YAML::EndMap;
+		}
 
 		emitter << YAML::EndMap;
 	}
@@ -465,6 +476,22 @@ namespace Lithium
 
 			}
 
+			auto cameraComponent = entity["CameraComponent"];
+			if (cameraComponent)
+			{
+				deserEntity.AddComponent<CameraComponent>();
+				CameraComponent& camera = deserEntity.GetComponent<CameraComponent>();
+				float orthosize = cameraComponent["OrhtographicSize"].as<float>();
+				float nearplane = cameraComponent["NearPlane"].as<float>();
+				float farplane = cameraComponent["FarPlane"].as<float>();
+				bool primary = cameraComponent["Primary"].as<bool>();
+				bool FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
+				camera.Camera.SetOrthographicSize(orthosize);
+				camera.Camera.SetOrthographicNearClip(nearplane);
+				camera.Camera.SetOrthographicFarClip(farplane);
+				camera.Primary = primary;
+				camera.FixedAspectRatio = FixedAspectRatio;
+			}
 		}
 	}
 }
