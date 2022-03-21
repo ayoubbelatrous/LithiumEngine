@@ -155,6 +155,7 @@ namespace Lithium
 	}
 	void Scene::onEditorUpdate()
 	{
+		
 		{
 			auto view = GetRegistry().view<RelationShipComponent>();
 
@@ -251,13 +252,9 @@ namespace Lithium
 			}
 		}
 
-
-
-
-
-
 		{
-			
+			BatchRenderer::Begin(GetPrimaryCameraEntity().GetComponent<TransformComponent>().ModelMatrix, GetPrimaryCameraEntity().GetComponent<CameraComponent>().Camera.GetProjection());
+
 			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 
 			for (auto entity : view)
@@ -274,7 +271,10 @@ namespace Lithium
 				{
 					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset), (uint32_t)entity);
 				}
+
 			}
+			BatchRenderer::End();
+
 		}
 
 
@@ -443,6 +443,7 @@ namespace Lithium
 		CopyComponentAll<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<ScriptGroupeComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		return newscene;
 	}
 
@@ -488,6 +489,11 @@ namespace Lithium
 			CopyComponent<BoxCollider2DComponent>(src, entity);
 
 		}
+		if (src.HasComponent<CameraComponent>())
+		{
+			CopyComponent<CameraComponent>(src, entity);
+
+		}
 
 		
 
@@ -501,12 +507,40 @@ namespace Lithium
 	}
 
 
+	void Scene::OnViewportResize(uint32_t width, uint32_t height)
+	{
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			auto& cameraComponent = view.get<CameraComponent>(entity);
+			if (!cameraComponent.FixedAspectRatio)
+				cameraComponent.Camera.SetViewportSize(width, height);
+		}
+	}
+
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
 		ASSERT(true != false);
 	}
 
+
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto e: view)
+		{
+			Entity entity(e, this);
+			if (entity.GetComponent<CameraComponent>().Primary == true)
+			{
+				return entity;
+			}
+			else
+			{
+				return Entity();
+			}
+		}
+	}
 
 	template<>
 	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)

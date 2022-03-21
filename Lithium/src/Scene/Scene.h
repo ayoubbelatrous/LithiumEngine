@@ -44,8 +44,9 @@ namespace Lithium
 	
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
-
+		Entity GetPrimaryCameraEntity();
 		void SortScene();
+		void OnViewportResize(uint32_t width, uint32_t height);
 
 	private:
 		Scope<PhysicsWorld> m_PhysicsWorld;

@@ -6,7 +6,7 @@ namespace Lithium
 	class SceneCamera : public Camera
 	{
 	public:
-		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
+		enum class ProjectionType { Perspective = 1, Orthographic = 0 };
 	public:
 		SceneCamera();
 		virtual ~SceneCamera() = default;

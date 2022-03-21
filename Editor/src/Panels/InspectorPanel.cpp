@@ -513,7 +513,67 @@ namespace Lithium
 				
 			
 			}
-		
+			if (m_Selection.HasComponent<CameraComponent>())
+			{
+
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("Camera")), treeNodeFlags, "Camera");
+				ImGui::PopStyleVar();
+
+				if (open)
+				{
+					CameraComponent& camera = m_Selection.GetComponent<CameraComponent>();
+
+					ImGui::Checkbox("Fixed Aspect Ration", &camera.FixedAspectRatio);
+					ImGui::Checkbox("Primary", &camera.Primary);
+					const char* ProjectionTypeString[] = { "Orthographic", "Perspective"};
+
+					const char* CurrentProjectionString = ProjectionTypeString[(int)camera.Camera.GetProjectionType()];
+					if (ImGui::BeginCombo("Projection", CurrentProjectionString))
+					{
+						for (int i = 0; i < 2; i++)
+						{
+							bool isSelected = CurrentProjectionString == ProjectionTypeString[i];
+							if (ImGui::Selectable(ProjectionTypeString[i], isSelected))
+							{
+								CurrentProjectionString = ProjectionTypeString[i];
+								camera.Camera.SetProjectionType((SceneCamera::ProjectionType)i);
+								
+							}
+
+							if (isSelected)
+								ImGui::SetItemDefaultFocus();
+						}
+
+						ImGui::EndCombo();
+					}
+					if (camera.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
+					{
+						float orthosize = camera.Camera.GetOrthographicSize();
+						if (ImGui::DragFloat("Orthographic Size",&orthosize,0.1f))
+						{
+							camera.Camera.SetOrthographicSize(orthosize);
+						}
+
+						float NearClipPlane = camera.Camera.GetOrthographicNearClip();
+						if (ImGui::DragFloat("Near Plane", &NearClipPlane, 0.1f))
+						{
+							camera.Camera.SetOrthographicNearClip(NearClipPlane);
+						}
+
+						float FarClipPlane = camera.Camera.GetOrthographicFarClip();
+						if (ImGui::DragFloat("Far Plane", &FarClipPlane, 0.1f))
+						{
+							camera.Camera.SetOrthographicFarClip(FarClipPlane);
+						}
+					}
+					ImGui::TreePop();
+				}
+
+
+			}
 			if (ImGui::Button("Add Component"))
 				ImGui::OpenPopup("AddComponent");
 

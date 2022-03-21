@@ -185,13 +185,16 @@ namespace Lithium
 		RendererCommand::ClearColor(glm::vec4(0.05, 0.05, 0.15, 1.0));
 		RendererCommand::Clear();
 		framebuffer->ClearAttachment(1, -1);
-		BatchRenderer::Begin(view, proj);
+	
 
 		switch (_sceneState)
 		{
 		case (SceneState::EDITOR):
 			{
+			BatchRenderer::Begin(view, proj);
 			m_ActiveScene->onEditorUpdate();
+			BatchRenderer::End();
+
 			if (canCheckAssembly)
 			{
 				if (Application::Get().Monoserver->CheckForChange())
@@ -205,13 +208,13 @@ namespace Lithium
 			}
 		case (SceneState::RUNTIME):
 		{
+			m_ActiveScene->OnViewportResize(viewportSize[0], viewportSize[1]);
 			m_ActiveScene->onUpdate();
 			break;
 
 		}
 		}
 		
-		BatchRenderer::End();
 		shader->Bind();
 		shader->SetUniformMat4f("projection", model* proj * view );
 	
