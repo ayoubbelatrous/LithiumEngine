@@ -90,7 +90,7 @@ namespace Lithium
 		std::string _EditorStatus;
 
 		float viewportSize[2];
-
+		bool m_ViewportSizeChanged = true;
 		float orthosize = 5;
 		glm::vec2 _ViewportBounds[2];
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;

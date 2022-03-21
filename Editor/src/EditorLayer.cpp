@@ -148,9 +148,13 @@ namespace Lithium
 		view = glm::inverse(view);
 
 
-
-		framebuffer->resize(viewportSize[0], viewportSize[1]);
-		DisplayBuffer->resize(viewportSize[0], viewportSize[1]);
+		if (m_ViewportSizeChanged)
+		{
+			framebuffer->resize(viewportSize[0], viewportSize[1]);
+			//DisplayBuffer->resize(viewportSize[0], viewportSize[1]);
+			m_ViewportSizeChanged = false;
+		}
+		
 
 
 		
@@ -254,17 +258,17 @@ namespace Lithium
 		framebuffer->UnBind();
 		
 
-		DisplayBuffer->Bind();
-		
-		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
-		RendererCommand::Clear();
-		vertarray->Bind();
-		frameshader->Bind();
-		framebuffer->BindTexture(0,0);
-		frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID());
-		RendererCommand::Draw(6);
-
-		DisplayBuffer->UnBind();
+// 		DisplayBuffer->Bind();
+// 		
+// 		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
+// 		RendererCommand::Clear();
+// 		vertarray->Bind();
+// 		frameshader->Bind();
+// 		framebuffer->BindTexture(0,0);
+// 		frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID());
+// 		RendererCommand::Draw(6);
+// 
+// 		DisplayBuffer->UnBind();
 
 		RenderImgui();
 	}
@@ -508,11 +512,14 @@ namespace Lithium
 		}
 
 
+		if (ImGui::GetContentRegionAvail().x != viewportSize[0] || ImGui::GetContentRegionAvail().y != viewportSize[1])
+		{
 
-	
-		viewportSize[0] = ImGui::GetContentRegionAvail().x;
-		viewportSize[1] = ImGui::GetContentRegionAvail().y;
-		ImGui::Image(reinterpret_cast<void*>(DisplayBuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
+			viewportSize[0] = ImGui::GetContentRegionAvail().x;
+			viewportSize[1] = ImGui::GetContentRegionAvail().y;
+			m_ViewportSizeChanged = true;
+		}
+		ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
 
 		//Drag And Drop
 		if (ImGui::BeginDragDropTarget())
