@@ -29,22 +29,21 @@ project "Vorbis"
 		"LIBOGG_EXPORTS"
 	}
 	
-	filter "system:windows"
-		systemversion "latest"
 
-		excludes
-		{
-			"lib/barkmel.c",
-			"lib/misc.c",
-			"lib/psytune.c",
-			"lib/tone.c"
-		}
 
-		defines
-		{
-			"WIN32",
-			"NDEBUG"
-		}
+	excludes
+	{
+		"lib/barkmel.c",
+		"lib/misc.c",
+		"lib/psytune.c",
+		"lib/tone.c"
+	}
+
+	defines
+	{
+		"WIN32",
+		"NDEBUG"
+	}
 
 	filter "configurations:Debug"
 		runtime "Debug"

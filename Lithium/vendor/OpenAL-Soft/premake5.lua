@@ -2,7 +2,7 @@ project "OpenAL-Soft"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++14"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -32,27 +32,24 @@ project "OpenAL-Soft"
 		"AL_LIBTYPE_STATIC"
 	}
 	
-	filter "system:windows"
-		systemversion "latest"
+	defines
+	{
+		"WIN32",
+		"_WINDOWS",
+		"AL_BUILD_LIBRARY",
+		"AL_ALEXT_PROTOTYPES",
+		"_WIN32",
+		"_WIN32_WINNT=0x0502",
+		"_CRT_SECURE_NO_WARNINGS",
+		"NOMINMAX",
+		"CMAKE_INTDIR=\"Debug\"",
+		"OpenAL_EXPORTS"
+	}
 
-		defines
-		{
-			"WIN32",
-			"_WINDOWS",
-			"AL_BUILD_LIBRARY",
-			"AL_ALEXT_PROTOTYPES",
-			"_WIN32",
-			"_WIN32_WINNT=0x0502",
-			"_CRT_SECURE_NO_WARNINGS",
-			"NOMINMAX",
-			"CMAKE_INTDIR=\"Debug\"",
-			"OpenAL_EXPORTS"
-		}
-
-		links
-		{
-			"winmm"
-		}
+	links
+	{
+		"winmm"
+	}
 
 	filter "configurations:Debug"
 		runtime "Debug"

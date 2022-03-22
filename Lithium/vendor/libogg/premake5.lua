@@ -21,17 +21,13 @@ project "libogg"
 	{
 		"LIBOGG_EXPORTS"
 	}
-	
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"WIN32",
-			"NDEBUG",
-			"_WINDOWS",
-			"_USRDLL"
-		}
+	defines
+	{
+		"WIN32",
+		"NDEBUG",
+		"_WINDOWS",
+		"_USRDLL"
+	}
 
 	filter "configurations:Debug"
 		runtime "Debug"

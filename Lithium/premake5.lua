@@ -30,6 +30,8 @@ files
 }
 includedirs
 {
+
+    "%{wks.location}/Lithium/vendor",
     "%{wks.location}/Lithium/src",
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLAD}",
@@ -44,14 +46,18 @@ includedirs
     "%{IncludeDir.assimp}",
     "%{IncludeDir.mono}",
     "%{IncludeDir.Box2D}",
-
-    
+    "%{IncludeDir.libogg}",
+    "%{IncludeDir.Vorbis}",
+    "%{IncludeDir.OpenAlSoft}/include",
+    "%{IncludeDir.OpenAlSoft}/src",
+    "%{IncludeDir.OpenAlSoft}/src/common",
 }
 
 defines
 {
    "_CRT_SECURE_NO_WARNINGS",
-   		"GLFW_INCLUDE_NONE"
+   		"GLFW_INCLUDE_NONE",
+           "AL_LIBTYPE_STATIC",
 }
 links
 {
@@ -64,13 +70,14 @@ links
     "Box2D",
     "assimp",
     "%{LibDir.mono}/libmono-static-sgen.lib",
-
     "Mswsock.lib",
     "ws2_32.lib",
     "psapi.lib",
     "version.lib",
     "winmm.lib",
     "Bcrypt.lib",
+    "OpenAl-Soft",
+    "Vorbis",
 }
 
 

@@ -10,6 +10,8 @@
 #include "Panels/ProjectWizard.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
+#include "Audio/Audio.h"
+
 static std::atomic_bool canCheckAssembly;
 
 namespace Lithium
@@ -105,7 +107,8 @@ namespace Lithium
 		{
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
-		
+		Audio* audio = new Audio;
+		audio->Test();
 	}
 
 	void EditorLayer::OnUpdate()
