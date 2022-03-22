@@ -10,7 +10,6 @@
 #include "Panels/ProjectWizard.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
-#include "Audio/Audio.h"
 
 static std::atomic_bool canCheckAssembly;
 
@@ -21,6 +20,10 @@ namespace Lithium
 	void EditorLayer::OnCreate()
 	{
 		Application::Get().GetImguiLayer()->SetBlockEvent(true);
+		Audio::Init();
+		source = (Ref<AudioSource>)&Audio::LoadAudioSourceMP3("assets/audio/track.mp3");
+		source->SetGain(0.2f);
+		Audio::Play(*source);
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
@@ -107,8 +110,6 @@ namespace Lithium
 		{
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
-		Audio* audio = new Audio;
-		audio->Test();
 	}
 
 	void EditorLayer::OnUpdate()

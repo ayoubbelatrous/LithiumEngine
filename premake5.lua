@@ -36,7 +36,7 @@ IncludeDir["lua533"] = "%{wks.location}/Lithium/vendor/lua533/src"
 IncludeDir["Box2D"] = "%{wks.location}/Lithium/vendor/box2d/include"
 IncludeDir["OpenAlSoft"] = "%{wks.location}/Lithium/vendor/OpenAL-Soft"
 IncludeDir["libogg"] = "%{wks.location}/Lithium/vendor/libogg/include"
-IncludeDir["Vorbis"] = "%{wks.location}/Lithium/vendor/Verbis/include"
+IncludeDir["Vorbis"] = "%{wks.location}/Lithium/vendor/Vorbis/include"
 
 if os.getenv("MONO_DIR") then
 	IncludeDir["mono"] = os.getenv("MONO_DIR") .. "include/mono-2.0/"

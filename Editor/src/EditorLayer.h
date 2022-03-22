@@ -32,6 +32,8 @@
 #include "Core/Timer.h"
 #include "Scene/Camera/EditorCamera.h"
 #include "Project/Project.h"
+#include "Audio/Audio.h"
+#include "Audio/AudioSource.h"
 
 namespace Lithium
 {
@@ -132,5 +134,6 @@ namespace Lithium
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 
 		Ref<Project> m_Project = nullptr;
+		Ref<AudioSource> source;
 	};
 }
