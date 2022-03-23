@@ -197,5 +197,10 @@ namespace Lithium
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};
+	struct AudioSourcePlayer
+	{
+		AudioSourcePlayer() = default;
+		AudioSourcePlayer(const AudioSourcePlayer&) = default;
+	};
 }
 

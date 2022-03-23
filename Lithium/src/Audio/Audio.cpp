@@ -49,7 +49,25 @@ namespace Lithium
 		// assert
 		return 0;
 	}
-	AudioSource Audio::LoadAudioSourceOgg(const std::string& filename)
+
+	Ref<AudioSource> Audio::LoadFromFile(const std::string& filename)
+	{
+		if (GetAudioFileFormat(filename) == Audio::AudioFileFormat::MP3)
+		{
+			return LoadAudioSourceMP3(filename);
+
+		}
+		else if(GetAudioFileFormat(filename) == Audio::AudioFileFormat::Ogg)
+		{
+			return LoadAudioSourceOgg(filename);
+		}
+		else
+		{
+			ASSERT(GetAudioFileFormat(filename) != Audio::AudioFileFormat::None);
+		}
+	}
+
+	Ref<AudioSource> Audio::LoadAudioSourceOgg(const std::string& filename)
 	{
 		FILE* f = fopen(filename.c_str(), "rb");
 
@@ -115,16 +133,16 @@ namespace Lithium
 		alGenBuffers(1, &buffer);
 		alBufferData(buffer, alFormat, oggBuffer, size, sampleRate);
 
-		AudioSource result = { buffer, true, trackLength };
-		alGenSources(1, &result.m_SourceHandle);
-		alSourcei(result.m_SourceHandle, AL_BUFFER, buffer);
+		Ref<AudioSource> result = CreateRef<AudioSource>(buffer, true, trackLength);
+		alGenSources(1, &result->m_SourceHandle);
+		alSourcei(result->m_SourceHandle, AL_BUFFER, buffer);
 
 		if (alGetError() != AL_NO_ERROR)
 			CORE_LOG("Failed to setup sound source");
 
 		return result;
 	}
-	AudioSource Audio::LoadAudioSourceMP3(const std::string& filename)
+	Ref<AudioSource> Audio::LoadAudioSourceMP3(const std::string& filename)
 	{
 		mp3dec_file_info_t info;
 		int loadResult = mp3dec_load(&s_Mp3d, filename.c_str(), &info, NULL, NULL);
@@ -139,16 +157,16 @@ namespace Lithium
 		alGenBuffers(1, &buffer);
 		alBufferData(buffer, alFormat, info.buffer, size, sampleRate);
 
-		AudioSource result = { buffer, true, lengthSeconds };
-		alGenSources(1, &result.m_SourceHandle);
-		alSourcei(result.m_SourceHandle, AL_BUFFER, buffer);
+		Ref<AudioSource> result = CreateRef<AudioSource>(buffer, true, lengthSeconds);
+		alGenSources(1, &result->m_SourceHandle);
+		alSourcei(result->m_SourceHandle, AL_BUFFER, buffer);
 
 		CORE_LOG("File Info - " << filename << ":");
 		CORE_LOG("  Channels: " << channels);
 		CORE_LOG("  Sample Rate: " << sampleRate);
 		CORE_LOG("  Size: " << size << " bytes");
 
-		auto [mins, secs] = result.GetLengthMinutesAndSeconds();
+		auto [mins, secs] = result->GetLengthMinutesAndSeconds();
 		CORE_LOG("  Length: " << mins << "m" << secs << "s");
 		
 		if (alGetError() != AL_NO_ERROR)
@@ -180,9 +198,9 @@ namespace Lithium
 
 	}
 
-	void Audio::Play(const AudioSource& source)
+	void Audio::Play(const Ref<AudioSource>& source)
 	{
-		alSourcePlay(source.m_SourceHandle);
+		alSourcePlay(source->m_SourceHandle);
 	}
 
 }

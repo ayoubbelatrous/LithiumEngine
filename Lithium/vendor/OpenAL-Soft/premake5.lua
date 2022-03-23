@@ -50,7 +50,6 @@ project "OpenAL-Soft"
 	{
 		"winmm"
 	}
-
 	filter "configurations:Debug"
 		runtime "Debug"
 		symbols "on"

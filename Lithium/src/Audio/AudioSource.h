@@ -6,6 +6,8 @@ namespace Lithium
 	{
 	public:
 		~AudioSource();
+		AudioSource() = default;
+		AudioSource(uint32_t handle, bool loaded, float length);
 		bool IsLoaded() const { return m_Loaded; }
 
 		void SetPosition(float x, float y, float z);
@@ -13,13 +15,11 @@ namespace Lithium
 		void SetPitch(float pitch);
 		void SetSpatial(bool spatial);
 		void SetLoop(bool loop);
-
+		float GetGain();
 		std::pair<uint32_t, uint32_t> GetLengthMinutesAndSeconds() const;
-
 		static AudioSource LoadFromFile(const std::string& file, bool spatial = false);
 	private:
-		AudioSource() = default;
-		AudioSource(uint32_t handle, bool loaded, float length);
+		
 
 		uint32_t m_BufferHandle = 0;
 		uint32_t m_SourceHandle = 0;

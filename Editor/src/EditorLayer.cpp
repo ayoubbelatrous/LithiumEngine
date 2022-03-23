@@ -21,9 +21,6 @@ namespace Lithium
 	{
 		Application::Get().GetImguiLayer()->SetBlockEvent(true);
 		Audio::Init();
-		source = (Ref<AudioSource>)&Audio::LoadAudioSourceMP3("assets/audio/track.mp3");
-		source->SetGain(0.2f);
-		Audio::Play(*source);
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
 		LastMousePosiition = glm::vec2(0);
@@ -599,6 +596,7 @@ namespace Lithium
 		ImGui::End();
 		ImGui::Begin("Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		
 		ImGui::End();
 
 		if (m_OpenSceneSaveDialog)
@@ -632,12 +630,10 @@ namespace Lithium
 			}
 			ImGui::EndPopup();
 		}
+
 		
 
 		ImGui::End();
-
-		
-		
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

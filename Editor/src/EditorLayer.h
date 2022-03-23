@@ -134,6 +134,6 @@ namespace Lithium
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 
 		Ref<Project> m_Project = nullptr;
-		Ref<AudioSource> source;
+		AudioSource* source;
 	};
 }
