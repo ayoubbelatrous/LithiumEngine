@@ -10,7 +10,7 @@ namespace Lithium
 		AudioSource(uint32_t handle, bool loaded, float length);
 		bool IsLoaded() const { return m_Loaded; }
 
-		void SetPosition(float x, float y, float z);
+		void SetPosition(float* pos);
 		void SetGain(float gain);
 		void SetPitch(float pitch);
 		void SetSpatial(bool spatial);

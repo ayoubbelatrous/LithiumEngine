@@ -15,6 +15,9 @@ class Player : Script
         {
             Debug.Log(entity.GetComponent<Camera>().OrthographicSize);
         }
+        entity.GetComponent<AudioSource>().Play();
+        entity.GetComponent<AudioSource>().Loop = true;
+        entity.GetComponent<AudioSource>().Gain = 0.5f;
 	}
 
     void Update()
@@ -46,11 +49,6 @@ class Player : Script
 
         }
 
-        if(Input.MouseKeyPressed(0))
-        {
-            Entity E = Instantiate(Projectile);
-            E.GetComponent<Transform>().Position = new Vector3(3.0f);
-        }
     }
     private Vector2 GetAxialInput()
     {

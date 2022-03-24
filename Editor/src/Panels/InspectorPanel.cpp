@@ -604,7 +604,10 @@ namespace Lithium
 						ImGui::EndDragDropTarget();
 					}
 					ImGui::Checkbox("Play On Awake", &audiosourcecomp.PlayOnAwake);
-
+					ImGui::Checkbox("Spatial", &audiosourcecomp.Spatial);
+					ImGui::Checkbox("Loop", &audiosourcecomp.Loop);
+					ImGui::SliderFloat("Gain", &audiosourcecomp.Gain,0.0f,1.0f);
+					ImGui::SliderFloat("Pitch", &audiosourcecomp.Pitch, 0.0f, 1.0f);
 					ImGui::TreePop();
 				}
 			}

@@ -82,6 +82,14 @@ namespace Lithium
 			static bool GetCameraPrimary_Internal(uint64_t entityID);
 			static void SetCameraFixedAspectRatio_Internal(uint64_t entityID, bool* fixedaspectration);
 			static bool GetCameraFixedAspectRatio_Internal(uint64_t entityID);
+			//audio
+			static void SetAudioSourcePlay_Internal(uint64_t entityID);
+
+			static void SetAudioSourceLoop_Internal(uint64_t entityID,bool loop);
+			static bool GetAudioSourceLoop_Internal(uint64_t entityID);
+
+			static void SetAudioSourceGain_Internal(uint64_t entityID, float gain);
+			static float GetAudioSourceGain_Internal(uint64_t entityID);
 
 			//input
 			static bool MouseKey_Internal(int button);

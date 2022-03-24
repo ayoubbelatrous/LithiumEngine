@@ -15,13 +15,10 @@ namespace Lithium
 		alDeleteSources(1, &m_SourceHandle);
 	}
 
-	void AudioSource::SetPosition(float x, float y, float z)
+	void AudioSource::SetPosition(float* pos)
 	{
-		m_Position[0] = x;
-		m_Position[1] = y;
-		m_Position[2] = z;
 
-		alSourcefv(m_SourceHandle, AL_POSITION, m_Position);
+		alSourcefv(m_SourceHandle, AL_POSITION, pos);
 	}
 
 	void AudioSource::SetGain(float gain)
@@ -49,7 +46,6 @@ namespace Lithium
 	void AudioSource::SetLoop(bool loop)
 	{
 		m_Loop = loop;
-
 		alSourcei(m_SourceHandle, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
 	}
 

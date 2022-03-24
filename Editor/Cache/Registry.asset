@@ -33,3 +33,7 @@ PathRegistry:
     Path: assets\GothicMania\bg-1.png
   - UUID: 8720428393058302038
     Path: assets\audio\track.mp3
+  - UUID: 1257118327733004049
+    Path: assets\audio\deathr.ogg
+  - UUID: 73423621526631036
+    Path: assets\audio\amb_forest.mp3

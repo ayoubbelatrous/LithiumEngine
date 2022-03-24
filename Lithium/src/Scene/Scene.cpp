@@ -173,6 +173,8 @@ namespace Lithium
 			}
 		}
 
+		
+
 		{
 			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 
@@ -267,7 +269,26 @@ namespace Lithium
 				}
 			}
 		}
+		{
+			auto view = GetRegistry().view<AudioSourceComponent>();
 
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+				AudioSourceComponent& audioSource = entity.GetComponent<AudioSourceComponent>();
+				TransformComponent& transform = entity.GetComponent<TransformComponent>();
+				Ref<AudioSource> sourceAsset = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(audioSource.AudioAsset);
+				sourceAsset->SetSpatial(audioSource.Spatial);
+				sourceAsset->SetLoop(audioSource.Loop);
+				sourceAsset->SetGain(audioSource.Gain);
+				sourceAsset->SetPitch(audioSource.Pitch);
+				if (audioSource.Spatial)
+				{
+					sourceAsset->SetPosition(glm::value_ptr(transform.Position));
+				}
+
+			}
+		}
 		{
 			BatchRenderer::Begin(GetPrimaryCameraEntity().GetComponent<TransformComponent>().ModelMatrix, GetPrimaryCameraEntity().GetComponent<CameraComponent>().Camera.GetProjection());
 
@@ -425,12 +446,9 @@ namespace Lithium
 			{
 				Entity entity(e, this);
 				AudioSourceComponent& source = entity.GetComponent<AudioSourceComponent>();
-				if (source.PlayOnAwake)
-				{
-					Ref<AudioSource> audioSource = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(source.AudioAsset);
-					Audio::Stop(audioSource);
-
-				}
+				
+				Ref<AudioSource> audioSource = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(source.AudioAsset);
+				Audio::Stop(audioSource);
 			}
 		}
 	}

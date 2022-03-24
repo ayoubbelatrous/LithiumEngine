@@ -217,4 +217,41 @@ namespace Lithium.Core
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static bool GetCameraFixedAspectRatio_Internal(UInt64 entityID);
     }
+
+    public class AudioSource : Component
+    {
+        public void Play()
+        {
+            SetAudioSourcePlay_Internal(Entity.ID);
+        }
+
+        public bool Loop
+        {
+            get
+            {
+                return GetAudioSourceLoop_Internal(Entity.ID);
+            }
+            set => SetAudioSourceLoop_Internal(Entity.ID, value);
+        }
+        public float Gain
+        {
+            get
+            {
+                return GetAudioSourceGain_Internal(Entity.ID);
+            }
+            set => SetAudioSourceGain_Internal(Entity.ID, value);
+        }
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetAudioSourcePlay_Internal(UInt64 entityID);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetAudioSourceLoop_Internal(UInt64 entityID,bool gain);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool GetAudioSourceLoop_Internal(UInt64 entityID);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetAudioSourceGain_Internal(UInt64 entityID, float gain);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static float GetAudioSourceGain_Internal(UInt64 entityID);
+    }
 }

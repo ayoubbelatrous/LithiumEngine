@@ -11,7 +11,7 @@
 #include "gtc/type_ptr.hpp"
 
 #include <mono/metadata/tokentype.h>
-
+#include "Audio/Audio.h"
 namespace Lithium
 {
 	std::vector<const char*> MonoServer::_BufferLog = std::vector<const char*>();
@@ -53,6 +53,11 @@ namespace Lithium
 		{
 			return entity.HasComponent<CameraComponent>();
 		}
+		else if (strcmp(name, "AudioSource") == 0)
+		{
+			return entity.HasComponent<AudioSourceComponent>();
+		}
+
 
 		return false;
 	}
@@ -288,6 +293,41 @@ namespace Lithium
 		return entity.GetComponent<CameraComponent>().FixedAspectRatio;
 	}
 
+	void MonoServer::SetAudioSourcePlay_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		AudioSourceComponent& audiosource = entity.GetComponent<AudioSourceComponent>();
+		Ref<AudioSource> source = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(audiosource.AudioAsset);
+		Audio::Play(source);
+		
+	}
+
+	void MonoServer::SetAudioSourceLoop_Internal(uint64_t entityID, bool loop)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		AudioSourceComponent& audiosource = entity.GetComponent<AudioSourceComponent>();
+		audiosource.Loop = loop;
+	}
+
+	bool MonoServer::GetAudioSourceLoop_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		return entity.GetComponent<AudioSourceComponent>().Loop;
+	}
+
+	void MonoServer::SetAudioSourceGain_Internal(uint64_t entityID, float gain)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		AudioSourceComponent& audiosource = entity.GetComponent<AudioSourceComponent>();
+		audiosource.Gain = gain;
+	}
+
+	float MonoServer::GetAudioSourceGain_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		return entity.GetComponent<AudioSourceComponent>().Gain;
+	}
+
 	MonoString* MonoServer::GetName_Internal(uint64_t entityID)
 	{
 		
@@ -388,6 +428,14 @@ namespace Lithium
 
 		mono_add_internal_call("Lithium.Core.Camera::SetCameraFixedAspectRatio_Internal", MonoServer::SetCameraFixedAspectRatio_Internal);
 		mono_add_internal_call("Lithium.Core.Camera::GetCameraFixedAspectRatio_Internal", MonoServer::GetCameraFixedAspectRatio_Internal);
+
+		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourcePlay_Internal", MonoServer::SetAudioSourcePlay_Internal);
+
+		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourceLoop_Internal", MonoServer::SetAudioSourceLoop_Internal);
+		mono_add_internal_call("Lithium.Core.AudioSource::GetAudioSourcePlay_Internal", MonoServer::GetAudioSourceLoop_Internal);
+
+		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourceGain_Internal", MonoServer::SetAudioSourceGain_Internal);
+		mono_add_internal_call("Lithium.Core.AudioSource::GetAudioSourceGain_Internal", MonoServer::GetAudioSourceGain_Internal);
 
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", MonoServer::MouseKeyDown_Internal);

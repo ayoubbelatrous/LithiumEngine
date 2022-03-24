@@ -17,6 +17,7 @@
 #include "Core/Math.h"
 #include "Physics/PhysicsTypes.h"
 #include "AssetManager/Asset.h"
+
 namespace Lithium
 {
 	enum class CameraMode
@@ -203,18 +204,18 @@ namespace Lithium
 		bool PlayOnAwake = false;
 		bool Loop = false;
 		bool Spatial = false;
+		float Gain = 1.0f;
+		float Pitch = 1.0f;
 		void SetLoop(bool loop)
 		{
-			//TODO: set audio asset to loop
 			Loop = loop;
 		}
 		void Play()
 		{
-			//Audio::Play(AssetMng.Get<AudioSource>(AudioAsset);)
+		
 		}
 		void Stop()
 		{
-			//Audio::Stop(AssetMng.Get<AudioSource>(AudioAsset);)
 		}
 		AudioSourceComponent() = default;
 		AudioSourceComponent(const AudioSourceComponent&) = default;
