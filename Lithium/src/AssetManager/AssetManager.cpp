@@ -87,6 +87,18 @@ namespace Lithium {
 
 
 
+	std::string AssetManager::GetAssetPath(Asset asset)
+	{
+		if (m_PathRegistry.find(asset.GetUUID()) != m_PathRegistry.end())
+		{
+			return m_PathRegistry[asset.GetUUID()];
+		}
+		else
+		{
+			return std::string();
+		}
+	}
+
 	void AssetManager::SaveAssetRegistry()
 	{
 		YAML::Emitter emitter;

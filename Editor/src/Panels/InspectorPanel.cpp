@@ -216,6 +216,43 @@ namespace Lithium
 		return modified;
 	}
 
+	static bool Property(const std::string& name, UUID& id,bool audioclip)
+	{
+
+		bool modified = false;
+
+		std::string AudioClipName;
+
+		if (id != 0)
+		{
+			std::filesystem::path mpath = Application::Get().assetManager->GetAssetPath(id);
+			AudioClipName = mpath.filename().string();
+		}
+
+
+		ImGui::Text("%s", name.c_str());
+		ImGui::SameLine();
+		ImGui::Button(AudioClipName.c_str(), { 100,20 });
+		if (ImGui::BeginDragDropTarget())
+		{
+
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				std::filesystem::path audiopath = root / path;
+				Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(audiopath.string());
+				id = asset.GetUUID();
+				modified = true;
+			}
+			else
+			{
+				modified = false;
+			}
+			ImGui::EndDragDropTarget();
+		}
+		return modified;
+	}
+
 	void InspectorPanel::OnCreate()
 	{
 
@@ -497,6 +534,18 @@ namespace Lithium
 									if (Property(field.first, val))
 									{
 										field.second->SetValue((uint64_t)val);
+									}
+									break;
+								}
+
+								case (ScriptType::AudioClip):
+								{
+
+									UUID val = field.second->GetValue<UUID>();
+									if (Property(field.first, val,true))
+									{
+										
+										field.second->SetValue<UUID>((UUID)val);
 									}
 									break;
 								}

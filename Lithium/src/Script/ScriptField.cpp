@@ -73,6 +73,14 @@ namespace Lithium
 			break;
 		}
 
+		case(ScriptType::AudioClip):
+		{
+			uint64_t val;
+			val = GetMonoAudioClip();
+			m_Value = val;
+			break;
+		}
+
 		}
 	}
 
@@ -104,6 +112,12 @@ namespace Lithium
 		mono_field_set_value(m_MonoObject, m_MonoField, entityObj);
 	}
 
+	void ScriptField::SetMonoAudioClip(uint64_t uuid)
+	{
+		MonoObject* entityObj = (MonoObject*)Application::Get().Monoserver->CreateMonoAudioClip(std::get<uint64_t>(m_Value));
+		mono_field_set_value(m_MonoObject, m_MonoField, entityObj);
+	}
+
 	uint64_t ScriptField::GetMonoEntity()
 	{
 		MonoObject* entityObj = nullptr;
@@ -121,6 +135,23 @@ namespace Lithium
 		
 
 		return EntityID;
+	}
+
+	uint64_t ScriptField::GetMonoAudioClip()
+	{
+		MonoObject* audioClipObject = nullptr;
+		mono_field_get_value(m_MonoObject, m_MonoField, &audioClipObject);
+		if (audioClipObject == nullptr)
+		{
+			return 0;
+		}
+		MonoClass* klass = mono_object_get_class(audioClipObject);
+		MonoClassField* field = mono_class_get_field_from_name(klass, "AssetId");
+		uint64_t assetID;
+		mono_field_get_value(audioClipObject, field, &assetID);
+
+
+		return assetID;
 	}
 
 	std::string ScriptField::GetMonoString()

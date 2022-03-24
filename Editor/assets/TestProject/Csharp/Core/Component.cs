@@ -225,6 +225,11 @@ namespace Lithium.Core
             SetAudioSourcePlay_Internal(Entity.ID);
         }
 
+        public void Play(AudioClip clip)
+        {
+            AudioSourcePlayClip_Internal(Entity.ID,clip.AssetId);
+        }
+
         public bool Loop
         {
             get
@@ -253,5 +258,9 @@ namespace Lithium.Core
         extern public static void SetAudioSourceGain_Internal(UInt64 entityID, float gain);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static float GetAudioSourceGain_Internal(UInt64 entityID);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void AudioSourcePlayClip_Internal(UInt64 entityID,UInt64 assetid);
+
     }
 }

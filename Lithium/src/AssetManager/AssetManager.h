@@ -20,6 +20,8 @@ namespace Lithium
 		template<typename T>
 		T GetAsset(Asset asset);
 
+		std::string GetAssetPath(Asset asset);
+
 	private:
 
 		void SaveAssetRegistry();

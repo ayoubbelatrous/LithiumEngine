@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ScriptTypes.h"
+#include "Core/UUID.h"
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -50,6 +51,12 @@ namespace Lithium
 			return val;
 		}
 
+		template<>
+		UUID GetValue()
+		{
+			uint64_t val = GetMonoAudioClip();
+			return UUID(val);
+		}
 
 
 		template<typename T>
@@ -132,6 +139,14 @@ namespace Lithium
 			m_Value = value;
 			SetMonoEntity(std::get<uint64_t>(m_Value));
 		}
+		template<>
+		void SetValue(UUID assetID)
+		{
+			ASSERT(m_Type == ScriptType::AudioClip);
+			m_Value = assetID;
+			SetMonoAudioClip(std::get<uint64_t>(m_Value));
+		}
+
 
 
 	private:
@@ -144,7 +159,9 @@ namespace Lithium
 		std::string GetMonoString();
 		//entity field helpers
 		void SetMonoEntity(uint64_t uuid);
+		void SetMonoAudioClip(uint64_t uuid);
 		uint64_t GetMonoEntity();
+		uint64_t GetMonoAudioClip();
 		std::string m_Name;
 		MonoClassField* m_MonoField = nullptr;
 		MonoObject* m_MonoObject = nullptr;

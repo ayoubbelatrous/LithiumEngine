@@ -8,7 +8,7 @@ class Player : Script
 	public float JumpSpeed = 0.0f;
     public bool Grounded = true;
     public Entity Projectile;
-
+    public AudioClip MonsterClip;
     void Start()
 	{
         if(entity.HasComponent<Camera>())
@@ -18,6 +18,8 @@ class Player : Script
         entity.GetComponent<AudioSource>().Play();
         entity.GetComponent<AudioSource>().Loop = true;
         entity.GetComponent<AudioSource>().Gain = 0.5f;
+        entity.GetComponent<AudioSource>().Play(MonsterClip);
+
 	}
 
     void Update()

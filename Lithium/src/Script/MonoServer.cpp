@@ -717,6 +717,17 @@ namespace Lithium
 		return EntityObject;
 	}
 
+	void* MonoServer::CreateMonoAudioClip(UUID assetID)
+	{
+		MonoClass* AudioClipClass = mono_class_from_name(_MonoImage, "Lithium.Core", "AudioClip");
+		MonoObject* AudioClipObject = mono_object_new(_MonoAppDomain, AudioClipClass);
+		mono_runtime_object_init(AudioClipObject);
+		MonoClassField* AssetIDfield = mono_class_get_field_from_name(AudioClipClass, "AssetId");
+
+		mono_field_set_value(AudioClipObject, AssetIDfield, &assetID);
+		return AudioClipObject;
+	}
+
 	void* MonoServer::CreateMonoString(const char* str)
 	{
 		return mono_string_new(_MonoAppDomain, str);

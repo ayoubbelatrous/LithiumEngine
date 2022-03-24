@@ -16,7 +16,8 @@ namespace Lithium
 		Float, Int, Char, String, Bool,
 		Vec2, Vec3, Vec4,
 		Transform,
-		Entity
+		Entity,
+		AudioClip
 	};
 
 
@@ -40,7 +41,8 @@ namespace Lithium
 		{
 			char* name = mono_type_get_name(monoType);
 			if (strcmp(name, "Lithium.Core.Entity") == 0) return ScriptType::Entity;
-
+			name = mono_type_get_name(monoType);
+			if (strcmp(name, "Lithium.Core.AudioClip") == 0) return ScriptType::AudioClip;
 		}
 		}
 		return ScriptType::None;
