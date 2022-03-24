@@ -55,7 +55,6 @@ namespace Lithium
 		if (GetAudioFileFormat(filename) == Audio::AudioFileFormat::MP3)
 		{
 			return LoadAudioSourceMP3(filename);
-
 		}
 		else if(GetAudioFileFormat(filename) == Audio::AudioFileFormat::Ogg)
 		{
@@ -90,7 +89,6 @@ namespace Lithium
 		CORE_LOG("  Sample Rate: " << sampleRate);
 		CORE_LOG("  Expected size: " << bufferSize);
 
-		// TODO: Replace with Hazel::Buffer
 		if (s_AudioScratchBufferSize < bufferSize)
 		{
 			s_AudioScratchBufferSize = bufferSize;
@@ -182,8 +180,8 @@ namespace Lithium
 		CORE_LOG("  Name: " << s_AudioDevice->DeviceName);
 		CORE_LOG("  Sample Rate: " << s_AudioDevice->Frequency);
 		CORE_LOG("  Max Sources: " << s_AudioDevice->SourcesMax);
-		CORE_LOG("    Mono: " << s_AudioDevice->NumMonoSources);
-		CORE_LOG("    Stereo: " << s_AudioDevice->NumStereoSources);
+		CORE_LOG("  Mono: " << s_AudioDevice->NumMonoSources);
+		CORE_LOG("  Stereo: " << s_AudioDevice->NumStereoSources);
 
 
 		s_AudioScratchBuffer = new uint8_t[s_AudioScratchBufferSize];
@@ -201,6 +199,12 @@ namespace Lithium
 	void Audio::Play(const Ref<AudioSource>& source)
 	{
 		alSourcePlay(source->m_SourceHandle);
+	}
+
+	void Audio::Stop(const Ref<AudioSource>& source)
+	{
+		alSourceStop(source->m_SourceHandle);
+
 	}
 
 }

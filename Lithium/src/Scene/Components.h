@@ -197,10 +197,33 @@ namespace Lithium
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};
-	struct AudioSourcePlayer
+	struct AudioSourceComponent
 	{
-		AudioSourcePlayer() = default;
-		AudioSourcePlayer(const AudioSourcePlayer&) = default;
+		Asset AudioAsset = 0;
+		bool PlayOnAwake = false;
+		bool Loop = false;
+		bool Spatial = false;
+		void SetLoop(bool loop)
+		{
+			//TODO: set audio asset to loop
+			Loop = loop;
+		}
+		void Play()
+		{
+			//Audio::Play(AssetMng.Get<AudioSource>(AudioAsset);)
+		}
+		void Stop()
+		{
+			//Audio::Stop(AssetMng.Get<AudioSource>(AudioAsset);)
+		}
+		AudioSourceComponent() = default;
+		AudioSourceComponent(const AudioSourceComponent&) = default;
+	};
+
+	struct AudioListenerComponent
+	{
+		AudioListenerComponent() = default;
+		AudioListenerComponent(const AudioListenerComponent&) = default;
 	};
 }
 

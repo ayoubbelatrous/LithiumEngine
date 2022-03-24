@@ -126,7 +126,7 @@ namespace Lithium
 		Ref<SceneHierachyPanel> m_SceneHierachyPanel;
 		Ref<InspectorPanel> m_InspectorPanel;
 		std::string m_ScenePath = "assets/scenes/";
-
+		bool m_OpenStatsPanel = false;
 
 		glm::vec2 m_InitialMousePosition = { 0.0f,0.0f };
 		glm::vec2 m_CameraDelta = { 0.0f,0.0f };

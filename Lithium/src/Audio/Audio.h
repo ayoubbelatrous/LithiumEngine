@@ -18,5 +18,6 @@ namespace Lithium
 		static AudioFileFormat  GetAudioFileFormat(const std::string& filename);
 		static void Init();
 		static void Play(const Ref<AudioSource>& source);
+		static void Stop(const Ref<AudioSource>& source);
 	};
 }

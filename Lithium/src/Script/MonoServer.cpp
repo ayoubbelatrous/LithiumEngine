@@ -405,12 +405,23 @@ namespace Lithium
 
 		int rows = mono_image_get_table_rows(_MonoImage, MONO_TABLE_TYPEDEF);
 
-		/* we start the count from 1 because we skip the special type <Module> */
 		for (i = 1; i < rows; ++i) {
 			klass = mono_class_get(_MonoImage, (i + 1) | MONO_TOKEN_TYPE_DEF);
 			std::string _Nspace = mono_class_get_namespace(klass);
 			std::string name = mono_class_get_name(klass);
-			m_AllClassesInImage.emplace(name, _Nspace + "." + name);
+			MonoClass* BaseClass = nullptr;
+			BaseClass = mono_class_get_parent(klass);
+			if (BaseClass != nullptr)
+			{
+				const char* BaseClassName = mono_class_get_name(BaseClass);
+				if (strcmp(BaseClassName, "Script") == 0)
+				{
+					m_AllClassesInImage.emplace(name, _Nspace + "." + name);
+
+				}
+
+			}
+			
 		}
 
 		

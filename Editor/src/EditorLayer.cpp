@@ -476,6 +476,14 @@ namespace Lithium
 
 				}
 			}
+			if (ImGui::BeginMenu("Windows"))
+			{
+				if (ImGui::MenuItem("Stats"))
+				{
+					m_OpenStatsPanel = true;
+				}
+				ImGui::EndMenu();
+			}
 			ImGui::EndMenuBar();
 
 
@@ -594,10 +602,14 @@ namespace Lithium
 			ImGui::Selectable(log);
 		}
 		ImGui::End();
-		ImGui::Begin("Stats");
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		
-		ImGui::End();
+		if (m_OpenStatsPanel)
+		{
+			ImGui::Begin("Stats", &m_OpenStatsPanel);
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+			ImGui::End();
+		}
+	
 
 		if (m_OpenSceneSaveDialog)
 			ImGui::OpenPopup("Scene Save");

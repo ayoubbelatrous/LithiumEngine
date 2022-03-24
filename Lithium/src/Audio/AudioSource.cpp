@@ -11,12 +11,17 @@ namespace Lithium
 
 	AudioSource::~AudioSource()
 	{
-
+		alDeleteBuffers(1, &m_BufferHandle);
+		alDeleteSources(1, &m_SourceHandle);
 	}
 
 	void AudioSource::SetPosition(float x, float y, float z)
 	{
+		m_Position[0] = x;
+		m_Position[1] = y;
+		m_Position[2] = z;
 
+		alSourcefv(m_SourceHandle, AL_POSITION, m_Position);
 	}
 
 	void AudioSource::SetGain(float gain)
@@ -28,7 +33,9 @@ namespace Lithium
 
 	void AudioSource::SetPitch(float pitch)
 	{
+		m_Pitch = pitch;
 
+		alSourcef(m_SourceHandle, AL_PITCH, pitch);
 	}
 
 	void AudioSource::SetSpatial(bool spatial)
@@ -41,7 +48,9 @@ namespace Lithium
 
 	void AudioSource::SetLoop(bool loop)
 	{
+		m_Loop = loop;
 
+		alSourcei(m_SourceHandle, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
 	}
 
 	float AudioSource::GetGain()
@@ -53,12 +62,6 @@ namespace Lithium
 	{
 		return std::pair<uint32_t, uint32_t>();
 	}
-
-	AudioSource AudioSource::LoadFromFile(const std::string& file, bool spatial /*= false*/)
-	{
-		return AudioSource();
-	}
-
 	AudioSource::AudioSource(uint32_t handle, bool loaded, float length)
 		: m_BufferHandle(handle), m_Loaded(loaded), m_TotalDuration(length)
 	{

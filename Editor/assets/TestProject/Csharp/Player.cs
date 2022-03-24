@@ -7,6 +7,7 @@ class Player : Script
 	public float AirSpeed = 0.0f;
 	public float JumpSpeed = 0.0f;
     public bool Grounded = true;
+    public Entity Projectile;
 
     void Start()
 	{
@@ -43,6 +44,12 @@ class Player : Script
         {
             entity.GetComponent<Transform>().Rotation = new Vector3(0, -180, 0);
 
+        }
+
+        if(Input.MouseKeyPressed(0))
+        {
+            Entity E = Instantiate(Projectile);
+            E.GetComponent<Transform>().Position = new Vector3(3.0f);
         }
     }
     private Vector2 GetAxialInput()

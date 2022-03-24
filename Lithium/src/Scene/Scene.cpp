@@ -11,6 +11,7 @@
 #include "gtx/string_cast.hpp"
 #include "box2d/box2d.h"
 #include "AssetManager/AssetManager.h"
+#include "Audio/Audio.h"
 
 namespace Lithium
 {
@@ -231,6 +232,21 @@ namespace Lithium
 		CListener = new ContactListener();
 		m_PhysicsWorld->GetPtr()->SetContactListener(CListener);
 		SortScene();
+
+		{
+			auto view = m_Registry.view<AudioSourceComponent>();
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+				AudioSourceComponent& source = entity.GetComponent<AudioSourceComponent>();
+				if (source.PlayOnAwake)
+				{
+					Ref<AudioSource> audioSource = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(source.AudioAsset);
+					Audio::Play(audioSource);
+
+				}
+			}
+		}
 	}
 
 	void Scene::onUpdate()
@@ -403,6 +419,20 @@ namespace Lithium
 	void Scene::OnStop()
 	{
 		delete CListener;
+		{
+			auto view = m_Registry.view<AudioSourceComponent>();
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+				AudioSourceComponent& source = entity.GetComponent<AudioSourceComponent>();
+				if (source.PlayOnAwake)
+				{
+					Ref<AudioSource> audioSource = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(source.AudioAsset);
+					Audio::Stop(audioSource);
+
+				}
+			}
+		}
 	}
 
 	std::unordered_map<UUID, entt::entity> Scene::GetUUIDMap()
@@ -444,6 +474,7 @@ namespace Lithium
 		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<ScriptGroupeComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<AudioSourceComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		return newscene;
 	}
 
@@ -458,7 +489,7 @@ namespace Lithium
 		if (src.HasComponent<RelationShipComponent>())
 		{
 			CopyComponent<RelationShipComponent>(src, entity);
-
+			
 		}
 
 		if (src.HasComponent<SpriteRendererComponent>())
@@ -492,6 +523,12 @@ namespace Lithium
 		if (src.HasComponent<CameraComponent>())
 		{
 			CopyComponent<CameraComponent>(src, entity);
+
+		}
+
+		if (src.HasComponent<AudioSourceComponent>())
+		{
+			CopyComponent<AudioSourceComponent>(src, entity);
 
 		}
 
@@ -602,6 +639,10 @@ namespace Lithium
 
 	template<>
 	void Scene::OnComponentAdded<MeshRendererComponent>(Entity entity, MeshRendererComponent& component)
+	{
+	}
+	template<>
+	void Scene::OnComponentAdded<AudioSourceComponent>(Entity entity, AudioSourceComponent& component)
 	{
 	}
 }

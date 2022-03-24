@@ -1,5 +1,6 @@
 #include "lipch.h"
 #include "AssetManager.h"
+#include "Audio/Audio.h"
 #include "Core/UUID.h"
 
 namespace Lithium {
@@ -18,6 +19,24 @@ namespace Lithium {
 			m_AssetRegistry.emplace(path, (uint64_t)uuid);
 			m_PathRegistry.emplace((uint64_t)uuid, path);
 			m_TextureRegistry.emplace((uint64_t)uuid, texture);
+			SaveAssetRegistry();
+			return Asset(m_AssetRegistry[path]);
+		}
+	}
+	template<>
+	Asset AssetManager::GetAssetFromPath<Ref<AudioSource>>(const std::string& path)
+	{
+		if (m_AssetRegistry.find(path) != m_AssetRegistry.end())
+		{
+			return Asset(UUID(m_AssetRegistry[path]));
+		}
+		else
+		{
+			UUID uuid = UUID();
+			Ref<AudioSource> audioSource = Audio::LoadFromFile(path);
+			m_AssetRegistry.emplace(path, (uint64_t)uuid);
+			m_PathRegistry.emplace((uint64_t)uuid, path);
+			m_AudioRegistry.emplace((uint64_t)uuid, audioSource);
 			SaveAssetRegistry();
 			return Asset(m_AssetRegistry[path]);
 		}
@@ -44,6 +63,28 @@ namespace Lithium {
 			return texture;
 		}
 	}
+	template<>
+	Ref<AudioSource> AssetManager::GetAsset(Asset asset)
+	{
+
+		uint64_t ID = (uint64_t)asset.GetUUID();
+
+		if (m_AudioRegistry.find(ID) != m_AudioRegistry.end())
+		{
+			return m_AudioRegistry[ID];
+		}
+		else
+		{
+			std::string path = m_PathRegistry[asset.GetUUID()];
+			Ref<AudioSource> audioSource = Audio::LoadFromFile(path);
+			m_AudioRegistry.emplace(asset.GetUUID(), audioSource);
+			SaveAssetRegistry();
+
+			return audioSource;
+		}
+	}
+
+
 
 
 	void AssetManager::SaveAssetRegistry()

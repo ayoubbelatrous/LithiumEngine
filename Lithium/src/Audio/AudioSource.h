@@ -17,7 +17,6 @@ namespace Lithium
 		void SetLoop(bool loop);
 		float GetGain();
 		std::pair<uint32_t, uint32_t> GetLengthMinutesAndSeconds() const;
-		static AudioSource LoadFromFile(const std::string& file, bool spatial = false);
 	private:
 		
 

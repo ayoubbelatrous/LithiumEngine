@@ -223,8 +223,6 @@ namespace Lithium
 
 	void InspectorPanel::OnUpdate()
 	{
-
-
 		ImGui::Begin("Inspector");
 
 		if (m_Selection.GetHandle() != entt::null && m_Selection.getScene() != nullptr)
@@ -376,13 +374,14 @@ namespace Lithium
 				if (open)
 				{
 					BoxCollider2DComponent& rb2d = m_Selection.GetComponent<BoxCollider2DComponent>();
-
+					ImGui::PushItemWidth(125);
 					ImGui::DragFloat2("Offset", glm::value_ptr(rb2d.Offset));
 					ImGui::DragFloat2("Size", glm::value_ptr(rb2d.Size));
 					ImGui::DragFloat("Density", &rb2d.Density, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Friction", &rb2d.Friction, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution", &rb2d.Restitution, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution Threshold", &rb2d.RestitutionThreshold, 0.01f, 0.0f);
+					ImGui::PopItemWidth();
 					ImGui::TreePop();
 				}
 				
@@ -413,7 +412,7 @@ namespace Lithium
 
 							for (auto& field : script.Scriptobject->GetFields())
 							{
-
+								ImGui::PushItemWidth(125);
 								switch (field.second->GetType())
 								{
 								case (ScriptType::Int):
@@ -502,6 +501,7 @@ namespace Lithium
 									break;
 								}
 								}
+								ImGui::PopItemWidth();
 
 							}
 
@@ -574,6 +574,40 @@ namespace Lithium
 
 
 			}
+			if (m_Selection.HasComponent<AudioSourceComponent>())
+			{
+				AudioSourceComponent& audiosourcecomp = m_Selection.GetComponent<AudioSourceComponent>();
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("AudioSource")), treeNodeFlags, "AudioSource");
+				ImGui::PopStyleVar();
+
+				if (open)
+				{
+				
+					ImGui::Button("Audio Clip", { ImGui::GetContentRegionAvail().x,20 });
+					if (ImGui::BeginDragDropTarget())
+					{
+
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							std::filesystem::path audioPath = root / path;
+							if (audioPath.extension() == ".mp3" || audioPath.extension() == ".ogg")
+							{
+								Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<AudioSource>>(audioPath.string());
+								audiosourcecomp.AudioAsset = asset;
+							}
+
+						}
+						ImGui::EndDragDropTarget();
+					}
+					ImGui::Checkbox("Play On Awake", &audiosourcecomp.PlayOnAwake);
+
+					ImGui::TreePop();
+				}
+			}
 			if (ImGui::Button("Add Component"))
 				ImGui::OpenPopup("AddComponent");
 
@@ -625,10 +659,19 @@ namespace Lithium
 					}
 				}
 
+				if (!m_Selection.HasComponent<AudioSourceComponent>())
+				{
+					if (ImGui::MenuItem("Audio Source"))
+					{
+						m_Selection.AddComponent<AudioSourceComponent>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
+
 				ImGui::EndPopup();
 			}
+			
 		}
-
 		ImGui::End();
 	}
 }
