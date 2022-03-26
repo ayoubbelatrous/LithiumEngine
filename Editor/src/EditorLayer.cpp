@@ -20,6 +20,7 @@ namespace Lithium
 	void EditorLayer::OnCreate()
 	{
 		Application::Get().GetImguiLayer()->SetBlockEvent(true);
+		Application::Get().SetVsync(true);
 		Audio::Init();
 		_GizmoMode = ImGuizmo::OPERATION::TRANSLATE;
 		_EditorStatus = "";
@@ -614,6 +615,12 @@ namespace Lithium
 		{
 			ImGui::Begin("Stats", &m_OpenStatsPanel);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			bool vsync = Application::Get().IsVsync();
+			if (ImGui::Checkbox("Vsync", &vsync))
+			{
+				Application::Get().SetVsync(vsync);
+
+			}
 
 			ImGui::End();
 		}
