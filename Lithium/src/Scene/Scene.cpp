@@ -282,6 +282,10 @@ namespace Lithium
 				Entity entity(e, this);
 				AudioSourceComponent& audioSource = entity.GetComponent<AudioSourceComponent>();
 				TransformComponent& transform = entity.GetComponent<TransformComponent>();
+				if (audioSource.AudioAsset.GetUUID() == 0)
+				{
+					continue;
+				}
 				Ref<AudioSource> sourceAsset = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(audioSource.AudioAsset);
 				sourceAsset->SetSpatial(audioSource.Spatial);
 				sourceAsset->SetLoop(audioSource.Loop);

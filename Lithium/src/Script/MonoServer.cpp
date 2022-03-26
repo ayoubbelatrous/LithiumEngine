@@ -297,6 +297,10 @@ namespace Lithium
 	{
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		AudioSourceComponent& audiosource = entity.GetComponent<AudioSourceComponent>();
+		if (audiosource.AudioAsset.GetUUID() == 0)
+		{
+			return;
+		}
 		Ref<AudioSource> source = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(audiosource.AudioAsset);
 		Audio::Play(source);
 		
@@ -332,6 +336,10 @@ namespace Lithium
 	{
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		TransformComponent& transform = entity.GetComponent<TransformComponent>();
+		if (assetID == 0)
+		{
+			return;
+		}
 		Ref<AudioSource> audioclip  = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(Asset(assetID));
 		audioclip->SetPosition(glm::value_ptr(transform.Position));
 		Audio::Play(audioclip);

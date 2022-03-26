@@ -58,7 +58,6 @@ namespace Lithium
 			ImGui::PushID(path.filename().string().c_str());
 		
 			ImTextureID icontexid = entry.is_directory() ? (ImTextureID)_FolderIcon->GetID() : (ImTextureID)_FileIcon->GetID();
-			
 			ImGui::ImageButton(icontexid, { 60,60 }, { 0,1 }, { 1,0 });
 
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
