@@ -13,7 +13,7 @@ namespace Lithium
 	{
 		WindowResize, WindowClose, WindowMove, WindowFocus,
 		KeyPress,CreateEntity,MouseWheel,AssetBrowser,OpenSpriteEditor,WindowFileDrop,
-		MetaDataChanged
+		MetaDataChanged,MouseKeyPress,
 
 	};
 

@@ -122,6 +122,25 @@ namespace Lithium
 		
 	};
 
+	class MouseKeyPressEvent : public Event
+	{
+	public:
+
+		MouseKeyPressEvent() = default;
+		MouseKeyPressEvent(int keycode, int action, int mods) : keycode(keycode), action(action), mods(mods)
+		{}
+		const char* GetName() const override {
+
+			return "MouseKeyPressEvent";
+		}
+		int GetKeyCode() { return keycode; };
+		int GetKeyMods() { return mods; };
+		int GetKeyAction() { return action; };
+		int keycode;
+		int action;
+		int mods;
+		EVENT_TYPE(MouseKeyPress);
+	};
 
 	
 

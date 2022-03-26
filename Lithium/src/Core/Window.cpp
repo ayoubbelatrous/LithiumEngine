@@ -76,6 +76,12 @@ namespace Lithium
 				MouseWheelEvent ev = MouseWheelEvent((float)xoffset,(float)yoffset);
 				wdata.callback(ev);
 		});
+		glfwSetMouseButtonCallback(window, [](GLFWwindow* win, int key, int action, int mods)
+			{
+				WindowData& wdata = *(WindowData*)glfwGetWindowUserPointer(win);
+				MouseKeyPressEvent ev = MouseKeyPressEvent(key, action, mods);
+				wdata.callback(ev);
+			});
 		glfwSetDropCallback(window, [](GLFWwindow* win, int count, const char** paths)
 		{
 				CORE_LOG(paths[0]);
