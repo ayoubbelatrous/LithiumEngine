@@ -1,19 +1,120 @@
 Scene: NONE
 Entities:
-  - Entity: 9439782547947488213
-    Name: Main Camera
+  - Entity: 10414433048293152650
+    Name: Pos
     Transform:
-      Position: [-0.75999999, 0.360000014, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
+      Position: [1.38122439, -1.28826284, 0]
+      Rotation: [-180, 5.00895612e-06, -180]
+      Scale: [1, 1.39999998, 1]
+    Sprite Renderer:
+      Color: [0.493670881, 0.493670881, 0.493670881, 1]
+      Texture ID: 10460744895190112220
+      DrawOrder: 2
     Child Manager:
       children: ids go here
-    CameraComponent:
-      OrhtographicSize: 4.19999981
-      NearPlane: -1
-      FarPlane: 1
-      Primary: true
-      FixedAspectRatio: false
+  - Entity: 3993448782975393279
+    Name: Player
+    Transform:
+      Position: [1.13881528, -0.144939214, 0]
+      Rotation: [0, -0, 0]
+      Scale: [8.81225777, 4.93349981, 4.93349981]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 8159922648104178881
+      DrawOrder: -10
+    Child Manager:
+      children: ids go here
+  - Entity: 7699374773761216972
+    Name: Camera
+    Transform:
+      Position: [-1.07070351, -1.43376875, -0.861324906]
+      Rotation: [0, -0, 0]
+      Scale: [0.332793802, 0.593529046, 2.43676448]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 3268259082113240235
+      DrawOrder: 1
+    Child Manager:
+      children: ids go here
+    Rigidbody2D:
+      FixedRotation: true
+      Type: Dynamic
+    BoxCollider2D:
+      Size: [0.5, 0.5]
+      Offset: [0, 0]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 17333063651586580139
+    Name: Pos
+    Transform:
+      Position: [-4.08197308, -1.13583302, 0]
+      Rotation: [0, 5.0089684e-06, 0]
+      Scale: [0.685995042, 0.155314252, 1.22000003]
+    Child Manager:
+      children: ids go here
+    AudioSourceComponent:
+      AssetID: 73423621526631036
+      PlayOnAwake: true
+      Loop: true
+      Spatial: false
+      Gain: 0.893999994
+      Pitch: 0.999000013
+  - Entity: 7071666741615867909
+    Name: Pos
+    Transform:
+      Position: [-1.65708339, -1.2913717, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1.39999998, 1]
+    Sprite Renderer:
+      Color: [0.493670881, 0.493670881, 0.493670881, 1]
+      Texture ID: 10460744895190112220
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 2689561306853466973
+    Name: Pos
+    Transform:
+      Position: [-0.736837029, -1.12724137, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1.39999998, 1]
+    Sprite Renderer:
+      Color: [0.675105453, 0.675105453, 0.675105453, 1]
+      Texture ID: 10460744895190112220
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 9408563109210054077
+    Name: Pos
+    Transform:
+      Position: [0.611544609, -1.1032021, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1.39999998, 1]
+    Sprite Renderer:
+      Color: [0.675105453, 0.675105453, 0.675105453, 1]
+      Texture ID: 10460744895190112220
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 17923783536557878212
+    Name: Ground
+    Transform:
+      Position: [0.79018724, -2.22611856, 0]
+      Rotation: [0, -0, 0]
+      Scale: [100, 1, 1]
+    Child Manager:
+      children: ids go here
+    Rigidbody2D:
+      FixedRotation: false
+      Type: Static
+    BoxCollider2D:
+      Size: [0.5, 0.5]
+      Offset: [0, 0]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
   - Entity: 11514845678311824899
     Name: Camera
     Transform:
@@ -36,141 +137,17 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 17923783536557878212
-    Name: Ground
+  - Entity: 9439782547947488213
+    Name: Main Camera
     Transform:
-      Position: [0.79018724, -2.22611856, 0]
+      Position: [-0.75999999, 0.360000014, 0]
       Rotation: [0, -0, 0]
-      Scale: [100, 1, 1]
+      Scale: [1, 1, 1]
     Child Manager:
       children: ids go here
-    Rigidbody2D:
-      FixedRotation: false
-      Type: Static
-    BoxCollider2D:
-      Size: [0.5, 0.5]
-      Offset: [0, 0]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 9408563109210054077
-    Name: Pos
-    Transform:
-      Position: [0.611544609, -1.1032021, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1.39999998, 1]
-    Sprite Renderer:
-      Color: [0.675105453, 0.675105453, 0.675105453, 1]
-      Texture ID: 10460744895190112220
-      DrawOrder: 0
-    Child Manager:
-      children: ids go here
-  - Entity: 2689561306853466973
-    Name: Pos
-    Transform:
-      Position: [-0.736837029, -1.12724137, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1.39999998, 1]
-    Sprite Renderer:
-      Color: [0.675105453, 0.675105453, 0.675105453, 1]
-      Texture ID: 10460744895190112220
-      DrawOrder: 0
-    Child Manager:
-      children: ids go here
-  - Entity: 7071666741615867909
-    Name: Pos
-    Transform:
-      Position: [-1.65708339, -1.2913717, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1.39999998, 1]
-    Sprite Renderer:
-      Color: [0.493670881, 0.493670881, 0.493670881, 1]
-      Texture ID: 10460744895190112220
-      DrawOrder: 2
-    Child Manager:
-      children: ids go here
-  - Entity: 17333063651586580139
-    Name: Pos
-    Transform:
-      Position: [-4.08197308, -1.13583302, 0]
-      Rotation: [0, 5.0089684e-06, 0]
-      Scale: [0.685995042, 0.155314252, 1.22000003]
-    Sprite Renderer:
-      Color: [0.493670881, 0.493670881, 0.493670881, 1]
-      Texture ID: 3366555710911705089
-      DrawOrder: 2
-    Child Manager:
-      children: ids go here
-    Rigidbody2D:
-      FixedRotation: false
-      Type: Static
-    BoxCollider2D:
-      Size: [0.5, 0.5]
-      Offset: [0, 0]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 7699374773761216972
-    Name: Camera
-    Transform:
-      Position: [-1.07070351, -1.43376875, -0.861324906]
-      Rotation: [0, -0, 0]
-      Scale: [0.332793802, 0.593529046, 2.43676448]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture ID: 3268259082113240235
-      DrawOrder: 1
-    Child Manager:
-      children: ids go here
-    ScriptGroupe:
-      Scripts:
-        - ClassName: Player
-          Fields:
-            - Name: JumpSpeed
-              Type: FLOAT
-              Value: 2
-            - Name: speed
-              Type: FLOAT
-              Value: 2
-            - Name: AirSpeed
-              Type: FLOAT
-              Value: 1
-            - Name: Grounded
-              Type: BOOL
-              Value: true
-    Rigidbody2D:
-      FixedRotation: true
-      Type: Dynamic
-    BoxCollider2D:
-      Size: [0.5, 0.5]
-      Offset: [0, 0]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 3993448782975393279
-    Name: Player
-    Transform:
-      Position: [1.13881528, -0.144939214, 0]
-      Rotation: [0, -0, 0]
-      Scale: [8.81225777, 4.93349981, 4.93349981]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture ID: 8159922648104178881
-      DrawOrder: -10
-    Child Manager:
-      children: ids go here
-  - Entity: 10414433048293152650
-    Name: Pos
-    Transform:
-      Position: [1.38122439, -1.28826284, 0]
-      Rotation: [-180, 5.00895612e-06, -180]
-      Scale: [1, 1.39999998, 1]
-    Sprite Renderer:
-      Color: [0.493670881, 0.493670881, 0.493670881, 1]
-      Texture ID: 10460744895190112220
-      DrawOrder: 2
-    Child Manager:
-      children: ids go here
+    CameraComponent:
+      OrhtographicSize: 4.19999981
+      NearPlane: -1
+      FarPlane: 1
+      Primary: true
+      FixedAspectRatio: false

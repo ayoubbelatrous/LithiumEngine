@@ -221,6 +221,19 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<AudioSourceComponent>())
+		{
+			AudioSourceComponent& audioSource = entity.GetComponent<AudioSourceComponent>();
+			emitter << YAML::Key << "AudioSourceComponent" << YAML::BeginMap;
+			emitter << YAML::Key << "AssetID" << YAML::Value << (uint64_t)audioSource.AudioAsset.GetUUID();
+			emitter << YAML::Key << "PlayOnAwake" << YAML::Value << audioSource.PlayOnAwake;
+			emitter << YAML::Key << "Loop" << YAML::Value << audioSource.Loop;
+			emitter << YAML::Key << "Spatial" << YAML::Value << audioSource.Spatial;
+			emitter << YAML::Key << "Gain" << YAML::Value << audioSource.Gain;
+			emitter << YAML::Key << "Pitch" << YAML::Value << audioSource.Pitch;
+			emitter << YAML::EndMap;
+		}
+
 		emitter << YAML::EndMap;
 	}
 
@@ -491,6 +504,20 @@ namespace Lithium
 				camera.Camera.SetOrthographicFarClip(farplane);
 				camera.Primary = primary;
 				camera.FixedAspectRatio = FixedAspectRatio;
+			}
+
+			auto audioSourceComponent = entity["AudioSourceComponent"];
+			if (audioSourceComponent)
+			{
+				deserEntity.AddComponent<AudioSourceComponent>();
+				AudioSourceComponent& audioSource = deserEntity.GetComponent<AudioSourceComponent>();
+				audioSource.AudioAsset = Asset(UUID(audioSourceComponent["AssetID"].as<uint64_t>()));
+				audioSource.PlayOnAwake = audioSourceComponent["PlayOnAwake"].as<bool>();
+				audioSource.Loop = audioSourceComponent["Loop"].as<bool>();
+				audioSource.Spatial = audioSourceComponent["Spatial"].as<bool>();
+				audioSource.Gain = audioSourceComponent["Gain"].as<float>();
+				audioSource.Pitch = audioSourceComponent["Pitch"].as<float>();
+
 			}
 		}
 	}
