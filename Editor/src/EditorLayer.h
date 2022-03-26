@@ -67,6 +67,7 @@ namespace Lithium
 		void onEvent(Event& e) override;
 		void onKeyEvent(KeyEvent& e);
 		void onMouseWheelEvent(MouseWheelEvent& e);
+		void onMouseKeyPressEvent(MouseKeyPressEvent& e);
 		void onEditorEvent(Event& e);
 		void RenderImgui();
 		void ImGuiRenderToolBar();
@@ -105,7 +106,7 @@ namespace Lithium
 		glm::vec2 LastMousePosiition;
 		int _GizmoMode = -1;
 		bool m_UseBoundsGizmo = false;
-		bool CanPick = false;
+		bool m_CanPick = false;
 		Ref<Shader> shader;
 		Ref<Shader> frameshader;
 

@@ -157,35 +157,6 @@ namespace Lithium
 			m_ViewportSizeChanged = false;
 		}
 		
-
-
-		
-
-#pragma endregion
-		if (m_ViewportFocus)
-		{
-			float speed = 0.01f;
-			if (Input::IsKeyPressed(Key::W))
-			{
-				view = glm::translate(view, { 0,1 * speed,0 });
-			}
-
-			if (Input::IsKeyPressed(Key::S))
-			{
-				view = glm::translate(view, { 0,-1 * speed,0 });
-			}
-
-			if (Input::IsKeyPressed(Key::A))
-			{
-				view = glm::translate(view, { -1 * speed,0,0 });
-			}
-
-			if (Input::IsKeyPressed(Key::D))
-			{
-				view = glm::translate(view, { 1 * speed,0,0 });
-			}
-
-		}
 		framebuffer->Bind();
 	
 		RendererCommand::ClearColor(glm::vec4(0.05, 0.05, 0.15, 1.0));
@@ -234,7 +205,7 @@ namespace Lithium
 		mouseY = (int)my;
 
 		
-		if (Input::IsMouseKeyPressed(0) && m_ViewportHovered && !ImGuizmo::IsOver())
+		if (m_CanPick && m_ViewportHovered && !ImGuizmo::IsOver())
 		{
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)vs.x && mouseY < (int)vs.y)
 			{
@@ -285,12 +256,13 @@ namespace Lithium
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyEvent>(BIND_EVENT(EditorLayer::onKeyEvent));
 		dispatcher.Dispatch<MouseWheelEvent>(BIND_EVENT(EditorLayer::onMouseWheelEvent));
+		dispatcher.Dispatch<MouseKeyPressEvent>(BIND_EVENT(EditorLayer::onMouseKeyPressEvent));
+
 		if (e.GetEventType() == EventType::WindowFileDrop)
 		{
 			WindowFileDropEvent& dropevent = static_cast<WindowFileDropEvent&>(e);
 			std::filesystem::copy(dropevent.getPaths()[0],_AssetBrowerPanel->GetCurrentPath());
 			_AssetBrowerPanel->Refresh();
-
 		}
 
 	}
@@ -379,6 +351,26 @@ namespace Lithium
 			orthosize -= e.GetOffsetY() * speed;
 		}
 	
+	}
+
+	void EditorLayer::onMouseKeyPressEvent(MouseKeyPressEvent& e)
+	{
+
+		if (e.action == 1)
+		{
+			if (e.keycode == 0)
+			{
+			m_CanPick = true;
+			}
+			else
+			{
+				m_CanPick = false;
+			}
+		}
+		else
+		{
+			m_CanPick = false;
+		}
 	}
 
 	void EditorLayer::onEditorEvent(Event& e)
