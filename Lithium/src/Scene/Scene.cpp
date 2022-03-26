@@ -370,6 +370,7 @@ namespace Lithium
 						boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
 
 						b2FixtureDef fixtureDef;
+						fixtureDef.isSensor = bc2d.IsSensor;
 						fixtureDef.shape = &boxShape;
 						fixtureDef.density = bc2d.Density;
 						fixtureDef.friction = bc2d.Friction;

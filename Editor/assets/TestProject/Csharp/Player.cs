@@ -7,15 +7,8 @@ class Player : Script
 	public float AirSpeed = 0.0f;
 	public float JumpSpeed = 0.0f;
     public bool Grounded = true;
-    public Entity Projectile;
-    public AudioClip MonsterClip;
     void Start()
 	{
-        if(entity.HasComponent<Camera>())
-        {
-            Debug.Log(entity.GetComponent<Camera>().OrthographicSize);
-        }
-        entity.GetComponent<AudioSource>().Play(MonsterClip);
 
 	}
 
@@ -78,14 +71,11 @@ class Player : Script
 
     void OnCollisionEnter()
     {
-        //entity.GetComponent<SpriteRenderer>().Color = new Vector4(1, 0, 0, 1);
-       // Grounded = true;
+        
     }
 
     void OnCollisionExit()
     {
-        //entity.GetComponent<SpriteRenderer>().Color = new Vector4(1);
-       // Grounded = false;
 
     }
 }

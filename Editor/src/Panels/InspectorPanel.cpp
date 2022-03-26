@@ -440,6 +440,7 @@ namespace Lithium
 					ImGui::DragFloat("Friction", &rb2d.Friction, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution", &rb2d.Restitution, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution Threshold", &rb2d.RestitutionThreshold, 0.01f, 0.0f);
+					ImGui::Checkbox("IsSensor", &rb2d.IsSensor);
 					ImGui::PopItemWidth();
 					ImGui::TreePop();
 				}

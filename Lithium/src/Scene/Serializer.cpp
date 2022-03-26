@@ -206,6 +206,7 @@ namespace Lithium
 			emitter << YAML::Key << "Friction" << YAML::Value << bc2d.Friction;
 			emitter << YAML::Key << "Restitution" << YAML::Value << bc2d.Restitution;
 			emitter << YAML::Key << "RestitutionThreshold" << YAML::Value << bc2d.RestitutionThreshold;
+			emitter << YAML::Key << "IsSensor" << YAML::Value << bc2d.IsSensor;
 			emitter << YAML::EndMap;
 		}
 
@@ -486,6 +487,7 @@ namespace Lithium
 				bc2d.Friction = boxcollider2d["Friction"].as<float>();
 				bc2d.Restitution = boxcollider2d["Restitution"].as<float>();
 				bc2d.RestitutionThreshold = boxcollider2d["RestitutionThreshold"].as<float>();
+				bc2d.IsSensor = boxcollider2d["IsSensor"].as<bool>();
 
 			}
 

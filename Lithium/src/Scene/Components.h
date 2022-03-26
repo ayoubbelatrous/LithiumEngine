@@ -154,7 +154,7 @@ namespace Lithium
 		float Friction = 0.5f;
 		float Restitution = 0.0f;
 		float RestitutionThreshold = 0.5f;
-
+		bool IsSensor = false;
 		void* RuntimeFixture = nullptr;
 	};
 	struct ScriptComponent
