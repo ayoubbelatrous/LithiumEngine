@@ -18,6 +18,8 @@ namespace Lithium
 		~Window();
 		void Init();
 		void OnUpdate();
+		void SetVsync(bool vsync);
+		bool IsVsync();
 		bool WindowClosing()
 		{
 			return glfwWindowShouldClose(window);
@@ -49,7 +51,7 @@ namespace Lithium
 		void* GetNativeWindow() const { return window; }
 	private:
 		GLFWwindow* window;
-
+		bool m_Vsync = true;
 
 
 		struct WindowData

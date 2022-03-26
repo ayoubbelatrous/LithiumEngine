@@ -84,7 +84,6 @@ namespace Lithium
 				wdata.callback(ev);
 		});
 
-		glfwSwapInterval(1);
 	}
 
 	void Window::OnUpdate()
@@ -92,4 +91,16 @@ namespace Lithium
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	void Window::SetVsync(bool vsync)
+	{
+		m_Vsync = vsync;
+		glfwSwapInterval(vsync);
+	}
+
+	bool Window::IsVsync()
+	{
+		return m_Vsync;
+	}
+
 }

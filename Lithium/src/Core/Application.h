@@ -32,6 +32,8 @@ namespace Lithium
 		void Run();
 		void OnEvent(Event& e);
 		void SceneOnEvent(Event& e);
+		void SetVsync(bool vsync);
+		bool IsVsync();
 		GUIlayer* GetImguiLayer() { return _ImguiLayer; }
 		Window& GetWindow();
 		Ref<AssetManager> assetManager;

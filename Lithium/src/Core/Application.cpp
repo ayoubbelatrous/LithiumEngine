@@ -108,6 +108,16 @@ namespace Lithium
 		}
 	}
 
+	void Application::SetVsync(bool vsync)
+	{
+		_Window->SetVsync(vsync);
+	}
+
+	bool Application::IsVsync()
+	{
+		return _Window->IsVsync();
+	}
+
 	Window& Application::GetWindow()
 	{
 		return *_Window;
