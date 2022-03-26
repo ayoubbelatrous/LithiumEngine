@@ -126,14 +126,14 @@ private:
 };
 }
 
-#ifdef BUILD_PROFILER
+#ifndef BUILD_PROFILER
 #define LT_BEGIN_SESSION(name,path) ::Lithium::Instrumentor::Get().BeginSession(name,path)
 #define LT_PROFILE_SCOPE(name) ::Lithium::InstrumentationTimer timer##__LINE__(name);
 #define LT_PROFILE_FUNCTION(name)  LT_PROFILE_SCOPE(name)
 #define LT_END_SCOPE()
 #define LT_END_SESSION() ::Lithium::Instrumentor::Get().EndSession()
 #endif
-#ifndef BUILD_PROFILER
+#ifdef BUILD_PROFILER
 #define LT_BEGIN_SESSION()
 #define LT_PROFILE_SCOPE();
 #define LT_PROFILE_FUNCTION()
