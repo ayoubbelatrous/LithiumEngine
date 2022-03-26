@@ -195,9 +195,8 @@ namespace Lithium
 		}
 		
 	
-		ImGui::Text("%s", name.c_str());
-		ImGui::SameLine();
-		ImGui::Button(EntityName.c_str(), {100,20});
+		
+		ImGui::Button(EntityName.c_str(), {125,20});
 		if (ImGui::BeginDragDropTarget())
 		{
 
@@ -213,6 +212,8 @@ namespace Lithium
 			}
 			ImGui::EndDragDropTarget();
 		}
+		ImGui::SameLine();
+		ImGui::Text("%s", name.c_str());
 		return modified;
 	}
 
@@ -228,11 +229,7 @@ namespace Lithium
 			std::filesystem::path mpath = Application::Get().assetManager->GetAssetPath(id);
 			AudioClipName = mpath.filename().string();
 		}
-
-
-		ImGui::Text("%s", name.c_str());
-		ImGui::SameLine();
-		ImGui::Button(AudioClipName.c_str(), { 100,20 });
+		ImGui::Button(AudioClipName.c_str(), { 125,20 });
 		if (ImGui::BeginDragDropTarget())
 		{
 
@@ -250,6 +247,9 @@ namespace Lithium
 			}
 			ImGui::EndDragDropTarget();
 		}
+		ImGui::SameLine();
+		ImGui::Text("%s", name.c_str());
+		
 		return modified;
 	}
 
