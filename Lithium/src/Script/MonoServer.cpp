@@ -328,6 +328,15 @@ namespace Lithium
 		return entity.GetComponent<AudioSourceComponent>().Gain;
 	}
 
+	void MonoServer::AudioSourcePlayClip_Internal(uint64_t entityID, uint64_t assetID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		TransformComponent& transform = entity.GetComponent<TransformComponent>();
+		Ref<AudioSource> audioclip  = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(Asset(assetID));
+		audioclip->SetPosition(glm::value_ptr(transform.Position));
+		Audio::Play(audioclip);
+	}
+
 	MonoString* MonoServer::GetName_Internal(uint64_t entityID)
 	{
 		
@@ -436,6 +445,8 @@ namespace Lithium
 
 		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourceGain_Internal", MonoServer::SetAudioSourceGain_Internal);
 		mono_add_internal_call("Lithium.Core.AudioSource::GetAudioSourceGain_Internal", MonoServer::GetAudioSourceGain_Internal);
+
+		mono_add_internal_call("Lithium.Core.AudioSource::AudioSourcePlayClip_Internal", MonoServer::AudioSourcePlayClip_Internal);
 
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", MonoServer::MouseKeyDown_Internal);
@@ -681,6 +692,11 @@ namespace Lithium
 		case(ScriptType::Entity):
 		{
 			Dst->SetValue<uint64_t>(Src->GetLocalValue<uint64_t>());
+			break;
+		}
+		case(ScriptType::AudioClip):
+		{
+			Dst->SetValue<UUID>(Src->GetLocalValue<UUID>());
 			break;
 		}
 		}

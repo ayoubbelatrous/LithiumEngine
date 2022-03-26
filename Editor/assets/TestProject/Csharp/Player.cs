@@ -15,9 +15,6 @@ class Player : Script
         {
             Debug.Log(entity.GetComponent<Camera>().OrthographicSize);
         }
-        entity.GetComponent<AudioSource>().Play();
-        entity.GetComponent<AudioSource>().Loop = true;
-        entity.GetComponent<AudioSource>().Gain = 0.5f;
         entity.GetComponent<AudioSource>().Play(MonsterClip);
 
 	}

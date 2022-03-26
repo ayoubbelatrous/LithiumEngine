@@ -200,7 +200,7 @@ namespace Lithium
 	};
 	struct AudioSourceComponent
 	{
-		Asset AudioAsset = 0;
+		Asset AudioAsset = Asset(UUID(0));
 		bool PlayOnAwake = false;
 		bool Loop = false;
 		bool Spatial = false;

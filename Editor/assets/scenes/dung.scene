@@ -1,0 +1,434 @@
+Scene: NONE
+Entities:
+  - Entity: 15518396427089602768
+    Name: Pos
+    Transform:
+      Position: [3, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 8282200959111016793
+    Name: Player
+    Transform:
+      Position: [3.00836658, -0.0167328641, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 7086213378483509744
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 13521332101497987086
+    Name: Camera
+    Transform:
+      Position: [-2.5988543, -0.342904299, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 0
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 949800967889306698
+    Name: Pos
+    Transform:
+      Position: [0, -2, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 16872235289975188451
+    Name: Pos
+    Transform:
+      Position: [3, -2, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 1
+    Child Manager:
+      children: ids go here
+  - Entity: 8315213246652030939
+    Name: Pos
+    Transform:
+      Position: [0, -3, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 3
+    Child Manager:
+      children: ids go here
+  - Entity: 7836893811877536460
+    Name: Pos
+    Transform:
+      Position: [4.99797249, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 4676178363962363871
+    Name: Pos
+    Transform:
+      Position: [4, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 11914539925067951422
+    Name: Pos
+    Transform:
+      Position: [4, -1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 13324587960118193391
+    Name: Pos
+    Transform:
+      Position: [4, -2, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 12847381138681497050
+    Name: Pos
+    Transform:
+      Position: [5, -2, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 16854887502343874742
+    Name: Pos
+    Transform:
+      Position: [5, -1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 17449393133548130455
+    Name: Pos
+    Transform:
+      Position: [5, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 11007641150245745813
+    Name: Pos
+    Transform:
+      Position: [5, 1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 13532931559550644205
+    Name: Pos
+    Transform:
+      Position: [3, 1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 17461232637156418999
+    Name: Pos
+    Transform:
+      Position: [4, 1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 9874138521242037719
+    Name: Pos
+    Transform:
+      Position: [2, 1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 15213213362793889596
+    Name: Pos
+    Transform:
+      Position: [2, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 3742909395424813827
+    Name: Pos
+    Transform:
+      Position: [2, -1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 6740935128233953648
+    Name: Pos
+    Transform:
+      Position: [2, -2, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 11947595299111683051
+    Name: Pos
+    Transform:
+      Position: [1, -2, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 8573281303078386276
+    Name: Pos
+    Transform:
+      Position: [1, -1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 13451794013333427375
+    Name: Pos
+    Transform:
+      Position: [1, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 12305341859720398990
+    Name: Pos
+    Transform:
+      Position: [1, 1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 17303763149070700840
+    Name: Pos
+    Transform:
+      Position: [0, 1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 16501951389117416031
+    Name: Pos
+    Transform:
+      Position: [0, -1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 8333582747121566357
+    Name: Pos
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 10047882710463946042
+    Name: Pos
+    Transform:
+      Position: [0, -2, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [0.331958771, 0.331958771, 0.331958771, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 0
+    Child Manager:
+      children: ids go here
+  - Entity: 4044763477989903149
+    Name: Pos
+    Transform:
+      Position: [1.10052288, -0.716853797, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1.95000005, 3.55339932, 3.55339932]
+    Sprite Renderer:
+      Color: [0.459793806, 0.459793806, 0.459793806, 1]
+      Texture ID: 3268259082113240235
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 2810740639174078198
+    Name: Pos
+    Transform:
+      Position: [5, -3, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 17494016019536420345
+    Name: Pos
+    Transform:
+      Position: [1, -3, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 14720573470951171179
+    Name: Pos
+    Transform:
+      Position: [2, -3, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 4707559826171309476
+    Name: Pos
+    Transform:
+      Position: [3, -3, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 15945181507396272201
+    Name: Pos
+    Transform:
+      Position: [4, -3, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 208296323326924253
+    Name: Pos
+    Transform:
+      Position: [5, -3, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here
+  - Entity: 17385393048846136438
+    Name: Pos
+    Transform:
+      Position: [3, -1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 12568799368987061985
+      DrawOrder: 2
+    Child Manager:
+      children: ids go here

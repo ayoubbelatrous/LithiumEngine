@@ -74,6 +74,11 @@ namespace Lithium
 		{
 			return std::get<uint64_t>(m_Value);
 		}
+		template<>
+		UUID GetLocalValue()
+		{
+			return std::get<uint64_t>(m_Value);
+		}
 
 
 		template<>

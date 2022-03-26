@@ -24,7 +24,8 @@ namespace Lithium
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(3.f, 3.f));
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2.0f, 2.0f));
 
-		bool opened = ImGui::TreeNodeEx((void*)010101101, flags, "Scene");
+		//bool opened = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("Scene")), flags, "Scene");
+		bool opened = ImGui::TreeNode("Scene");
 		if (ImGui::BeginDragDropTarget())
 		{
 
@@ -49,9 +50,9 @@ namespace Lithium
 			}
 			ImGui::EndDragDropTarget();
 		}
-		ImGui::PopStyleVar(2);
 		if (opened)
 		{
+
 			_Scene->GetRegistry().each([&](auto entityID)
 			{
 					Entity entity{ entityID , _Scene.get() };
@@ -60,18 +61,15 @@ namespace Lithium
 						DrawEntity(entity);
 					}
 			});
-			
+			ImGui::TreePop();
+			ImGui::PopStyleVar(2);
+
+		}
+		else {
+			ImGui::PopStyleVar(2);
+
 		}
 
-		if (ImGui::BeginPopupContextItem())
-		{
-			if (ImGui::MenuItem("New Entity"))
-			{
-				_Scene->CreateEntity("Empty");
-			}
-
-			ImGui::EndPopup();
-		}
 		ImGui::End();
 	}
 	
@@ -115,8 +113,6 @@ namespace Lithium
 			_Selection = entity;
 		}
 	
-		ImGui::PopStyleVar();
-		ImGui::PopStyleVar();
 		
 		bool entityDeleted = false;
 		if (ImGui::BeginPopupContextItem())
@@ -159,6 +155,8 @@ namespace Lithium
 			ImGui::TreePop();
 		}
 
+		ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
 	 }
 }

@@ -463,6 +463,7 @@ namespace Lithium
 								}
 								case (ScriptType::Float):
 								{
+									
 									float val = 0;
 									val = field.second->GetValue<float>();
 									if (Property(field.first, &val))

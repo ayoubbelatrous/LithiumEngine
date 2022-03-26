@@ -567,8 +567,16 @@ namespace Lithium
 			Entity ParentEntity(m_ActiveScene->GetUUIDMap()[parentUUID], m_ActiveScene.get());
 			TransformComponent& ParentTransform = ParentEntity.GetComponent<TransformComponent>();
 			float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
-			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD
-				, glm::value_ptr(matri),NULL,NULL,m_UseBoundsGizmo ? bounds : NULL);
+
+			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			float snapValue = 1.0f; // Snap to 0.5m for translation/scale
+			// Snap to 45 degrees for rotation
+			if (_GizmoMode == ImGuizmo::OPERATION::ROTATE)
+				snapValue = 45.0f;
+
+			float snapValues[3] = { snapValue, snapValue, snapValue };
+
+			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri),nullptr, snap ? snapValues : nullptr,NULL,m_UseBoundsGizmo ? bounds : NULL);
 
 			if (ImGuizmo::IsUsing())
 			{
