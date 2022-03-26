@@ -52,11 +52,10 @@ namespace Lithium
 		{
 		
 			const auto& path = entry.path();
-			auto relativePath = std::filesystem::relative(path, "assets");
 	
 
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			ImGui::PushID(relativePath.filename().string().c_str());
+			ImGui::PushID(path.filename().string().c_str());
 		
 			ImTextureID icontexid = entry.is_directory() ? (ImTextureID)_FolderIcon->GetID() : (ImTextureID)_FileIcon->GetID();
 			
@@ -78,6 +77,8 @@ namespace Lithium
 
 			if (ImGui::BeginDragDropSource())
 			{
+				auto relativePath = std::filesystem::relative(path, "assets");
+
 				const wchar_t* itemPath = relativePath.c_str();
 				ImGui::SetDragDropPayload("ASSET_FILE", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::Image(icontexid, { 50,50}, { 0,1 }, { 1,0 });
@@ -86,7 +87,7 @@ namespace Lithium
 			}
 			
 			ImGui::PopStyleColor();
-			ImGui::TextWrapped(relativePath.filename().string().c_str());
+			ImGui::TextWrapped(path.filename().string().c_str());
 			//ImGui::Text("%s",entry.path().string());
 			ImGui::NextColumn();
 			ImGui::PopID();
