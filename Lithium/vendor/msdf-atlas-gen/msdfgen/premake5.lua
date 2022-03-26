@@ -75,7 +75,7 @@ project "freetype"
 
     filter "configurations:Release"
         runtime "Release"
-        optimize "on"
+        optimize(omptimizationLevel)
 
 
 project "msdfgen"
@@ -121,4 +121,4 @@ project "msdfgen"
 
 filter "configurations:Release"
 	runtime "Release"
-	optimize "on"
+	optimize(omptimizationLevel)

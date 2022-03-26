@@ -51,4 +51,4 @@ project "Vorbis"
 
 	filter "configurations:Release"
 		runtime "Release"
-		optimize "on"
+		optimize(omptimizationLevel)

@@ -24,4 +24,4 @@ project "GLAD"
 
     filter "configurations:Release"
         runtime "Release"
-        optimize "on"
+        optimize(omptimizationLevel)

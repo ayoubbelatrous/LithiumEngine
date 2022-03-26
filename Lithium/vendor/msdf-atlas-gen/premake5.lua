@@ -39,4 +39,4 @@ project "msdf-atlas-gen"
 
 filter "configurations:Release"
 	runtime "Release"
-	optimize "on"
+	optimize(omptimizationLevel)

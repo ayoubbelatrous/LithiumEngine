@@ -38,4 +38,4 @@ project "GLFW"
 
 	filter "configurations:Release"
 		runtime "Release"
-		optimize "on"
+		optimize(omptimizationLevel)

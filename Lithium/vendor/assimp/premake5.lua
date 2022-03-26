@@ -147,4 +147,4 @@ project "assimp"
 
 filter "configurations:Release"
   runtime "Release"
-  optimize "on"
+  optimize(omptimizationLevel)

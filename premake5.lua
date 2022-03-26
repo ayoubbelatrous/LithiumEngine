@@ -19,6 +19,7 @@ workspace "Lithium"
 		
 	}
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+omptimizationLevel = "Speed"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "%{wks.location}/Lithium/vendor/glfw/include"

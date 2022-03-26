@@ -41,5 +41,5 @@ project "Editor"
 
 	filter "configurations:Release"
 		runtime "Release"
-		optimize "on"
+		optimize(omptimizationLevel)
 
