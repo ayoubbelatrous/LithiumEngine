@@ -105,7 +105,7 @@ namespace Lithium
 		glm::vec2 LastMousePosiition;
 		int _GizmoMode = -1;
 		bool m_UseBoundsGizmo = false;
-		
+		bool CanPick = false;
 		Ref<Shader> shader;
 		Ref<Shader> frameshader;
 

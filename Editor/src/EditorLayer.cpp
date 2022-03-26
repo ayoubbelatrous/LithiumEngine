@@ -370,11 +370,15 @@ namespace Lithium
 	void EditorLayer::onMouseWheelEvent(MouseWheelEvent& e)
 	{
 		
-		float distance = orthosize * 0.5f * 0.2f;
-		distance = std::max(distance, 0.0f);
-		float speed = distance * distance;
-		speed = std::min(speed, 5.0f);
-		orthosize -= e.GetOffsetY() * speed;
+		if (m_ViewportHovered)
+		{
+			float distance = orthosize * 0.5f * 0.2f;
+			distance = std::max(distance, 0.0f);
+			float speed = distance * distance;
+			speed = std::min(speed, 5.0f);
+			orthosize -= e.GetOffsetY() * speed;
+		}
+	
 	}
 
 	void EditorLayer::onEditorEvent(Event& e)

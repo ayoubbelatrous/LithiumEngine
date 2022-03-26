@@ -281,83 +281,86 @@ namespace Lithium
 
 			if (m_Selection.HasComponent<TransformComponent>())
 			{
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
-				ImGui::Selectable("Transform");
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("TransformComponent")), treeNodeFlags, "TransformComponent");
+				ImGui::PopStyleVar();
 
-				if (ImGui::BeginPopupContextItem())
+				if (open)
 				{
-					if (ImGui::MenuItem("Remove Component"))
-					{
-					}
-					if (ImGui::MenuItem("Copy Component"))
-					{
-					}
-
-					ImGui::EndPopup();
+					DrawVec3Control("Position", m_Selection.GetComponent<TransformComponent>().Position);
+					DrawVec3Control("Rotation", m_Selection.GetComponent<TransformComponent>().Rotation);
+					DrawVec3Control("Scale", m_Selection.GetComponent<TransformComponent>().Scale);
+					ImGui::TreePop();
 				}
 
-				ImGui::Separator();
-				DrawVec3Control("Position", m_Selection.GetComponent<TransformComponent>().Position);
-				ImGui::Separator();
-				DrawVec3Control("Rotation", m_Selection.GetComponent<TransformComponent>().Rotation);
-				ImGui::Separator();
-				DrawVec3Control("Scale", m_Selection.GetComponent<TransformComponent>().Scale);
-				ImGui::Separator();
+				
 			}
 
 			if (m_Selection.HasComponent<SpriteRendererComponent>())
 			{
-				ImGui::Selectable("Sprite Renderer");
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
-
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("SpriteRenderer")), treeNodeFlags, "SpriteRenderer");
+				ImGui::PopStyleVar();
+				bool remove = false;
 				if (ImGui::BeginPopupContextItem())
 				{
 					if (ImGui::MenuItem("Remove Component"))
 					{
+						remove = true;
 					}
-					if (ImGui::MenuItem("Copy Component"))
-					{
-					}
-
 					ImGui::EndPopup();
 				}
 
 
 
-				ImGui::Separator();
-				ImGui::ColorEdit4("Color", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().Color));
-				int drawOrder = m_Selection.GetComponent<SpriteRendererComponent>().DrawOrder;
 
-				if (ImGui::InputInt("Draw Order", &drawOrder))
-				{
-					m_Selection.GetComponent<SpriteRendererComponent>().DrawOrder = drawOrder;
-					Application::Get().sceneManager->GetActiveScene()->SortScene();
-
-				}
-
-
-				/*if (m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset)
-				{
-					ImGui::Image((ImTextureID)m_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });
-				}*/
-				
-				{
-					ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,50 });
-				}
-
-
-				if (ImGui::BeginDragDropTarget())
+				if (open)
 				{
 
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+					ImGui::ColorEdit4("Color", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().Color));
+					int drawOrder = m_Selection.GetComponent<SpriteRendererComponent>().DrawOrder;
+
+					if (ImGui::InputInt("Draw Order", &drawOrder))
 					{
-						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path texturepath = root / path;
-						Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(texturepath.string());
-						m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset = asset;
+						m_Selection.GetComponent<SpriteRendererComponent>().DrawOrder = drawOrder;
+						Application::Get().sceneManager->GetActiveScene()->SortScene();
+
 					}
-					ImGui::EndDragDropTarget();
+
+
+					/*if (m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset)
+					{
+						ImGui::Image((ImTextureID)m_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });
+					}*/
+
+					{
+						ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,50 });
+					}
+
+
+					if (ImGui::BeginDragDropTarget())
+					{
+
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							std::filesystem::path texturepath = root / path;
+							Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(texturepath.string());
+							m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset = asset;
+						}
+						ImGui::EndDragDropTarget();
+					}
+					ImGui::TreePop();
 				}
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<SpriteRendererComponent>();
+				}
+				
 			}
 
 			if (m_Selection.HasComponent<Rigidbody2DComponent>())
@@ -367,7 +370,15 @@ namespace Lithium
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("RigidBody 2D")), treeNodeFlags, "RigidBody 2D");
 				ImGui::PopStyleVar();
-
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
 				if (open)
 				{
 					Rigidbody2DComponent& rb2d = m_Selection.GetComponent<Rigidbody2DComponent>();
@@ -395,7 +406,10 @@ namespace Lithium
 					ImGui::TreePop();
 				}
 				
-					
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<Rigidbody2DComponent>();
+				}
 
 			}
 
@@ -407,7 +421,15 @@ namespace Lithium
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("BoxCollider 2D")), treeNodeFlags, "BoxCollider 2D");
 				ImGui::PopStyleVar();
-
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
 				if (open)
 				{
 					BoxCollider2DComponent& rb2d = m_Selection.GetComponent<BoxCollider2DComponent>();
@@ -421,7 +443,10 @@ namespace Lithium
 					ImGui::PopItemWidth();
 					ImGui::TreePop();
 				}
-				
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<BoxCollider2DComponent>();
+				}
 
 			}
 			if (m_Selection.HasComponent<ScriptGroupeComponent>())
@@ -436,6 +461,15 @@ namespace Lithium
 					bool open = ImGui::TreeNodeEx((void*)(std::hash<uint64_t>{}(script.uuid)), treeNodeFlags, script.Name.c_str());
 					
 					ImGui::PopStyleVar();
+					bool remove = false;
+					if (ImGui::BeginPopupContextItem())
+					{
+						if (ImGui::MenuItem("Remove Component"))
+						{
+							remove = true;
+						}
+						ImGui::EndPopup();
+					}
 					if (open)
 					{
 						std::string ModuleName = script.Name;
@@ -571,7 +605,15 @@ namespace Lithium
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("Camera")), treeNodeFlags, "Camera");
 				ImGui::PopStyleVar();
-
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
 				if (open)
 				{
 					CameraComponent& camera = m_Selection.GetComponent<CameraComponent>();
@@ -621,7 +663,10 @@ namespace Lithium
 					}
 					ImGui::TreePop();
 				}
-
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<CameraComponent>();
+				}
 
 			}
 			if (m_Selection.HasComponent<AudioSourceComponent>())
@@ -632,7 +677,15 @@ namespace Lithium
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("AudioSource")), treeNodeFlags, "AudioSource");
 				ImGui::PopStyleVar();
-
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
 				if (open)
 				{
 				
@@ -659,6 +712,10 @@ namespace Lithium
 					ImGui::SliderFloat("Gain", &audiosourcecomp.Gain,0.0f,1.0f);
 					ImGui::SliderFloat("Pitch", &audiosourcecomp.Pitch, 0.0f, 1.0f);
 					ImGui::TreePop();
+				}
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<AudioSourceComponent>();
 				}
 			}
 			if (ImGui::Button("Add Component"))
