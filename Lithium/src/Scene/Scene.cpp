@@ -154,8 +154,14 @@ namespace Lithium
 		{
 			Entity childEntity(GetUUIDMap()[child], this);
 			TransformComponent& ChildTransform = childEntity.GetComponent<TransformComponent>();
-			ChildTransform.ModelMatrix = ParentTransform.ModelMatrix * ChildTransform.GetMatrix();
+// 			glm::mat4 mat = ParentTransform.ModelMatrix * ChildTransform.GetMatrix();
+// 			glm::vec3 pos;
+// 			glm::vec3 rot;
+// 			glm::vec3 sca;
+// 			Math::DecomposeTransform(mat, pos, rot, sca);
 
+			ChildTransform.Position = ParentTransform.Position + ChildTransform.LocalPosition;
+			ChildTransform.ModelMatrix = ChildTransform.GetMatrix();
 			UpdateTransform(childEntity);
 		}
 	}

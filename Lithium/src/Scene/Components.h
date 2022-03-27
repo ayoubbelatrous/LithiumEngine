@@ -53,6 +53,8 @@ namespace Lithium
 		glm::vec3 Scale = glm::vec3(1);
 		glm::mat4 ModelMatrix = glm::mat4(1);
 
+		glm::vec3 LocalPosition = glm::vec3();
+		glm::vec3 LocalRotation = glm::vec3();
 		glm::mat4 GetMatrix()
 		{
 			glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(Rotation)));

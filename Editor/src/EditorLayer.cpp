@@ -63,8 +63,8 @@ namespace Lithium
 		framebuffer->resize(1000, 1000);
 
 	
-		Entity entity = m_ActiveScene->CreateEntity("Empty");
-
+		Entity entity = m_ActiveScene->CreateEntity("Main Camera");
+		entity.AddComponent<CameraComponent>();
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
@@ -593,6 +593,13 @@ namespace Lithium
 
 		if (selected.GetHandle() != entt::null && selected.HasComponent<TransformComponent>())
 		{
+
+			bool hasParent = false;
+			if (selected.GetComponent<RelationShipComponent>().Parent != 0)
+			{
+				
+				hasParent = true;
+			}
 			glm::mat4 matri = selected.GetComponent<TransformComponent>().ModelMatrix;
 			float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
 
@@ -611,7 +618,20 @@ namespace Lithium
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(matri, translation, rotation, scale);
 				glm::vec3 deltaRotation = rotation - selected.GetComponent<TransformComponent>().Rotation;
- 				selected.GetComponent<TransformComponent>().Position = translation;
+				if (hasParent)
+				{
+					Entity entity(m_ActiveScene->GetUUIDMap()[selected.GetComponent<RelationShipComponent>().Parent], m_ActiveScene.get());
+					TransformComponent& parentTransform = entity.GetComponent<TransformComponent>();
+					glm::vec3 pPos = parentTransform.Position;
+
+					selected.GetComponent<TransformComponent>().Position = translation;
+					selected.GetComponent<TransformComponent>().LocalPosition = translation - pPos;
+
+				}
+				else
+				{
+					selected.GetComponent<TransformComponent>().Position = translation;
+				}
  				selected.GetComponent<TransformComponent>().Rotation = glm::degrees(rotation);
  				selected.GetComponent<TransformComponent>().Scale = scale;
 

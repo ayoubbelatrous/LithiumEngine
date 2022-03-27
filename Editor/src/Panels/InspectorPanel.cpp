@@ -289,7 +289,16 @@ namespace Lithium
 
 				if (open)
 				{
-					DrawVec3Control("Position", m_Selection.GetComponent<TransformComponent>().Position);
+					if (m_Selection.GetComponent<RelationShipComponent>().Parent == 0)
+					{
+						DrawVec3Control("Position", m_Selection.GetComponent<TransformComponent>().Position);
+
+					}
+					else
+					{
+						DrawVec3Control("Position", m_Selection.GetComponent<TransformComponent>().LocalPosition);
+
+					}
 					DrawVec3Control("Rotation", m_Selection.GetComponent<TransformComponent>().Rotation);
 					DrawVec3Control("Scale", m_Selection.GetComponent<TransformComponent>().Scale);
 					ImGui::TreePop();
