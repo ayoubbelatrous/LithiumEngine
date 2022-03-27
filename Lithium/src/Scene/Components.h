@@ -93,7 +93,25 @@ namespace Lithium
 		UUID Parent = 0;
 		void AddChild(UUID id)
 		{
+			for (auto& uuid : Children)
+			{
+				if (id == uuid)
+				{
+					return;
+				}
+			}
 			Children.push_back(id);
+		}
+
+		void RemoveChild(UUID id)
+		{
+			for (size_t i = 0; i < Children.size(); i++)
+			{
+				if (id == Children[i])
+				{
+					Children.erase(std::next(Children.begin(), i));
+				}
+			}
 		}
 		RelationShipComponent() = default;
 		RelationShipComponent(const RelationShipComponent& other) = default;
