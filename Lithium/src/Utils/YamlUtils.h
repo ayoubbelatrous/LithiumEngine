@@ -2,6 +2,7 @@
 #include "glm.hpp"
 #include "yaml-cpp/yaml.h"
 
+
 namespace YAML {
 
 	template<>

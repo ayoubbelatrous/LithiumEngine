@@ -97,7 +97,6 @@ namespace Lithium
 			case (ScriptType::Entity):
 			{
 				uint64_t val = field.second->GetValue<uint64_t>();
-				uint64_t test = 2525252525252525252;
 				emitter << YAML::Key << "Name" << YAML::Value << field.first;
 				emitter << YAML::Key << "Type" << YAML::Value << "ENTITY";
 				emitter << YAML::Key << "Value" << YAML::Value << val;
@@ -127,6 +126,10 @@ namespace Lithium
 		emitter << YAML::Key << "Position" << YAML::Value << tc.Position;
 		emitter << YAML::Key << "Rotation" << YAML::Value << tc.Rotation;
 		emitter << YAML::Key << "Scale" << YAML::Value << tc.Scale;
+
+		emitter << YAML::Key << "LocalPosition" << YAML::Value << tc.LocalPosition;
+		emitter << YAML::Key << "LocalRotation" << YAML::Value << tc.LocalRotation;
+		emitter << YAML::Key << "LocalScale" << YAML::Value << tc.LocalScale;
 		emitter << YAML::EndMap;
 
 
@@ -142,9 +145,16 @@ namespace Lithium
 
 		if (entity.HasComponent<RelationShipComponent>())
 		{
-			RelationShipComponent& cm = entity.GetComponent<RelationShipComponent>();
-			emitter << YAML::Key << "Child Manager" << YAML::BeginMap;
-			emitter << YAML::Key << "children" << YAML::Value << "ids go here";
+			RelationShipComponent& rc = entity.GetComponent<RelationShipComponent>();
+			emitter << YAML::Key << "RelationShipComponent" << YAML::BeginMap;
+			emitter << YAML::Key << "Children" << YAML::Value << YAML::BeginSeq;
+			for (auto& id : rc.Children)
+			{
+				emitter << YAML::Key <<  (uint64_t)id;
+			}
+
+			emitter << YAML::EndSeq;
+			emitter << YAML::Key << "Parent" << YAML::Value << (uint64_t)rc.Parent;
 			emitter << YAML::EndMap;
 		}
 
@@ -289,6 +299,21 @@ namespace Lithium
 				tc.Position = transform["Position"].as<glm::vec3>();
 				tc.Rotation = transform["Rotation"].as<glm::vec3>();
 				tc.Scale = transform["Scale"].as<glm::vec3>();
+				tc.LocalPosition = transform["LocalPosition"].as<glm::vec3>();
+				tc.LocalRotation = transform["LocalRotation"].as<glm::vec3>();
+				tc.LocalScale = transform["LocalScale"].as<glm::vec3>();
+
+			}
+		
+			auto relationshipcomp = entity["RelationShipComponent"];
+			if (relationshipcomp)
+			{
+				RelationShipComponent& rc = deserEntity.GetComponent<RelationShipComponent>();
+				for (auto& uuid : relationshipcomp["Children"])
+				{
+					rc.AddChild(uuid.as<uint64_t>());
+				}
+				rc.Parent = UUID(relationshipcomp["Parent"].as<uint64_t>());
 
 			}
 			auto sprite = entity["Sprite Renderer"];

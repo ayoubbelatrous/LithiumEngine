@@ -55,6 +55,7 @@ namespace Lithium
 
 		glm::vec3 LocalPosition = glm::vec3();
 		glm::vec3 LocalRotation = glm::vec3();
+		glm::vec3 LocalScale = glm::vec3();
 		glm::mat4 GetMatrix()
 		{
 			glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(Rotation)));
