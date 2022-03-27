@@ -136,7 +136,11 @@ namespace Lithium
 
 	void Scene::DeleteEntity(Entity entity)
 	{
-		
+		RelationShipComponent& rc = entity.GetComponent<RelationShipComponent>();
+		for (auto& child : rc.Children)
+		{
+			DeleteEntity(Entity(GetUUIDMap()[child],this));
+		}
 		m_Registry.destroy(entity.GetHandle());
 	}
 
@@ -457,8 +461,11 @@ namespace Lithium
 				Entity entity(e, this);
 				AudioSourceComponent& source = entity.GetComponent<AudioSourceComponent>();
 			
-				Ref<AudioSource> audioSource = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(source.AudioAsset);
-				Audio::Stop(audioSource);
+				if (source.AudioAsset.GetUUID() != 0)
+				{
+					Ref<AudioSource> audioSource = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(source.AudioAsset);
+					Audio::Stop(audioSource);
+				}
 
 			}
 		}

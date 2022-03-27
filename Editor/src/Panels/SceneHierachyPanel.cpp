@@ -126,11 +126,7 @@ namespace Lithium
 		}
 
 
-		if (entityDeleted)
-		{
-			_Scene->DeleteEntity(entity);
-			_Selection = Entity();
-		}
+		
 
 		
 
@@ -158,5 +154,11 @@ namespace Lithium
 		ImGui::PopStyleVar();
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
+
+		if (entityDeleted)
+		{
+			_Scene->DeleteEntity(entity);
+			_Selection = Entity();
+		}
 	 }
 }

@@ -594,9 +594,6 @@ namespace Lithium
 		if (selected.GetHandle() != entt::null && selected.HasComponent<TransformComponent>())
 		{
 			glm::mat4 matri = selected.GetComponent<TransformComponent>().ModelMatrix;
-			UUID parentUUID = selected.GetComponent<RelationShipComponent>().Parent;
-			Entity ParentEntity(m_ActiveScene->GetUUIDMap()[parentUUID], m_ActiveScene.get());
-			TransformComponent& ParentTransform = ParentEntity.GetComponent<TransformComponent>();
 			float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
 
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
