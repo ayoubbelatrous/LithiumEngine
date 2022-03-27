@@ -103,7 +103,12 @@ namespace Lithium
 				const UUID* uuid = (UUID*)payload->Data;
 				Entity DroppedEntity(_Scene->GetUUIDMap()[*uuid], _Scene.get());
 				DroppedEntity.GetComponent<RelationShipComponent>().Parent = entity.GetComponent<IDComponent>().ID;
+				TransformComponent& childTransform = DroppedEntity.GetComponent<TransformComponent>();
 				entity.GetComponent<RelationShipComponent>().AddChild(*uuid);
+				TransformComponent& parentTransform = entity.GetComponent<TransformComponent>();
+				childTransform.LocalPosition = childTransform.Position - parentTransform.Position;
+
+
 			}
 			ImGui::EndDragDropTarget();
 		}
