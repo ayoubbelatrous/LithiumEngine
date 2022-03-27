@@ -63,15 +63,7 @@ namespace Lithium
 		framebuffer->resize(1000, 1000);
 
 	
-		Entity entity = m_ActiveScene->CreateEntity("Player");
-		Entity entity3 = m_ActiveScene->CreateEntity("Camera");
-		Entity entity2 = m_ActiveScene->CreateEntity("Pos");
-
-		entity.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-
-		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
-
-		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(1, 1, 1, 1));
+		Entity entity = m_ActiveScene->CreateEntity("Empty");
 
 		pos = glm::vec3(0);
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
@@ -333,6 +325,7 @@ namespace Lithium
 				if (e.action == GLFW_PRESS)
 				{
 					m_ActiveScene->DuplicateEntity(m_SceneHierachyPanel->GetSelection());
+					m_ActiveScene->SortScene();
 				}
 
 			}
@@ -478,6 +471,47 @@ namespace Lithium
 				if (ImGui::MenuItem("Stats"))
 				{
 					m_OpenStatsPanel = true;
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Entity"))
+			{
+				if (ImGui::MenuItem("Create Empty"))
+				{
+					m_ActiveScene->CreateEntity("New Entity");
+				}
+				if (ImGui::MenuItem("Sprite"))
+				{
+					Entity entity = m_ActiveScene->CreateEntity("New Entity");
+					m_SceneHierachyPanel->SetSelection(entity);
+					entity.AddComponent<SpriteRendererComponent>();
+				}
+				if (ImGui::MenuItem("RigidBody"))
+				{
+					Entity entity = m_ActiveScene->CreateEntity("New Entity");
+					entity.AddComponent<SpriteRendererComponent>();
+					entity.AddComponent<Rigidbody2DComponent>();
+					entity.AddComponent<BoxCollider2DComponent>();
+					m_SceneHierachyPanel->SetSelection(entity);
+				}
+
+				if (ImGui::MenuItem("Audio Source"))
+				{
+					Entity entity = m_ActiveScene->CreateEntity("New Entity");
+					entity.AddComponent<AudioSourceComponent>();
+					m_SceneHierachyPanel->SetSelection(entity);
+				}
+				if (ImGui::MenuItem("Camera"))
+				{
+					Entity entity = m_ActiveScene->CreateEntity("Camera");
+					entity.AddComponent<CameraComponent>();
+					m_SceneHierachyPanel->SetSelection(entity);
+				}
+				if (ImGui::MenuItem("Script Entity"))
+				{
+					Entity entity = m_ActiveScene->CreateEntity("New Entity");
+					entity.AddComponent<ScriptGroupeComponent>().AddScript("");
+					m_SceneHierachyPanel->SetSelection(entity);
 				}
 				ImGui::EndMenu();
 			}
