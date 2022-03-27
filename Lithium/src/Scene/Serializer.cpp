@@ -156,10 +156,12 @@ namespace Lithium
 			emitter << YAML::Key << "ScriptGroupe" << YAML::Value << YAML::BeginMap;
 
 			emitter << YAML::Key << "Scripts" << YAML::Value << YAML::BeginSeq;
-			for (auto& scc:ScriptGroupe.Scripts)
+			for (auto& scc : ScriptGroupe.Scripts)
 			{
-				
-				SerializeScript(emitter, scc);
+				if (scc.Loaded == true)
+				{
+					SerializeScript(emitter, scc);
+				}
 				
 			}
 
