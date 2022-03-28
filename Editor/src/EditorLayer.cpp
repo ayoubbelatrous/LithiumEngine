@@ -142,7 +142,7 @@ namespace Lithium
 
 		m_CameraPosition = m_FocalPoint;// -glm::rotate(orientation, glm::vec3(0.0f, 0.0f, 0.0f));
 		view = glm::translate(glm::mat4(1.0f), m_CameraPosition) * glm::toMat4(orientation);
-		view = glm::inverse(view);
+		
 
 
 		if (m_ViewportSizeChanged)
@@ -613,7 +613,7 @@ namespace Lithium
 
 			float snapValues[3] = { snapValue, snapValue, snapValue };
 
-			ImGuizmo::Manipulate(glm::value_ptr(_view), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri),nullptr, snap ? snapValues : nullptr,NULL,m_UseBoundsGizmo ? bounds : NULL);
+			ImGuizmo::Manipulate(glm::value_ptr(glm::inverse(_view)), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri),nullptr, snap ? snapValues : nullptr,NULL,m_UseBoundsGizmo ? bounds : NULL);
 
 			if (ImGuizmo::IsUsing())
 			{
@@ -734,13 +734,12 @@ namespace Lithium
 				for (auto e : view)
 				{
 					auto& [camera,tc] = view.get<CameraComponent, TransformComponent>(e);
-					glm::mat4 transform = glm::mat4(1.0f);
-					transform = glm::translate(glm::mat4(1.0f), glm::vec3(tc.Position.x, tc.Position.y,0.0f)) * 
-						glm::scale(glm::mat4(1.0f),tc.Scale / 2.0f);
-					BatchRenderer::DrawQuad(transform, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f), m_CameraGizmo, (int)e);
+					float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
+					glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(tc.Rotation)));
+					glm::mat4 transform = glm::translate(glm::mat4(1), tc.Position) * rotation * glm::scale(glm::mat4(1), { camera.Camera.GetOrthographicSize() * AspectRatio,camera.Camera.GetOrthographicSize(),0.0f });
 
-
-					BatchRenderer::DrawRect(tc.Position, { camera.Camera.GetOrthographicSize(),camera.Camera.GetOrthographicSize() }, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f));
+					BatchRenderer::DrawQuad(tc.ModelMatrix, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f), m_CameraGizmo, (int)e);
+					BatchRenderer::DrawRect(transform, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f));
 
 				}
 			}
@@ -754,8 +753,13 @@ namespace Lithium
 			for (auto e : view)
 			{
 				auto& [bc2d, tc] = view.get<BoxCollider2DComponent, TransformComponent>(e);
+				glm::vec3 translation = tc.Position + glm::vec3(bc2d.Offset, 0.001f);
+				glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
 
-				BatchRenderer::DrawRect(tc.Position, { bc2d.Size.x * tc.Scale.x,bc2d.Size.y * tc.Scale.y }, glm::vec4(0, 1, 0, 1));
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
+					* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
+					* glm::scale(glm::mat4(1.0f), scale);
+				BatchRenderer::DrawRect(transform, glm::vec4(0, 1, 0, 1));
 			}
 		}
 

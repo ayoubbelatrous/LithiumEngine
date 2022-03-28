@@ -53,7 +53,7 @@ namespace Lithium
 		Vertex* _VertexBufferBase = nullptr;
 		glm::mat4 projection;
 		//debug lines
-		float LineThickness = 2.0f;
+		float LineThickness = 1.0f;
 		Ref<VertexArray> LineVertexArray;
 		Ref<VertexBuffer> LineVertexBuffer;
 		Ref<Shader> LineShader;
@@ -260,6 +260,19 @@ namespace Lithium
 		DrawLine(p2, p3, color);
 		DrawLine(p3, p0, color);
 	}
+
+	void BatchRenderer::DrawRect(const glm::mat4& transform, const glm::vec4& color)
+	{
+		glm::vec3 lineVertices[4];
+		for (size_t i = 0; i < 4; i++)
+			lineVertices[i] = transform * _Data._VertexPositions[i];
+
+		DrawLine(lineVertices[0], lineVertices[1], color);
+		DrawLine(lineVertices[1], lineVertices[2], color);
+		DrawLine(lineVertices[2], lineVertices[3], color);
+		DrawLine(lineVertices[3], lineVertices[0], color);
+	}
+
 	void BatchRenderer::DrawData()
 	{
 		if(_Data._IndexCount)
