@@ -69,6 +69,7 @@ namespace Lithium
 		void onMouseKeyPressEvent(MouseKeyPressEvent& e);
 		void onEditorEvent(Event& e);
 		void RenderImgui();
+		void DebugRender();
 		void ImGuiRenderToolBar();
 		void SceneEvent(Event& e);
 		void StartRuntime();

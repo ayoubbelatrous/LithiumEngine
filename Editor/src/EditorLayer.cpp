@@ -165,7 +165,6 @@ namespace Lithium
 			BatchRenderer::Begin(view, proj);
 			m_ActiveScene->onEditorUpdate();
 			BatchRenderer::End();
-
 			if (canCheckAssembly)
 			{
 				if (Application::Get().Monoserver->CheckForChange())
@@ -185,7 +184,7 @@ namespace Lithium
 
 		}
 		}
-		
+		DebugRender();
 		shader->Bind();
 		shader->SetUniformMat4f("projection", model* proj * view );
 	
@@ -721,6 +720,28 @@ namespace Lithium
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
+	}
+
+	void EditorLayer::DebugRender()
+	{
+		if (_sceneState == SceneState::EDITOR)
+		{
+			BatchRenderer::Begin(view, proj);
+		}
+		else if (_sceneState == SceneState::RUNTIME)
+		{
+			BatchRenderer::Begin(m_ActiveScene->GetPrimaryCameraEntity().GetComponent<TransformComponent>().ModelMatrix, m_ActiveScene->GetPrimaryCameraEntity().GetComponent<CameraComponent>().Camera.GetProjection());
+		}
+		{
+			auto view = m_ActiveScene->GetRegistry().view<BoxCollider2DComponent, TransformComponent>();
+			for (auto e : view)
+			{
+				auto& [bc2d, tc] = view.get<BoxCollider2DComponent, TransformComponent>(e);
+
+				BatchRenderer::DrawRect(tc.Position, { bc2d.Size.x * tc.Scale.x,bc2d.Size.y * tc.Scale.y }, glm::vec4(0, 1, 0, 1));
+			}
+		}
+		BatchRenderer::End();
 	}
 
 	void EditorLayer::ImGuiRenderToolBar()
