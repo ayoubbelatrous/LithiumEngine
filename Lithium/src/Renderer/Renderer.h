@@ -9,6 +9,8 @@ namespace Lithium
 		static void Clear();
 		static void ClearColor(const glm::vec4& color);
 		static void DrawIndexed(uint32_t count);
+		static void DrawLines(uint32_t count);
+		static void SetLineWidth(float width);
 		static void Draw(uint32_t count);
 	};
 }

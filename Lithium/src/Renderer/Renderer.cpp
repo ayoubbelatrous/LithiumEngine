@@ -21,6 +21,16 @@ namespace Lithium
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 
+	void RendererCommand::DrawLines(uint32_t count)
+	{
+		glDrawArrays(GL_LINES, 0, count);
+	}
+
+	void RendererCommand::SetLineWidth(float width)
+	{
+		glLineWidth(width);
+	}
+
 	void RendererCommand::Draw(uint32_t count)
 	{
 		glDrawArrays(GL_TRIANGLES, 0, count);
