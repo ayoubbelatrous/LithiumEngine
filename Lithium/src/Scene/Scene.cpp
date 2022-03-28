@@ -306,10 +306,10 @@ namespace Lithium
 
 			}
 		}
-		BatchRenderer::Begin(GetPrimaryCameraEntity().GetComponent<TransformComponent>().ModelMatrix, GetPrimaryCameraEntity().GetComponent<CameraComponent>().Camera.GetProjection());
+		
 		{
 			
-
+			BatchRenderer::Begin(GetPrimaryCameraEntity().GetComponent<TransformComponent>().ModelMatrix, GetPrimaryCameraEntity().GetComponent<CameraComponent>().Camera.GetProjection());
 			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 
 			for (auto entity : view)
@@ -327,9 +327,10 @@ namespace Lithium
 					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset), (uint32_t)entity);
 				}
 			}
+			BatchRenderer::End();
+
 
 		}
-		BatchRenderer::End();
 
 
 

@@ -96,6 +96,7 @@ namespace Lithium
 
 		_PlayButtonTexture = CreateRef<Texture>("assets/Editor/icons/playbutton.png");
 		_StopButtonTexture = CreateRef<Texture>("assets/Editor/icons/stopbutton.png");
+		m_CameraGizmo = CreateRef<Texture>("assets/Editor/icons/camera-gizmo.png");
 		timer->SetInterval([=]()
 		{
 				canCheckAssembly.store(true);
@@ -727,6 +728,22 @@ namespace Lithium
 		if (_sceneState == SceneState::EDITOR)
 		{
 			BatchRenderer::Begin(view, proj);
+
+			{
+				auto view = m_ActiveScene->GetRegistry().view<CameraComponent,TransformComponent>();
+				for (auto e : view)
+				{
+					auto& [camera,tc] = view.get<CameraComponent, TransformComponent>(e);
+					glm::mat4 transform = glm::mat4(1.0f);
+					transform = glm::translate(glm::mat4(1.0f), glm::vec3(tc.Position.x, tc.Position.y,0.0f)) * 
+						glm::scale(glm::mat4(1.0f),tc.Scale / 2.0f);
+					BatchRenderer::DrawQuad(transform, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f), m_CameraGizmo, (int)e);
+
+
+					BatchRenderer::DrawRect(tc.Position, { camera.Camera.GetOrthographicSize(),camera.Camera.GetOrthographicSize() }, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f));
+
+				}
+			}
 		}
 		else if (_sceneState == SceneState::RUNTIME)
 		{
@@ -741,6 +758,8 @@ namespace Lithium
 				BatchRenderer::DrawRect(tc.Position, { bc2d.Size.x * tc.Scale.x,bc2d.Size.y * tc.Scale.y }, glm::vec4(0, 1, 0, 1));
 			}
 		}
+
+
 		BatchRenderer::End();
 	}
 

@@ -117,6 +117,7 @@ namespace Lithium
 		Ref<Texture> _PlayButtonTexture;
 		Ref<Texture> _StopButtonTexture;
 		Ref<Texture> _PauseTexture;
+		Ref<Texture> m_CameraGizmo;
 		SceneState _sceneState = SceneState::EDITOR;
 		Serializer m_SceneSerilizer = Serializer(m_ActiveScene);
 		
