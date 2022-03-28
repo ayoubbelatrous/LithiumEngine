@@ -3,20 +3,20 @@ PathRegistry:
     Path: ""
   - UUID: 8159922648104178881
     Path: assets\sprites\background.png
-  - UUID: 3366555710911705089
-    Path: assets\sprites\blocks.png
   - UUID: 10460744895190112220
     Path: assets\sprites\tree.png
+  - UUID: 3366555710911705089
+    Path: assets\sprites\blocks.png
   - UUID: 12114023097513154699
     Path: assets\sprites\man.png
   - UUID: 6492277041163863331
     Path: assets\GothicMania\bg-4.png
   - UUID: 9344715928880079237
     Path: ""
-  - UUID: 11167694175211764772
-    Path: assets\sprites\boss.png
   - UUID: 15208844315821946568
     Path: assets\sprites\boss.tiff
+  - UUID: 11167694175211764772
+    Path: assets\sprites\boss.png
   - UUID: 2486259355459404736
     Path: assets\GothicMania\bg-3.png
   - UUID: 11041577018397587303
@@ -41,3 +41,9 @@ PathRegistry:
     Path: assets\light-brick.png
   - UUID: 7086213378483509744
     Path: assets\props\vase.png
+  - UUID: 5051875743027014023
+    Path: assets\sprites\mud.png
+  - UUID: 7291462645808560188
+    Path: assets\sprites\mud-mid.png
+  - UUID: 3462376389663479680
+    Path: assets\scenes\door.png
