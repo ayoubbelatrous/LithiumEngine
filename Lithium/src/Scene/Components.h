@@ -185,7 +185,7 @@ namespace Lithium
 		SceneCamera Camera;
 		bool Primary = true;
 		bool FixedAspectRatio = false;
-
+		glm::vec4 ClearColor = glm::vec4(0.0f);
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};

@@ -308,7 +308,8 @@ namespace Lithium
 		}
 		
 		{
-			
+			RendererCommand::ClearColor(GetPrimaryCameraEntity().GetComponent<CameraComponent>().ClearColor);
+			RendererCommand::Clear();
 			BatchRenderer::Begin(GetPrimaryCameraEntity().GetComponent<TransformComponent>().ModelMatrix, GetPrimaryCameraEntity().GetComponent<CameraComponent>().Camera.GetProjection());
 			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 

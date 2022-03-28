@@ -154,8 +154,7 @@ namespace Lithium
 		
 		framebuffer->Bind();
 	
-		RendererCommand::ClearColor(glm::vec4(0.05, 0.05, 0.15, 1.0));
-		RendererCommand::Clear();
+		
 		framebuffer->ClearAttachment(1, -1);
 	
 
@@ -163,6 +162,8 @@ namespace Lithium
 		{
 		case (SceneState::EDITOR):
 			{
+			RendererCommand::ClearColor(glm::vec4(0.1f));
+			RendererCommand::Clear();
 			BatchRenderer::Begin(view, proj);
 			m_ActiveScene->onEditorUpdate();
 			BatchRenderer::End();
@@ -728,7 +729,7 @@ namespace Lithium
 		if (_sceneState == SceneState::EDITOR)
 		{
 			BatchRenderer::Begin(view, proj);
-
+			
 			{
 				auto view = m_ActiveScene->GetRegistry().view<CameraComponent,TransformComponent>();
 				for (auto e : view)
@@ -740,30 +741,29 @@ namespace Lithium
 
 					BatchRenderer::DrawQuad(tc.ModelMatrix, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f), m_CameraGizmo, (int)e);
 					BatchRenderer::DrawRect(transform, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f));
-
 				}
 			}
+			{
+				auto view = m_ActiveScene->GetRegistry().view<BoxCollider2DComponent, TransformComponent>();
+				for (auto e : view)
+				{
+					auto& [bc2d, tc] = view.get<BoxCollider2DComponent, TransformComponent>(e);
+					glm::vec3 translation = tc.Position + glm::vec3(bc2d.Offset, 0.001f);
+					glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
+
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
+						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
+						* glm::scale(glm::mat4(1.0f), scale);
+					BatchRenderer::DrawRect(transform, glm::vec4(0, 1, 0, 1));
+				}
+			}
+
 		}
 		else if (_sceneState == SceneState::RUNTIME)
 		{
 			BatchRenderer::Begin(m_ActiveScene->GetPrimaryCameraEntity().GetComponent<TransformComponent>().ModelMatrix, m_ActiveScene->GetPrimaryCameraEntity().GetComponent<CameraComponent>().Camera.GetProjection());
 		}
-		{
-			auto view = m_ActiveScene->GetRegistry().view<BoxCollider2DComponent, TransformComponent>();
-			for (auto e : view)
-			{
-				auto& [bc2d, tc] = view.get<BoxCollider2DComponent, TransformComponent>(e);
-				glm::vec3 translation = tc.Position + glm::vec3(bc2d.Offset, 0.001f);
-				glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
-
-				glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
-					* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
-					* glm::scale(glm::mat4(1.0f), scale);
-				BatchRenderer::DrawRect(transform, glm::vec4(0, 1, 0, 1));
-			}
-		}
-
-
+		
 		BatchRenderer::End();
 	}
 

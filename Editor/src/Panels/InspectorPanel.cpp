@@ -671,6 +671,8 @@ namespace Lithium
 							camera.Camera.SetOrthographicFarClip(FarClipPlane);
 						}
 					}
+					ImGui::ColorEdit4("Clear Color", glm::value_ptr(camera.ClearColor));
+					ImGui::SameLine();
 					ImGui::TreePop();
 				}
 				if (remove == true)

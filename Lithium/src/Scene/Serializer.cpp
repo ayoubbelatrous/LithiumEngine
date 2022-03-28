@@ -231,6 +231,7 @@ namespace Lithium
 			emitter << YAML::Key << "FarPlane" << YAML::Value << camera.Camera.GetOrthographicFarClip();
 			emitter << YAML::Key << "Primary" << YAML::Value << camera.Primary;
 			emitter << YAML::Key << "FixedAspectRatio" << YAML::Value << camera.FixedAspectRatio;			
+			emitter << YAML::Key << "ClearColor" << YAML::Value << camera.ClearColor;			
 			emitter << YAML::EndMap;
 		}
 
@@ -533,6 +534,7 @@ namespace Lithium
 				camera.Camera.SetOrthographicFarClip(farplane);
 				camera.Primary = primary;
 				camera.FixedAspectRatio = FixedAspectRatio;
+				camera.ClearColor = cameraComponent["ClearColor"].as<glm::vec4>();
 			}
 
 			auto audioSourceComponent = entity["AudioSourceComponent"];
