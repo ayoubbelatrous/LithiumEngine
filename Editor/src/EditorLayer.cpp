@@ -155,7 +155,6 @@ namespace Lithium
 		framebuffer->Bind();
 	
 		
-		framebuffer->ClearAttachment(1, -1);
 	
 
 		switch (_sceneState)
@@ -164,6 +163,7 @@ namespace Lithium
 			{
 			RendererCommand::ClearColor(glm::vec4(0.1f));
 			RendererCommand::Clear();
+			framebuffer->ClearAttachment(1, -1);
 			BatchRenderer::Begin(view, proj);
 			m_ActiveScene->onEditorUpdate();
 			BatchRenderer::End();
@@ -180,6 +180,8 @@ namespace Lithium
 			}
 		case (SceneState::RUNTIME):
 		{
+			framebuffer->ClearAttachment(1, -1);
+
 			m_ActiveScene->OnViewportResize(viewportSize[0], viewportSize[1]);
 			m_ActiveScene->onUpdate();
 			break;
@@ -735,11 +737,15 @@ namespace Lithium
 				for (auto e : view)
 				{
 					auto& [camera,tc] = view.get<CameraComponent, TransformComponent>(e);
-					float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
 					glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(tc.Rotation)));
-					glm::mat4 transform = glm::translate(glm::mat4(1), tc.Position) * rotation * glm::scale(glm::mat4(1), { camera.Camera.GetOrthographicSize() * AspectRatio,camera.Camera.GetOrthographicSize(),0.0f });
+					glm::mat4 transform = glm::translate(glm::mat4(1), tc.Position) * rotation * glm::scale(glm::mat4(1), { 0.25f,0.25f,0.0f});
 
-					BatchRenderer::DrawQuad(tc.ModelMatrix, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f), m_CameraGizmo, (int)e);
+					BatchRenderer::DrawQuad(transform, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f), m_CameraGizmo, (int)e);
+
+					float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
+
+					rotation = glm::toMat4(glm::quat(glm::radians(tc.Rotation)));
+					transform = glm::translate(glm::mat4(1), tc.Position) * rotation * glm::scale(glm::mat4(1), { camera.Camera.GetOrthographicSize() * AspectRatio,camera.Camera.GetOrthographicSize(),0.0f });
 					BatchRenderer::DrawRect(transform, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f));
 				}
 			}

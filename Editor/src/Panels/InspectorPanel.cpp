@@ -345,9 +345,14 @@ namespace Lithium
 					{
 						ImGui::Image((ImTextureID)m_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });
 					}*/
-
+					if(m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset.GetUUID() == 0)
 					{
-						ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,50 });
+						ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,20 });
+					}
+					else
+					{
+						std::filesystem::path path = Application::Get().assetManager->GetAssetPath(m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset);
+						ImGui::Button(path.filename().string().c_str(), { ImGui::GetContentRegionAvail().x,20 });
 					}
 
 

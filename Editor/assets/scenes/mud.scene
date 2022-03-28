@@ -51,12 +51,6 @@ Entities:
             - Name: Target
               Type: ENTITY
               Value: 14002472473494406159
-    CameraComponent:
-      OrhtographicSize: 6.80000019
-      NearPlane: -1
-      FarPlane: 1
-      Primary: true
-      FixedAspectRatio: false
   - Entity: 4328520924793443477
     Name: Mud-Floor
     Transform:
