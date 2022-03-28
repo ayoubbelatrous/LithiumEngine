@@ -3,14 +3,11 @@
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 #include "Renderer/Texture.h"
-#include "Mesh/Mesh.h"
 #include "Core/Base.h"
 #include "Entity.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <gtx/quaternion.hpp>
 
-#include "Mesh/Mesh.h"
-#include "Mesh/Material.h"
 #include "Core/UUID.h"
 #include "Script/ScriptObject.h"
 #include "Camera/SceneCamera.h"
@@ -117,33 +114,6 @@ namespace Lithium
 		RelationShipComponent(const RelationShipComponent& other) = default;
 
 	};
-
-
-	struct MeshComponent
-	{
-		MeshComponent() = default;
-		MeshComponent(const MeshComponent& other) = default;
-		Ref<Mesh> _Mesh;
-	};
-	struct MeshRendererComponent
-	{
-		MeshRendererComponent() = default;
-		MeshRendererComponent(const MeshRendererComponent& other) = default;
-	};
-
-	struct MaterialComponent
-	{
-		MaterialComponent() = default;
-		MaterialComponent(const MaterialComponent& other) = default;
-		MaterialComponent(const Ref<Material>& mat)
-			:material(mat)
-		{}
-		Ref<Material> material;
-		
-	};
-
-
-
 
 
 	struct Rigidbody2DComponent

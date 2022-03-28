@@ -100,6 +100,8 @@ namespace Lithium
 		{
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
+
+		
 	}
 
 	void EditorLayer::OnUpdate()

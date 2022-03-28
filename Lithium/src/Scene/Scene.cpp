@@ -510,7 +510,6 @@ namespace Lithium
 		entt::registry& dstSceneRegistry = newscene->GetRegistry();
 		CopyComponentAll<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<RelationShipComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
-		CopyComponentAll<MaterialComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
@@ -665,22 +664,6 @@ namespace Lithium
 
 	template<>
 	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
-	{
-	}
-
-	template<>
-	void Scene::OnComponentAdded<MaterialComponent>(Entity entity, MaterialComponent& component)
-	{
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<MeshComponent>(Entity entity, MeshComponent& component)
-	{
-	}
-
-	template<>
-	void Scene::OnComponentAdded<MeshRendererComponent>(Entity entity, MeshRendererComponent& component)
 	{
 	}
 	template<>

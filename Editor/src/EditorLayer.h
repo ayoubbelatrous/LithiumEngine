@@ -27,7 +27,6 @@
 #include "Scene/Serializer.h"
 #include "AssetManager/AssetManager.h"
 #include <thread>
-#include "Mesh/Mesh.h"
 #include "Script/MonoServer.h"
 #include "Core/Timer.h"
 #include "Scene/Camera/EditorCamera.h"

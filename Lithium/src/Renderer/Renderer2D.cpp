@@ -1,4 +1,3 @@
-
 #include "lipch.h"
 #include "Renderer.h"
 #include "glad/glad.h"
@@ -14,10 +13,8 @@
 #include "gtc/matrix_transform.hpp"
 #include "Scene/Components.h"
 
-
 namespace Lithium
 {
-
 	struct Vertex
 	{
 		glm::vec3 Position;
