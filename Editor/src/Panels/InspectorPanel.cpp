@@ -705,8 +705,15 @@ namespace Lithium
 				}
 				if (open)
 				{
-				
-					ImGui::Button("Audio Clip", { ImGui::GetContentRegionAvail().x,20 });
+					if (audiosourcecomp.AudioAsset.GetUUID() == 0)
+					{
+						ImGui::Button("Audio Clip", { ImGui::GetContentRegionAvail().x,20 });
+					}
+					else {
+						std::filesystem::path path = Application::Get().assetManager->GetAssetPath(audiosourcecomp.AudioAsset);
+						ImGui::Button(path.filename().string().c_str(), { ImGui::GetContentRegionAvail().x,20 });
+
+					}
 					if (ImGui::BeginDragDropTarget())
 					{
 

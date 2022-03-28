@@ -736,9 +736,7 @@ namespace Lithium
 				auto view = m_ActiveScene->GetRegistry().view<CameraComponent,TransformComponent>();
 				for (auto e : view)
 				{
-					if (m_SceneHierachyPanel->GetSelection().GetHandle() == e)
-					{
-
+					
 					
 					auto& [camera,tc] = view.get<CameraComponent, TransformComponent>(e);
 					glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(tc.Rotation)));
@@ -747,9 +745,12 @@ namespace Lithium
 					BatchRenderer::DrawQuad(transform, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f), m_CameraGizmo, (int)e);
 
 					float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
+					if (m_SceneHierachyPanel->GetSelection().GetHandle() == e)
+					{
 
 					rotation = glm::toMat4(glm::quat(glm::radians(tc.Rotation)));
 					transform = glm::translate(glm::mat4(1), tc.Position) * rotation * glm::scale(glm::mat4(1), { camera.Camera.GetOrthographicSize() * AspectRatio,camera.Camera.GetOrthographicSize(),0.0f });
+
 					BatchRenderer::DrawRect(transform, glm::vec4(0.8f, 0.8f, 0.8f, 0.8f));
 					}
 				}
