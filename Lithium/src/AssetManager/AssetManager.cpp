@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 #include "Audio/Audio.h"
 #include "Core/UUID.h"
+#include "AssetPacker.h"
 
 namespace Lithium {
 
@@ -97,6 +98,16 @@ namespace Lithium {
 		{
 			return std::string();
 		}
+	}
+
+	void AssetManager::PackAssetRegistry(const std::string& path)
+	{
+		std::vector<std::string> pTestVector;
+		for (auto entry : m_AssetRegistry)
+		{
+			pTestVector.push_back(entry.first);
+		}
+		AssetPacker packer(path, pTestVector);
 	}
 
 	void AssetManager::SaveAssetRegistry()

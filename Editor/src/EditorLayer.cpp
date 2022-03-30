@@ -102,7 +102,7 @@ namespace Lithium
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
 
-		
+		Application::Get().assetManager->PackAssetRegistry("assets/build/shared.assets");
 	}
 
 	void EditorLayer::OnUpdate()

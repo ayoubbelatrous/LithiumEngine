@@ -21,7 +21,7 @@ namespace Lithium
 		T GetAsset(Asset asset);
 
 		std::string GetAssetPath(Asset asset);
-
+		void PackAssetRegistry(const std::string& path);
 	private:
 
 		void SaveAssetRegistry();

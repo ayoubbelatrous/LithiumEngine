@@ -26,6 +26,7 @@
 #include "Panels/SpriteEditor.h"
 #include "Scene/Serializer.h"
 #include "AssetManager/AssetManager.h"
+#include "AssetManager/AssetPacker.h"
 #include <thread>
 #include "Script/MonoServer.h"
 #include "Core/Timer.h"

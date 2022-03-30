@@ -1,162 +1,17 @@
 Scene: NONE
 Entities:
-  - Entity: 15391210489062868661
-    Name: Trees
+  - Entity: 16791548850334823614
+    Name: Player
     Transform:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-      LocalPosition: [0, 0, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    RelationShipComponent:
-      Children:
-        - 10414433048293152650
-        - 7071666741615867909
-        - 2689561306853466973
-        - 9408563109210054077
-      Parent: 0
-  - Entity: 10414433048293152650
-    Name: Tree
-    Transform:
-      Position: [1.38122439, -1.28826284, 0]
-      Rotation: [-180, 5.00895612e-06, -180]
-      Scale: [1, 1.39999998, 1]
-      LocalPosition: [1.38122439, -1.28826284, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    Sprite Renderer:
-      Color: [0.493670881, 0.493670881, 0.493670881, 1]
-      Texture ID: 10460744895190112220
-      DrawOrder: 2
-    RelationShipComponent:
-      Children:
-        []
-      Parent: 15391210489062868661
-  - Entity: 3993448782975393279
-    Name: Background
-    Transform:
-      Position: [1.13881528, -0.144939214, 0]
+      Position: [-1.07070351, -1.43376875, -0.861324906]
       Rotation: [0, -0, 0]
-      Scale: [8.81225777, 4.93349981, 4.93349981]
+      Scale: [0.332793802, 0.593529046, 2.43676448]
       LocalPosition: [0, 0, 0]
       LocalRotation: [0, 0, 0]
       LocalScale: [0, 0, 0]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
-      Texture ID: 8159922648104178881
-      DrawOrder: -10
-    RelationShipComponent:
-      Children:
-        []
-      Parent: 0
-  - Entity: 17333063651586580139
-    Name: AudioManager
-    Transform:
-      Position: [-4.08197308, -1.13583302, 0]
-      Rotation: [0, 5.0089684e-06, 0]
-      Scale: [0.685995042, 0.155314252, 1.22000003]
-      LocalPosition: [0, 0, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    RelationShipComponent:
-      Children:
-        []
-      Parent: 0
-    AudioSourceComponent:
-      AssetID: 73423621526631036
-      PlayOnAwake: true
-      Loop: true
-      Spatial: false
-      Gain: 1
-      Pitch: 1
-  - Entity: 7071666741615867909
-    Name: Tree
-    Transform:
-      Position: [-1.65708339, -1.2913717, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1.39999998, 1]
-      LocalPosition: [-1.65708339, -1.2913717, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    Sprite Renderer:
-      Color: [0.493670881, 0.493670881, 0.493670881, 1]
-      Texture ID: 10460744895190112220
-      DrawOrder: 2
-    RelationShipComponent:
-      Children:
-        []
-      Parent: 15391210489062868661
-  - Entity: 2689561306853466973
-    Name: Tree
-    Transform:
-      Position: [-0.736837029, -1.12724137, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1.39999998, 1]
-      LocalPosition: [-0.736837029, -1.12724137, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    Sprite Renderer:
-      Color: [0.675105453, 0.675105453, 0.675105453, 1]
-      Texture ID: 10460744895190112220
-      DrawOrder: 0
-    RelationShipComponent:
-      Children:
-        []
-      Parent: 15391210489062868661
-  - Entity: 9408563109210054077
-    Name: Tree
-    Transform:
-      Position: [0.611544609, -1.1032021, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1.39999998, 1]
-      LocalPosition: [0.611544609, -1.1032021, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    Sprite Renderer:
-      Color: [0.675105453, 0.675105453, 0.675105453, 1]
-      Texture ID: 10460744895190112220
-      DrawOrder: 0
-    RelationShipComponent:
-      Children:
-        []
-      Parent: 15391210489062868661
-  - Entity: 17923783536557878212
-    Name: Ground
-    Transform:
-      Position: [0.79018724, -2.22611856, 0]
-      Rotation: [0, -0, 0]
-      Scale: [100, 1, 1]
-      LocalPosition: [0, 0, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    RelationShipComponent:
-      Children:
-        []
-      Parent: 0
-    Rigidbody2D:
-      FixedRotation: false
-      Type: Static
-    BoxCollider2D:
-      Size: [0.5, 0.5]
-      Offset: [0, 0]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-      IsSensor: false
-  - Entity: 11514845678311824899
-    Name: Monster
-    Transform:
-      Position: [3.56187749, -0.176190764, 0]
-      Rotation: [0, -0, 0]
-      Scale: [3.06985569, 3.06985569, 3.06985569]
-      LocalPosition: [0, 0, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    Sprite Renderer:
-      Color: [1, 1, 1, 1]
-      Texture ID: 11167694175211764772
+      Texture ID: 3268259082113240235
       DrawOrder: 1
     RelationShipComponent:
       Children:
@@ -193,18 +48,18 @@ Entities:
       Primary: true
       FixedAspectRatio: false
       ClearColor: [0, 0.389380455, 1, 0]
-  - Entity: 16791548850334823614
-    Name: Player
+  - Entity: 11514845678311824899
+    Name: Monster
     Transform:
-      Position: [-1.07070351, -1.43376875, -0.861324906]
+      Position: [3.56187749, -0.176190764, 0]
       Rotation: [0, -0, 0]
-      Scale: [0.332793802, 0.593529046, 2.43676448]
+      Scale: [3.06985569, 3.06985569, 3.06985569]
       LocalPosition: [0, 0, 0]
       LocalRotation: [0, 0, 0]
       LocalScale: [0, 0, 0]
     Sprite Renderer:
       Color: [1, 1, 1, 1]
-      Texture ID: 3268259082113240235
+      Texture ID: 11167694175211764772
       DrawOrder: 1
     RelationShipComponent:
       Children:
@@ -221,3 +76,164 @@ Entities:
       Restitution: 0
       RestitutionThreshold: 0.5
       IsSensor: false
+  - Entity: 17923783536557878212
+    Name: Ground
+    Transform:
+      Position: [0.79018724, -2.22611856, 0]
+      Rotation: [0, -0, 0]
+      Scale: [100, 1, 1]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 0
+    Rigidbody2D:
+      FixedRotation: false
+      Type: Static
+    BoxCollider2D:
+      Size: [0.5, 0.5]
+      Offset: [0, 0]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+      IsSensor: false
+  - Entity: 9408563109210054077
+    Name: Tree
+    Transform:
+      Position: [0.611544609, -1.1032021, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1.39999998, 1]
+      LocalPosition: [0.611544609, -1.1032021, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    Sprite Renderer:
+      Color: [0.675105453, 0.675105453, 0.675105453, 1]
+      Texture ID: 10460744895190112220
+      DrawOrder: 0
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 15391210489062868661
+  - Entity: 2689561306853466973
+    Name: Tree
+    Transform:
+      Position: [-0.736837029, -1.12724137, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1.39999998, 1]
+      LocalPosition: [-0.736837029, -1.12724137, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    Sprite Renderer:
+      Color: [0.675105453, 0.675105453, 0.675105453, 1]
+      Texture ID: 10460744895190112220
+      DrawOrder: 0
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 15391210489062868661
+    ScriptGroupe:
+      Scripts:
+        - ClassName: Player
+          Fields:
+            - Name: JumpSpeed
+              Type: FLOAT
+              Value: 10
+            - Name: speed
+              Type: FLOAT
+              Value: 10
+            - Name: AirSpeed
+              Type: FLOAT
+              Value: 10
+            - Name: Grounded
+              Type: BOOL
+              Value: true
+  - Entity: 7071666741615867909
+    Name: Tree
+    Transform:
+      Position: [-1.65708339, -1.2913717, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1.39999998, 1]
+      LocalPosition: [-1.65708339, -1.2913717, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    Sprite Renderer:
+      Color: [0.493670881, 0.493670881, 0.493670881, 1]
+      Texture ID: 10460744895190112220
+      DrawOrder: 2
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 15391210489062868661
+  - Entity: 17333063651586580139
+    Name: AudioManager
+    Transform:
+      Position: [-4.08197308, -1.13583302, 0]
+      Rotation: [0, 5.0089684e-06, 0]
+      Scale: [0.685995042, 0.155314252, 1.22000003]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 0
+    AudioSourceComponent:
+      AssetID: 73423621526631036
+      PlayOnAwake: true
+      Loop: true
+      Spatial: false
+      Gain: 1
+      Pitch: 1
+  - Entity: 3993448782975393279
+    Name: Background
+    Transform:
+      Position: [1.13881528, -0.144939214, 0]
+      Rotation: [0, -0, 0]
+      Scale: [8.81225777, 4.93349981, 4.93349981]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 8159922648104178881
+      DrawOrder: -10
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 0
+  - Entity: 10414433048293152650
+    Name: Tree
+    Transform:
+      Position: [1.38122439, -1.28826284, 0]
+      Rotation: [-180, 5.00895612e-06, -180]
+      Scale: [1, 1.39999998, 1]
+      LocalPosition: [1.38122439, -1.28826284, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    Sprite Renderer:
+      Color: [0.493670881, 0.493670881, 0.493670881, 1]
+      Texture ID: 10460744895190112220
+      DrawOrder: 2
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 15391210489062868661
+  - Entity: 15391210489062868661
+    Name: Trees
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    RelationShipComponent:
+      Children:
+        - 10414433048293152650
+        - 7071666741615867909
+        - 2689561306853466973
+        - 9408563109210054077
+      Parent: 0
