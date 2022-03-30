@@ -2,18 +2,17 @@
 #include "Core/Entry.h"
 #include "RuntimeLayer.h"
 
-class Editor : public Lithium::Application
+class Runtime : public Lithium::Application
 {
 
 public:
-	Editor()
+	Runtime()
 		:Application()
 	{
-		CORE_LOG("INIT RUNTIME");
 		PushLayer(new Lithium::RuntimeLayer());
 	}
 
-	~Editor()
+	~Runtime()
 	{
 
 	}
@@ -21,5 +20,5 @@ public:
 };
 
 Lithium::Application* Lithium::CreateApp() {
-	return new Editor();
+	return new Runtime();
 }

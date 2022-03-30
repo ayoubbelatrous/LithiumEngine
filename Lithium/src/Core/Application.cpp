@@ -3,7 +3,7 @@
 #include "Debug/Profiler.h"
 #include "glm.hpp"
 #include "Math.h"
-
+#define STATIC_RUNTIME
 namespace Lithium
 {
 	Application* Application::instance = nullptr;

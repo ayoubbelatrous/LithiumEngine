@@ -3,22 +3,26 @@ PathRegistry:
     Path: ""
   - UUID: 8159922648104178881
     Path: assets\sprites\background.png
-  - UUID: 10460744895190112220
-    Path: assets\sprites\tree.png
   - UUID: 3366555710911705089
     Path: assets\sprites\blocks.png
+  - UUID: 10460744895190112220
+    Path: assets\sprites\tree.png
   - UUID: 12114023097513154699
     Path: assets\sprites\man.png
   - UUID: 6492277041163863331
     Path: assets\GothicMania\bg-4.png
   - UUID: 9344715928880079237
     Path: ""
-  - UUID: 15208844315821946568
-    Path: assets\sprites\boss.tiff
   - UUID: 11167694175211764772
     Path: assets\sprites\boss.png
+  - UUID: 15208844315821946568
+    Path: assets\sprites\boss.tiff
+  - UUID: 5384340314155245483
+    Path: assets\sprites\PlatformerPack\Backgrounds\Night Close.png
   - UUID: 2486259355459404736
     Path: assets\GothicMania\bg-3.png
+  - UUID: 5609186999436627065
+    Path: assets\sprites\PlatformerPack\Objects\Houses\Inn.png
   - UUID: 11041577018397587303
     Path: assets\GothicMania\bg-5.png
   - UUID: 6502447729003919039
@@ -27,6 +31,8 @@ PathRegistry:
     Path: assets\GothicMania\tileset.png
   - UUID: 3268259082113240235
     Path: assets\sprites\gliadiator.png
+  - UUID: 1280957119713812042
+    Path: assets\sprites\PlatformerPack\Objects\Chests\Gold Chest Idle.png
   - UUID: 7317119678643824747
     Path: assets\GothicMania\column.png
   - UUID: 12957804339054353095
@@ -39,6 +45,8 @@ PathRegistry:
     Path: assets\audio\amb_forest.mp3
   - UUID: 12568799368987061985
     Path: assets\light-brick.png
+  - UUID: 5281432908531653348
+    Path: assets\sprites\PlatformerPack\Objects\Chests\Gold Chest Jump.png
   - UUID: 7086213378483509744
     Path: assets\props\vase.png
   - UUID: 5051875743027014023
@@ -47,3 +55,17 @@ PathRegistry:
     Path: assets\sprites\mud-mid.png
   - UUID: 3462376389663479680
     Path: assets\scenes\door.png
+  - UUID: 17073922704765126336
+    Path: assets\sprites\PlatformerPack\Objects\Houses\Smaller House.png
+  - UUID: 4172745809855711676
+    Path: assets\sprites\PlatformerPack\Backgrounds\sNightSky.png
+  - UUID: 15103299219872822291
+    Path: assets\sprites\PlatformerPack\Objects\Emerald Gem.png
+  - UUID: 742669893784005790
+    Path: assets\sprites\PlatformerPack\Objects\Rock Prop.png
+  - UUID: 4659185570097299958
+    Path: assets\sprites\PlatformerPack\Backgrounds\Night Mid.png
+  - UUID: 4585147146015657754
+    Path: assets\sprites\PlatformerPack\Objects\Sapphire Gem.png
+  - UUID: 1316668738020957875
+    Path: assets\sprites\PlatformerPack\Backgrounds\Night Far.png

@@ -7,7 +7,6 @@ namespace Lithium
 	{
 	public:
 		Project() = default;
-	private:
-		std::string m_AssetsPath;
+		std::string Path;
 	};
 }

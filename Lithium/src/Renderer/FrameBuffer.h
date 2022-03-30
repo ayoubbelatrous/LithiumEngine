@@ -35,8 +35,6 @@ namespace Lithium
 		unsigned int _rbid;
 		int width;
 		int height;
-		unsigned int renderedTexture;
-		unsigned int _EntityTexture;
 		uint32_t _DepthBuffer;
 		FrameBufferAttachmentDescriptor descriptor;
 		void ReCreate();

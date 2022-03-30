@@ -63,6 +63,7 @@ namespace Lithium
 		else
 		{
 			ASSERT(GetAudioFileFormat(filename) != Audio::AudioFileFormat::None);
+			return nullptr;
 		}
 	}
 

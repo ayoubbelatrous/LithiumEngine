@@ -642,7 +642,7 @@ namespace Lithium
 			if (monoklass == nullptr)
 			{
 				CORE_LOG("mono class not found");
-				return scriptObject;
+				return nullptr;
 			}
 			else
 			{

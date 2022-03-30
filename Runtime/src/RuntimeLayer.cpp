@@ -1,5 +1,9 @@
 #include "RuntimeLayer.h"
 #include "Input/Input.h"
+#include "Renderer/Renderer2D.h"
+#include "Scene/Serializer.h"
+#include "Audio/Audio.h"
+#include "Scene/Entity.h"
 
 
 namespace Lithium {
@@ -7,7 +11,12 @@ namespace Lithium {
 	
 	void RuntimeLayer::OnCreate()
 	{
-
+		m_ActiveScene = CreateRef<Scene>();
+		Serializer ser(m_ActiveScene);
+		ser.DeserializeScene("assets/scenes/platformer.scene");
+		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
+		Application::Get().SetVsync(true);
+		Audio::Init();
 		float rectangleVertices[] =
 		{
 			// Coords    // texCoordsmesh
@@ -19,118 +28,57 @@ namespace Lithium {
 			 1.0f, -1.0f,  1.0f, 0.0f,
 			-1.0f,  1.0f,  0.0f, 1.0f
 		};
-
-		model = glm::mat4(1.0f);
-		view = glm::mat4(1.0f);
-		shader = CreateRef<Shader>("assets/shaders/test.shader");
-		frameshader = CreateRef<Shader>("assets/shaders/frame.shader");
 		
 		FrameBufferAttachmentDescriptor framebufferspec(
 			{
 				FramebufferTextureFormat::RGBA8,
-				FramebufferTextureFormat::Depth
+				FramebufferTextureFormat::RED_INTEGER,
 			}
 		);
 
-		_vertexarray = CreateRef<VertexArray>();
-		_vertexbuffer = CreateRef<VertexBuffer>((void*)&rectangleVertices,sizeof(rectangleVertices));
+		frameshader = CreateRef<Shader>("assets/shaders/frame.shader");
+
+		m_Varray = CreateRef<VertexArray>();
+		m_VBuffer = CreateRef<VertexBuffer>((void*)&rectangleVertices, sizeof(rectangleVertices));
 		Ref<VertexBufferLayout> layout = CreateRef<VertexBufferLayout>();
-		//position
 		layout->Push<float>(2);
-		//texture coordinates
 		layout->Push<float>(2);
+		m_Varray->AddBuffer(m_VBuffer, layout);
 
-		_vertexarray->AddBuffer(_vertexbuffer, layout);
 
-		_framebuffer = CreateRef<FrameBuffer>(framebufferspec);
-		_framebuffer->Bind();
-
+		BatchRenderer::Init();
+		m_MainFrameBuffer = CreateRef<FrameBuffer>(framebufferspec);
 		glm::vec2 size = Application::Get().GetWindow().getSize();
-		_framebuffer->resize((int)size.x, (int)size.y);
-		proj = glm::perspective(glm::radians(30.0f), (float)size.x / (float)size.y, 0.1f, 100.0f);
-		//view = glm::mat4(1.0f);
-		pos = glm::vec3(0.0f, 0.0f, -10.0f);
-		//view = glm::translate(view, pos);
-		//model = glm::translate(glm::mat4(1), pos);
+		m_ActiveScene->OnViewportResize((int)size.x, (int)size.y);
+		m_MainFrameBuffer->resize((int)size.x, (int)size.y);
+		m_ActiveScene->OnStart();
+		m_ActiveScene->SortScene();
+		Application::Get().SetVsync(true);
 
-
-		model = glm::mat4(1.0f);
-		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-		view = glm::mat4(1.0f);
-		view = glm::translate(view,pos);
-		
-		LightPos = glm::vec3(0.0,2.0,0.0);
-		//model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-		meshs = Mesh::LoadMesh("assets/model/Skull.obj");
-		uvTEST = CreateRef<Texture>("assets/model/tex/skull_diffuse.jpg");
+	/*	Entity camera = m_ActiveScene->CreateEntity("Camera");
+		camera.AddComponent<CameraComponent>();
+		camera.GetComponent<CameraComponent>().ClearColor = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+		Entity sprite = m_ActiveScene->CreateEntity("sprite");
+		sprite.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f));*/
 	}
 
 	void RuntimeLayer::OnUpdate()
 	{
-		rot++;
-		float speed = 0.01f;
-		if (Input::IsKeyPressed(Key::W))
-		{
-			view = glm::translate(view, { 0,1 * speed,0 });
-		}
-
-		if (Input::IsKeyPressed(Key::S))
-		{
-			view = glm::translate(view, { 0,-1 * speed,0 });
-		}
-
-		if (Input::IsKeyPressed(Key::A))
-		{
-			view = glm::translate(view, { -1 * speed,0,0 });
-		}
-
-		if (Input::IsKeyPressed(Key::D))
-		{
-			view = glm::translate(view, { 1 * speed,0,0 });
-		}
-
-		
-		_framebuffer->Bind();
+		m_MainFrameBuffer->Bind();
+		m_ActiveScene->onUpdate();
+		m_MainFrameBuffer->UnBind();
+		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
 		RendererCommand::Clear();
-		RendererCommand::ClearColor(glm::vec4(0.1f, 0.1f, 0.2f, 1.0f));
-		//view = glm::mat4(1.0f);
-
-		//view = glm::translate(view, pos);
-		
-		shader->Bind();
-		
-		shader->SetUniformMat4f("u_projection", proj * view * model );
-		shader->SetUniformMat4f("model", model);
-		shader->SetUniform3f("lightPos", LightPos);
-	//	shader->SetUniform1i("diffuse", uvTEST->GetID());
-		//LightPos.y+= 0.01f;
-		//shader->SetUniformMat4f("model", glm::inverse(model) ); 
-		//shader->SetUniform3f("lightPos", LightPos);
-		
-		for (auto mesh : meshs)
-		{
-			mesh->Render();
-		}
-	
-		_framebuffer->UnBind();
-	
-		
+		m_Varray->Bind();
 		frameshader->Bind();
-		_framebuffer->BindTexture(1,0);
-		frameshader->SetUniform1i("u_tex", _framebuffer->GetColorAttachmentID(0));
-
-		_vertexarray->Bind();
-		_vertexbuffer->Bind();
+		m_MainFrameBuffer->BindTexture(0, 0);
+		frameshader->SetUniform1i("u_tex", m_MainFrameBuffer->GetColorAttachmentID());
 		RendererCommand::Draw(6);
-		
-		//model = glm::mat4(1.0f);
-		model = glm::rotate(model, glm::radians(-2.0f / 50.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	
 	}
 
 	void RuntimeLayer::OnDestroy()
 	{
+		m_ActiveScene->OnStop();
 
 	}
 
@@ -139,20 +87,10 @@ namespace Lithium {
 		if (e.GetEventType() == EventType::WindowResize)
 		{
 			WindowResizeEvent& ev = static_cast<WindowResizeEvent&>(e);
-			float aspect = ev.GetWidth() / ev.GetHeight();
-
-			proj = glm::perspective(glm::radians(45.0f), (float)ev.GetWidth() / (float)ev.GetHeight(), 0.1f, 100.0f);
-			_framebuffer->resize(ev.GetWidth() ,ev.GetHeight());
-
+			m_MainFrameBuffer->resize(ev.GetWidth() ,ev.GetHeight());
+			m_ActiveScene->OnViewportResize(ev.GetWidth(), ev.GetHeight());
 		}
 
-		if (e.GetEventType() == EventType::MouseWheel)
-		{
-			MouseWheelEvent& ev = static_cast<MouseWheelEvent&>(e);
-			
-			view = glm::translate(view, {0,0 ,0.1f * ev.GetOffsetY() });
-
-		}
 	}
 
 	void RuntimeLayer::onKeyEvent(KeyEvent& e)

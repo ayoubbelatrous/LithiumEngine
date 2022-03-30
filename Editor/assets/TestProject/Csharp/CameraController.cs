@@ -3,22 +3,63 @@ using Lithium.Core;
 using Lithium.Math;
 class CameraController : Script
 {
-    public Entity Target;
-    public float Speed;
-
+    private float Speed = 10.0f;
     void Start()
     {
+
     }
-    float Lerp(float firstFloat, float secondFloat, float by)
-    {
-        return firstFloat * (1 - by) + secondFloat * by;
-    }
+
     void Update()
     {
-        Vector3 newPos;
-        Vector3 Pos = entity.GetComponent<Transform>().Position;
-        Vector3 targetPos = Target.GetComponent<Transform>().Position;
-        newPos = new Vector3(Lerp(Pos.X, targetPos.X, Speed), Pos.Y, Pos.Z);
-        entity.GetComponent<Transform>().Position = new Vector3(targetPos.X * -1.0f, newPos.Y, newPos.Z);
+        Vector3 vel = entity.GetComponent<Transform>().Position;
+
+
+        entity.GetComponent<Transform>().Position = new Vector3(Speed * GetAxialInput().X, Speed * GetAxialInput().X);
+        if(Input.MouseKeyPressed(0))
+        {
+            entity.GetComponent<Camera>().OrthographicSize = entity.GetComponent<Camera>().OrthographicSize + 1;
+        }
+        else if(Input.MouseKeyPressed(1))
+        {
+            entity.GetComponent<Camera>().OrthographicSize = entity.GetComponent<Camera>().OrthographicSize - 1;
+        }
+
+    }
+    private Vector2 GetAxialInput()
+    {
+        Vector2 AxialInput = new Vector2(0);
+
+        if (Input.IsKeyPressed(KeyCode.W))
+        {
+            AxialInput.Y = 1.0f;
+        }
+
+        if (Input.IsKeyPressed(KeyCode.S))
+        {
+            AxialInput.Y = -1.0f;
+        }
+
+        if (Input.IsKeyPressed(KeyCode.D))
+        {
+            AxialInput.X = 1.0f;
+        }
+
+        if (Input.IsKeyPressed(KeyCode.A))
+        {
+            AxialInput.X = -1.0f;
+        }
+
+        return AxialInput;
+    }
+
+    void OnCollisionEnter()
+    {
+
+    }
+
+    void OnCollisionExit()
+    {
+
     }
 }
+

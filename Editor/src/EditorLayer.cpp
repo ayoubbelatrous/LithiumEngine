@@ -569,12 +569,23 @@ namespace Lithium
 		//Drag And Drop
 		if (ImGui::BeginDragDropTarget())
 		{
-
+			
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
 			{
 				const wchar_t* path = (const wchar_t*)payload->Data;
-				std::filesystem::path ScenePath = root / path;
-				OpenScene(ScenePath.string());
+				std::filesystem::path pPath = root / path;
+				if (pPath.extension().compare(".scene") == 0)
+				{
+					OpenScene(pPath.string());
+				}
+				else if (pPath.extension().compare(".png") == 0 || pPath.extension().compare(".jpg") == 0)
+				{
+					Entity dropped = m_ActiveScene->CreateEntity(pPath.filename().string());
+					dropped.AddComponent<SpriteRendererComponent>();
+					SpriteRendererComponent& sp = dropped.GetComponent<SpriteRendererComponent>();
+					sp.TextureAsset = Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(pPath.string());
+					m_SceneHierachyPanel->SetSelection(dropped);
+				}
 			}
 			ImGui::EndDragDropTarget();
 		}

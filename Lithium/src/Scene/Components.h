@@ -122,7 +122,7 @@ namespace Lithium
 		
 		bool FixedRotation = false;
 		void* RuntimeBody = nullptr;
-		bool Created;
+		bool Created = false;
 		void SetVelocity(const glm::vec2 vel);
 		glm::vec2 GetVelocity();
 		PhysicsBodyType Type = PhysicsBodyType::Dynamic;
@@ -138,7 +138,7 @@ namespace Lithium
 		BoxCollider2DComponent() = default;
 		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
 
-		bool Created;
+		bool Created = false;
 		glm::vec2 Offset = { 0.0f, 0.0f };
 		glm::vec2 Size = { 0.5f, 0.5f };
 		float Density = 1.0f;
@@ -169,7 +169,7 @@ namespace Lithium
 		void AddScript(const std::string& name)
 		{
 		
-			Scripts.push_back(ScriptComponent(name));
+			Scripts.emplace_back(name);
 		}
 		void AddScript(ScriptComponent& script)
 		{

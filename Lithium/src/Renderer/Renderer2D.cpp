@@ -235,7 +235,7 @@ namespace Lithium
 	}
 
 
-	void BatchRenderer::DrawLine(const glm::vec3& p0, glm::vec3& p1, const glm::vec4& color)
+	void BatchRenderer::DrawLine(const glm::vec3& p0,const glm::vec3& p1, const glm::vec4& color)
 	{
 		_Data.LineVertexBufferPtr->Position = p0;
 		_Data.LineVertexBufferPtr->Color = color;

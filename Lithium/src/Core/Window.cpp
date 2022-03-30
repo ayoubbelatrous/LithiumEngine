@@ -28,6 +28,7 @@ namespace Lithium
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 		window = glfwCreateWindow(1280, 780, "Lithium", NULL, NULL);
+		//window = glfwCreateWindow(1440, 900,"game", glfwGetPrimaryMonitor(), nullptr);
 		glfwMakeContextCurrent(window);
 		
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -35,7 +36,6 @@ namespace Lithium
 		}
 		
 		GLuint id = 0;
-		const char* message​ = "hello";
 		glViewport(0, 0, 1280, 780);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

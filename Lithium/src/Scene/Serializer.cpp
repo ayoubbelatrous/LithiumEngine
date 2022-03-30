@@ -510,7 +510,6 @@ namespace Lithium
 				BoxCollider2DComponent& bc2d = deserEntity.GetComponent<BoxCollider2DComponent>();
 				bc2d.Size = boxcollider2d["Size"].as<glm::vec2>();
 				bc2d.Offset = boxcollider2d["Offset"].as<glm::vec2>();
-				bc2d.Offset = boxcollider2d["Offset"].as<glm::vec2>();
 				bc2d.Density = boxcollider2d["Density"].as<float>();
 				bc2d.Friction = boxcollider2d["Friction"].as<float>();
 				bc2d.Restitution = boxcollider2d["Restitution"].as<float>();

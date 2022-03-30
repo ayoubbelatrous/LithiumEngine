@@ -73,3 +73,4 @@ group ""
 
 include "Lithium"
 include "Editor"
+include "Runtime"
