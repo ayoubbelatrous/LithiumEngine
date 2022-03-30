@@ -4,6 +4,7 @@
 #include "Core/Base.h"
 #include <unordered_map>
 #include "Audio/AudioSource.h"
+#include "AssetPackReader.h"
 namespace Lithium
 {
 	class AssetManager
@@ -11,6 +12,7 @@ namespace Lithium
 	public:
 		AssetManager()
 		{
+			assetReader = CreateRef<AssetPackReader>("assets/build/shared.assets");
 			LoadAssetRegistry();
 		};
 		
@@ -31,6 +33,8 @@ namespace Lithium
 		std::unordered_map<uint64_t, Ref<Texture>> m_TextureRegistry;
 		std::unordered_map<uint64_t, Ref<AudioSource>> m_AudioRegistry;
 		std::string m_AssetRegistryRootPath = "Cache/";
+		Ref<AssetPackReader> assetReader;
+
 	};
 
 }

@@ -3,6 +3,7 @@
 #include "Audio/Audio.h"
 #include "Core/UUID.h"
 #include "AssetPacker.h"
+#include "AssetPackReader.h"
 
 namespace Lithium {
 
@@ -107,7 +108,9 @@ namespace Lithium {
 		{
 			pTestVector.push_back(entry.first);
 		}
-		AssetPacker packer(path, pTestVector);
+		{
+			AssetPacker packer(path, pTestVector);
+		}
 	}
 
 	void AssetManager::SaveAssetRegistry()
