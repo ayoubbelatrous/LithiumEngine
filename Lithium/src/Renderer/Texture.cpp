@@ -42,6 +42,24 @@ namespace Lithium
 		loaded = true;
 	}
 
+	Texture::Texture(char* data,uint32_t size)
+	{
+		stbi_set_flip_vertically_on_load(1);
+		_localBuffer = stbi_load_from_memory((stbi_uc*)data,size, &_width, &_height, &_BPP, 4);
+
+		glGenTextures(1, &_id);
+		glBindTexture(GL_TEXTURE_2D, _id);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _localBuffer);
+		//glBindTexture(GL_TEXTURE_2D, 0);
+		stbi_image_free(_localBuffer);
+
+		loaded = true;
+	}
+
 	Texture::~Texture()
 	{
 		glDeleteTextures(1, &_id);

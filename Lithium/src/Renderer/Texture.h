@@ -16,6 +16,7 @@ namespace Lithium
 	public:
 		Texture() = default;
 		Texture(const std::string& path);
+		Texture(char* data,uint32_t size);
 		Texture(int width, int height);
 		//Texture():_id(0) {}
 		~Texture();
