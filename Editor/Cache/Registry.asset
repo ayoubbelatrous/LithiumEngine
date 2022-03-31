@@ -1,31 +1,9 @@
 PathRegistry:
-  - UUID: 13875471220490263831
-    Path: assets\sprites\man.png
-  - UUID: 1316668738020957875
-    Path: ""
-  - UUID: 17073922704765126336
-    Path: ""
-  - UUID: 9802654211192886604
-    Path: assets\sprites\background.png
-  - UUID: 13516489073363336985
-    Path: assets\sprites\tree.png
-  - UUID: 5384340314155245483
-    Path: ""
-  - UUID: 5609186999436627065
-    Path: ""
-  - UUID: 3462376389663479680
-    Path: ""
-  - UUID: 4659185570097299958
-    Path: ""
-  - UUID: 5051875743027014023
-    Path: ""
-  - UUID: 7291462645808560188
-    Path: ""
-  - UUID: 3268259082113240235
-    Path: ""
-  - UUID: 12568799368987061985
+  - UUID: 8159922648104178881
     Path: ""
   - UUID: 10460744895190112220
     Path: ""
-  - UUID: 1219213169080469485
-    Path: assets\sprites\boss.png
+  - UUID: 11167694175211764772
+    Path: ""
+  - UUID: 3268259082113240235
+    Path: ""

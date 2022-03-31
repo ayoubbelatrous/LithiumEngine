@@ -11,7 +11,9 @@
 #include "gtc/type_ptr.hpp"
 
 #include <mono/metadata/tokentype.h>
+#include <mono/metadata/mono-gc.h>
 #include "Audio/Audio.h"
+
 namespace Lithium
 {
 	std::vector<const char*> MonoServer::_BufferLog = std::vector<const char*>();
@@ -66,7 +68,6 @@ namespace Lithium
 	{
 		
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
-
 
 		MonoClass* klass = mono_object_get_class(type);
 		MonoString* monostring = (MonoString*)mono_property_get_value(mono_class_get_property_from_name(klass, "Name"), type, nullptr, nullptr);
@@ -496,10 +497,11 @@ namespace Lithium
 
 	MonoServer::MonoServer()
 	{
-		m_LastAssemblyTime = std::filesystem::last_write_time(_Path);
+		m_LastAssemblyTime = std::filesystem::last_write_time(AssemblyPath);
 
 		InitMono();
 		Bindinternals();
+	
 	}
 	MonoServer::~MonoServer()
 	{
@@ -511,46 +513,35 @@ namespace Lithium
 	void MonoServer::InitMono()
 	{
 	
-		std::filesystem::copy_file(_Path.c_str(),_BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
+		//std::filesystem::copy_file(_Path.c_str(),_BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
 
 		mono_set_dirs("assets/CsharpAssemblies/", ".");
-
 		_MonoRootDomain = mono_jit_init("RootDomain");
 		_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
 
-		//creates app domain and sets as the target domain
+		
 		if (_MonoAppDomain)
 		{
 			mono_domain_set(_MonoAppDomain, 0);
 		}
 		else
 		{
-			CORE_LOG("[CS MONO] : failed to create appdomain ' _MonoAppDomain '  ");
-			
-			assert("");
+			CORE_LOG("[ERROR] : mono domain failed to create!")
 		}
-
-		
-		_MonoAssembly = mono_domain_assembly_open(mono_domain_get(),_BinPath.c_str());
-		if (_MonoAssembly)
+	
+		MonoImageOpenStatus OpenStatus;
+		uint32_t size = 0;
+		char* assemblyData = LoadAssemblyFile(AssemblyPath.c_str(), &size);
+		_MonoImage = mono_image_open_from_data(assemblyData, size, false, &OpenStatus);
+		if (_MonoImage)
 		{
-			_MonoImage = mono_assembly_get_image(_MonoAssembly);
-
+			_MonoAssembly = mono_assembly_load_from(_MonoImage, "", &OpenStatus);
 		}
 		else
 		{
-			CORE_LOG("[CS MONO] : failed to load assembly ' _MonoAssembly '  ");
-
-			assert("");
+			CORE_LOG("[ERROR] : mono domain failed to create!")
 		}
 
-
-		if (!_MonoImage)
-		{
-			CORE_LOG("[CS MONO] : failed to create assembly ' _MonoImage '  ");
-
-			assert("");
-		}
 		_ScriptBaseClass =  mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException(object)", true);
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
@@ -567,14 +558,22 @@ namespace Lithium
 		{
 			CORE_LOG("error domain");
 		}
+		MonoImageOpenStatus OpenStatus;
+		uint32_t size = 0;
+		char* assemblyData = LoadAssemblyFile(AssemblyPath.c_str(), &size);
+		_MonoImage = mono_image_open_from_data(assemblyData, size, false, &OpenStatus);
+		_MonoAssembly = mono_assembly_load_from(_MonoImage, "", &OpenStatus);
 
-		_MonoAssembly = mono_domain_assembly_open(mono_domain_get(), _BinPath.c_str());
-		_MonoImage = mono_assembly_get_image(_MonoAssembly);
+
 		Bindinternals();
+
+
 		_ScriptBaseClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException", true);
+
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
 		m_ScriptClassMap.clear();
+		
 		LoadAllClassesInImage();
 	}
 	void MonoServer::DeleteAssemblies()
@@ -585,14 +584,10 @@ namespace Lithium
 	bool MonoServer::CheckForChange()
 	{
 
-		//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-
-		if (std::filesystem::last_write_time(_Path) != m_LastAssemblyTime)
+		if (std::filesystem::last_write_time(AssemblyPath) != m_LastAssemblyTime)
 		{
-			m_LastAssemblyTime = std::filesystem::last_write_time(_Path);
+			m_LastAssemblyTime = std::filesystem::last_write_time(AssemblyPath);
 			std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
-			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() << "[ns]" << std::endl;
 			return true;
 		}
 		else
@@ -618,7 +613,6 @@ namespace Lithium
 	void MonoServer::ForceReload()
 	{
 		DeleteAssemblies();
-		std::filesystem::copy_file(_Path.c_str(), _BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
 		Reload();
 	}
 
@@ -755,6 +749,17 @@ namespace Lithium
 	void* MonoServer::CreateMonoString(const char* str)
 	{
 		return mono_string_new(_MonoAppDomain, str);
+	}
+
+	char* MonoServer::LoadAssemblyFile(const std::string& path, uint32_t* size)
+	{
+		std::ifstream file(path, std::ios::binary | std::ios::ate);
+		*size = file.tellg();
+		file.seekg(0, std::ios::beg);
+		char* buffer = new char[*size];
+		file.read(buffer, *size);
+		file.close();
+		return buffer;
 	}
 
 }

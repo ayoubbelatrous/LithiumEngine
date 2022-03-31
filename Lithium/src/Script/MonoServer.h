@@ -25,8 +25,7 @@ namespace Lithium
 		char* _assemblyData;
 
 
-		std::string _Path = "assets/TestProject/Assem/Csharp.dll";
-		std::string _BinPath = "assets/TestProject/bin/Csharp.dll";
+		std::string AssemblyPath = "assets/TestProject/Library/Assembly.dll";
 		std::filesystem::file_time_type m_LastAssemblyTime;
 		std::unordered_map<std::string, std::string> m_AllClassesInImage;
 		std::unordered_map<std::string, Ref<ScriptClass>> m_ScriptClassMap;
@@ -114,6 +113,7 @@ namespace Lithium
 			void* CreateMonoAudioClip(UUID assetID);
 			//Utils
 			void* CreateMonoString(const char* str);
+			char* LoadAssemblyFile(const std::string& path,uint32_t* size);
 	};
 	
 

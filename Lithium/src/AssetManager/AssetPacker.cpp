@@ -26,9 +26,6 @@ namespace Lithium
 		{
 			size_t hash = std::hash<std::string>{}(entry.first);
 
-			CORE_LOG("path : " << entry.first)
-			CORE_LOG("hash : " << hash)
-			CORE_LOG("size : " << entry.second)
 			m_Stream.write((char*)&hash, 8); //path hash
 			m_Stream.write((char*)&entry.second, 4);
 		}
