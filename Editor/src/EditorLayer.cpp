@@ -421,7 +421,7 @@ namespace Lithium
 			ImGuiID dockspace_id = ImGui::GetID("DockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
-		if (m_Project != nullptr)
+		if (nullptr)
 		{
 			ProjectWizard::Update();
 			ImGui::End();

@@ -9,7 +9,6 @@
 #include "Scene/SceneManager.h"
 #include "Script/MonoServer.h"
 #include "Core/UUID.h"
-#include "Project/Project.h"
 
 namespace Lithium
 {
