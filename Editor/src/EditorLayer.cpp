@@ -15,7 +15,7 @@ static std::atomic_bool canCheckAssembly;
 
 namespace Lithium
 {
-	extern const std::filesystem::path root;
+	extern std::filesystem::path root;
 
 	void EditorLayer::OnCreate()
 	{
@@ -414,21 +414,14 @@ namespace Lithium
 			ImGuiID dockspace_id = ImGui::GetID("DockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
-		if (nullptr)
+		if (m_OpenProjectWizard)
 		{
-			ProjectWizard::Update();
-			ImGui::End();
-			ImGui::Render();
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+			std::filesystem::path projectPath = "";
+			if (ProjectWizard::Update(&m_OpenProjectWizard, projectPath))
 			{
-				GLFWwindow* backup_current_context = glfwGetCurrentContext();
-				ImGui::UpdatePlatformWindows();
-				ImGui::RenderPlatformWindowsDefault();
-				glfwMakeContextCurrent(backup_current_context);
+				root = projectPath;
+				_AssetBrowerPanel->OnProjectChange();
 			}
-			return;
 		}
 		if (ImGui::BeginMenuBar())
 		{
@@ -442,6 +435,11 @@ namespace Lithium
 					
 
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"));
+
+				if (ImGui::MenuItem("Create Project", ""))
+				{
+					m_OpenProjectWizard = true;
+				}
 				ImGui::EndMenu();
 			}
 			if (_sceneState == SceneState::RUNTIME) {

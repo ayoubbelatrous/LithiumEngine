@@ -15,6 +15,7 @@ namespace Lithium {
 	public:
 		void OnCreate();
 		void OnUpdate();
+		void OnProjectChange();
 		void SetEventCallback(const EventCallback& callbackfn)
 		{
 			callback = callbackfn;

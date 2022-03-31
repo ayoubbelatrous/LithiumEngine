@@ -4,7 +4,7 @@
 
 namespace Lithium
 {
-	extern const std::filesystem::path root = "assets";
+	std::filesystem::path root = "assets";
 	void AssetBrowserPanel::OnCreate()
 	{
 		_FolderIcon = CreateRef<Texture>("assets/Editor/icons/folder.png");
@@ -94,6 +94,13 @@ namespace Lithium
 		ImGui::Columns(1);
 
 		ImGui::End();
+	}
+
+	void AssetBrowserPanel::OnProjectChange()
+	{
+		root = root / "assets";
+		currentpath = root;
+		Refresh();
 	}
 
 	void AssetBrowserPanel::Refresh()

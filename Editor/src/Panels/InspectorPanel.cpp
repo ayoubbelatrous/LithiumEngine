@@ -14,7 +14,7 @@
 #include "Core/Application.h"
 namespace Lithium
 {
-	extern const std::filesystem::path root;
+	extern std::filesystem::path root;
 	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
