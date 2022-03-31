@@ -69,6 +69,31 @@ namespace Lithium
 		static ImGuiID dockspaceID = 0;
 	}
 
+	void GUIlayer::Begin()
+	{
+		LT_PROFILE_FUNCTION("RenderImGui()");
+
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+	}
+
+	void GUIlayer::End()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			GLFWwindow* backup_current_context = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(backup_current_context);
+		}
+	}
+
 	void GUIlayer::OnUpdate()
 	{
 

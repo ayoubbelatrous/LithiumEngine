@@ -103,14 +103,6 @@ namespace Lithium {
 
 	void AssetManager::PackAssetRegistry(const std::string& path)
 	{
-		std::vector<std::string> pTestVector;
-		for (auto entry : m_AssetRegistry)
-		{
-			pTestVector.push_back(entry.first);
-		}
-		{
-			AssetPacker packer(path, pTestVector);
-		}
 	}
 
 	void AssetManager::SaveAssetRegistry()

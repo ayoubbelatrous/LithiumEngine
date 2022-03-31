@@ -12,7 +12,6 @@ namespace Lithium
 	public:
 		AssetManager()
 		{
-			assetReader = CreateRef<AssetPackReader>("assets/build/shared.assets");
 			LoadAssetRegistry();
 		};
 		
@@ -32,8 +31,7 @@ namespace Lithium
 		std::unordered_map<uint64_t, std::string> m_PathRegistry;
 		std::unordered_map<uint64_t, Ref<Texture>> m_TextureRegistry;
 		std::unordered_map<uint64_t, Ref<AudioSource>> m_AudioRegistry;
-		std::string m_AssetRegistryRootPath = "Cache/";
-		Ref<AssetPackReader> assetReader;
+		std::string m_AssetRegistryRootPath = "Library/";
 
 	};
 

@@ -64,7 +64,7 @@ namespace Lithium
 		void onMouseWheelEvent(MouseWheelEvent& e);
 		void onMouseKeyPressEvent(MouseKeyPressEvent& e);
 		void onEditorEvent(Event& e);
-		void RenderImgui();
+		void OnImguiRender() override;
 		void DebugRender();
 		void ImGuiRenderToolBar();
 		void SceneEvent(Event& e);

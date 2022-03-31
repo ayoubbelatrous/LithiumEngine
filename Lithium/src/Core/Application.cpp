@@ -60,6 +60,12 @@ namespace Lithium
 				{
 					layer->OnUpdate();
 				}
+				_ImguiLayer->Begin();
+				{
+					for (Layer* layer : _Stack)
+						layer->OnImguiRender();
+				}
+				_ImguiLayer->End();
 			}
 			_Window->OnUpdate();
 			

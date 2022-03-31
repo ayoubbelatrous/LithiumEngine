@@ -240,7 +240,6 @@ namespace Lithium
 // 
 // 		DisplayBuffer->UnBind();
 
-		RenderImgui();
 	}
 
 	void EditorLayer::OnDestroy()
@@ -377,15 +376,9 @@ namespace Lithium
 
 	}
 
-	void EditorLayer::RenderImgui()
+	void EditorLayer::OnImguiRender()
 	{
-		LT_PROFILE_FUNCTION("RenderImGui()");
-
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-
+		
 	
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
@@ -724,17 +717,6 @@ namespace Lithium
 		
 
 		ImGui::End();
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-		}
 	}
 
 	void EditorLayer::DebugRender()
