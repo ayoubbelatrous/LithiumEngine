@@ -39,7 +39,7 @@ namespace Lithium
 			columns = 1;
 		}
 		ImGui::Columns(columns,0,false);
-		if (currentpath != "assets")
+		if (currentpath != root)
 		{
 			if (ImGui::Button("->"))
 			{

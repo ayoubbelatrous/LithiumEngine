@@ -38,25 +38,12 @@ IncludeDir["Box2D"] = "%{wks.location}/Lithium/vendor/box2d/include"
 IncludeDir["OpenAlSoft"] = "%{wks.location}/Lithium/vendor/OpenAL-Soft"
 IncludeDir["libogg"] = "%{wks.location}/Lithium/vendor/libogg/include"
 IncludeDir["Vorbis"] = "%{wks.location}/Lithium/vendor/Vorbis/include"
+IncludeDir["mono"] =   "%{wks.location}/Lithium/vendor/mono/include"
 
-if os.getenv("MONO_DIR") then
-	IncludeDir["mono"] = os.getenv("MONO_DIR") .. "include/mono-2.0/"
-else
-	print("please set env var for mono path called MONO_DIR or use default [y,n]")
-	print("C:/Program Files/Mono")
-	local answer = io.read()
-	if answer == "n" then
-		IncludeDir["mono"] ="mononull"	
-
-	else
-		IncludeDir["mono"] ="C:/Program Files/Mono"	
-	end
-
-end
 
 
 LibDir = {}
-LibDir["mono"] = os.getenv("MONO_DIR") .. "lib"
+LibDir["mono"] = "%{wks.location}/Lithium/vendor/mono/lib"
 
 group "Dependencies"
 	include "Lithium/vendor/glfw"
