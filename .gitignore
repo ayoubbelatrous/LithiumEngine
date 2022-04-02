@@ -21,3 +21,9 @@ compile_flags.txt
 MakeFile
 Makefile
 makefile
+
+Editor/assets/TestProject/Assembly/**.pdb
+Editor/assets/TestProject/Csharp/bin/
+Editor/assets/TestProject/Csharp/obj/
+Editor/assets/TestProject/**.pdb
+Editor/assets/TestProject/**.obj
