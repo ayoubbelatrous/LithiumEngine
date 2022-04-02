@@ -97,12 +97,18 @@ namespace Lithium
 		s_Data.VertexBufferPtr = s_Data.VertexBufferBase;
 	}
 
-	void FontRenderer::DrawString(const glm::mat4& transform,const std::string& text, const Ref<Font>& font)
+	void FontRenderer::BeginScene(const glm::mat4& transform, const glm::mat4& projection)
 	{
+		s_Data.projection = projection * glm::inverse(transform);
+		s_Data.IndexCount = 0;
+		s_Data.TextureSlotIndex = 0;
+		s_Data.VertexBufferPtr = s_Data.VertexBufferBase;
 
-		constexpr int VertexCount = 4;
+	}
 
-		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+	void FontRenderer::DrawString(const glm::mat4& transform, const std::string& text, const Ref<Font>& font)
+	{
+		int VertexCount = 4;
 
 		float textureIndex = 0.0f;
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
@@ -121,16 +127,35 @@ namespace Lithium
 			s_Data.TextureSlotIndex++;
 		}
 
-
-		for (size_t i = 0; i < VertexCount; i++)
+		for (size_t i = 0; i < text.size(); i++)
 		{
-			s_Data.VertexBufferPtr->Position = transform * s_Data.VertexPositions[i];
-			s_Data.VertexBufferPtr->Color = glm::vec4(1.0f);
-			s_Data.VertexBufferPtr->TextureCoords = textureCoords[i];
-			s_Data.VertexBufferPtr->TextureIndex = textureIndex;
-			s_Data.VertexBufferPtr->EntityID = -1;
-			s_Data.VertexBufferPtr++;
+			Font::Character currentChar = font->GetCharacter(text.at(i));
+
+			
+			glm::vec2 cellsize = glm::vec2(currentChar.PackedSize.x, currentChar.PackedSize.y);
+			glm::vec2 index = glm::vec2(currentChar.PackedPos.x / currentChar.PackedSize.x, currentChar.PackedPos.y / currentChar.PackedSize.y);
+		
+			float Width = font->GetAtlasSize().x;
+			float Height = font->GetAtlasSize().y;
+			float AspectRatio = currentChar.PackedSize.x / currentChar.PackedSize.y;
+			glm::vec2* textureCoords = new glm::vec2[]{
+				{ (index.x * cellsize.x) / Width, (index.y * cellsize.y) / Height},
+				{ ((index.x + 1) * cellsize.x) / Width, (index.y * cellsize.y) / Height},
+				{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
+				{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
+			};
+
+			for (size_t i = 0; i < VertexCount; i++)
+			{
+				s_Data.VertexBufferPtr->Position = transform * s_Data.VertexPositions[i];
+				s_Data.VertexBufferPtr->Color = glm::vec4(1.0f);
+				s_Data.VertexBufferPtr->TextureCoords = textureCoords[i];
+				s_Data.VertexBufferPtr->TextureIndex = textureIndex;
+				s_Data.VertexBufferPtr->EntityID = -1;
+				s_Data.VertexBufferPtr++;
+			}
 		}
+	
 
 		s_Data.IndexCount += 6;
 	}
@@ -155,7 +180,7 @@ namespace Lithium
 		s_Data.shader->SetUniformMat4f("u_projection", s_Data.projection);
 
 		s_Data.shader->SetUniformiv("u_textures", samplers);
-		s_Data.shader->SetUniform1f("pxRange", 2.0f);
+		s_Data.shader->SetUniform1f("pxRange", 4.5f);
 
 		s_Data.FontIndexBuffer->Bind();
 		RendererCommand::DrawIndexed(s_Data.IndexCount);

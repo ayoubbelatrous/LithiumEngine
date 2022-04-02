@@ -23,6 +23,7 @@ namespace Lithium {
 
 		Character GetCharacter(uint32_t character);
 		Ref<Texture> GetAtlas();
+		glm::vec2 GetAtlasSize();
 	private:
 		void Load();
 		std::string m_Path;

@@ -104,7 +104,7 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
-		m_TestFont = CreateRef<Font>("assets/Editor/Fonts/OpenSans-Regular.ttf");
+		m_TestFont = CreateRef<Font>("assets/Editor/Fonts/CascadiaMono-Regular.ttf");
 	}
 
 	void EditorLayer::OnUpdate()
@@ -170,8 +170,10 @@ namespace Lithium
 			//BatchRenderer::DrawQuad(glm::mat4(1.0f),glm::vec4(1.0f),m_TestFont->GetAtlas(),-1);
 			m_ActiveScene->onEditorUpdate();
 			BatchRenderer::End();
-			FontRenderer::BeginScene(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
-			FontRenderer::DrawString(glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 200.0f,0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(400,400,0)), "hello", m_TestFont);
+			//FontRenderer::BeginScene(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
+			FontRenderer::BeginScene(view, proj);
+			//FontRenderer::DrawString(glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 200.0f,0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(400,400,0)), "A", m_TestFont);
+			FontRenderer::DrawString(glm::mat4(1.0f), "B", m_TestFont);
 			FontRenderer::EndScene();
 			if (canCheckAssembly)
 			{

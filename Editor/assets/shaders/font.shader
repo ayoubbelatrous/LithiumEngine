@@ -79,7 +79,7 @@ void main()
 	float screenPxDistance = screenPxRange(TextureSize) * (sd - 0.5);
 	float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
 
-	color = mix(vec4(0.0f,0.0f, 0.0f, 0.0f), Color, opacity);
+	color = mix(vec4(0.5f,0.5f, 0.51f, 1.0f), Color, opacity);
 	
 	color2 = int(v_EntityID);
 }

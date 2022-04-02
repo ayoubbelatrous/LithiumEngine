@@ -37,6 +37,11 @@ namespace Lithium
 		return m_AtlasTexture;
 	}
 
+	glm::vec2 Font::GetAtlasSize()
+	{
+		return glm::vec2(m_AtlasWidth, m_AtlasHeight);
+	}
+
 	void Font::Load()
 	{
 		msdfgen::FontHandle* fontHandle = nullptr;
@@ -63,7 +68,7 @@ namespace Lithium
 		packer.setDimensionsConstraint(TightAtlasPacker::DimensionsConstraint::SQUARE);
 		
 		packer.setMinimumScale(24.0);
-		packer.setPixelRange(2.0);
+		packer.setPixelRange(4.5f);
 		packer.setMiterLimit(1.0);
 		packer.pack(glyphs.data(), glyphs.size());
 		int width = 0, height = 0;
@@ -93,7 +98,6 @@ namespace Lithium
 			glyph.getBoxRect(x, y, w, h);
 		
 			m_CharacterMap[(uint32_t)glyph.getCodepoint()] = {glm::vec2(w,h),glm::vec2(x,y),(uint32_t)glyph.getCodepoint()};
-
 		}
 
 	
