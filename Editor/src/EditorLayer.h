@@ -33,6 +33,7 @@
 #include "Scene/Camera/EditorCamera.h"
 #include "Audio/Audio.h"
 #include "Audio/AudioSource.h"
+#include "Font/Font.h"
 
 namespace Lithium
 {
@@ -132,7 +133,7 @@ namespace Lithium
 		glm::vec3 m_FocalPoint = glm::vec3(0);
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 
-
+		Ref<Font> m_TestFont;
 		
 		AudioSource* source;
 	};

@@ -4,12 +4,12 @@
 #include "ImGuizmo.h"
 #include "Input/Input.h"
 #include "Core/Math.h"
-#include "Font/Font.h"
 #include "Script/MonoServer.h"
 #include <atomic>
 #include "Panels/ProjectWizard.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
+#include "Font/FontRenderer.h"
 
 static std::atomic_bool canCheckAssembly;
 
@@ -72,6 +72,7 @@ namespace Lithium
 		model = glm::translate(glm::mat4(1), pos);
 		_AssetBrowerPanel->OnCreate();
 		BatchRenderer::Init();
+		FontRenderer::Init();
 		shader = CreateRef<Shader>("assets/shaders/test.shader");
 		frameshader = CreateRef<Shader>("assets/shaders/frame.shader");
 
@@ -102,7 +103,8 @@ namespace Lithium
 				canCheckAssembly.store(true);
 		}, std::chrono::milliseconds(100));
 
-		//Application::Get().assetManager->PackAssetRegistry("assets/build/shared.assets");
+		Font::Init();
+		m_TestFont = CreateRef<Font>("assets/Editor/Fonts/OpenSans-Regular.ttf");
 	}
 
 	void EditorLayer::OnUpdate()
@@ -165,8 +167,12 @@ namespace Lithium
 			RendererCommand::Clear();
 			framebuffer->ClearAttachment(1, -1);
 			BatchRenderer::Begin(view, proj);
+			//BatchRenderer::DrawQuad(glm::mat4(1.0f),glm::vec4(1.0f),m_TestFont->GetAtlas(),-1);
 			m_ActiveScene->onEditorUpdate();
 			BatchRenderer::End();
+			FontRenderer::BeginScene(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
+			FontRenderer::DrawString(glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 200.0f,0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(400,400,0)), "hello", m_TestFont);
+			FontRenderer::EndScene();
 			if (canCheckAssembly)
 			{
 				if (Application::Get().Monoserver->CheckForChange())
