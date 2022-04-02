@@ -200,4 +200,11 @@ namespace Lithium
 
 	}
 
+	void Shader::SetUniform1f(const std::string& name, float value)
+	{
+		int location = GetLocation(name);
+
+		glUniform1f(location, value);
+	}
+
 }

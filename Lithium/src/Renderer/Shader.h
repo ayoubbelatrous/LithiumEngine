@@ -39,6 +39,7 @@ namespace Lithium
 		void SetUniform1i(const std::string& name, int value);
 		void SetUniformMat4f(const std::string& name, const glm::mat4& mat);
 		void SetUniformiv(const std::string& name, int vector[]);
+		void SetUniform1f(const std::string& name, float value);
 
 		int GetAttribCount();
 		std::string GetPath()
