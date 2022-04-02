@@ -512,9 +512,7 @@ namespace Lithium
 
 	void MonoServer::InitMono()
 	{
-	
-		//std::filesystem::copy_file(_Path.c_str(),_BinPath.c_str(), std::filesystem::copy_options::overwrite_existing);
-
+		
 		mono_set_dirs("assets/CsharpAssemblies/", ".");
 		_MonoRootDomain = mono_jit_init("RootDomain");
 		_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
@@ -528,7 +526,6 @@ namespace Lithium
 		{
 			CORE_LOG("[ERROR] : mono domain failed to create!")
 		}
-	
 		MonoImageOpenStatus OpenStatus;
 		uint32_t size = 0;
 		char* assemblyData = LoadAssemblyFile(AssemblyPath.c_str(), &size);

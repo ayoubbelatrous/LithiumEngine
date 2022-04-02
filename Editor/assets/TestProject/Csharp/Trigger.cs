@@ -6,13 +6,10 @@ class Trigger : Script
     
     void Start()
     {
-
     }
 
     void Update()
     {
-       
-
     }
 
     void OnCollisionEnter()
@@ -23,7 +20,6 @@ class Trigger : Script
     void OnCollisionExit()
     {
         Debug.Log("collision exit from sensor");
-
     }
 }
 

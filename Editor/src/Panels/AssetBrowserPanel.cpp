@@ -39,14 +39,22 @@ namespace Lithium
 			columns = 1;
 		}
 		ImGui::Columns(columns,0,false);
+		//ImGui::Separator();
 		if (currentpath != root)
 		{
 			if (ImGui::Button("->"))
 			{
 				currentpath = currentpath.parent_path();
 				Refresh();
+				
 			}
+			ImGui::SameLine();
 		}
+		if (ImGui::Button("Refresh"))
+		{
+			Refresh();
+		}
+		ImGui::Separator();
 		
 		for (auto entry: _Cache)
 		{

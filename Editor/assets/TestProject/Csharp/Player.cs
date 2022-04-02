@@ -7,7 +7,7 @@ class Player : Script
 	public float AirSpeed = 0.0f;
 	public float JumpSpeed = 0.0f;
     public bool Grounded = true;
-    private testStruct testss;
+    
     void Start()
 	{
 

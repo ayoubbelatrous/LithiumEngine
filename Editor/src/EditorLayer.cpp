@@ -421,6 +421,7 @@ namespace Lithium
 			{
 				root = projectPath;
 				_AssetBrowerPanel->OnProjectChange();
+				Application::Get().Monoserver->ForceReload();
 			}
 		}
 		if (ImGui::BeginMenuBar())

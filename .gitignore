@@ -21,10 +21,3 @@ compile_flags.txt
 MakeFile
 Makefile
 makefile
-**.ini
-Editor/assets/TestProject/Assem/**.pdb
-Editor/assets/TestProject/Assem/**.dll
-Editor/assets/TestProject/Assem/**.pdb
-Editor/assets/TestProject/Assem/**.dll
-
-

@@ -46,7 +46,7 @@ namespace Lithium {
 	template<>
 	Ref<Texture> AssetManager::GetAsset(Asset asset)
 	{
-		
+		LT_PROFILE_FUNCTION("Bla Bla")
 		uint64_t ID = (uint64_t)asset.GetUUID();
 
 		if (m_TextureRegistry.find(ID) != m_TextureRegistry.end())

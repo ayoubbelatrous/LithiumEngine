@@ -60,11 +60,5 @@
   <ItemGroup>
     <Compile Include="Player.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TestLink\TestLink\TestLink.csproj">
-      <Project>{30b3e965-3a95-4a16-ae74-777caa41c224}</Project>
-      <Name>TestLink</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
