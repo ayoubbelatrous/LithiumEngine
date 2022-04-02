@@ -27,3 +27,4 @@ Editor/assets/TestProject/Csharp/bin/
 Editor/assets/TestProject/Csharp/obj/
 Editor/assets/TestProject/**.pdb
 Editor/assets/TestProject/**.obj
+Editor/cache/**.**
