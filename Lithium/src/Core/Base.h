@@ -2,6 +2,8 @@
 #include <memory>
 #include <assert.h>
 
+
+
 namespace Lithium
 {
 	
@@ -20,6 +22,8 @@ namespace Lithium
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
+
+
 #define DEBUG_MODE
 #ifdef DEBUG_MODE
 #define CORE_LOG(x) {std::cout << x << std::endl;}

@@ -3,12 +3,14 @@
 #include "Debug/Profiler.h"
 #include "glm.hpp"
 #include "Math.h"
+#include "Log.h"
 
 namespace Lithium
 {
 	Application* Application::instance = nullptr;
 	Application::Application()
 	{
+		Log::Init();
 		_Window = CreateScope<Window>();
 		_Window->Init();
 #ifndef STATIC_RUNTIME

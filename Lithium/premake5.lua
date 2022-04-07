@@ -20,6 +20,7 @@ files
     "vendor/glm/glm/**.hpp",
 	"vendor/glm/glm/**.inl",
 
+    "vendor/spdlog/**/**.hpp",
 
     "vendor/stb_image/**.h",
 	"vendor/stb_image/**.cpp",
@@ -32,6 +33,7 @@ includedirs
 {
 
     "%{wks.location}/Lithium/vendor",
+    "%{wks.location}/Lithium/vendor/spdlog/include",
     "%{wks.location}/Lithium/src",
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLAD}",
