@@ -105,9 +105,6 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
-		//m_TestFont = CreateRef<Font>("assets/fonts/pixelated.ttf");
-		//m_TestFont = CreateRef<Font>("assets/Editor/Fonts/CascadiaMono-Regular.ttf");
-		m_TestFont = CreateRef<Font>("assets/Editor/Fonts/OpenSans-Regular.ttf");
 		
 	}
 
@@ -170,15 +167,11 @@ namespace Lithium
 			RendererCommand::Clear();
 			framebuffer->ClearAttachment(1, -1);
 			BatchRenderer::Begin(view, proj);
-			//BatchRenderer::DrawQuad(glm::mat4(1.0f),glm::vec4(1.0f),m_TestFont->GetAtlas(),-1);
+			FontRenderer::BeginScene(glm::ortho(0.0f, viewportSize[0], 0.0f, viewportSize[1]));
 			m_ActiveScene->onEditorUpdate();
 			BatchRenderer::End();
-			FontRenderer::BeginScene(glm::ortho(0.0f, viewportSize[0], 0.0f, viewportSize[1]));
-			//FontRenderer::BeginScene(view, proj);
-			//FontRenderer::DrawString(glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 200.0f,0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(400,400,0)), "A", m_TestFont);
-			//FontRenderer::DrawString(glm::mat4(1.0f), "H", m_TestFont);
-			FontRenderer::DrawString(glm::translate(glm::mat4(1.0f), {1.0f,0.0f,0.0f}), "ayoub", m_TestFont);
 			FontRenderer::EndScene();
+		
 			
 			if (canCheckAssembly)
 			{
@@ -688,11 +681,6 @@ namespace Lithium
 			{
 				Application::Get().SetVsync(vsync);
 
-			}
-			float pxrange = FontRenderer::GetPixelRange();
-			if (ImGui::DragFloat("pxRange", &pxrange,0.01f))
-			{
-				FontRenderer::SetPixelRange(pxrange);
 			}
 			ImGui::End();
 		}

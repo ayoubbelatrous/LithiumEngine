@@ -39,7 +39,19 @@ PathRegistry:
     Path: assets\audio\track.mp3
   - UUID: 17252337450930699130
     Path: assets\sprites\mud.png
+  - UUID: 7923464014337788641
+    Path: assets\Editor\Fonts\OpenSans-Regular.ttf
   - UUID: 3639772307128870970
     Path: assets\sprites\mud-mid.png
   - UUID: 2893785331014740629
     Path: assets\props\vase.png
+  - UUID: 6781306874801935501
+    Path: assets\fonts\pixelated.ttf
+  - UUID: 6086720638072509347
+    Path: assets\Editor\Fonts\OpenSans-Bold.ttf
+  - UUID: 12828048890121511293
+    Path: assets\Editor\Fonts\CascadiaMono-Regular.ttf
+  - UUID: 14094159999732837589
+    Path: assets\Editor\Fonts\Cairo-Regular.ttf
+  - UUID: 17214959281454610457
+    Path: assets\Editor\Fonts\OpenSans-Light.ttf

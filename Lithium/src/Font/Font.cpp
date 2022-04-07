@@ -99,29 +99,24 @@ namespace Lithium
 			m_CharacterMap[(uint32_t)glyph.getCodepoint()] = currentCharacter;
 		}
 
+		if (!std::filesystem::exists(pCachePath))
+		{
+			ImmediateAtlasGenerator<float, 3, &msdfGenerator, BitmapAtlasStorage<byte, 3>> generator(width, height);
+			GeneratorAttributes attributes;
 
+			generator.setAttributes(attributes);
+			generator.setThreadCount(4);
+			generator.generate(glyphs.data(), glyphs.size());
+			msdfgen::BitmapConstRef<byte, 3> bitmap = generator.atlasStorage();
+			msdfgen::savePng(bitmap, pCachePath.c_str());
+		}
+		
 
-		ImmediateAtlasGenerator<float,3,&msdfGenerator,BitmapAtlasStorage<byte, 3>> generator(width, height);
-		GeneratorAttributes attributes;
-	
-		generator.setAttributes(attributes);
-		generator.setThreadCount(2);
-		generator.generate(glyphs.data(), glyphs.size());
-		msdfgen::BitmapConstRef<byte, 3> bitmap = generator.atlasStorage();
-
-		msdfgen::savePng(bitmap, pCachePath.c_str());
-
-		m_AtlasHeight = bitmap.height;
-		m_AtlasWidth = bitmap.width;
-
+		m_AtlasHeight = height;
+		m_AtlasWidth = width;
 
 
 		m_AtlasTexture = CreateRef<Texture>(pCachePath);
-
-
-		
-	
-
 		msdfgen::destroyFont(fontHandle);
 	}
 }

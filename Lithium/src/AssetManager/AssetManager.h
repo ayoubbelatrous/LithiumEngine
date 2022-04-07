@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "Audio/AudioSource.h"
 #include "AssetPackReader.h"
+#include "Font/Font.h"
 namespace Lithium
 {
 	class AssetManager
@@ -31,6 +32,7 @@ namespace Lithium
 		std::unordered_map<uint64_t, std::string> m_PathRegistry;
 		std::unordered_map<uint64_t, Ref<Texture>> m_TextureRegistry;
 		std::unordered_map<uint64_t, Ref<AudioSource>> m_AudioRegistry;
+		std::unordered_map<uint64_t, Ref<Font>> m_FontRegistry;
 		std::string m_AssetRegistryRootPath = "Library/";
 
 	};

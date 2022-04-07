@@ -741,6 +741,73 @@ namespace Lithium
 					m_Selection.RemoveComponent<AudioSourceComponent>();
 				}
 			}
+
+			if (m_Selection.HasComponent<TextRenderer>())
+			{
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("TextRenderer")), treeNodeFlags, "TextRenderer");
+				ImGui::PopStyleVar();
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
+
+				if (open)
+				{
+					TextRenderer& txr = m_Selection.GetComponent<TextRenderer>();
+					char buffer[3000];
+					memset(buffer, 0, 3000);
+					strcpy(buffer, txr.Text.c_str());
+					if (ImGui::InputTextMultiline("Text", buffer, 3000))
+					{
+						txr.Text = buffer;
+					}
+					ImGui::ColorEdit4("Color",glm::value_ptr(txr.color));
+					if (txr.FontAsset.GetUUID() == 0)
+					{
+						ImGui::Button("Font File", { ImGui::GetContentRegionAvail().x,20 });
+					}
+					else {
+						std::filesystem::path path = Application::Get().assetManager->GetAssetPath(txr.FontAsset);
+						ImGui::Button(path.filename().string().c_str(), { ImGui::GetContentRegionAvail().x,20 });
+
+					}
+					if (ImGui::BeginDragDropTarget())
+					{
+
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							std::filesystem::path fontPath = root / path;
+							if (fontPath.extension() == ".ttf")
+							{
+								Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Font>>(fontPath.string());
+								txr.FontAsset = asset;
+							}
+
+						}
+						ImGui::EndDragDropTarget();
+					}
+
+					ImGui::DragFloat("Spacing", &txr.Spacing,0.01f);
+					ImGui::DragFloat("Line Spacing", &txr.LineSpacing,0.01f);
+					ImGui::Checkbox("Screen Space", &txr.ScreenSpace);
+
+					ImGui::TreePop();
+				}
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<TextRenderer>();
+				}
+
+			}
 			if (ImGui::Button("Add Component"))
 				ImGui::OpenPopup("AddComponent");
 
@@ -800,6 +867,15 @@ namespace Lithium
 						ImGui::CloseCurrentPopup();
 					}
 				}
+				if (!m_Selection.HasComponent<TextRenderer>())
+				{
+					if (ImGui::MenuItem("Text Renderer"))
+					{
+						m_Selection.AddComponent<TextRenderer>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
+
 
 				ImGui::EndPopup();
 			}

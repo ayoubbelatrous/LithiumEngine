@@ -45,7 +45,7 @@ namespace Lithium
 		FontVertex* VertexBufferPtr = nullptr;
 		FontVertex* VertexBufferBase = nullptr;
 		glm::mat4 projection;
-		float pxRange = 10.5f;
+		float pxRange = 12.0f;
 	};
 	FontRendererData s_Data;
 
@@ -144,7 +144,7 @@ namespace Lithium
 				{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 				{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 			};
-			float scale = 100.0f;
+			float scale = 20.0f;
 			cursor += (currentChar.Advance) * scale;
 
 			glm::vec3 Scale = glm::vec3();
@@ -166,7 +166,8 @@ namespace Lithium
 				s_Data.VertexBufferPtr++;
 				
 			}
-				s_Data.IndexCount += 6;
+			delete[] textureCoords;
+			s_Data.IndexCount += 6;
 		}
 
 	}

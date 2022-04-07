@@ -217,5 +217,18 @@ namespace Lithium
 		AudioListenerComponent() = default;
 		AudioListenerComponent(const AudioListenerComponent&) = default;
 	};
+
+	struct TextRenderer
+	{
+		std::string Text = "";
+		glm::vec4 color = glm::vec4(1.0f);
+		Asset FontAsset = 0;
+		float Spacing = 0.0f;
+		float LineSpacing = 0.0f;
+		bool ScreenSpace = true;
+
+		TextRenderer() = default;
+		TextRenderer(const TextRenderer&) = default;
+	};
 }
 

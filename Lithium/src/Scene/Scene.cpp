@@ -12,6 +12,7 @@
 #include "box2d/box2d.h"
 #include "AssetManager/AssetManager.h"
 #include "Audio/Audio.h"
+#include "Font/FontRenderer.h"
 
 namespace Lithium
 {
@@ -205,7 +206,21 @@ namespace Lithium
 				}
 			}
 		}
+		{
 		
+			auto view = GetRegistry().view<TextRenderer, TransformComponent>();
+
+			for (auto entity : view)
+			{
+				auto& [txr, tc] = view.get<TextRenderer, TransformComponent>(entity);
+
+				if (txr.FontAsset.GetUUID() != 0)
+				{
+					FontRenderer::DrawString(tc.ModelMatrix, txr.Text, Application::Get().assetManager->GetAsset<Ref<Font>>(txr.FontAsset));
+				}
+
+			}
+		}
 		{
 			auto view = GetRegistry().view<ScriptGroupeComponent>();
 			for (auto entity : view)
@@ -664,6 +679,10 @@ namespace Lithium
 	}
 	template<>
 	void Scene::OnComponentAdded<AudioSourceComponent>(Entity entity, AudioSourceComponent& component)
+	{
+	}
+	template<>
+	void Scene::OnComponentAdded<TextRenderer>(Entity entity, TextRenderer& component)
 	{
 	}
 }

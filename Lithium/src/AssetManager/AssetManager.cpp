@@ -5,6 +5,7 @@
 #include "AssetPacker.h"
 #include "AssetPackReader.h"
 
+
 namespace Lithium {
 
 	template<>
@@ -39,6 +40,24 @@ namespace Lithium {
 			m_AssetRegistry.emplace(path, (uint64_t)uuid);
 			m_PathRegistry.emplace((uint64_t)uuid, path);
 			m_AudioRegistry.emplace((uint64_t)uuid, audioSource);
+			SaveAssetRegistry();
+			return Asset(m_AssetRegistry[path]);
+		}
+	}
+	template<>
+	Asset AssetManager::GetAssetFromPath<Ref<Font>>(const std::string& path)
+	{
+		if (m_AssetRegistry.find(path) != m_AssetRegistry.end())
+		{
+			return Asset(UUID(m_AssetRegistry[path]));
+		}
+		else
+		{
+			UUID uuid = UUID();
+			Ref<Font> font = CreateRef<Font>(path);
+			m_AssetRegistry.emplace(path, (uint64_t)uuid);
+			m_PathRegistry.emplace((uint64_t)uuid, path);
+			m_FontRegistry.emplace((uint64_t)uuid, font);
 			SaveAssetRegistry();
 			return Asset(m_AssetRegistry[path]);
 		}
@@ -86,7 +105,26 @@ namespace Lithium {
 		}
 	}
 
+	template<>
+	Ref<Font> AssetManager::GetAsset(Asset asset)
+	{
 
+		uint64_t ID = (uint64_t)asset.GetUUID();
+
+		if (m_FontRegistry.find(ID) != m_FontRegistry.end())
+		{
+			return m_FontRegistry[ID];
+		}
+		else
+		{
+			std::string path = m_PathRegistry[asset.GetUUID()];
+			Ref<Font> font = CreateRef<Font>(path);
+			m_FontRegistry.emplace(asset.GetUUID(), font);
+			SaveAssetRegistry();
+
+			return font;
+		}
+	}
 
 
 	std::string AssetManager::GetAssetPath(Asset asset)
