@@ -22,10 +22,11 @@ namespace Lithium
 	struct FrameBufferAttachmentDescriptor
 	{
 		FrameBufferAttachmentDescriptor() = default;
-		FrameBufferAttachmentDescriptor(std::initializer_list<FrameBufferTexture> attachments)
-			: Attachments(attachments) {}
+		FrameBufferAttachmentDescriptor(std::initializer_list<FrameBufferTexture> attachments,bool Multisample,int samples = 0)
+			: Attachments(attachments) ,Samples(samples), MultiSample(Multisample){}
 		std::vector<FrameBufferTexture> Attachments;
-
+		int Samples = 0;
+		bool MultiSample = false;
 	};
 
 	class FrameBuffer
