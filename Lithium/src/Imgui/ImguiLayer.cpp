@@ -63,8 +63,8 @@ namespace Lithium
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		style->WindowRounding = 5.0f;
 		style->FrameRounding = 3.0f;
-		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Regular.ttf", 16);
-		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Bold.ttf", 16);
+		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Regular.ttf", 18);
+		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Bold.ttf", 18);
 
 		static ImGuiID dockspaceID = 0;
 	}

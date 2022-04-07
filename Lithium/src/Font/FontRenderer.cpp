@@ -28,6 +28,7 @@ namespace Lithium
 
 	struct FontRendererData
 	{
+		
 		const static uint32_t MaxQuadCount = 10000;
 		const static uint32_t MaxVertices = MaxQuadCount * 4;
 		const static uint32_t MaxIndices = MaxQuadCount * 6;
@@ -44,7 +45,7 @@ namespace Lithium
 		FontVertex* VertexBufferPtr = nullptr;
 		FontVertex* VertexBufferBase = nullptr;
 		glm::mat4 projection;
-
+		float pxRange = 10.5f;
 	};
 	FontRendererData s_Data;
 
@@ -109,8 +110,8 @@ namespace Lithium
 	void FontRenderer::DrawString(const glm::mat4& transform, const std::string& text, const Ref<Font>& font)
 	{
 		int VertexCount = 4;
-
 		float textureIndex = 0.0f;
+		float cursor = 0.0f;
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
 		{
 			if (*s_Data.TextureSlots[i] == *font->GetAtlas())
@@ -131,33 +132,43 @@ namespace Lithium
 		{
 			Font::Character currentChar = font->GetCharacter(text.at(i));
 
-			
 			glm::vec2 cellsize = glm::vec2(currentChar.PackedSize.x, currentChar.PackedSize.y);
 			glm::vec2 index = glm::vec2(currentChar.PackedPos.x / currentChar.PackedSize.x, currentChar.PackedPos.y / currentChar.PackedSize.y);
 		
 			float Width = font->GetAtlasSize().x;
 			float Height = font->GetAtlasSize().y;
-			float AspectRatio = currentChar.PackedSize.x / currentChar.PackedSize.y;
+			float aspectRatio = currentChar.PackedSize.x / currentChar.PackedSize.y;
 			glm::vec2* textureCoords = new glm::vec2[]{
 				{ (index.x * cellsize.x) / Width, (index.y * cellsize.y) / Height},
 				{ ((index.x + 1) * cellsize.x) / Width, (index.y * cellsize.y) / Height},
 				{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 				{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 			};
+			float scale = 100.0f;
+			cursor += (currentChar.Advance) * scale;
 
+			glm::vec3 Scale = glm::vec3();
+			glm::vec3 Pos = glm::vec3();
+			Scale.x = (currentChar.Advance) * scale;
+			Scale.y = (currentChar.Bounds.top - currentChar.Bounds.bottom) * scale;
+
+			Pos.x = cursor + 100.0f;
+			Pos.y = (currentChar.Bounds.top * currentChar.Bounds.bottom) * scale;
+
+			Pos.y += 300.0f;
 			for (size_t i = 0; i < VertexCount; i++)
 			{
-				s_Data.VertexBufferPtr->Position = transform * s_Data.VertexPositions[i];
-				s_Data.VertexBufferPtr->Color = glm::vec4(1.0f);
+				s_Data.VertexBufferPtr->Position = glm::translate(glm::mat4(1.0f),Pos) * glm::scale(glm::mat4(1.0f),Scale) * s_Data.VertexPositions[i];
+				s_Data.VertexBufferPtr->Color = glm::vec4(1.0f,1.0f,1.0f,1.0f);
 				s_Data.VertexBufferPtr->TextureCoords = textureCoords[i];
 				s_Data.VertexBufferPtr->TextureIndex = textureIndex;
 				s_Data.VertexBufferPtr->EntityID = -1;
 				s_Data.VertexBufferPtr++;
+				
 			}
+				s_Data.IndexCount += 6;
 		}
-	
 
-		s_Data.IndexCount += 6;
 	}
 
 	void FontRenderer::DrawData()
@@ -180,8 +191,7 @@ namespace Lithium
 		s_Data.shader->SetUniformMat4f("u_projection", s_Data.projection);
 
 		s_Data.shader->SetUniformiv("u_textures", samplers);
-		s_Data.shader->SetUniform1f("pxRange", 4.5f);
-
+		s_Data.shader->SetUniform1f("pxRange", s_Data.pxRange);
 		s_Data.FontIndexBuffer->Bind();
 		RendererCommand::DrawIndexed(s_Data.IndexCount);
 	}
@@ -189,6 +199,17 @@ namespace Lithium
 	void FontRenderer::EndScene()
 	{
 		DrawData();
+	}
+
+	void FontRenderer::SetPixelRange(float pxr)
+	{
+		s_Data.pxRange = pxr;
+	}
+
+	float FontRenderer::GetPixelRange()
+	{
+		return s_Data.pxRange;
+
 	}
 
 }

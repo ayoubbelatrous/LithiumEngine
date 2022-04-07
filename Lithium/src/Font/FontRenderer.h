@@ -12,5 +12,8 @@ namespace Lithium
 		static void DrawString(const glm::mat4& transform,const std::string& text,const Ref<Font>& font);
 		static void DrawData();
 		static void EndScene();
+
+		static void SetPixelRange(float pxr);
+		static float GetPixelRange();
 	};
 }

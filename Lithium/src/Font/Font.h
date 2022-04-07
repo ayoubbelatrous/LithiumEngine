@@ -16,6 +16,11 @@ namespace Lithium {
 			glm::vec2 PackedSize;
 			glm::vec2 PackedPos;
 			uint32_t CodePoint;
+			float Advance;
+			struct CBounds
+			{
+				float left, right, top, bottom;
+			} Bounds;
 		};
 		Font() = default;
 		Font(const std::string& Filepath);
@@ -24,6 +29,7 @@ namespace Lithium {
 		Character GetCharacter(uint32_t character);
 		Ref<Texture> GetAtlas();
 		glm::vec2 GetAtlasSize();
+		float GeometryScale;
 	private:
 		void Load();
 		std::string m_Path;

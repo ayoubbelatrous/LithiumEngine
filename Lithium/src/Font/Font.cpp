@@ -53,13 +53,17 @@ namespace Lithium
 
 		std::vector<GlyphGeometry> glyphs;
 		FontGeometry fontGeometry(&glyphs);
-		
-		fontGeometry.loadCharset(fontHandle, 1.0, Charset::ASCII);
 
+
+		Charset charset = Charset();
+		charset.add('A');
+		charset.add('B');
+		charset.add('C');
+		fontGeometry.loadCharset(fontHandle, 1.0f, Charset::ASCII);
+		
 		const double maxCornerAngle = 3.0;
 		for (GlyphGeometry& glyph : glyphs)
 			glyph.edgeColoring(&msdfgen::edgeColoringInkTrap, maxCornerAngle, 0);
-
 
 		std::string pCachePath = std::string("cache/") + std::filesystem::path(m_Path + "-cache.png").filename().string();
 
@@ -68,19 +72,42 @@ namespace Lithium
 		packer.setDimensionsConstraint(TightAtlasPacker::DimensionsConstraint::SQUARE);
 		
 		packer.setMinimumScale(24.0);
-		packer.setPixelRange(4.5f);
+		packer.setPixelRange(5.0f);
 		packer.setMiterLimit(1.0);
+		packer.setScale(64.0f);
+		packer.setPadding(1);
 		packer.pack(glyphs.data(), glyphs.size());
 		int width = 0, height = 0;
 		packer.getDimensions(width, height);
+
+		for (auto glyph : glyphs)
+		{
+			int x, y, w, h = 0;
+			double left;
+			double right;
+			double top;
+			double bottom;
+			glyph.getQuadPlaneBounds(left, bottom, right, top);
+			glyph.getBoxRect(x, y, w, h);
+			GeometryScale = fontGeometry.getGeometryScale();
+			Character currentCharacter;
+			currentCharacter.PackedSize = glm::vec2(w, h);
+			currentCharacter.PackedPos = glm::vec2(x, y);
+			currentCharacter.CodePoint = (uint32_t)glyph.getCodepoint();
+			currentCharacter.Advance = glyph.getAdvance();
+			currentCharacter.Bounds = { (float)left,(float)right,(float)top,(float)bottom };
+			m_CharacterMap[(uint32_t)glyph.getCodepoint()] = currentCharacter;
+		}
+
+
+
 		ImmediateAtlasGenerator<float,3,&msdfGenerator,BitmapAtlasStorage<byte, 3>> generator(width, height);
 		GeneratorAttributes attributes;
+	
 		generator.setAttributes(attributes);
-		generator.setThreadCount(4);
+		generator.setThreadCount(2);
 		generator.generate(glyphs.data(), glyphs.size());
 		msdfgen::BitmapConstRef<byte, 3> bitmap = generator.atlasStorage();
-
-
 
 		msdfgen::savePng(bitmap, pCachePath.c_str());
 
@@ -92,14 +119,7 @@ namespace Lithium
 		m_AtlasTexture = CreateRef<Texture>(pCachePath);
 
 
-		for (auto glyph : glyphs)
-		{
-			int x, y, w, h = 0;
-			glyph.getBoxRect(x, y, w, h);
 		
-			m_CharacterMap[(uint32_t)glyph.getCodepoint()] = {glm::vec2(w,h),glm::vec2(x,y),(uint32_t)glyph.getCodepoint()};
-		}
-
 	
 
 		msdfgen::destroyFont(fontHandle);

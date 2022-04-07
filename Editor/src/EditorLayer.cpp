@@ -1,4 +1,4 @@
-#include "lipch.h"
+﻿#include "lipch.h"
 #include "EditorLayer.h"
 
 #include "ImGuizmo.h"
@@ -42,18 +42,19 @@ namespace Lithium
 		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
 
 		m_SceneHierachyPanel->SetScene(m_ActiveScene);
+
 		FrameBufferAttachmentDescriptor mainframebufferspec(
 			{
 				FramebufferTextureFormat::RGBA8,
-			    FramebufferTextureFormat::RED_INTEGER,
+			   FramebufferTextureFormat::RED_INTEGER,
 			}
-		);
+		,false,4);
 
 		FrameBufferAttachmentDescriptor displayframebufferspec(
 			{
 				FramebufferTextureFormat::RGBA8,
 			}
-		);
+		,false);
 
 		DisplayBuffer = CreateRef<FrameBuffer>(displayframebufferspec);
 		DisplayBuffer->Bind();
@@ -104,7 +105,10 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
-		m_TestFont = CreateRef<Font>("assets/Editor/Fonts/CascadiaMono-Regular.ttf");
+		//m_TestFont = CreateRef<Font>("assets/fonts/pixelated.ttf");
+		//m_TestFont = CreateRef<Font>("assets/Editor/Fonts/CascadiaMono-Regular.ttf");
+		m_TestFont = CreateRef<Font>("assets/Editor/Fonts/OpenSans-Regular.ttf");
+		
 	}
 
 	void EditorLayer::OnUpdate()
@@ -118,7 +122,6 @@ namespace Lithium
 		float orthoRight = orthosize * AspectRatio * 0.5f;
 		float orthoBottom = -orthosize * 0.5f;
 		float orthoTop = orthosize * 0.5f;
-
 		proj = glm::ortho(orthoLeft, orthoRight,
 			orthoBottom, orthoTop);
 
@@ -163,18 +166,20 @@ namespace Lithium
 		{
 		case (SceneState::EDITOR):
 			{
-			RendererCommand::ClearColor(glm::vec4(0.1f));
+			RendererCommand::ClearColor(glm::vec4(0.1f, 0.105f, 0.11f, 1.0f));
 			RendererCommand::Clear();
 			framebuffer->ClearAttachment(1, -1);
 			BatchRenderer::Begin(view, proj);
 			//BatchRenderer::DrawQuad(glm::mat4(1.0f),glm::vec4(1.0f),m_TestFont->GetAtlas(),-1);
 			m_ActiveScene->onEditorUpdate();
 			BatchRenderer::End();
-			//FontRenderer::BeginScene(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
-			FontRenderer::BeginScene(view, proj);
+			FontRenderer::BeginScene(glm::ortho(0.0f, viewportSize[0], 0.0f, viewportSize[1]));
+			//FontRenderer::BeginScene(view, proj);
 			//FontRenderer::DrawString(glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 200.0f,0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(400,400,0)), "A", m_TestFont);
-			FontRenderer::DrawString(glm::mat4(1.0f), "B", m_TestFont);
+			//FontRenderer::DrawString(glm::mat4(1.0f), "H", m_TestFont);
+			FontRenderer::DrawString(glm::translate(glm::mat4(1.0f), {1.0f,0.0f,0.0f}), "ayoub", m_TestFont);
 			FontRenderer::EndScene();
+			
 			if (canCheckAssembly)
 			{
 				if (Application::Get().Monoserver->CheckForChange())
@@ -684,7 +689,11 @@ namespace Lithium
 				Application::Get().SetVsync(vsync);
 
 			}
-
+			float pxrange = FontRenderer::GetPixelRange();
+			if (ImGui::DragFloat("pxRange", &pxrange,0.01f))
+			{
+				FontRenderer::SetPixelRange(pxrange);
+			}
 			ImGui::End();
 		}
 	
