@@ -3,6 +3,7 @@
 #include "Renderer/Renderer.h"
 #include "FontRenderer.h"
 #include "Core/Base.h"
+#include "Core/Log.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Texture.h"
 #include "Renderer/VertexArray.h"
@@ -45,7 +46,7 @@ namespace Lithium
 		FontVertex* VertexBufferPtr = nullptr;
 		FontVertex* VertexBufferBase = nullptr;
 		glm::mat4 projection;
-		float pxRange = 12.0f;
+		float pxRange = 2.0f;
 	};
 	FontRendererData s_Data;
 
@@ -107,7 +108,7 @@ namespace Lithium
 
 	}
 
-	void FontRenderer::DrawString(const glm::mat4& transform, const std::string& text, const Ref<Font>& font)
+	void FontRenderer::DrawString(const glm::mat4& transform, const std::string& text, const Ref<Font>& font, const glm::vec4& color)
 	{
 		int VertexCount = 4;
 		float textureIndex = 0.0f;
@@ -144,32 +145,104 @@ namespace Lithium
 				{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 				{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 			};
-			float scale = 20.0f;
-			cursor += (currentChar.Advance) * scale;
+			float scale = 50.0f;
 
-			glm::vec3 Scale = glm::vec3();
-			glm::vec3 Pos = glm::vec3();
-			Scale.x = (currentChar.Advance) * scale;
-			Scale.y = (currentChar.Bounds.top - currentChar.Bounds.bottom) * scale;
+			float ScaledLeft = currentChar.Bounds.left * scale;
+			float ScaledRight = currentChar.Bounds.right * scale;
+			float ScaledTop = currentChar.Bounds.top * scale;
+			float ScaledBottom = currentChar.Bounds.bottom * scale;
+			float ScaledAdvance = currentChar.Advance * scale;
 
-			Pos.x = cursor + 100.0f;
-			Pos.y = (currentChar.Bounds.top * currentChar.Bounds.bottom) * scale;
+			glm::vec4 VertexPositions[4];
+			VertexPositions[0] = {cursor + ScaledLeft,ScaledBottom + 300.0f,0.0,1.0f}; // bottom left
+			VertexPositions[1] = {cursor + ScaledRight,ScaledBottom + 300.0f,0.0,1.0f }; // bottom right
+			VertexPositions[2] = {cursor + ScaledRight,ScaledTop + 300.0f,0.0,1.0f }; // top right
+			VertexPositions[3] = {cursor + ScaledLeft,ScaledTop + 300.0f,0.0,1.0f }; // top left
 
-			Pos.y += 300.0f;
 			for (size_t i = 0; i < VertexCount; i++)
 			{
-				s_Data.VertexBufferPtr->Position = glm::translate(glm::mat4(1.0f),Pos) * glm::scale(glm::mat4(1.0f),Scale) * s_Data.VertexPositions[i];
-				s_Data.VertexBufferPtr->Color = glm::vec4(1.0f,1.0f,1.0f,1.0f);
+				
+				s_Data.VertexBufferPtr->Position = VertexPositions[i];
+				s_Data.VertexBufferPtr->Color = color;
 				s_Data.VertexBufferPtr->TextureCoords = textureCoords[i];
 				s_Data.VertexBufferPtr->TextureIndex = textureIndex;
 				s_Data.VertexBufferPtr->EntityID = -1;
 				s_Data.VertexBufferPtr++;
 				
 			}
-			delete[] textureCoords;
+			
+			cursor += (currentChar.Advance) * scale; 
 			s_Data.IndexCount += 6;
 		}
 
+	}
+
+	void FontRenderer::DrawString(const glm::vec2& Position, float Scale, const std::string& text, const Ref<Font>& font, const glm::vec4& color)
+	{
+		int VertexCount = 4;
+		float textureIndex = 0.0f;
+		float cursor = 0.0f;
+		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+		{
+			if (*s_Data.TextureSlots[i] == *font->GetAtlas())
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+
+		if (textureIndex == 0.0f)
+		{
+			textureIndex = (float)s_Data.TextureSlotIndex;
+			s_Data.TextureSlots[s_Data.TextureSlotIndex] = font->GetAtlas();
+			s_Data.TextureSlotIndex++;
+		}
+
+		for (size_t i = 0; i < text.size(); i++)
+		{
+			Font::Character currentChar = font->GetCharacter(text.at(i));
+
+			glm::vec2 cellsize = glm::vec2(currentChar.PackedSize.x, currentChar.PackedSize.y);
+			glm::vec2 index = glm::vec2(currentChar.PackedPos.x / currentChar.PackedSize.x, currentChar.PackedPos.y / currentChar.PackedSize.y);
+
+			float Width = font->GetAtlasSize().x;
+			float Height = font->GetAtlasSize().y;
+			float aspectRatio = currentChar.PackedSize.x / currentChar.PackedSize.y;
+			glm::vec2* textureCoords = new glm::vec2[]{
+				{ (index.x * cellsize.x) / Width, (index.y * cellsize.y) / Height},
+				{ ((index.x + 1) * cellsize.x) / Width, (index.y * cellsize.y) / Height},
+				{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
+				{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
+			};
+			float scale = Scale;
+
+			float ScaledLeft = currentChar.Bounds.left * scale;
+			float ScaledRight = currentChar.Bounds.right * scale;
+			float ScaledTop = currentChar.Bounds.top * scale;
+			float ScaledBottom = currentChar.Bounds.bottom * scale;
+			float ScaledAdvance = currentChar.Advance * scale;
+
+			glm::vec4 VertexPositions[4];
+			VertexPositions[0] = { cursor + ScaledLeft + Position.x,ScaledBottom + Position.y,0.0,1.0f }; // bottom left
+			VertexPositions[1] = { cursor + ScaledRight + Position.x,ScaledBottom + Position.y,0.0,1.0f }; // bottom right
+			VertexPositions[2] = { cursor + ScaledRight + Position.x,ScaledTop + Position.y,0.0,1.0f }; // top right
+			VertexPositions[3] = { cursor + ScaledLeft + Position.x,ScaledTop + Position.y,0.0,1.0f }; // top left
+
+			for (size_t i = 0; i < VertexCount; i++)
+			{
+
+				s_Data.VertexBufferPtr->Position = VertexPositions[i];
+				s_Data.VertexBufferPtr->Color = color;
+				s_Data.VertexBufferPtr->TextureCoords = textureCoords[i];
+				s_Data.VertexBufferPtr->TextureIndex = textureIndex;
+				s_Data.VertexBufferPtr->EntityID = -1;
+				s_Data.VertexBufferPtr++;
+
+			}
+
+			cursor += (currentChar.Advance) * scale;
+			s_Data.IndexCount += 6;
+		}
 	}
 
 	void FontRenderer::DrawData()
@@ -210,7 +283,6 @@ namespace Lithium
 	float FontRenderer::GetPixelRange()
 	{
 		return s_Data.pxRange;
-
 	}
 
 }

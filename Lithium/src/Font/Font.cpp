@@ -2,6 +2,7 @@
 #include "Font.h"
 #include <msdf-atlas-gen/msdf-atlas-gen.h>
 #include "Core/Base.h"
+#include "Core/Log.h"
 
 
 using namespace msdf_atlas;
@@ -44,6 +45,9 @@ namespace Lithium
 
 	void Font::Load()
 	{
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+		
 		msdfgen::FontHandle* fontHandle = nullptr;
 		fontHandle = msdfgen::loadFont(freeTypeHandle, m_Path.c_str());
 		if (fontHandle == nullptr) {
@@ -56,9 +60,9 @@ namespace Lithium
 
 
 		Charset charset = Charset();
+		charset.add('g');
 		charset.add('A');
-		charset.add('B');
-		charset.add('C');
+		charset.add('=');
 		fontGeometry.loadCharset(fontHandle, 1.0f, Charset::ASCII);
 		
 		const double maxCornerAngle = 3.0;
@@ -72,9 +76,9 @@ namespace Lithium
 		packer.setDimensionsConstraint(TightAtlasPacker::DimensionsConstraint::SQUARE);
 		
 		packer.setMinimumScale(24.0);
-		packer.setPixelRange(5.0f);
+		packer.setPixelRange(2.0f);
 		packer.setMiterLimit(1.0);
-		packer.setScale(64.0f);
+		packer.setScale(48.0f);
 		packer.setPadding(1);
 		packer.pack(glyphs.data(), glyphs.size());
 		int width = 0, height = 0;
@@ -118,5 +122,8 @@ namespace Lithium
 
 		m_AtlasTexture = CreateRef<Texture>(pCachePath);
 		msdfgen::destroyFont(fontHandle);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+		LT_CORE_INFO("font creation took: {0}", millis);
 	}
 }

@@ -105,7 +105,7 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
-		
+		//Ref<Font> m_Font = CreateRef<Font>("assets/Editor/Fonts/CascadiaMono-Regular.ttf");
 	}
 
 	void EditorLayer::OnUpdate()
@@ -541,8 +541,11 @@ namespace Lithium
 			LT_END_SCOPE();
 
 		}
-	
+		
+		//ImGui::ShowDemoWindow();
+
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 5,5 });
+
 
 		ImGui::Begin("Scene");
 		
@@ -624,8 +627,15 @@ namespace Lithium
 				snapValue = 45.0f;
 
 			float snapValues[3] = { snapValue, snapValue, snapValue };
-
-			ImGuizmo::Manipulate(glm::value_ptr(glm::inverse(_view)), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri),nullptr, snap ? snapValues : nullptr,NULL,m_UseBoundsGizmo ? bounds : NULL);
+			if (selected.HasComponent<TextRenderer>())
+			{
+				glm::mat4 screenProj = glm::ortho(0.0f, viewportSize[0], 0.0f, viewportSize[1]);
+			ImGuizmo::Manipulate(glm::value_ptr(glm::inverse(_view)), glm::value_ptr(screenProj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri), nullptr, snap ? snapValues : nullptr, NULL, m_UseBoundsGizmo ? bounds : NULL);
+			}
+			else
+			{
+				ImGuizmo::Manipulate(glm::value_ptr(glm::inverse(_view)), glm::value_ptr(_proj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri), nullptr, snap ? snapValues : nullptr, NULL, m_UseBoundsGizmo ? bounds : NULL);
+			}
 
 			if (ImGuizmo::IsUsing())
 			{
