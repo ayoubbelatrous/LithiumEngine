@@ -43,6 +43,11 @@ namespace Lithium
 		return glm::vec2(m_AtlasWidth, m_AtlasHeight);
 	}
 
+	double Font::GetLineHeight()
+	{
+		return LineHeight;
+	}
+
 	void Font::Load()
 	{
 		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
@@ -83,6 +88,7 @@ namespace Lithium
 		packer.pack(glyphs.data(), glyphs.size());
 		int width = 0, height = 0;
 		packer.getDimensions(width, height);
+		LineHeight = fontGeometry.getMetrics().lineHeight;
 
 		for (auto glyph : glyphs)
 		{

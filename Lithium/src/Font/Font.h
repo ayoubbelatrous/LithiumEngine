@@ -29,6 +29,7 @@ namespace Lithium {
 		Character GetCharacter(uint32_t character);
 		Ref<Texture> GetAtlas();
 		glm::vec2 GetAtlasSize();
+		double GetLineHeight();
 		float GeometryScale;
 	private:
 		void Load();
@@ -37,5 +38,6 @@ namespace Lithium {
 		Ref<Texture> m_AtlasTexture;
 		uint32_t m_AtlasWidth = 1;
 		uint32_t m_AtlasHeight = 1;
+		double LineHeight = 0.0f;
 	};
 }

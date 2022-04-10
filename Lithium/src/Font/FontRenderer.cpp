@@ -182,6 +182,7 @@ namespace Lithium
 		int VertexCount = 4;
 		float textureIndex = 0.0f;
 		float cursor = 0.0f;
+		float cursorY = 0.0f;
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
 		{
 			if (*s_Data.TextureSlots[i] == *font->GetAtlas())
@@ -200,6 +201,12 @@ namespace Lithium
 
 		for (size_t i = 0; i < text.size(); i++)
 		{
+			if (text.at(i) == '\n')
+			{
+				cursorY -= font->GetLineHeight() * Scale;
+				cursor = 0;
+				continue;
+			}
 			Font::Character currentChar = font->GetCharacter(text.at(i));
 
 			glm::vec2 cellsize = glm::vec2(currentChar.PackedSize.x, currentChar.PackedSize.y);
@@ -223,10 +230,10 @@ namespace Lithium
 			float ScaledAdvance = currentChar.Advance * scale;
 
 			glm::vec4 VertexPositions[4];
-			VertexPositions[0] = { cursor + ScaledLeft + Position.x,ScaledBottom + Position.y,0.0,1.0f }; // bottom left
-			VertexPositions[1] = { cursor + ScaledRight + Position.x,ScaledBottom + Position.y,0.0,1.0f }; // bottom right
-			VertexPositions[2] = { cursor + ScaledRight + Position.x,ScaledTop + Position.y,0.0,1.0f }; // top right
-			VertexPositions[3] = { cursor + ScaledLeft + Position.x,ScaledTop + Position.y,0.0,1.0f }; // top left
+			VertexPositions[0] = { cursor + ScaledLeft + Position.x,ScaledBottom + Position.y + cursorY,0.0,1.0f }; // bottom left
+			VertexPositions[1] = { cursor + ScaledRight + Position.x,ScaledBottom + Position.y + cursorY,0.0,1.0f }; // bottom right
+			VertexPositions[2] = { cursor + ScaledRight + Position.x,ScaledTop + Position.y + cursorY,0.0,1.0f }; // top right
+			VertexPositions[3] = { cursor + ScaledLeft + Position.x,ScaledTop + Position.y + cursorY,0.0,1.0f }; // top left
 
 			for (size_t i = 0; i < VertexCount; i++)
 			{
