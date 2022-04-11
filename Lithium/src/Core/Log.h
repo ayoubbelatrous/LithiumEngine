@@ -1,4 +1,4 @@
-
+#pragma once
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
 #include "Core/Base.h"

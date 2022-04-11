@@ -16,3 +16,4 @@
 #include "Core/Core.h"
 #include "entt.hpp"
 #include <xhash>
+#include "Core/Log.h"

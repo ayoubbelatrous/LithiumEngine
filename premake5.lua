@@ -39,8 +39,7 @@ IncludeDir["OpenAlSoft"] = "%{wks.location}/Lithium/vendor/OpenAL-Soft"
 IncludeDir["libogg"] = "%{wks.location}/Lithium/vendor/libogg/include"
 IncludeDir["Vorbis"] = "%{wks.location}/Lithium/vendor/Vorbis/include"
 IncludeDir["mono"] =   "%{wks.location}/Lithium/vendor/mono/include"
-
-
+IncludeDir["spdlog"] =   "%{wks.location}/Lithium/vendor/spdlog/include"
 
 LibDir = {}
 LibDir["mono"] = "%{wks.location}/Lithium/vendor/mono/lib"

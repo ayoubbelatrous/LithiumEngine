@@ -28,6 +28,7 @@ project "Editor"
 		  "%{IncludeDir.imguizmo}",
 		  "%{IncludeDir.lua533}",
 		  "%{IncludeDir.mono}",
+		  "%{IncludeDir.spdlog}",
 		  
 	}
 

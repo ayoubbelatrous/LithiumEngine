@@ -34,6 +34,7 @@
 #include "Audio/Audio.h"
 #include "Audio/AudioSource.h"
 #include "Font/Font.h"
+#include "Utils/WindowsPlatformUtils.h"
 
 namespace Lithium
 {

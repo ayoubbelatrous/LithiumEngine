@@ -106,12 +106,13 @@ namespace Lithium
 
 		Font::Init();
 		//Ref<Font> m_Font = CreateRef<Font>("assets/Editor/Fonts/CascadiaMono-Regular.ttf");
+
+		
 	}
 
 	void EditorLayer::OnUpdate()
 	{
 		LT_PROFILE_FUNCTION("OnUpdate");
-		//TODO: reload all classes in scriptcomponent if assembly changes
 		
 #pragma region CalculateProjection
 		float AspectRatio = (float)viewportSize[0] / (float)viewportSize[1];
@@ -435,10 +436,17 @@ namespace Lithium
 			
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("New", "Ctrl+N"));
+				if (ImGui::MenuItem("New Scene"));
 
 
-				if (ImGui::MenuItem("Open...", "Ctrl+O"));
+				if (ImGui::MenuItem("Open Scene...", "Ctrl+O"))
+				{
+					std::string ScenePath = FileDialogs::OpenFile("Scene Scene(*.scene)\0 * .scene\0");
+					if (!ScenePath.empty())
+					{
+						OpenScene(ScenePath);
+					}
+				}
 					
 
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"));
