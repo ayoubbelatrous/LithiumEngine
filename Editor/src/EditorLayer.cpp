@@ -516,6 +516,14 @@ namespace Lithium
 					entity.AddComponent<ScriptGroupeComponent>().AddScript("");
 					m_SceneHierachyPanel->SetSelection(entity);
 				}
+
+				if (ImGui::MenuItem("Text"))
+				{
+					Entity entity = m_ActiveScene->CreateEntity("New Entity");
+					entity.AddComponent<TextRenderer>();
+					entity.GetComponent<TransformComponent>().Scale.x = 25.0f;
+					m_SceneHierachyPanel->SetSelection(entity);
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenuBar();
