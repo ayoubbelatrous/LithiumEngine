@@ -1,4 +1,5 @@
 project "Editor"
+
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -6,6 +7,7 @@ project "Editor"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
+	
 	pchheader "lipch.h"
 	pchsource "src/lipch.cpp"
 	files
@@ -42,4 +44,8 @@ project "Editor"
 	filter "configurations:Release"
 		runtime "Release"
 		optimize(omptimizationLevel)
+		
+	filter "system:windows"
+     files { 'resources.rc', '**.ico' }
+     vpaths { ['Resources/*'] = { '*.rc', '**.ico' }}
 

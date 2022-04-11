@@ -17,7 +17,6 @@ class Player : Script
 	{
 		Vector2 vel = entity.GetComponent<Rigidbody2D>().Velocity;
 
-   
         if(Input.IsKeyPressed(KeyCode.Space) && Grounded)
         {
             vel.Y = JumpSpeed;
@@ -31,17 +30,7 @@ class Player : Script
         {
             entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(AirSpeed * GetAxialInput().X, vel.Y);
         }
-        if(GetAxialInput().X == 1)
-        {
-            entity.GetComponent<Transform>().Rotation = new Vector3(0,0,0);
-           
-        }
-        else if(GetAxialInput().X == -1)
-        {
-            entity.GetComponent<Transform>().Rotation = new Vector3(0, -180, 0);
-
-        }
-
+        
     }
     private Vector2 GetAxialInput()
     {
