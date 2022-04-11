@@ -1,6 +1,7 @@
 #include "lipch.h"
 #include "ProjectWizard.h"
 #include "Core/Base.h"
+#include "Utils/WindowsPlatformUtils.h"
 
 
 namespace Lithium
@@ -32,7 +33,7 @@ namespace Lithium
 
 		if (ImGui::Button("Explore"))
 		{
-
+			FileDialogs::OpenFolder("");
 		}
 
 		ImGui::SameLine();

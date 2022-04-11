@@ -2,6 +2,7 @@
 #include "WindowsPlatformUtils.h"
 #include <Windows.h>
 #include <commdlg.h>
+#include <shlobj_core.h>
 
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -30,7 +31,6 @@ namespace Lithium
 
 		if (GetOpenFileNameA(&ofn) == TRUE)
 			return ofn.lpstrFile;
-
 		return std::string();
 	}
 
@@ -54,6 +54,33 @@ namespace Lithium
 
 		if (GetSaveFileNameA(&ofn) == TRUE)
 			return ofn.lpstrFile;
+		return std::string();
+	}
+
+	std::string FileDialogs::OpenFolder(const char* filter)
+	{
+		CHAR path[260] = { 0 };
+		const char* path_param = filter;
+
+		BROWSEINFOA bi = { 0 };
+		bi.lpszTitle = ("Browse for folder...");
+		bi.ulFlags = BIF_RETURNONLYFSDIRS;
+		bi.lParam = (LPARAM)path_param;
+
+		LPITEMIDLIST pidl = SHBrowseForFolderA(&bi);
+
+		if (pidl != 0)
+		{
+			SHGetPathFromIDListA(pidl, path);
+			IMalloc* imalloc = 0;
+			if (SUCCEEDED(SHGetMalloc(&imalloc)))
+			{
+				imalloc->Free(pidl);
+				imalloc->Release();
+			}
+
+			return std::string(path);
+		}
 
 		return std::string();
 	}
