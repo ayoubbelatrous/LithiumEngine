@@ -87,7 +87,7 @@ namespace Lithium
 		
 		bool m_ViewportHovered = false;
 		bool m_ViewportFocus = false;
-		bool m_OpenSceneSaveDialog = false;
+		bool m_ActiveSceneSaved = false;
 		std::string _EditorStatus;
 
 		float viewportSize[2];

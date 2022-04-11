@@ -283,7 +283,12 @@ namespace Lithium
 		{
 			if (control && shift)
 			{
-				m_OpenSceneSaveDialog = true;
+				std::string ScenePath = FileDialogs::SaveFile("Scene(*.scene)\0 * .scene\0");
+				if (!ScenePath.empty())
+				{
+					Serializer serilizer(m_ActiveScene);
+					serilizer.SerializeScene(ScenePath);
+				}
 			}
 		}
 
@@ -441,7 +446,7 @@ namespace Lithium
 
 				if (ImGui::MenuItem("Open Scene...", "Ctrl+O"))
 				{
-					std::string ScenePath = FileDialogs::OpenFile("Scene Scene(*.scene)\0 * .scene\0");
+					std::string ScenePath = FileDialogs::OpenFile("Scene(*.scene)\0 * .scene\0");
 					if (!ScenePath.empty())
 					{
 						OpenScene(ScenePath);
@@ -449,7 +454,15 @@ namespace Lithium
 				}
 					
 
-				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"));
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+				{
+					std::string ScenePath = FileDialogs::SaveFile("Save Scene As(*.scene)\0 * .scene\0");
+					if (!ScenePath.empty())
+					{
+						Serializer serilizer(m_ActiveScene);
+						serilizer.SerializeScene(ScenePath);
+					}
+				}
 
 				if (ImGui::MenuItem("Create Project", ""))
 				{
@@ -710,41 +723,7 @@ namespace Lithium
 			}
 			ImGui::End();
 		}
-	
 
-		if (m_OpenSceneSaveDialog)
-			ImGui::OpenPopup("Scene Save");
-
-		if (ImGui::BeginPopupModal("Scene Save"))
-		{
-			ImGui::Text("Save Scene As..");
-			char buffer[256];
-			memset(buffer, 0, 256);
-			strcpy(buffer,m_ScenePath.c_str());
-			if (ImGui::InputText("Path", buffer, 256))
-			{
-				m_ScenePath = buffer;
-			}
-
-
-			if (ImGui::Button("Save"))
-			{
-				CORE_LOG(buffer);
-				Serializer serilizer(m_ActiveScene);
-				serilizer.SerializeScene(m_ScenePath);
-				m_OpenSceneSaveDialog = false;
-				ImGui::CloseCurrentPopup();
-			}
-
-			if (ImGui::Button("Close"))
-			{
-				ImGui::CloseCurrentPopup();
-				m_OpenSceneSaveDialog = false;
-			}
-			ImGui::EndPopup();
-		}
-
-		
 
 		ImGui::End();
 	}
