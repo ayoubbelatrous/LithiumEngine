@@ -1,0 +1,39 @@
+Scene: NONE
+Entities:
+  - Entity: 2951604730353630261
+    Name: New Entity
+    Transform:
+      Position: [-3.17307663, 0.730769038, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1.50000167, 2.04166698, 1]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 17625766738881703762
+      DrawOrder: 0
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 0
+  - Entity: 4109707941233919421
+    Name: Main Camera
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 0
+    CameraComponent:
+      OrhtographicSize: 10
+      NearPlane: -1
+      FarPlane: 1
+      Primary: true
+      FixedAspectRatio: false
+      ClearColor: [0, 0, 0, 0]

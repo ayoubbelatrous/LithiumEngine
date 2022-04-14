@@ -46,7 +46,7 @@ namespace Lithium
 		FontVertex* VertexBufferPtr = nullptr;
 		FontVertex* VertexBufferBase = nullptr;
 		glm::mat4 projection;
-		float pxRange = 2.0f;
+		float pxRange = 4.0f;
 	};
 	FontRendererData s_Data;
 

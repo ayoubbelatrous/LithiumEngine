@@ -33,7 +33,7 @@ namespace Lithium
 
 		if (ImGui::Button("Explore"))
 		{
-			FileDialogs::OpenFolder("");
+			ProjectPath = FileDialogs::OpenFolder("");
 		}
 
 		ImGui::SameLine();

@@ -48,7 +48,7 @@ namespace Lithium
 			ofn.lpstrInitialDir = currentDir;
 		ofn.lpstrFilter = filter;
 		ofn.nFilterIndex = 1;
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT |OFN_NOCHANGEDIR;
 
 		ofn.lpstrDefExt = strchr(filter, '\0') + 1;
 
@@ -58,10 +58,9 @@ namespace Lithium
 	}
 
 	std::string FileDialogs::OpenFolder(const char* filter)
-	{
+	{	
 		CHAR path[260] = { 0 };
 		const char* path_param = filter;
-
 		BROWSEINFOA bi = { 0 };
 		bi.lpszTitle = ("Browse for folder...");
 		bi.ulFlags = BIF_RETURNONLYFSDIRS;

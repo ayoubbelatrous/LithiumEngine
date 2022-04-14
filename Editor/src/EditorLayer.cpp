@@ -541,8 +541,9 @@ namespace Lithium
 				if (ImGui::MenuItem("Text"))
 				{
 					Entity entity = m_ActiveScene->CreateEntity("New Entity");
-					entity.AddComponent<TextRenderer>();
+					entity.AddComponent<TextRenderer>().FontAsset = Application::Get().assetManager->GetAssetFromPath<Ref<Font>>("assets/Editor/Fonts/OpenSans-Regular.ttf");
 					entity.GetComponent<TransformComponent>().Scale.x = 25.0f;
+					entity.GetComponent<TextRenderer>().Text = "New Text";
 					m_SceneHierachyPanel->SetSelection(entity);
 				}
 				ImGui::EndMenu();
@@ -573,7 +574,7 @@ namespace Lithium
 		
 		//ImGui::ShowDemoWindow();
 
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 5,5 });
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 
 
 		ImGui::Begin("Scene");
