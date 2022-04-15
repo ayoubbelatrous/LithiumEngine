@@ -263,4 +263,23 @@ namespace Lithium.Core
         extern public static void AudioSourcePlayClip_Internal(UInt64 entityID,UInt64 assetid);
 
     }
+
+    public class TextRenderer : Component
+    {
+        public String Text
+        {
+            get
+            {
+                String Stringval;
+                GetTextRendererText_Internal(Entity.ID,out Stringval);
+                return Stringval;
+            }
+            set => SetTextRendererText_Internal(Entity.ID, value);
+        }
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void SetTextRendererText_Internal(UInt64 entityID, String text);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void GetTextRendererText_Internal(UInt64 entityID, out String text);
+    }
 }
