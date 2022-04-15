@@ -527,6 +527,7 @@ namespace Lithium
 		CopyComponentAll<ScriptGroupeComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<AudioSourceComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<TextRenderer>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		return newscene;
 	}
 

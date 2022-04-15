@@ -59,8 +59,10 @@ namespace Lithium
 		{
 			return entity.HasComponent<AudioSourceComponent>();
 		}
-
-
+		else if (strcmp(name, "TextRenderer") == 0)
+		{
+			return entity.HasComponent<TextRenderer>();
+		}
 		return false;
 	}
 
@@ -346,6 +348,20 @@ namespace Lithium
 		Audio::Play(audioclip);
 	}
 
+	void MonoServer::SetTextRendererText_Internal(uint64_t entityID, MonoString* text)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		TextRenderer& textrenderer = entity.GetComponent<TextRenderer>();
+		textrenderer.Text = mono_string_to_utf8(text);
+	}
+
+	void MonoServer::GetTextRendererText_Internal(uint64_t entityID, MonoString** outText)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		TextRenderer& textrenderer = entity.GetComponent<TextRenderer>();
+		*outText = (MonoString*)Application::Get().Monoserver->CreateMonoString(textrenderer.Text.c_str());
+	}
+
 	MonoString* MonoServer::GetName_Internal(uint64_t entityID)
 	{
 		
@@ -456,6 +472,10 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.AudioSource::GetAudioSourceGain_Internal", MonoServer::GetAudioSourceGain_Internal);
 
 		mono_add_internal_call("Lithium.Core.AudioSource::AudioSourcePlayClip_Internal", MonoServer::AudioSourcePlayClip_Internal);
+
+		mono_add_internal_call("Lithium.Core.TextRenderer::SetTextRendererText_Internal", MonoServer::SetTextRendererText_Internal);
+		mono_add_internal_call("Lithium.Core.TextRenderer::GetTextRendererText_Internal", MonoServer::GetTextRendererText_Internal);
+
 
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", MonoServer::MouseKeyDown_Internal);

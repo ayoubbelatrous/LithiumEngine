@@ -91,6 +91,10 @@ namespace Lithium
 			static float GetAudioSourceGain_Internal(uint64_t entityID);
 
 			static void AudioSourcePlayClip_Internal(uint64_t entityID, uint64_t assetID);
+			//ui
+			//--//text renderer
+			static void SetTextRendererText_Internal(uint64_t entityID, MonoString* text);
+			static void GetTextRendererText_Internal(uint64_t entityID, MonoString** text);
 			//input
 			static bool MouseKey_Internal(int button);
 			static bool MouseKeyDown_Internal(int button);
