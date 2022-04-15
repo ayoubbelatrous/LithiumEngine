@@ -10,12 +10,23 @@ class Player : Script
     
     void Start()
 	{
+        entity.GetComponent<TextRenderer>().Text = "LOL/Z";
 
-	}
+        if(entity.HasComponent<TextRenderer>())
+        {
+            Debug.Log("Entity Has Compopnent");
+        }
+
+        String str = entity.GetComponent<TextRenderer>().Text;
+        if(str != null)
+        {
+            Debug.Log(str);
+        }
+    }
 
     void Update()
 	{
-		Vector2 vel = entity.GetComponent<Rigidbody2D>().Velocity;
+		/*Vector2 vel = entity.GetComponent<Rigidbody2D>().Velocity;
 
         if(Input.IsKeyPressed(KeyCode.Space) && Grounded)
         {
@@ -29,7 +40,7 @@ class Player : Script
         else
         {
             entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(AirSpeed * GetAxialInput().X, vel.Y);
-        }
+        }*/
         
     }
     private Vector2 GetAxialInput()
