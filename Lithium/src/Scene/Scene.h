@@ -49,6 +49,8 @@ namespace Lithium
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 	private:
+		uint32_t ViewportWidth = 1.0f;
+		uint32_t ViewportHeight = 1.0f;
 		Scope<PhysicsWorld> m_PhysicsWorld;
 		entt::registry m_Registry;
 		EventCallback m_Callback;

@@ -347,7 +347,23 @@ namespace Lithium
 
 
 		}
+		{
+			FontRenderer::BeginScene(glm::ortho(0.0f, (float)ViewportWidth, 0.0f, (float)ViewportHeight));
 
+			auto view = GetRegistry().view<TextRenderer, TransformComponent>();
+
+			for (auto entity : view)
+			{
+				auto& [txr, tc] = view.get<TextRenderer, TransformComponent>(entity);
+
+				if (txr.FontAsset.GetUUID() != 0)
+				{
+					FontRenderer::DrawString((glm::vec2)tc.Position, tc.Scale.x, txr.Text, Application::Get().assetManager->GetAsset<Ref<Font>>(txr.FontAsset), txr.color);
+				}
+
+			}
+			FontRenderer::EndScene();
+		}
 
 
 		{
@@ -599,6 +615,8 @@ namespace Lithium
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
+		ViewportWidth = width;
+		ViewportHeight = height;
 		auto view = m_Registry.view<CameraComponent>();
 		for (auto entity : view)
 		{
