@@ -177,7 +177,7 @@ namespace Lithium
 
 	}
 
-	void FontRenderer::DrawString(const glm::vec2& Position, float Scale, const std::string& text, const Ref<Font>& font, const glm::vec4& color, float Spacing, float LineSpacing)
+	void FontRenderer::DrawString(const glm::vec2& Position, float Scale, const std::string& text, const Ref<Font>& font, const glm::vec4& color, float Spacing, float LineSpacing, int EntityID)
 	{
 		int VertexCount = 4;
 		float textureIndex = 0.0f;
@@ -242,7 +242,7 @@ namespace Lithium
 				s_Data.VertexBufferPtr->Color = color;
 				s_Data.VertexBufferPtr->TextureCoords = textureCoords[i];
 				s_Data.VertexBufferPtr->TextureIndex = textureIndex;
-				s_Data.VertexBufferPtr->EntityID = -1;
+				s_Data.VertexBufferPtr->EntityID = EntityID;
 				s_Data.VertexBufferPtr++;
 
 			}
