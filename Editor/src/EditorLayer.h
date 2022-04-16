@@ -133,8 +133,6 @@ namespace Lithium
 		glm::vec2 m_CameraDelta = { 0.0f,0.0f };
 		glm::vec3 m_FocalPoint = glm::vec3(0);
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-
-		float m_FloatTest = 0;
 		AudioSource* source;
 	};
 }

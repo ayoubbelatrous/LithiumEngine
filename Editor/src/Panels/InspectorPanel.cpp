@@ -1,4 +1,4 @@
-#include "lipch.h"
+#include "epch.h"
 #include "InspectorPanel.h"
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -12,6 +12,8 @@
 #include <iostream>
 #include "Script/ScriptObject.h"
 #include "Core/Application.h"
+#include "../Gui/ImguiExtended.h"
+
 namespace Lithium
 {
 	extern std::filesystem::path root;
@@ -659,19 +661,19 @@ namespace Lithium
 					if (camera.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
 					{
 						float orthosize = camera.Camera.GetOrthographicSize();
-						if (ImGui::DragFloat("Orthographic Size",&orthosize,0.1f))
+						if (LiGui::UndoDragFloat("Orthographic Size",&orthosize,0.1f))
 						{
 							camera.Camera.SetOrthographicSize(orthosize);
 						}
 
 						float NearClipPlane = camera.Camera.GetOrthographicNearClip();
-						if (ImGui::DragFloat("Near Plane", &NearClipPlane, 0.1f))
+						if (LiGui::UndoDragFloat("Near Plane", &NearClipPlane, 0.1f))
 						{
 							camera.Camera.SetOrthographicNearClip(NearClipPlane);
 						}
 
 						float FarClipPlane = camera.Camera.GetOrthographicFarClip();
-						if (ImGui::DragFloat("Far Plane", &FarClipPlane, 0.1f))
+						if (LiGui::UndoDragFloat("Far Plane", &FarClipPlane, 0.1f))
 						{
 							camera.Camera.SetOrthographicFarClip(FarClipPlane);
 						}

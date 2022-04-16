@@ -1,4 +1,4 @@
-﻿#include "lipch.h"
+﻿#include "epch.h"
 #include "EditorLayer.h"
 
 #include "ImGuizmo.h"
@@ -107,7 +107,6 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
-		CommandHistory::AddCommand(new FloatCommand(m_FloatTest, 10.0f));
 	}
 
 	void EditorLayer::OnUpdate()
@@ -751,17 +750,6 @@ namespace Lithium
 			{
 				m_ActiveScene->SetRenderEditorUi(renderUi);
 
-			}
-
-			float tmp = m_FloatTest;
-			bool result = ImGui::DragFloat("test float", &tmp);
-			if (result)
-			{
-				CommandHistory::AddCommand(new FloatCommand(m_FloatTest, tmp));
-			}
-			if (ImGui::IsItemDeactivatedAfterEdit())
-			{
-				CommandHistory::SetNoMergeMostRecent();
 			}
 
 			ImGui::End();

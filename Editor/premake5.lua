@@ -8,8 +8,8 @@ project "Editor"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 	
-	pchheader "lipch.h"
-	pchsource "src/lipch.cpp"
+	pchheader "epch.h"
+	pchsource "src/epch.cpp"
 	files
 	{
 		"src/**.h",
@@ -18,8 +18,9 @@ project "Editor"
 
 	includedirs
 	{
-		"%{wks.location}/Lithium/src",
-		"%{wks.location}/Lithium/vendor",
+	     "%{wks.location}/Editor/src",
+		 "%{wks.location}/Lithium/src",
+		 "%{wks.location}/Lithium/vendor",
 		 "%{IncludeDir.GLFW}",
 		 "%{IncludeDir.stb_image}",
 		 "%{IncludeDir.glm}",
