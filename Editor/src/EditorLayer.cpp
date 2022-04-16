@@ -714,12 +714,19 @@ namespace Lithium
 		ImGui::End();
 		if (m_OpenStatsPanel)
 		{
-			ImGui::Begin("Stats", &m_OpenStatsPanel);
+			ImGui::Begin("Configuration", &m_OpenStatsPanel);
+
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			bool vsync = Application::Get().IsVsync();
 			if (ImGui::Checkbox("Vsync", &vsync))
 			{
 				Application::Get().SetVsync(vsync);
+
+			}
+			bool renderUi = m_ActiveScene->GetRenderEditorUi();
+			if (ImGui::Checkbox("Preview UI", &renderUi))
+			{
+				m_ActiveScene->SetRenderEditorUi(renderUi);
 
 			}
 			ImGui::End();

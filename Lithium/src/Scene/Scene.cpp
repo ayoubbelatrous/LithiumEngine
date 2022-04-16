@@ -206,6 +206,7 @@ namespace Lithium
 				}
 			}
 		}
+		if(m_RenderEditorUI)
 		{
 		
 			auto view = GetRegistry().view<TextRenderer, TransformComponent>();
@@ -624,6 +625,16 @@ namespace Lithium
 			if (!cameraComponent.FixedAspectRatio)
 				cameraComponent.Camera.SetViewportSize(width, height);
 		}
+	}
+
+	void Scene::SetRenderEditorUi(bool render)
+	{
+		m_RenderEditorUI = render;
+	}
+
+	bool Scene::GetRenderEditorUi()
+	{
+		return m_RenderEditorUI;
 	}
 
 	template<typename T>

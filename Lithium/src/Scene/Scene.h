@@ -47,8 +47,10 @@ namespace Lithium
 		Entity GetPrimaryCameraEntity();
 		void SortScene();
 		void OnViewportResize(uint32_t width, uint32_t height);
-
+		void SetRenderEditorUi(bool render);
+		bool GetRenderEditorUi();
 	private:
+		bool m_RenderEditorUI = false;
 		uint32_t ViewportWidth = 1.0f;
 		uint32_t ViewportHeight = 1.0f;
 		Scope<PhysicsWorld> m_PhysicsWorld;
