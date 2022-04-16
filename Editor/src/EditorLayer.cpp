@@ -10,6 +10,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "gtx/string_cast.hpp"
 #include "Font/FontRenderer.h"
+#include "Commands/CommandHistroy.h"
+#include "Commands/FloatCommand.h"
 
 static std::atomic_bool canCheckAssembly;
 
@@ -105,9 +107,7 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
-		//Ref<Font> m_Font = CreateRef<Font>("assets/Editor/Fonts/CascadiaMono-Regular.ttf");
-
-		
+		CommandHistory::AddCommand(new FloatCommand(m_FloatTest, 10.0f));
 	}
 
 	void EditorLayer::OnUpdate()
@@ -288,6 +288,29 @@ namespace Lithium
 				{
 					Serializer serilizer(m_ActiveScene);
 					serilizer.SerializeScene(ScenePath);
+				}
+			}
+		}
+
+		if (e.keycode == KEYCODE_W)
+		{
+			if (control && !shift)
+			{
+				if (e.action == GLFW_PRESS)
+				{
+					CommandHistory::Undo();
+				}
+			}
+
+		}
+		if (e.keycode == KEYCODE_W)
+		{
+			if (control && shift)
+			{
+
+				if (e.action == GLFW_PRESS)
+				{
+					CommandHistory::Redo();
 				}
 			}
 		}
@@ -729,6 +752,18 @@ namespace Lithium
 				m_ActiveScene->SetRenderEditorUi(renderUi);
 
 			}
+
+			float tmp = m_FloatTest;
+			bool result = ImGui::DragFloat("test float", &tmp);
+			if (result)
+			{
+				CommandHistory::AddCommand(new FloatCommand(m_FloatTest, tmp));
+			}
+			if (ImGui::IsItemDeactivatedAfterEdit())
+			{
+				CommandHistory::SetNoMergeMostRecent();
+			}
+
 			ImGui::End();
 		}
 
