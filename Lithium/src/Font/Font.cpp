@@ -81,7 +81,7 @@ namespace Lithium
 		packer.setDimensionsConstraint(TightAtlasPacker::DimensionsConstraint::SQUARE);
 		
 		packer.setMinimumScale(24.0);
-		packer.setPixelRange(4.0f);
+		packer.setPixelRange(5.0f);
 		packer.setMiterLimit(1.0);
 		packer.setScale(32.0f);
 		packer.setPadding(1);
