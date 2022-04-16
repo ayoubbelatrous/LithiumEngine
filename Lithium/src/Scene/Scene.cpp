@@ -216,7 +216,7 @@ namespace Lithium
 
 				if (txr.FontAsset.GetUUID() != 0)
 				{
-					FontRenderer::DrawString((glm::vec2)tc.Position, tc.Scale.x, txr.Text, Application::Get().assetManager->GetAsset<Ref<Font>>(txr.FontAsset),txr.color,txr.Spacing,txr.LineSpacing);
+					FontRenderer::DrawString((glm::vec2)tc.Position, tc.Scale.x, txr.Text, Application::Get().assetManager->GetAsset<Ref<Font>>(txr.FontAsset),txr.color,txr.Spacing,txr.LineSpacing,(int)entity);
 				}
 
 			}
