@@ -1,9 +1,9 @@
 PathRegistry:
-  - UUID: 8159922648104178881
-    Path: ""
   - UUID: 11192339893729287579
     Path: assets\sprites\gliadiator.png
   - UUID: 1316668738020957875
+    Path: ""
+  - UUID: 8159922648104178881
     Path: ""
   - UUID: 10460744895190112220
     Path: ""
@@ -17,10 +17,10 @@ PathRegistry:
     Path: ""
   - UUID: 17073922704765126336
     Path: ""
-  - UUID: 3462376389663479680
-    Path: ""
   - UUID: 17625766738881703762
     Path: assets\sprites\tree.png
+  - UUID: 3462376389663479680
+    Path: ""
   - UUID: 4659185570097299958
     Path: ""
   - UUID: 5051875743027014023
@@ -31,20 +31,20 @@ PathRegistry:
     Path: ""
   - UUID: 6368999414722566636
     Path: assets\sprites\background.png
-  - UUID: 390963375903643555
-    Path: assets\sprites\boss.png
-  - UUID: 11103663858468905737
-    Path: assets\audio\amb_forest.mp3
   - UUID: 7224819586576530776
     Path: assets\fonts\Lato\Lato-BlackItalic.ttf
+  - UUID: 11103663858468905737
+    Path: assets\audio\amb_forest.mp3
+  - UUID: 390963375903643555
+    Path: assets\sprites\boss.png
   - UUID: 2953673806835192784
     Path: assets\audio\track.mp3
-  - UUID: 7923464014337788641
-    Path: assets\Editor\Fonts\OpenSans-Regular.ttf
-  - UUID: 17252337450930699130
-    Path: assets\sprites\mud.png
   - UUID: 4549631612969470153
     Path: assets\fonts\arialbi.ttf
+  - UUID: 17252337450930699130
+    Path: assets\sprites\mud.png
+  - UUID: 7923464014337788641
+    Path: assets\Editor\Fonts\OpenSans-Regular.ttf
   - UUID: 3639772307128870970
     Path: assets\sprites\mud-mid.png
   - UUID: 2893785331014740629
@@ -67,13 +67,13 @@ PathRegistry:
     Path: assets\fonts\GrapeNuts-Regular.ttf
   - UUID: 13820215286119202813
     Path: assets\fonts\PlayfairDisplay-VariableFont_wght.ttf
-  - UUID: 18052674995662601814
-    Path: assets\fonts\Lato\Lato-BoldItalic.ttf
   - UUID: 17922551869026870396
     Path: assets\fonts\Blockletter-PMGg.ttf
+  - UUID: 18052674995662601814
+    Path: assets\fonts\Lato\Lato-BoldItalic.ttf
   - UUID: 10519355079567115886
     Path: assets\fonts\Lato\Lato-Regular.ttf
-  - UUID: 12140528235655346694
-    Path: assets/Editor/Fonts/OpenSans-Regular.ttf
   - UUID: 6397480202031635342
     Path: assets\audio\deathr.ogg
+  - UUID: 12140528235655346694
+    Path: assets/Editor/Fonts/OpenSans-Regular.ttf

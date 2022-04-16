@@ -248,6 +248,19 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<TextRenderer>())
+		{
+			TextRenderer& textrenderer = entity.GetComponent<TextRenderer>();
+			emitter << YAML::Key << "TextRenderer" << YAML::BeginMap;
+			emitter << YAML::Key << "FontAssetID" << YAML::Value << (uint64_t)textrenderer.FontAsset.GetUUID();
+			emitter << YAML::Key << "Color" << YAML::Value << textrenderer.color;
+			emitter << YAML::Key << "LineSpacing" << YAML::Value << textrenderer.LineSpacing;
+			emitter << YAML::Key << "Spacing" << YAML::Value << textrenderer.Spacing;
+			emitter << YAML::Key << "Text" << YAML::Value << textrenderer.Text;
+			emitter << YAML::EndMap;
+		}
+
+
 		emitter << YAML::EndMap;
 	}
 
@@ -548,6 +561,18 @@ namespace Lithium
 				audioSource.Gain = audioSourceComponent["Gain"].as<float>();
 				audioSource.Pitch = audioSourceComponent["Pitch"].as<float>();
 
+			}
+
+			auto textRenderer = entity["TextRenderer"];
+			if (textRenderer)
+			{
+				deserEntity.AddComponent<TextRenderer>();
+				TextRenderer& textrendcomp = deserEntity.GetComponent<TextRenderer>();
+				textrendcomp.FontAsset = Asset(UUID(textRenderer["FontAssetID"].as<uint64_t>()));
+				textrendcomp.color = textRenderer["Color"].as<glm::vec4>();
+				textrendcomp.LineSpacing = textRenderer["LineSpacing"].as<float>();
+				textrendcomp.Spacing = textRenderer["Spacing"].as<float>();
+				textrendcomp.Text = textRenderer["Text"].as <std::string> ();
 			}
 		}
 	}

@@ -1,24 +1,5 @@
 Scene: NONE
 Entities:
-  - Entity: 8829897008313203450
-    Name: New Entity
-    Transform:
-      Position: [47.9999809, 720, 0]
-      Rotation: [0, -0, 0]
-      Scale: [25, 1, 1]
-      LocalPosition: [0, 0, 0]
-      LocalRotation: [0, 0, 0]
-      LocalScale: [0, 0, 0]
-    RelationShipComponent:
-      Children:
-        []
-      Parent: 0
-    TextRenderer:
-      Text: Score
-      FontAssetID: 12140528235655346694
-      Color: [1, 1, 1, 1]
-      LineSpacing: 0
-      Spacing: 0
   - Entity: 15391210489062868661
     Name: Trees
     Transform:
