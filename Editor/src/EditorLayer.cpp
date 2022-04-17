@@ -132,7 +132,7 @@ namespace Lithium
 		m_CameraDelta = (mouse - m_InitialMousePosition) * 0.003f;
 		m_InitialMousePosition = mouse;
 
-		if (Input::IsMouseKeyPressed(2))
+		if ((Input::IsMouseKeyPressed(0) && Input::IsKeyDown(Key::LeftAlt)) || (Input::IsMouseKeyPressed(2)))
 		{
 
 			float xSpeed = orthosize * 0.5f;
@@ -151,7 +151,6 @@ namespace Lithium
 		if (m_ViewportSizeChanged)
 		{
 			framebuffer->resize(viewportSize[0], viewportSize[1]);
-			//DisplayBuffer->resize(viewportSize[0], viewportSize[1]);
 			m_ViewportSizeChanged = false;
 		}
 		
