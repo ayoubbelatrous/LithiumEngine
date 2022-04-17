@@ -38,7 +38,16 @@ project "Editor"
 		"Lithium",
 		
 	}
-	
+	filter "system:linux"
+       defines
+       {
+            "LT_PLATFORM_LINUX",
+       }
+	filter "system:windows"
+       defines
+       {
+            "LT_PLATFORM_WINDOWS",
+       }
 	filter "configurations:Debug"
 		runtime "Debug"
 		symbols "on"

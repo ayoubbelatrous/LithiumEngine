@@ -14,9 +14,7 @@ workspace "Lithium"
 	}
 	defines
 	{
-		
 		"BUILD_PROFILER",
-		
 	}
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 omptimizationLevel = "Speed"

@@ -1,7 +1,7 @@
 project "libogg"
 	kind "StaticLib"
 	language "C"
-	staticruntime "on"
+	
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -21,13 +21,22 @@ project "libogg"
 	{
 		"LIBOGG_EXPORTS"
 	}
-	defines
-	{
-		"WIN32",
-		"NDEBUG",
-		"_WINDOWS",
-		"_USRDLL"
-	}
+	filter "system:windows"
+		systemversion "latest"
+		staticruntime "on"
+	    defines
+	    {
+	    	"WIN32",
+	    	"NDEBUG",
+	    	"_WINDOWS",
+	    	"_USRDLL"
+	    }
+	filter "system:linux"
+		staticruntime "on"
+	    defines
+	    {
+	    	"NDEBUG",
+	    }
 
 	filter "configurations:Debug"
 		runtime "Debug"

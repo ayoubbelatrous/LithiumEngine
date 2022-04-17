@@ -55,12 +55,7 @@ includedirs
     "%{IncludeDir.OpenAlSoft}/src/common",
 }
 
-defines
-{
-   "_CRT_SECURE_NO_WARNINGS",
-   		"GLFW_INCLUDE_NONE",
-           "AL_LIBTYPE_STATIC",
-}
+
 links
 {
 	"GLFW",
@@ -71,17 +66,50 @@ links
     "msdf-atlas-gen",
     "Box2D",
     "assimp",
-    "%{LibDir.mono}/libmono-static-sgen.lib",
-    "Mswsock.lib",
-    "ws2_32.lib",
-    "psapi.lib",
-    "version.lib",
-    "winmm.lib",
-    "Bcrypt.lib",
     "OpenAl-Soft",
     "Vorbis",
 }
+defines
+{
+        "GLFW_INCLUDE_NONE",
+     "AL_LIBTYPE_STATIC",
+}
+ 
+    filter "files:vendor/imguizmo/**.cpp"
+	   flags { "NoPCH" }
 
+
+    filter "system:linux"
+       defines
+       {
+            "LT_PLATFORM_LINUX",
+       }
+       
+    filter "system:linux"
+       systemversion "latest"
+       links
+       {
+           "%{LibDir.mono}/monoLib.a",
+       }
+    filter "system:windows"
+       systemversion "latest"
+       defines
+       {
+            "LT_PLATFORM_WINDOWS",
+            "_CRT_SECURE_NO_WARNINGS",
+       }
+    filter "system:windows"
+       systemversion "latest"
+       links
+       {
+           "%{LibDir.mono}/libmono-static-sgen.lib",
+          "Mswsock.lib",
+          "ws2_32.lib",
+          "psapi.lib",
+          "version.lib",
+          "winmm.lib",
+          "Bcrypt.lib",
+       }
 
 	filter "configurations:Debug"
 		runtime "Debug"

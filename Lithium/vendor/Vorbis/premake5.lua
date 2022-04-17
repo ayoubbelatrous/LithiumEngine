@@ -30,20 +30,33 @@ project "Vorbis"
 	}
 	
 
-
-	excludes
-	{
-		"lib/barkmel.c",
-		"lib/misc.c",
-		"lib/psytune.c",
-		"lib/tone.c"
-	}
-
-	defines
-	{
-		"WIN32",
-		"NDEBUG"
-	}
+	filter "system:windows"
+	    excludes
+	    {
+	    	"lib/barkmel.c",
+	    	"lib/misc.c",
+	    	"lib/psytune.c",
+	    	"lib/tone.c"
+	    }
+    
+	    defines
+	    {
+	    	"WIN32",
+	    	"NDEBUG"
+	    }
+	filter "system:linux"
+	    excludes
+	    {
+	    	"lib/barkmel.c",
+	    	"lib/misc.c",
+	    	"lib/psytune.c",
+	    	"lib/tone.c"
+	    }
+    
+	    defines
+	    {
+	    	"NDEBUG"
+	    }
 
 	filter "configurations:Debug"
 		runtime "Debug"

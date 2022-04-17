@@ -33,7 +33,7 @@ project "msdf-atlas-gen"
 		"msdfgen"
 	}
 
-	filter "configurations:Debug"
+filter "configurations:Debug"
 	runtime "Debug"
 	symbols "on"
 
