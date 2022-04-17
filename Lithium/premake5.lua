@@ -89,7 +89,7 @@ defines
        systemversion "latest"
        links
        {
-           "%{LibDir.mono}/libmono-static-sgen.a",
+           "%{LibDir.mono}/linux/libmono-static-sgen.a",
        }
     filter "system:windows"
        systemversion "latest"
