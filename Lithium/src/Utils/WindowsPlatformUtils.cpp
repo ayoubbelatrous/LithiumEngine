@@ -1,13 +1,21 @@
 #include "lipch.h"
 #include "WindowsPlatformUtils.h"
+
+#include "Core/Application.h"
+#include <GLFW/glfw3.h>
+#ifdef LT_PLATFORM_WINDOWS
+
 #include <Windows.h>
 #include <commdlg.h>
 #include <shlobj_core.h>
 
-#include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
-#include "Core/Application.h"
+
+#endif
+
+
+
 
 
 namespace Lithium
@@ -15,6 +23,7 @@ namespace Lithium
 	
 	std::string FileDialogs::OpenFile(const char* filter)
 	{
+#ifdef LT_PLATFORM_WINDOWS
 		OPENFILENAMEA ofn;
 		CHAR szFile[260] = { 0 };
 		CHAR currentDir[256] = { 0 };
@@ -31,11 +40,13 @@ namespace Lithium
 
 		if (GetOpenFileNameA(&ofn) == TRUE)
 			return ofn.lpstrFile;
+#endif
 		return std::string();
 	}
 
 	std::string FileDialogs::SaveFile(const char* filter)
 	{
+#ifdef LT_PLATFORM_WINDOWS
 		OPENFILENAMEA ofn;
 		CHAR szFile[260] = { 0 };
 		CHAR currentDir[256] = { 0 };
@@ -48,17 +59,20 @@ namespace Lithium
 			ofn.lpstrInitialDir = currentDir;
 		ofn.lpstrFilter = filter;
 		ofn.nFilterIndex = 1;
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT |OFN_NOCHANGEDIR;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
 
 		ofn.lpstrDefExt = strchr(filter, '\0') + 1;
 
 		if (GetSaveFileNameA(&ofn) == TRUE)
 			return ofn.lpstrFile;
+#endif // LT_PLATFORM_WINDOWS
+
 		return std::string();
 	}
 
 	std::string FileDialogs::OpenFolder(const char* filter)
 	{	
+#ifdef LT_PLATFORM_WINDOWS
 		CHAR path[260] = { 0 };
 		const char* path_param = filter;
 		BROWSEINFOA bi = { 0 };
@@ -80,7 +94,7 @@ namespace Lithium
 
 			return std::string(path);
 		}
-
+#endif
 		return std::string();
 	}
 
