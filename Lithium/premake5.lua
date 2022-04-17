@@ -71,7 +71,7 @@ links
 }
 defines
 {
-        "GLFW_INCLUDE_NONE",
+    "GLFW_INCLUDE_NONE",
      "AL_LIBTYPE_STATIC",
 }
  
@@ -89,7 +89,7 @@ defines
        systemversion "latest"
        links
        {
-           "%{LibDir.mono}/monoLib.a",
+           "%{LibDir.mono}/libmono-static-sgen.a",
        }
     filter "system:windows"
        systemversion "latest"
