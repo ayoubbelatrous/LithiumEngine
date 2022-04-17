@@ -55,6 +55,8 @@ PathRegistry:
     Path: assets\Editor\Fonts\OpenSans-Bold.ttf
   - UUID: 12828048890121511293
     Path: assets\Editor\Fonts\CascadiaMono-Regular.ttf
+  - UUID: 11878780770564620217
+    Path: assets\fonts\RubikWetPaint-Regular.ttf
   - UUID: 14094159999732837589
     Path: assets\Editor\Fonts\Cairo-Regular.ttf
   - UUID: 17214959281454610457
@@ -77,3 +79,9 @@ PathRegistry:
     Path: assets\audio\deathr.ogg
   - UUID: 12140528235655346694
     Path: assets/Editor/Fonts/OpenSans-Regular.ttf
+  - UUID: 14890591824022124858
+    Path: assets\fonts\MsMadi-Regular.ttf
+  - UUID: 8040129137841035923
+    Path: assets\fonts\Pacifico-Regular.ttf
+  - UUID: 18038749646218154141
+    Path: assets\sprites\Player.png

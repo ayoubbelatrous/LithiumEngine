@@ -1,71 +1,30 @@
 ﻿using System;
 using Lithium.Core;
 using Lithium.Math;
+using Lithium.Physics;
 class Player : Script
 {
-	public float speed = 0.0f;
-	public float AirSpeed = 0.0f;
-	public float JumpSpeed = 0.0f;
-    public bool Grounded = true;
+    public float Speed = 5.0f;
+    private Rigidbody2D RigidBody;
     void Start()
 	{
-       
+        RigidBody = entity.GetComponent<Rigidbody2D>();
     }
 
     void Update()
 	{
-		Vector2 vel = entity.GetComponent<Rigidbody2D>().Velocity;
 
-        if(Input.IsKeyPressed(KeyCode.Space) && Grounded)
-        {
-            vel.Y = JumpSpeed;
-        }
-        if(Grounded)
-        {
-            entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(speed * GetAxialInput().X, vel.Y);
-
-        }
-        else
-        {
-            entity.GetComponent<Rigidbody2D>().Velocity = new Vector2(AirSpeed * GetAxialInput().X, vel.Y);
-        }
-        
-    }
-    private Vector2 GetAxialInput()
-    {
-        Vector2 AxialInput = new Vector2(0);
-
-        if (Input.IsKeyPressed(KeyCode.W))
-        {
-            AxialInput.Y = 1.0f;
-        }
-
-        if (Input.IsKeyPressed(KeyCode.S))
-        {
-            AxialInput.Y = -1.0f;
-        }
-
-        if (Input.IsKeyPressed(KeyCode.D))
-        {
-            AxialInput.X = 1.0f;
-        }
-
-        if (Input.IsKeyPressed(KeyCode.A))
-        {
-            AxialInput.X = -1.0f;
-        }
-
-        return AxialInput;
     }
 
-    void OnCollisionEnter()
+
+    void OnCollisionEnter(Collision2D collision)
     {
-        
+        Debug.Log(collision.entity.GetComponent<NameComponent>().Tag);
     }
 
     void OnCollisionExit()
     {
-
+        Debug.Log("haha");
     }
 }
 

@@ -29,7 +29,7 @@ namespace Lithium
 			return m_ClassName;
 		}
 		//Invokes a method from the method map stored in class
-		void* InvokeMethod(const std::string& name,void* Params);
+		void* InvokeMethod(const std::string& name,void** Params);
 		//sets a property
 		void SetProperty(const std::string& name,void** Parmas);
 		void* GetObjectPtr()

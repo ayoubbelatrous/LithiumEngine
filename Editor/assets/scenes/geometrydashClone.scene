@@ -1,0 +1,92 @@
+Scene: NONE
+Entities:
+  - Entity: 5005574665503690836
+    Name: Main Camera
+    Transform:
+      Position: [0.218228519, 0.295250386, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 0
+    ScriptGroupe:
+      Scripts:
+        - ClassName: CameraController
+          Fields:
+            - Name: Target
+              Type: ENTITY
+              Value: 1464777651579892231
+    CameraComponent:
+      OrhtographicSize: 10
+      NearPlane: -1
+      FarPlane: 1
+      Primary: true
+      FixedAspectRatio: false
+      ClearColor: [0, 0, 0, 0]
+  - Entity: 12504846269678238693
+    Name: Floor
+    Transform:
+      Position: [-1.63029492, -2.2464695, 0]
+      Rotation: [0, -0, 0]
+      Scale: [39.5927544, 0.661971986, 1]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 0
+      DrawOrder: 0
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 0
+    Rigidbody2D:
+      FixedRotation: false
+      Type: Static
+    BoxCollider2D:
+      Size: [0.5, 0.5]
+      Offset: [0, 0]
+      Density: 1
+      Friction: 0
+      Restitution: 0
+      RestitutionThreshold: 0.5
+      IsSensor: false
+  - Entity: 1464777651579892231
+    Name: Player
+    Transform:
+      Position: [-1.66383064, -0.355034143, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+      LocalPosition: [0, 0, 0]
+      LocalRotation: [0, 0, 0]
+      LocalScale: [0, 0, 0]
+    Sprite Renderer:
+      Color: [1, 1, 1, 1]
+      Texture ID: 18038749646218154141
+      DrawOrder: 0
+    RelationShipComponent:
+      Children:
+        []
+      Parent: 0
+    ScriptGroupe:
+      Scripts:
+        - ClassName: Player
+          Fields:
+            - Name: Speed
+              Type: FLOAT
+              Value: 500
+    Rigidbody2D:
+      FixedRotation: false
+      Type: Dynamic
+    BoxCollider2D:
+      Size: [0.5, 0.5]
+      Offset: [0, 0]
+      Density: 1
+      Friction: 0
+      Restitution: 0
+      RestitutionThreshold: 0.5
+      IsSensor: false

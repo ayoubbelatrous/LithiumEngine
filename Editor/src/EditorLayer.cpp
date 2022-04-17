@@ -107,6 +107,7 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
+		
 	}
 
 	void EditorLayer::OnUpdate()

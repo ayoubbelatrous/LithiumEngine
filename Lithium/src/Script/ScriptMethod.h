@@ -14,7 +14,7 @@ namespace Lithium
 		ScriptMethod(MonoMethod* m_Method,MonoObject* m_Object);
 
 		//TODO: add a param list class and use it for args and return values
-		void* Invoke(void* params);
+		void* Invoke(void** params);
 	private:
 		MonoMethod* m_MonoMethod = nullptr;
 		MonoObject* m_MonoObject = nullptr;

@@ -13,8 +13,8 @@ class FpsCounter : Script
 
     void Update()
 	{
-        float frametime = (float)Time.deltaTime * 1000.0f;
-        rend.Text = String.Format("{0}", frametime);
+        seconds += (float)Time.deltaTime;
+        rend.Text = String.Format("{0}s", (int)seconds);
 
     }
   

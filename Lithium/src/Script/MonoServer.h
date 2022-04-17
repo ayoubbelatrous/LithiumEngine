@@ -114,6 +114,7 @@ namespace Lithium
 			Ref<ScriptObject> GetObject(const std::string& name);
 			Ref<ScriptObject> CopyObject(const Ref<ScriptObject>& object);
 			void* CreateMonoEntity(UUID id);
+			void* CreateMonoCollsion2D(UUID EntityID);
 			void* CreateMonoAudioClip(UUID assetID);
 			//Utils
 			void* CreateMonoString(const char* str);

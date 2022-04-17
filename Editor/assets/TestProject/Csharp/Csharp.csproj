@@ -48,6 +48,7 @@
     <Compile Include="Core\Graphics\Texture.cs" />
     <Compile Include="Core\Input.cs" />
     <Compile Include="Core\KeyCode.cs" />
+    <Compile Include="Core\Physics\Physics.cs" />
     <Compile Include="Core\Script.cs" />
     <Compile Include="Core\Time.cs" />
     <Compile Include="FpsCounter.cs" />

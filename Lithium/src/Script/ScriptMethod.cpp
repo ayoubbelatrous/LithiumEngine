@@ -9,10 +9,10 @@ namespace Lithium
 		:m_MonoMethod(m_Method),m_MonoObject(m_Object)
 	{}
 
-	void* ScriptMethod::Invoke(void* params)
+	void* ScriptMethod::Invoke(void** params)
 	{
 		MonoObject* exception = nullptr;
-		mono_runtime_invoke(m_MonoMethod, m_MonoObject, &params, &exception);
+		mono_runtime_invoke(m_MonoMethod, m_MonoObject, params, &exception);
 		if (exception != nullptr)
 		{
 			Application::Get().Monoserver->ForwardMonoException(exception);

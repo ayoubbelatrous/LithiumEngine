@@ -752,6 +752,19 @@ namespace Lithium
 		return EntityObject;
 	}
 
+	void* MonoServer::CreateMonoCollsion2D(UUID EntityID)
+	{
+		MonoClass* CollisionClass = mono_class_from_name(_MonoImage, "Lithium.Physics", "Collision2D");
+		MonoObject* CollisionObject = mono_object_new(_MonoAppDomain, CollisionClass);
+		mono_runtime_object_init(CollisionObject);
+
+		MonoObject* entity = (MonoObject*)CreateMonoEntity(EntityID);
+
+		MonoClassField* EntityField = mono_class_get_field_from_name(CollisionClass, "entity");
+		mono_field_set_value(CollisionObject, EntityField, entity);
+		return CollisionObject;
+	}
+
 	void* MonoServer::CreateMonoAudioClip(UUID assetID)
 	{
 		MonoClass* AudioClipClass = mono_class_from_name(_MonoImage, "Lithium.Core", "AudioClip");

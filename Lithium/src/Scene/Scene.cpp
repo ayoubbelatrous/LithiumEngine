@@ -24,26 +24,33 @@ namespace Lithium
 		{
 			UUID* IDA = reinterpret_cast<UUID*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
 			Entity entityA(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[*IDA], Application::Get().sceneManager->GetActiveScene().get());
+			UUID* IDB = reinterpret_cast<UUID*>(contact->GetFixtureB()->GetBody()->GetUserData().pointer);
+			Entity entityB(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[*IDB], Application::Get().sceneManager->GetActiveScene().get());
+
 			if (entityA.HasComponent<ScriptGroupeComponent>())
 			{
 				ScriptGroupeComponent& scriptgroupeA = entityA.GetComponent<ScriptGroupeComponent>();
 
 				for (auto& script : scriptgroupeA.Scripts)
 				{
-					script.Scriptobject->InvokeMethod("OnCollisionEnter", nullptr);
+					
+					void* Args[1];
+					Args[0] = Application::Get().Monoserver->CreateMonoCollsion2D(*IDB);
+					script.Scriptobject->InvokeMethod("OnCollisionEnter", Args);
 				}
 			}
 			
-			UUID* IDB = reinterpret_cast<UUID*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
-			Entity entityB (Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[*IDB], Application::Get().sceneManager->GetActiveScene().get());
-
-			if (entityA.HasComponent<ScriptGroupeComponent>())
+			
+			if (entityB.HasComponent<ScriptGroupeComponent>())
 			{
 				ScriptGroupeComponent& scriptgroupeB = entityB.GetComponent<ScriptGroupeComponent>();
 
 				for (auto& script : scriptgroupeB.Scripts)
 				{
-					script.Scriptobject->InvokeMethod("OnCollisionEnter", nullptr);
+
+					void* Args[1];
+					Args[0] = Application::Get().Monoserver->CreateMonoCollsion2D(*IDA);
+					script.Scriptobject->InvokeMethod("OnCollisionEnter", Args);
 				}
 			}
 		}
@@ -62,10 +69,10 @@ namespace Lithium
 				}
 			}
 
-			UUID* IDB = reinterpret_cast<UUID*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
+			UUID* IDB = reinterpret_cast<UUID*>(contact->GetFixtureB()->GetBody()->GetUserData().pointer);
 			Entity entityB(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[*IDB], Application::Get().sceneManager->GetActiveScene().get());
 
-			if (entityA.HasComponent<ScriptGroupeComponent>())
+			if (entityB.HasComponent<ScriptGroupeComponent>())
 			{
 				ScriptGroupeComponent& scriptgroupeB = entityB.GetComponent<ScriptGroupeComponent>();
 
