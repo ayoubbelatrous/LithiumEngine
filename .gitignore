@@ -31,3 +31,15 @@ Editor/assets/TestProject/Csharp/obj/
 Editor/assets/TestProject/**.pdb
 Editor/assets/TestProject/**.obj
 Editor/cache/**.**
+
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
