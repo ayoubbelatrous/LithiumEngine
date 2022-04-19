@@ -10,7 +10,7 @@ namespace Lithium
 	public:
 		void OnCreate();
 		void OnUpdate();
-		void SetSelection(Entity& selection)
+		void SetSelection(Entity selection)
 		{
 			m_Selection = selection;
 		}

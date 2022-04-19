@@ -1,6 +1,4 @@
 #pragma once
-
-#include "imgui.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -23,6 +21,5 @@
 #include <mono/metadata/debug-helpers.h>
 #include <mono/metadata/environment.h>
 #include <mono/metadata/attrdefs.h>
-#include <xhash>
 #include "yaml-cpp/yaml.h"
 

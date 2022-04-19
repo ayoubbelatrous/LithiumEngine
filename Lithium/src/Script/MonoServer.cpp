@@ -242,7 +242,8 @@ namespace Lithium
 	{
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		Rigidbody2DComponent& b2bd = entity.GetComponent<Rigidbody2DComponent>();
-		memcpy(velocity, &b2bd.GetVelocity(), sizeof(glm::vec2));
+		glm::vec2 b2velocity = b2bd.GetVelocity();
+		memcpy(velocity, &b2velocity, sizeof(glm::vec2));
 	}
 
 	void MonoServer::SetCameraProjection_Internal(uint64_t entityID, int* projection)
@@ -390,7 +391,8 @@ namespace Lithium
 
 	void MonoServer::MousePosition_Internal(glm::vec2* pos)
 	{
-		memcpy(pos, &Input::MousePosition(), sizeof(glm::vec2));
+		glm::vec2 MousePosition = Input::MousePosition();
+		memcpy(pos,&MousePosition , sizeof(glm::vec2));
 	}
 
 	bool MonoServer::KeyPressed_Internal(uint16_t button)
@@ -418,71 +420,68 @@ namespace Lithium
 
 	void MonoServer::Bindinternals()
 	{
+		mono_add_internal_call("Lithium.Core.Debug::Log", (const void*)MonoServer::Log);
+		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", (const void*)MonoServer::HasComponent_Interal);
+		mono_add_internal_call("Lithium.Core.Entity::AddComponent_Internal", (const void*)MonoServer::AddComponent_Interal);
 
-		mono_add_internal_call("Lithium.Core.Debug::Log", MonoServer::Log);
-		mono_add_internal_call("Lithium.Core.Entity::HasComponent_Internal", MonoServer::HasComponent_Interal);
-		mono_add_internal_call("Lithium.Core.Entity::AddComponent_Internal", MonoServer::AddComponent_Interal);
+		mono_add_internal_call("Lithium.Core.Entity::HasScript_Internal", (const void*)MonoServer::HasScript_Interal);
+		mono_add_internal_call("Lithium.Core.Entity::GetScript_Internal", (const void*)MonoServer::GetScript_Internal);
 
-		mono_add_internal_call("Lithium.Core.Entity::HasScript_Internal", MonoServer::HasScript_Interal);
-		mono_add_internal_call("Lithium.Core.Entity::GetScript_Internal", MonoServer::GetScript_Internal);
+		mono_add_internal_call("Lithium.Core.Script::CopyEntity_Internal", (const void*)MonoServer::CopyEntity_Internal);
 
-		mono_add_internal_call("Lithium.Core.Script::CopyEntity_Internal", MonoServer::CopyEntity_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", (const void*)MonoServer::SetPosition_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::GetPosition_Internal", (const void*)MonoServer::GetPosition_Internal);
 
-		mono_add_internal_call("Lithium.Core.Transform::SetPosition_Internal", MonoServer::SetPosition_Internal);
-		mono_add_internal_call("Lithium.Core.Transform::GetPosition_Internal", MonoServer::GetPosition_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::SetRotation_Internal", (const void*)MonoServer::SetRotation_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::GetRotation_Internal", (const void*)MonoServer::GetRotation_Internal);
 
-		mono_add_internal_call("Lithium.Core.Transform::SetRotation_Internal", MonoServer::SetRotation_Internal);
-		mono_add_internal_call("Lithium.Core.Transform::GetRotation_Internal", MonoServer::GetRotation_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::SetScale_Internal", (const void*)MonoServer::SetScale_Internal);
+		mono_add_internal_call("Lithium.Core.Transform::GetScale_Internal", (const void*)MonoServer::GetScale_Internal);
 
-		mono_add_internal_call("Lithium.Core.Transform::SetScale_Internal", MonoServer::SetScale_Internal);
-		mono_add_internal_call("Lithium.Core.Transform::GetScale_Internal", MonoServer::GetScale_Internal);
+		mono_add_internal_call("Lithium.Core.NameComponent::SetName_Internal", (const void*)MonoServer::SetName_Internal);
+		mono_add_internal_call("Lithium.Core.NameComponent::GetName_Internal", (const void*)MonoServer::GetName_Internal);
 
-		mono_add_internal_call("Lithium.Core.NameComponent::SetName_Internal", MonoServer::SetName_Internal);
-		mono_add_internal_call("Lithium.Core.NameComponent::GetName_Internal", MonoServer::GetName_Internal);
+		mono_add_internal_call("Lithium.Core.SpriteRenderer::SetColor_Internal", (const void*)MonoServer::SetColor_Internal);
+		mono_add_internal_call("Lithium.Core.SpriteRenderer::GetColor_Internal",(const void*) MonoServer::GetColor_Internal);
 
-		mono_add_internal_call("Lithium.Core.SpriteRenderer::SetColor_Internal", MonoServer::SetColor_Internal);
-		mono_add_internal_call("Lithium.Core.SpriteRenderer::GetColor_Internal", MonoServer::GetColor_Internal);
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyFixedRotation_Internal", (const void*)MonoServer::SetRigidbodyFixedRotation_Internal);
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyFixedRotation_Internal",(const void*) MonoServer::GetRigidbodyFixedRotation_Internal);
 
-		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyFixedRotation_Internal", MonoServer::SetRigidbodyFixedRotation_Internal);
-		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyFixedRotation_Internal", MonoServer::GetRigidbodyFixedRotation_Internal);
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyVelocity_Internal", (const void*)MonoServer::SetRigidbodyVelocity_Internal);
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyVelocity_Internal", (const void*)MonoServer::GetRigidbodyVelocity_Internal);
 
-		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyVelocity_Internal", MonoServer::SetRigidbodyVelocity_Internal);
-		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyVelocity_Internal", MonoServer::GetRigidbodyVelocity_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::SetCameraProjection_Internal", (const void*)MonoServer::SetCameraProjection_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::GetCameraProjection_Internal", (const void*)MonoServer::GetCameraProjection_Internal);
 
+		mono_add_internal_call("Lithium.Core.Camera::SetCameraPrimary_Internal", (const void*)MonoServer::SetCameraPrimary_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::GetCameraPrimary_Internal", (const void*)MonoServer::GetCameraPrimary_Internal);
 
+		mono_add_internal_call("Lithium.Core.Camera::SetCameraOrthographicSize_Internal", (const void*)MonoServer::SetCameraOrthographicSize_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::GetCameraOrthographicSize_Internal", (const void*)MonoServer::GetCameraOrthographicSize_Internal);
 
-		mono_add_internal_call("Lithium.Core.Camera::SetCameraProjection_Internal", MonoServer::SetCameraProjection_Internal);
-		mono_add_internal_call("Lithium.Core.Camera::GetCameraProjection_Internal", MonoServer::GetCameraProjection_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::SetCameraFixedAspectRatio_Internal", (const void*)MonoServer::SetCameraFixedAspectRatio_Internal);
+		mono_add_internal_call("Lithium.Core.Camera::GetCameraFixedAspectRatio_Internal", (const void*)MonoServer::GetCameraFixedAspectRatio_Internal);
 
-		mono_add_internal_call("Lithium.Core.Camera::SetCameraPrimary_Internal", MonoServer::SetCameraPrimary_Internal);
-		mono_add_internal_call("Lithium.Core.Camera::GetCameraPrimary_Internal", MonoServer::GetCameraPrimary_Internal);
+		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourcePlay_Internal", (const void*)MonoServer::SetAudioSourcePlay_Internal);
 
-		mono_add_internal_call("Lithium.Core.Camera::SetCameraOrthographicSize_Internal", MonoServer::SetCameraOrthographicSize_Internal);
-		mono_add_internal_call("Lithium.Core.Camera::GetCameraOrthographicSize_Internal", MonoServer::GetCameraOrthographicSize_Internal);
+		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourceLoop_Internal", (const void*)MonoServer::SetAudioSourceLoop_Internal);
+		mono_add_internal_call("Lithium.Core.AudioSource::GetAudioSourcePlay_Internal", (const void*)MonoServer::GetAudioSourceLoop_Internal);
 
-		mono_add_internal_call("Lithium.Core.Camera::SetCameraFixedAspectRatio_Internal", MonoServer::SetCameraFixedAspectRatio_Internal);
-		mono_add_internal_call("Lithium.Core.Camera::GetCameraFixedAspectRatio_Internal", MonoServer::GetCameraFixedAspectRatio_Internal);
+		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourceGain_Internal", (const void*)MonoServer::SetAudioSourceGain_Internal);
+		mono_add_internal_call("Lithium.Core.AudioSource::GetAudioSourceGain_Internal", (const void*)MonoServer::GetAudioSourceGain_Internal);
 
-		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourcePlay_Internal", MonoServer::SetAudioSourcePlay_Internal);
+		mono_add_internal_call("Lithium.Core.AudioSource::AudioSourcePlayClip_Internal", (const void*)MonoServer::AudioSourcePlayClip_Internal);
 
-		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourceLoop_Internal", MonoServer::SetAudioSourceLoop_Internal);
-		mono_add_internal_call("Lithium.Core.AudioSource::GetAudioSourcePlay_Internal", MonoServer::GetAudioSourceLoop_Internal);
-
-		mono_add_internal_call("Lithium.Core.AudioSource::SetAudioSourceGain_Internal", MonoServer::SetAudioSourceGain_Internal);
-		mono_add_internal_call("Lithium.Core.AudioSource::GetAudioSourceGain_Internal", MonoServer::GetAudioSourceGain_Internal);
-
-		mono_add_internal_call("Lithium.Core.AudioSource::AudioSourcePlayClip_Internal", MonoServer::AudioSourcePlayClip_Internal);
-
-		mono_add_internal_call("Lithium.Core.TextRenderer::SetTextRendererText_Internal", MonoServer::SetTextRendererText_Internal);
-		mono_add_internal_call("Lithium.Core.TextRenderer::GetTextRendererText_Internal", MonoServer::GetTextRendererText_Internal);
+		mono_add_internal_call("Lithium.Core.TextRenderer::SetTextRendererText_Internal", (const void*)MonoServer::SetTextRendererText_Internal);
+		mono_add_internal_call("Lithium.Core.TextRenderer::GetTextRendererText_Internal", (const void*)MonoServer::GetTextRendererText_Internal);
 
 
-		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", MonoServer::MouseKey_Internal);
-		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", MonoServer::MouseKeyDown_Internal);
-		mono_add_internal_call("Lithium.Core.Input::IsKeyPressed", MonoServer::KeyPressed_Internal);
-		mono_add_internal_call("Lithium.Core.Input::IsKeyDown", MonoServer::KeyPressedDown_Internal);
-		mono_add_internal_call("Lithium.Core.Input::MousePosition_Internal", MonoServer::MousePosition_Internal);
-		mono_add_internal_call("Lithium.Core.Time::DeltaTime_Internal", MonoServer::DeltaTime_Internal);
+		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", (const void*)MonoServer::MouseKey_Internal);
+		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", (const void*)MonoServer::MouseKeyDown_Internal);
+		mono_add_internal_call("Lithium.Core.Input::IsKeyPressed", (const void*)MonoServer::KeyPressed_Internal);
+		mono_add_internal_call("Lithium.Core.Input::IsKeyDown", (const void*)MonoServer::KeyPressedDown_Internal);
+		mono_add_internal_call("Lithium.Core.Input::MousePosition_Internal", (const void*)MonoServer::MousePosition_Internal);
+		mono_add_internal_call("Lithium.Core.Time::DeltaTime_Internal", (const void*)MonoServer::DeltaTime_Internal);
 	}
 
 	void MonoServer::LoadAllClassesInImage()

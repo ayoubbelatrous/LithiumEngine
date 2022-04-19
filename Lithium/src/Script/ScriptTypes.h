@@ -6,7 +6,8 @@
 #include <mono/metadata/debug-helpers.h>
 #include <mono/metadata/environment.h>
 #include <mono/metadata/attrdefs.h>
-
+#include <string.h> 
+#include <stdio.h>
 namespace Lithium
 {
 	

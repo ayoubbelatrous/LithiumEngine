@@ -8,8 +8,8 @@ project "Editor"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 	
-	pchheader "epch.h"
-	pchsource "src/epch.cpp"
+	--pchheader "epch.h"
+	--pchsource "src/epch.cpp"
 	files
 	{
 		"src/**.h",
@@ -35,6 +35,9 @@ project "Editor"
 
 	links
 	{
+		"",
+        "IMGUI",
+        "yaml-cpp",
 		"Lithium",
 		
 	}
@@ -42,6 +45,11 @@ project "Editor"
        defines
        {
             "LT_PLATFORM_LINUX",
+       }
+	filter "system:linux"
+       links
+       {
+           "%{LibDir.mono}/linux/libmono-static-sgen.a",
        }
 	filter "system:windows"
        defines

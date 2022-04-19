@@ -9,8 +9,8 @@ staticruntime "off"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 
-pchheader "lipch.h"
-pchsource "src/lipch.cpp"
+--pchheader "lipch.h"
+--pchsource "src/lipch.cpp"
 
 files
 {
@@ -39,7 +39,6 @@ includedirs
     "%{IncludeDir.GLAD}",
     "%{IncludeDir.glm}",
     "%{IncludeDir.stb_image}",
-    "%{IncludeDir.imgui}",
     "%{IncludeDir.entt}",
     "%{IncludeDir.imguizmo}",
     "%{IncludeDir.yaml}",
@@ -66,7 +65,6 @@ links
     "msdf-atlas-gen",
     "Box2D",
     "assimp",
-    "OpenAl-Soft",
     "Vorbis",
 }
 defines
@@ -83,13 +81,19 @@ defines
        defines
        {
             "LT_PLATFORM_LINUX",
+            "_LINUX",
+            "AL_BUILD_LIBRARY",
+            "AL_ALEXT_PROTOTYPES",
+            "NOMINMAX",
+            "CMAKE_INTDIR=\"Debug\"",
+            "OpenAL_EXPORTS"
        }
        
     filter "system:linux"
-       systemversion "latest"
        links
        {
            "%{LibDir.mono}/linux/libmono-static-sgen.a",
+           "%{LibDir.OpenAlSoft}/lib/libopenal.so",
        }
     filter "system:windows"
        systemversion "latest"

@@ -61,11 +61,6 @@ project "OpenAL-Soft"
 	    	"CMAKE_INTDIR=\"Debug\"",
 	    	"OpenAL_EXPORTS"
 	    }
-
-	    links
-	    {
-	    	"winmm"
-	    }
 	filter "configurations:Debug"
 		runtime "Debug"
 		symbols "on"

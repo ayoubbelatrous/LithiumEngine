@@ -1,5 +1,8 @@
 #pragma once
 
+#include <map>
+#include <fstream>
+#include <string>
 
 namespace Lithium
 {

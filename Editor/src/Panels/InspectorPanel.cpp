@@ -1,7 +1,8 @@
 #include "epch.h"
 #include "InspectorPanel.h"
-#include "imgui.h"
-#include "imgui_internal.h"
+#include "imgui/imgui.h"
+
+#include "imgui/imgui_internal.h"
 #include "entt.hpp"
 #include "Scene/Components.h"
 #include "glm.hpp"

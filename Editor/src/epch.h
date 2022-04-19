@@ -1,6 +1,6 @@
 #pragma once
 
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -16,5 +16,4 @@
 #include <chrono>
 #include "Core/Core.h"
 #include "entt.hpp"
-#include <xhash>
 #include "Core/Log.h"

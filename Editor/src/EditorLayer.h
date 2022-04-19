@@ -17,7 +17,7 @@
 #include "entt.hpp"
 #include "Scene/Entity.h"
 #include "Scene/Components.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include <../imgui/example/imgui_impl_glfw.h>
 #include <../imgui/example/imgui_impl_opengl3.h>
 #include "Panels/SceneHierachyPanel.h"

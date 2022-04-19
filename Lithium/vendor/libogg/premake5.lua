@@ -1,14 +1,12 @@
 project "libogg"
 	kind "StaticLib"
 	language "C"
-	
-
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 	includedirs
 	{
-		"include"
+		"include",
 	}
 
 	files
@@ -21,6 +19,8 @@ project "libogg"
 	{
 		"LIBOGG_EXPORTS"
 	}
+
+
 	filter "system:windows"
 		systemversion "latest"
 		staticruntime "on"
@@ -36,6 +36,7 @@ project "libogg"
 	    defines
 	    {
 	    	"NDEBUG",
+	    	"_USRDLL"
 	    }
 
 	filter "configurations:Debug"

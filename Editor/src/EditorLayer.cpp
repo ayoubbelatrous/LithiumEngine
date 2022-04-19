@@ -771,7 +771,7 @@ namespace Lithium
 				{
 					
 					
-					auto& [camera,tc] = view.get<CameraComponent, TransformComponent>(e);
+					auto [camera,tc] = view.get<CameraComponent, TransformComponent>(e);
 					glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(tc.Rotation)));
 					glm::mat4 transform = glm::translate(glm::mat4(1), tc.Position) * rotation * glm::scale(glm::mat4(1), { 0.25f,0.25f,0.0f});
 
@@ -796,7 +796,7 @@ namespace Lithium
 					{
 
 
-						auto& [bc2d, tc] = view.get<BoxCollider2DComponent, TransformComponent>(e);
+						auto [bc2d, tc] = view.get<BoxCollider2DComponent, TransformComponent>(e);
 						glm::vec3 translation = tc.Position + glm::vec3(bc2d.Offset, 0.001f);
 						glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
 

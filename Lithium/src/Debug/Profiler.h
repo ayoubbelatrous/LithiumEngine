@@ -134,9 +134,9 @@ private:
 #define LT_END_SESSION() ::Lithium::Instrumentor::Get().EndSession()
 #endif
 #ifdef BUILD_PROFILER
-#define LT_BEGIN_SESSION()
-#define LT_PROFILE_SCOPE();
-#define LT_PROFILE_FUNCTION()
+#define LT_BEGIN_SESSION(name,path)
+#define LT_PROFILE_SCOPE(name)
+#define LT_PROFILE_FUNCTION(name)  LT_PROFILE_SCOPE(name)
 #define LT_END_SCOPE()
 #define LT_END_SESSION()
 #endif

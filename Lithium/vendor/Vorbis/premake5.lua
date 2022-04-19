@@ -9,7 +9,8 @@ project "Vorbis"
 	includedirs
 	{
 		"include",
-		"../libogg/include"
+		"../libogg/include",
+		"lib"
 	}
 
 	files

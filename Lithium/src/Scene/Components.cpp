@@ -12,6 +12,7 @@ namespace Lithium
 	}
 
 	glm::vec2 Rigidbody2DComponent::GetVelocity()
+	const
 	{
 		b2Body* body = (b2Body*)RuntimeBody;
 		b2Vec2 vel = body->GetLinearVelocity();

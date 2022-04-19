@@ -1,6 +1,7 @@
 #include "lipch.h"
 #include "AssetPackReader.h"
-
+#include <string.h> 
+#include <stdio.h>
 namespace Lithium
 {
 

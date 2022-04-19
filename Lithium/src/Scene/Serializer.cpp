@@ -323,7 +323,7 @@ namespace Lithium
 			if (relationshipcomp)
 			{
 				RelationShipComponent& rc = deserEntity.GetComponent<RelationShipComponent>();
-				for (auto& uuid : relationshipcomp["Children"])
+				for (auto uuid : relationshipcomp["Children"])
 				{
 					rc.AddChild(uuid.as<uint64_t>());
 				}
@@ -353,7 +353,7 @@ namespace Lithium
 				for (auto script : Scripts)
 				{
 					
-					ScriptComponent& scc = ScriptComponent();
+					ScriptComponent scc = ScriptComponent();
 					std::string ScriptName = script["ClassName"].as<std::string>();
 					scc.Name = ScriptName;
 					scc.Scriptobject = Application::Get().Monoserver->GetObject(ScriptName);

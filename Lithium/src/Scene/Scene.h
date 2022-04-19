@@ -24,23 +24,24 @@ namespace Lithium
 		void DeleteEntity(Entity entity);
 		
 		entt::registry& GetRegistry() { return m_Registry; }
-		void Scene::UpdateTransform(Entity entity);
+		void UpdateTransform(Entity entity);
 		void onEditorUpdate();
 		void OnStart();
 		void onUpdate();
 		void OnStop();
 		void SetEventCallback(const EventCallback& e) { m_Callback = e; }
 		std::unordered_map<UUID, entt::entity> GetUUIDMap();
-		template<typename Comp>
-	    void CopyComponent(Entity src, Entity dst)
-	    {
-		if (src.HasComponent<Comp>())
-			dst.AddOrReplaceComponent<Comp>(src.GetComponent<Comp>());
-	    }
+		
+		template<typename Component>
+	    static void CopyComponentAll(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap);
+	    
+		template<typename T>
+		void CopyComponent(Entity src, Entity dst);
+		
+		
 		static Ref<Scene> Copy(const Ref<Scene>& src);
 		
 	    Entity DuplicateEntity(Entity src);
-
 	
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
@@ -49,6 +50,7 @@ namespace Lithium
 		void OnViewportResize(uint32_t width, uint32_t height);
 		void SetRenderEditorUi(bool render);
 		bool GetRenderEditorUi();
+		
 	private:
 		bool m_RenderEditorUI = false;
 		uint32_t ViewportWidth = 1.0f;

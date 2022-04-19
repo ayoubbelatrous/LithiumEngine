@@ -12,7 +12,7 @@
 #include "Script/ScriptObject.h"
 #include "Camera/SceneCamera.h"
 #include "Core/Math.h"
-#include "Physics/PhysicsTypes.h"
+#include "physics/PhysicsTypes.h"
 #include "AssetManager/Asset.h"
 
 namespace Lithium
@@ -124,7 +124,7 @@ namespace Lithium
 		void* RuntimeBody = nullptr;
 		bool Created = false;
 		void SetVelocity(const glm::vec2 vel);
-		glm::vec2 GetVelocity();
+		glm::vec2 GetVelocity() const;
 		PhysicsBodyType Type = PhysicsBodyType::Dynamic;
 
 
@@ -222,7 +222,7 @@ namespace Lithium
 	{
 		std::string Text = "";
 		glm::vec4 color = glm::vec4(1.0f);
-		Asset FontAsset = 0;
+		Asset FontAsset = Asset(UUID(0));
 		float Spacing = 0.0f;
 		float LineSpacing = 0.0f;
 		bool ScreenSpace = true;

@@ -1,8 +1,8 @@
 #ifndef ALHELPERS_H
 #define ALHELPERS_H
 
-#include "al/al.h"
-#include "al/alc.h"
+#include "AL/al.h"
+#include "AL/alc.h"
 
 #ifdef __cplusplus
 extern "C" {

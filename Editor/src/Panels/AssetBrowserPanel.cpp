@@ -1,6 +1,6 @@
 #include "epch.h"
 #include "AssetBrowserPanel.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 
 namespace Lithium
 {
@@ -86,7 +86,8 @@ namespace Lithium
 			{
 				auto relativePath = std::filesystem::relative(path, "assets");
 
-				const wchar_t* itemPath = relativePath.c_str();
+				const wchar_t* itemPath;
+				itemPath = (const wchar_t*)relativePath.c_str();
 				ImGui::SetDragDropPayload("ASSET_FILE", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 				ImGui::Image(icontexid, { 50,50}, { 0,1 }, { 1,0 });
 				ImGui::Text(relativePath.filename().string().c_str());

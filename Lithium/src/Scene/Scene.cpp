@@ -1,7 +1,6 @@
 #include "lipch.h"
-#include "Components.h"
-#include "Scene.h"
-#include "Entity.h"
+#include "Scene/Entity.h"
+#include "Scene/Components.h"
 #include "Renderer/Renderer2D.h"
 #include "Script/MonoServer.h"
 #include "gtc/type_ptr.hpp"
@@ -13,6 +12,7 @@
 #include "AssetManager/AssetManager.h"
 #include "Audio/Audio.h"
 #include "Font/FontRenderer.h"
+
 
 namespace Lithium
 {
@@ -105,7 +105,7 @@ namespace Lithium
 	
 
 	template<typename Component>
-	static void CopyComponentAll(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
+	void Scene::CopyComponentAll(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
 	{
 		auto view = src.view<Component>();
 		for (auto e : view)
@@ -201,7 +201,7 @@ namespace Lithium
 			{
 
 
-				auto& [sp, tc] = view.get<SpriteRendererComponent, TransformComponent>(entity);
+				auto [sp, tc] = view.get<SpriteRendererComponent, TransformComponent>(entity);
 
 				if (sp.TextureAsset.GetUUID() == 0)
 				{
@@ -220,7 +220,7 @@ namespace Lithium
 
 			for (auto entity : view)
 			{
-				auto& [txr, tc] = view.get<TextRenderer, TransformComponent>(entity);
+				auto [txr, tc] = view.get<TextRenderer, TransformComponent>(entity);
 
 				if (txr.FontAsset.GetUUID() != 0)
 				{
@@ -340,7 +340,7 @@ namespace Lithium
 			{
 				
 
-				auto& [sp, tc] = view.get<SpriteRendererComponent, TransformComponent>(entity);
+				auto [sp, tc] = view.get<SpriteRendererComponent, TransformComponent>(entity);
 
 				if (sp.TextureAsset.GetUUID() == 0)
 				{
@@ -362,7 +362,7 @@ namespace Lithium
 
 			for (auto entity : view)
 			{
-				auto& [txr, tc] = view.get<TextRenderer, TransformComponent>(entity);
+				auto [txr, tc] = view.get<TextRenderer, TransformComponent>(entity);
 
 				if (txr.FontAsset.GetUUID() != 0)
 				{
@@ -526,6 +526,14 @@ namespace Lithium
 		}
 		return enttMap;
 	}
+	
+	template<typename T>
+	void Scene::CopyComponent(Entity src, Entity dst)
+    { 
+	if (src.HasComponent<T>())
+		dst.AddOrReplaceComponent<T>(src.GetComponent<T>());
+    }
+
 
 	Ref<Scene> Scene::Copy(const Ref<Scene>& src)
 	{
@@ -722,4 +730,6 @@ namespace Lithium
 	void Scene::OnComponentAdded<TextRenderer>(Entity entity, TextRenderer& component)
 	{
 	}
+
 }
+            
