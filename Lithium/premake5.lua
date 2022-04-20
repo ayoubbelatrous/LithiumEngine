@@ -6,8 +6,8 @@ cppdialect "C++17"
 staticruntime "off"
 
 
-	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
+    targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 
 --pchheader "lipch.h"
 --pchsource "src/lipch.cpp"
@@ -18,16 +18,16 @@ files
     "src/**.cpp",
 
     "vendor/glm/glm/**.hpp",
-	"vendor/glm/glm/**.inl",
+    "vendor/glm/glm/**.inl",
 
     "vendor/spdlog/**/**.hpp",
 
     "vendor/stb_image/**.h",
-	"vendor/stb_image/**.cpp",
+    "vendor/stb_image/**.cpp",
 
     
     "vendor/imguizmo/**.h",
-	"vendor/imguizmo/**.cpp",
+    "vendor/imguizmo/**.cpp",
 }
 includedirs
 {
@@ -54,27 +54,15 @@ includedirs
     "%{IncludeDir.OpenAlSoft}/src/common",
 }
 
-
-links
-{
-	"GLFW",
-    "GLAD",
-    "IMGUI",
-    "yaml-cpp",
-	"opengl32.lib",
-    "msdf-atlas-gen",
-    "Box2D",
-    "assimp",
-    "Vorbis",
-}
 defines
 {
     "GLFW_INCLUDE_NONE",
      "AL_LIBTYPE_STATIC",
 }
+
  
     filter "files:vendor/imguizmo/**.cpp"
-	   flags { "NoPCH" }
+       flags { "NoPCH" }
 
 
     filter "system:linux"
@@ -89,12 +77,6 @@ defines
             "OpenAL_EXPORTS"
        }
        
-    filter "system:linux"
-       links
-       {
-           "%{LibDir.mono}/linux/libmono-static-sgen.a",
-           "%{LibDir.OpenAlSoft}/lib/libopenal.so",
-       }
     filter "system:windows"
        systemversion "latest"
        defines
@@ -115,10 +97,10 @@ defines
           "Bcrypt.lib",
        }
 
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "on"
 
-	filter "configurations:Release"
-		runtime "Release"
-		optimize(omptimizationLevel)
+    filter "configurations:Release"
+        runtime "Release"
+        optimize(omptimizationLevel)

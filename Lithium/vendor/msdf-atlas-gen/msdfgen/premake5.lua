@@ -112,7 +112,6 @@ project "msdfgen"
 
 	links
 	{
-		"freetype"
 	}
 
 	filter "configurations:Debug"

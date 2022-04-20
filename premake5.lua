@@ -41,7 +41,7 @@ IncludeDir["spdlog"] =   "%{wks.location}/Lithium/vendor/spdlog/include"
 
 LibDir = {}
 LibDir["mono"] = "%{wks.location}/Lithium/vendor/mono/lib"
-LibDir["OpenAL-Soft"] = "%{wks.location}/Lithium/vendor/OpenAL-Soft/lib"
+LibDir["OpenALSoft"] = "%{wks.location}/Lithium/vendor/OpenAL-Soft/lib"
 
 group "Dependencies"
 	include "Lithium/vendor/glfw"
@@ -55,6 +55,8 @@ group "Dependencies"
 	include "Lithium/vendor/Vorbis"
 	include "Lithium/vendor/libogg"
 group ""
+
+
 
 include "Lithium"
 include "Editor"

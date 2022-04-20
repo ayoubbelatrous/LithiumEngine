@@ -28,11 +28,6 @@ project "msdf-atlas-gen"
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 
-	links
-	{
-		"msdfgen"
-	}
-
 filter "configurations:Debug"
 	runtime "Debug"
 	symbols "on"
