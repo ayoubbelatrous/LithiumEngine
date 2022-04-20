@@ -10,7 +10,6 @@ project "IMGUI"
 	{
 		"**.cpp",
 		"**.h",
-
 	}
 	filter "system:windows"
 		systemversion "latest"

@@ -1,5 +1,5 @@
 #pragma once
-#include "glm.hpp"
+#include "glm/glm.hpp"
 
 class b2World;
 class b2ContactListener;

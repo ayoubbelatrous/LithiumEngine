@@ -1,6 +1,6 @@
 #pragma once
 #define GLM_ENABLE_EXPERIMENTAL
-#include "gtx/string_cast.hpp"
+#include "glm/gtx/string_cast.hpp"
 #include "Core/Base.h"
 #pragma warning(push, 0)
 #include <spdlog/spdlog.h>
