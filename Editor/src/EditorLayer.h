@@ -1,11 +1,11 @@
 #pragma once
 #include "Lithium.h"
 #include "Core/Base.h"
-#include "glm.hpp"
-#include "gtc/matrix_transform.hpp"
-#include "gtc/type_ptr.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #define GLM_ENABLE_EXPERIMENTAL
-#include "gtx/transform.hpp"
+#include "glm/gtx/transform.hpp"
 
 #include "Renderer/VertexArray.h"
 #include "Renderer/Shader.h"

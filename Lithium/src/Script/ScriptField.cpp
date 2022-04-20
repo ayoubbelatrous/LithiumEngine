@@ -161,5 +161,118 @@ namespace Lithium
 		const char* utf = mono_string_to_utf8(str);
 		return std::string(utf);
 	}
+	
+	  template<>
+		void ScriptField::SetValue(int value)
+		{
+			ASSERT(m_Type == ScriptType::Int);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void ScriptField::SetValue(float value)
+		{
+			ASSERT(m_Type == ScriptType::Float);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void ScriptField::SetValue(bool value)
+		{
+			ASSERT(m_Type == ScriptType::Bool);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void ScriptField::SetValue(glm::vec2 value)
+		{
+			ASSERT(m_Type == ScriptType::Vec2);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void ScriptField::SetValue(glm::vec3 value)
+		{
+			ASSERT(m_Type == ScriptType::Vec3);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void ScriptField::SetValue(glm::vec4 value)
+		{
+			ASSERT(m_Type == ScriptType::Vec4);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void ScriptField::SetValue(std::string value)
+		{
+			ASSERT(m_Type == ScriptType::String);
+			m_Value = value;
+			SetMonoString(value);
+		}
+
+		template<>
+		void ScriptField::SetValue(uint64_t value)
+		{
+			ASSERT(m_Type == ScriptType::Entity);
+			m_Value = value;
+			SetMonoEntity(std::get<uint64_t>(m_Value));
+		}
+		template<>
+		void ScriptField::SetValue(UUID assetID)
+		{
+			ASSERT(m_Type == ScriptType::AudioClip);
+			m_Value = assetID;
+			SetMonoAudioClip(std::get<uint64_t>(m_Value));
+		}
+		
+
+		
+
+		template<>
+		std::string ScriptField::GetValue()
+		{
+			std::string val = GetMonoString();
+			return val;
+		}
+
+		template<>
+		uint64_t ScriptField::GetValue()
+		{
+			uint64_t val = GetMonoEntity();
+			return val;
+		}
+
+		template<>
+		UUID ScriptField::GetValue()
+		{
+			uint64_t val = GetMonoAudioClip();
+			return UUID(val);
+		}
+
+
+		
+		template<>
+		std::string ScriptField::GetLocalValue()
+		{
+			return std::get<std::string>(m_Value);
+		}
+		template<>
+		uint64_t ScriptField::GetLocalValue()
+		{
+			return std::get<uint64_t>(m_Value);
+		}
+		template<>
+		UUID ScriptField::GetLocalValue()
+		{
+			return std::get<uint64_t>(m_Value);
+		}
 
 }

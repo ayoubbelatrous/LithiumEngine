@@ -3,11 +3,11 @@
 #include "Scene/Components.h"
 #include "Renderer/Renderer2D.h"
 #include "Script/MonoServer.h"
-#include "gtc/type_ptr.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include "Core/Application.h"
 #include "Core/Math.h"
 #define GLM_ENABLE_EXPERIMENTAL
-#include "gtx/string_cast.hpp"
+#include "glm/gtx/string_cast.hpp"
 #include "box2d/box2d.h"
 #include "AssetManager/AssetManager.h"
 #include "Audio/Audio.h"

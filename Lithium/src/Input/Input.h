@@ -1,6 +1,6 @@
 #pragma once
 #include "InputKeyCodes.h"
-#include "glm.hpp"
+#include "glm/glm.hpp"
 
 namespace Lithium
 {

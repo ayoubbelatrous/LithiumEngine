@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include <gtx/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 namespace Lithium {
 

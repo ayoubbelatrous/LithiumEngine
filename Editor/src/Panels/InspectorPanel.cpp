@@ -5,8 +5,8 @@
 #include "imgui/imgui_internal.h"
 #include "entt.hpp"
 #include "Scene/Components.h"
-#include "glm.hpp"
-#include "gtc/type_ptr.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include "Core/Base.h"
 #include "AssetManager/AssetManager.h"
 #include <filesystem>

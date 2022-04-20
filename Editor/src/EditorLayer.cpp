@@ -8,7 +8,7 @@
 #include <atomic>
 #include "Panels/ProjectWizard.h"
 #define GLM_ENABLE_EXPERIMENTAL
-#include "gtx/string_cast.hpp"
+#include "glm/gtx/string_cast.hpp"
 #include "Font/FontRenderer.h"
 #include "Commands/CommandHistroy.h"
 #include "Commands/FloatCommand.h"

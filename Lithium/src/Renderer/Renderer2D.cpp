@@ -10,7 +10,7 @@
 #include "Renderer2D.h"
 #include "Renderer.h"
 #include <array>
-#include "gtc/matrix_transform.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 #include "Scene/Components.h"
 
 namespace Lithium

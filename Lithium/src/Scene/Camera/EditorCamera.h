@@ -4,7 +4,7 @@
 #include "Core/Application.h"
 #include "Event/AppEvents.h"
 #include "Event/EventDispatcher.h"
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 namespace Lithium {
 

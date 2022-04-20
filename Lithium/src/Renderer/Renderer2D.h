@@ -3,7 +3,7 @@
 #include "Texture.h"
 #include "Core/Base.h"
 #include "Renderer.h"
-#include "glm.hpp"
+#include "glm/glm.hpp"
 
 namespace Lithium {
 

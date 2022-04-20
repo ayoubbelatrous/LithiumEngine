@@ -8,7 +8,7 @@
 #include "Input/Input.h"
 #include <chrono>
 #include <assert.h>
-#include "gtc/type_ptr.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include <mono/metadata/tokentype.h>
 #include <mono/metadata/mono-gc.h>

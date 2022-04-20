@@ -1,12 +1,12 @@
 #pragma once
 #include <string>
-#include "glm.hpp"
-#include "gtc/matrix_transform.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 #include "Renderer/Texture.h"
 #include "Core/Base.h"
 #include "Entity.h"
 #define GLM_ENABLE_EXPERIMENTAL
-#include <gtx/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include "Core/UUID.h"
 #include "Script/ScriptObject.h"

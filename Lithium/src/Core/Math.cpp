@@ -2,7 +2,7 @@
 #include "Math.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include <gtx/matrix_decompose.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 
 namespace Lithium::Math
 {

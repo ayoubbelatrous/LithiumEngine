@@ -1,7 +1,7 @@
 #include "lipch.h"
 #include "Application.h"
 #include "Debug/Profiler.h"
-#include "glm.hpp"
+#include "glm/glm.hpp"
 #include "Math.h"
 #include "Log.h"
 

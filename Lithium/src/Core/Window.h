@@ -4,7 +4,7 @@
 #include "Base.h"
 #include "Event/AppEvents.h"
 #include "Event/Event.h"
-#include "glm.hpp"
+#include "glm/glm.hpp"
 
 namespace Lithium
 {
