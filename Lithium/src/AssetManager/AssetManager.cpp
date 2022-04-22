@@ -65,7 +65,7 @@ namespace Lithium {
 	template<>
 	Ref<Texture> AssetManager::GetAsset(Asset asset)
 	{
-		LT_PROFILE_FUNCTION("Bla Bla")
+		
 		uint64_t ID = (uint64_t)asset.GetUUID();
 
 		if (m_TextureRegistry.find(ID) != m_TextureRegistry.end())
@@ -75,9 +75,9 @@ namespace Lithium {
 		else
 		{
 			
-			std::string path = m_PathRegistry[asset.GetUUID()];
+			std::filesystem::path path = m_PathRegistry[asset.GetUUID()];
 			
-			Ref<Texture> texture = CreateRef<Texture>(path);
+			Ref<Texture> texture = CreateRef<Texture>(path.string());
 			m_TextureRegistry.emplace(asset.GetUUID(), texture);
 			SaveAssetRegistry();
 

@@ -32,13 +32,13 @@ namespace Lithium
 
 	struct RendererData
 	{
-		const static uint32_t MaxQuadCount = 10000;
-		const static uint32_t MaxVertices = MaxQuadCount * 4;
-		const static uint32_t MaxIndices = MaxQuadCount * 6;
+		const static uint32_t MaxQuadCount;
+		const static uint32_t MaxVertices;
+		const static uint32_t MaxIndices;
 		const static uint32_t MaxTextures = 18;
 
 		const static uint32_t MaxLineCount = 10000;
-		const static uint32_t MaxLineVertices = MaxLineCount * 2;
+		const static uint32_t MaxLineVertices;
 
 		Ref<VertexArray> _VertexArray;
 		Ref<VertexBuffer> _VertexBuffer;
@@ -61,6 +61,10 @@ namespace Lithium
 		LineVertex* LineVertexBufferBase = nullptr;
 		LineVertex* LineVertexBufferPtr = nullptr;
 	};
+    const  uint32_t RendererData::MaxQuadCount = 10000;
+	const  uint32_t RendererData::MaxVertices = RendererData::MaxQuadCount * 4;
+	const  uint32_t RendererData::MaxIndices = RendererData::MaxQuadCount * 6;
+	const  uint32_t RendererData::MaxLineVertices = RendererData::MaxLineCount * 2;
 
 	static RendererData _Data;
 

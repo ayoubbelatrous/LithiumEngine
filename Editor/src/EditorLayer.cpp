@@ -132,7 +132,7 @@ namespace Lithium
 		m_CameraDelta = (mouse - m_InitialMousePosition) * 0.003f;
 		m_InitialMousePosition = mouse;
 
-		if ((Input::IsMouseKeyPressed(0) && Input::IsKeyDown(Key::LeftAlt)) || (Input::IsMouseKeyPressed(2)))
+		if ((Input::IsMouseKeyDown(0) && Input::IsKeyDown(Key::LeftAlt)) || (Input::IsMouseKeyPressed(2)))
 		{
 
 			float xSpeed = orthosize * 0.5f;
@@ -625,7 +625,7 @@ namespace Lithium
 			
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
 			{
-				const wchar_t* path = (const wchar_t*)payload->Data;
+				const char* path = (const char*)payload->Data;
 				std::filesystem::path pPath = root / path;
 				if (pPath.extension().compare(".scene") == 0)
 				{

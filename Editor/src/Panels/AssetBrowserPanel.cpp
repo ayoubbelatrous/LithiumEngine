@@ -56,12 +56,15 @@ namespace Lithium
 		}
 		ImGui::Separator();
 		
-		for (auto entry: _Cache)
+		for (int i = 0;i < Cache.size();i++)
 		{
-		
-			const auto& path = entry.path();
-	
-
+			const auto& entry = Cache[i];
+			if(!std::filesystem::exists(entry.path()))
+			{
+				continue;
+			}
+			auto path = entry.path();
+			
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 			ImGui::PushID(path.filename().string().c_str());
 		
@@ -73,6 +76,7 @@ namespace Lithium
 				if (entry.is_directory())
 				{
 					currentpath /= path.filename();
+					//LT_CORE_INFO((currentpath / path.filename()).string());
 					Refresh();
 				}
 				if (path.extension() == ".png"|| path.extension() == ".jpg")
@@ -86,9 +90,9 @@ namespace Lithium
 			{
 				auto relativePath = std::filesystem::relative(path, "assets");
 
-				const wchar_t* itemPath;
-				itemPath = (const wchar_t*)relativePath.c_str();
-				ImGui::SetDragDropPayload("ASSET_FILE", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				const char* itemPath;
+				itemPath = relativePath.c_str();
+				ImGui::SetDragDropPayload("ASSET_FILE", itemPath, (strlen(itemPath) + 1) * sizeof(char));
 				ImGui::Image(icontexid, { 50,50}, { 0,1 }, { 1,0 });
 				ImGui::Text(relativePath.filename().string().c_str());
 				ImGui::EndDragDropSource();
@@ -114,13 +118,13 @@ namespace Lithium
 
 	void AssetBrowserPanel::Refresh()
 	{
-		
-		_Cache.clear();
-		for (auto& entry : std::filesystem::directory_iterator(currentpath))
+		Cache.clear();
+		Cache.resize(0);
+		for (auto entry : std::filesystem::directory_iterator(currentpath))
 		{
 			if (entry.path().extension() != ".metadata")
 			{
-				_Cache.push_back(entry);
+				Cache.push_back(entry);
 			}
 		}
 	}

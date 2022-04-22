@@ -30,9 +30,9 @@ namespace Lithium
 	struct FontRendererData
 	{
 		
-		const static uint32_t MaxQuadCount = 10000;
-		const static uint32_t MaxVertices = MaxQuadCount * 4;
-		const static uint32_t MaxIndices = MaxQuadCount * 6;
+		const static uint32_t MaxQuadCount;
+		const static uint32_t MaxVertices;
+		const static uint32_t MaxIndices;
 		const static uint32_t MaxTextures = 18;
 
 		Ref<VertexArray> FontVertexArray;
@@ -48,6 +48,9 @@ namespace Lithium
 		glm::mat4 projection;
 		float pxRange = 6.0f;
 	};
+	const  uint32_t FontRendererData::MaxQuadCount = 10000;
+	const  uint32_t FontRendererData::MaxVertices = FontRendererData::MaxQuadCount * 4;
+	const  uint32_t FontRendererData::MaxIndices = FontRendererData::MaxQuadCount * 6;
 	FontRendererData s_Data;
 
 	void FontRenderer::Init()

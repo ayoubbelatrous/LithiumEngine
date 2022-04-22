@@ -1,5 +1,6 @@
 #include "lipch.h"
 #include "Shader.h"
+#include "Core/Log.h"
 #include "glad/glad.h"
 
 namespace Lithium
@@ -20,6 +21,7 @@ namespace Lithium
 	Shader::Shader(const std::string& path)
 	{
 
+		LT_CORE_INFO("[Renderer] : Loading Shader: {0}",path);
 		_Path = path;
 		enum class ShaderType
 		{
@@ -75,9 +77,7 @@ namespace Lithium
 			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 			char* message = (char*)alloca(sizeof(char) * length);
 			glGetShaderInfoLog(id, length, &length, message);
-			std::cout << "shader error" << std::endl;
-			std::cout << message << std::endl;
-
+			LT_CORE_ERROR("[Renderer] : Shader Failed To Compile With The Following Error:\n{0}",message);
 			glDeleteShader(id);
 			return 0;
 		}

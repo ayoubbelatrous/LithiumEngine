@@ -111,6 +111,7 @@ namespace Lithium
 
 		if (!std::filesystem::exists(pCachePath))
 		{
+			LT_CORE_INFO("[Font] font cache doesnt exist for : {}",pCachePath );
 			ImmediateAtlasGenerator<float, 3, &msdfGenerator, BitmapAtlasStorage<byte, 3>> generator(width, height);
 			GeneratorAttributes attributes;
 

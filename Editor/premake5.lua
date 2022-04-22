@@ -32,15 +32,41 @@ project "Editor"
 		  "%{IncludeDir.spdlog}",
 		  
 	}
-
+	libdirs
+	{
+		"../Lithium/vendor/OpenAL-Soft/lib/",
+		"../Lithium/vendor/mono/lib/linux/"
+	}
 	links
 	{
-		"",
-        "IMGUI",
-        "yaml-cpp",
-		"Lithium",
-		
+         "Lithium",
+         "GLAD",
+         "GLFW", 
+         "dl",
+         "GL", 
+         "X11",  
+ "IMGUI",
+
+      "Box2D",
+     "assimp",
+     "yaml-cpp", 
+     "msdf-atlas-gen",
+
+     "msdfgen",
+ 
+       "freetype",
+
+
+     
+     "Vorbis",
+     "libogg",
+     "monosgen:shared",
+     "openal:shared",
+     "pthread",
+   
+
 	}
+
 	filter "system:linux"
        defines
        {
@@ -49,7 +75,6 @@ project "Editor"
 	filter "system:linux"
        links
        {
-           "%{LibDir.mono}/linux/libmono-static-sgen.a",
        }
 	filter "system:windows"
        defines

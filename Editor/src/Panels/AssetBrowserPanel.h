@@ -30,6 +30,6 @@ namespace Lithium {
 		Ref<Texture> _FileIcon;
 		std::filesystem::path currentpath;
 		EventCallback callback;
-		std::vector<std::filesystem::directory_entry> _Cache;
+		std::vector<std::filesystem::directory_entry> Cache;
 	};
 }

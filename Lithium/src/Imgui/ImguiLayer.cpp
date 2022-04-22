@@ -88,10 +88,10 @@ namespace Lithium
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-#ifdef LT_PLATFORM_WINDOWS
+
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
-#endif
+
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}

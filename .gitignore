@@ -17,10 +17,12 @@ build/
 **.workspace
 **/**.batch_build
 **/**.txt
+**/**.blob
 **/MakeFile
 compile_flags.txt
 **/.codelite
 **/.build-debug
+**/.build-release
 MakeFile
 Makefile
 makefile

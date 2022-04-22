@@ -1,87 +1,87 @@
 PathRegistry:
-  - UUID: 8159922648104178881
+  - UUID: 17214959281454610457
+    Path: assets/Editor/Fonts/OpenSans-Light.ttf
+  - UUID: 2953673806835192784
+    Path: assets/audio/track.mp3
+  - UUID: 17625766738881703762
+    Path: assets/sprites/tree.png
+  - UUID: 3639772307128870970
+    Path: assets/sprites/mud-mid.png
+  - UUID: 17922551869026870396
+    Path: assets/fonts/Blockletter-PMGg.ttf
+  - UUID: 7224819586576530776
+    Path: assets/fonts/Lato/Lato-BlackItalic.ttf
+  - UUID: 4659185570097299958
     Path: ""
-  - UUID: 11192339893729287579
-    Path: assets\sprites\gliadiator.png
-  - UUID: 1316668738020957875
-    Path: ""
-  - UUID: 10460744895190112220
-    Path: ""
-  - UUID: 11167694175211764772
-    Path: ""
-  - UUID: 3268259082113240235
-    Path: ""
-  - UUID: 5384340314155245483
-    Path: ""
-  - UUID: 5609186999436627065
-    Path: ""
+  - UUID: 18038749646218154141
+    Path: assets/sprites/Player.png
+  - UUID: 4549631612969470153
+    Path: assets/fonts/arialbi.ttf
+  - UUID: 14890591824022124858
+    Path: assets/fonts/MsMadi-Regular.ttf
+  - UUID: 6368999414722566636
+    Path: assets/sprites/background.png
+  - UUID: 390963375903643555
+    Path: assets/sprites/boss.png
+  - UUID: 8040129137841035923
+    Path: assets/fonts/Pacifico-Regular.ttf
+  - UUID: 2893785331014740629
+    Path: assets/props/vase.png
   - UUID: 17073922704765126336
     Path: ""
+  - UUID: 17636764187676805560
+    Path: assets/fonts/ariali.ttf
+  - UUID: 5384340314155245483
+    Path: ""
+  - UUID: 6397480202031635342
+    Path: assets/audio/deathr.ogg
+  - UUID: 14094159999732837589
+    Path: assets/Editor/Fonts/Cairo-Regular.ttf
+  - UUID: 7291462645808560188
+    Path: ""
+  - UUID: 13820215286119202813
+    Path: assets/fonts/PlayfairDisplay-VariableFont_wght.ttf
+  - UUID: 4210013845660699088
+    Path: assets/fonts/RubikMoonrocks-Regular.ttf
   - UUID: 3462376389663479680
     Path: ""
-  - UUID: 17625766738881703762
-    Path: assets\sprites\tree.png
-  - UUID: 4659185570097299958
+  - UUID: 6781306874801935501
+    Path: assets/fonts/pixelated.ttf
+  - UUID: 7274837890526101591
+    Path: assets/fonts/GrapeNuts-Regular.ttf
+  - UUID: 12568799368987061985
+    Path: ""
+  - UUID: 8159922648104178881
+    Path: ""
+  - UUID: 10519355079567115886
+    Path: assets/fonts/Lato/Lato-Regular.ttf
+  - UUID: 3268259082113240235
+    Path: ""
+  - UUID: 11192339893729287579
+    Path: assets/sprites/gliadiator.png
+  - UUID: 12140528235655346694
+    Path: assets/Editor/Fonts/OpenSans-Regular.ttf
+  - UUID: 12828048890121511293
+    Path: assets/Editor/Fonts/CascadiaMono-Regular.ttf
+  - UUID: 5609186999436627065
+    Path: ""
+  - UUID: 1316668738020957875
+    Path: ""
+  - UUID: 18052674995662601814
+    Path: assets/fonts/Lato/Lato-BoldItalic.ttf
+  - UUID: 11878780770564620217
+    Path: assets/fonts/RubikWetPaint-Regular.ttf
+  - UUID: 17252337450930699130
+    Path: assets/sprites/mud.png
+  - UUID: 11103663858468905737
+    Path: assets/audio/amb_forest.mp3
+  - UUID: 10460744895190112220
     Path: ""
   - UUID: 5051875743027014023
     Path: ""
-  - UUID: 7291462645808560188
-    Path: ""
-  - UUID: 12568799368987061985
-    Path: ""
-  - UUID: 6368999414722566636
-    Path: assets\sprites\background.png
-  - UUID: 390963375903643555
-    Path: assets\sprites\boss.png
-  - UUID: 11103663858468905737
-    Path: assets\audio\amb_forest.mp3
-  - UUID: 7224819586576530776
-    Path: assets\fonts\Lato\Lato-BlackItalic.ttf
-  - UUID: 2953673806835192784
-    Path: assets\audio\track.mp3
-  - UUID: 7923464014337788641
-    Path: assets\Editor\Fonts\OpenSans-Regular.ttf
-  - UUID: 17252337450930699130
-    Path: assets\sprites\mud.png
-  - UUID: 4549631612969470153
-    Path: assets\fonts\arialbi.ttf
-  - UUID: 3639772307128870970
-    Path: assets\sprites\mud-mid.png
-  - UUID: 2893785331014740629
-    Path: assets\props\vase.png
-  - UUID: 6781306874801935501
-    Path: assets\fonts\pixelated.ttf
   - UUID: 6086720638072509347
-    Path: assets\Editor\Fonts\OpenSans-Bold.ttf
-  - UUID: 11878780770564620217
-    Path: assets\fonts\RubikWetPaint-Regular.ttf
-  - UUID: 12828048890121511293
-    Path: assets\Editor\Fonts\CascadiaMono-Regular.ttf
-  - UUID: 14094159999732837589
-    Path: assets\Editor\Fonts\Cairo-Regular.ttf
-  - UUID: 17214959281454610457
-    Path: assets\Editor\Fonts\OpenSans-Light.ttf
-  - UUID: 17636764187676805560
-    Path: assets\fonts\ariali.ttf
-  - UUID: 4210013845660699088
-    Path: assets\fonts\RubikMoonrocks-Regular.ttf
-  - UUID: 7274837890526101591
-    Path: assets\fonts\GrapeNuts-Regular.ttf
-  - UUID: 13820215286119202813
-    Path: assets\fonts\PlayfairDisplay-VariableFont_wght.ttf
-  - UUID: 18052674995662601814
-    Path: assets\fonts\Lato\Lato-BoldItalic.ttf
-  - UUID: 17922551869026870396
-    Path: assets\fonts\Blockletter-PMGg.ttf
-  - UUID: 10519355079567115886
-    Path: assets\fonts\Lato\Lato-Regular.ttf
-  - UUID: 12140528235655346694
+    Path: assets/Editor/Fonts/OpenSans-Bold.ttf
+  - UUID: 11167694175211764772
+    Path: ""
+  - UUID: 7923464014337788641
     Path: assets/Editor/Fonts/OpenSans-Regular.ttf
-  - UUID: 6397480202031635342
-    Path: assets\audio\deathr.ogg
-  - UUID: 14890591824022124858
-    Path: assets\fonts\MsMadi-Regular.ttf
-  - UUID: 8040129137841035923
-    Path: assets\fonts\Pacifico-Regular.ttf
-  - UUID: 18038749646218154141
-    Path: assets\sprites\Player.png

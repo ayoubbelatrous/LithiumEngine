@@ -364,8 +364,8 @@ namespace Lithium
 
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
 						{
-							const wchar_t* path = (const wchar_t*)payload->Data;
-							std::filesystem::path texturepath = root / path;
+							const char* path = (const char*)payload->Data;
+							std::filesystem::path texturepath = root / std::filesystem::path(path);
 							Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(texturepath.string());
 							m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset = asset;
 						}
@@ -721,7 +721,7 @@ namespace Lithium
 
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
 						{
-							const wchar_t* path = (const wchar_t*)payload->Data;
+							const char* path = (const char*)payload->Data;
 							std::filesystem::path audioPath = root / path;
 							if (audioPath.extension() == ".mp3" || audioPath.extension() == ".ogg")
 							{
