@@ -8,8 +8,8 @@ project "Editor"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 	
-	--pchheader "epch.h"
-	--pchsource "src/epch.cpp"
+	pchheader "epch.h"
+	pchsource "src/epch.cpp"
 	files
 	{
 		"src/**.h",
@@ -24,7 +24,7 @@ project "Editor"
 		 "%{IncludeDir.GLFW}",
 		 "%{IncludeDir.stb_image}",
 		 "%{IncludeDir.glm}",
-		  "%{IncludeDir.imgui}",
+			"%{IncludeDir.imgui}",
 		  "%{IncludeDir.entt}",
 		  "%{IncludeDir.imguizmo}",
 		  "%{IncludeDir.lua533}",
@@ -32,55 +32,49 @@ project "Editor"
 		  "%{IncludeDir.spdlog}",
 		  
 	}
-	libdirs
-	{
-		"../Lithium/vendor/OpenAL-Soft/lib/",
-		"../Lithium/vendor/mono/lib/linux/"
-	}
-	links
-	{
-         "Lithium",
-         "GLAD",
-         "GLFW", 
-         "dl",
-         "GL", 
-         "X11",  
- "IMGUI",
 
-      "Box2D",
-     "assimp",
-     "yaml-cpp", 
-     "msdf-atlas-gen",
-
-     "msdfgen",
- 
-       "freetype",
-
-
-     
-     "Vorbis",
-     "libogg",
-     "monosgen:shared",
-     "openal:shared",
-     "pthread",
-   
-
-	}
 
 	filter "system:linux"
        defines
        {
             "LT_PLATFORM_LINUX",
        }
-	filter "system:linux"
-       links
-       {
-       }
+
+	   libdirs
+	   {
+		   "../Lithium/vendor/OpenAL-Soft/lib/",
+		   "../Lithium/vendor/mono/lib/linux/"
+	   }
+	   links
+	   {
+			"Lithium",
+			"GLAD",
+			"GLFW", 
+			"dl",
+			"GL", 
+			"X11",  
+			"IMGUI",
+		    "Box2D",
+			"assimp",
+		    "yaml-cpp", 
+		    "msdf-atlas-gen",
+		 	"msdfgen",
+			"freetype",
+	    	"Vorbis",
+		    "libogg",
+		    "monosgen:shared",
+		    "openal:shared",
+		    "pthread",
+	   }
 	filter "system:windows"
        defines
        {
             "LT_PLATFORM_WINDOWS",
        }
+	   links
+	   {
+		   "Lithium"
+	   }
 	filter "configurations:Debug"
 		runtime "Debug"
 		symbols "on"

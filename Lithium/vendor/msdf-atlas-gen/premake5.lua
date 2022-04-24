@@ -27,6 +27,12 @@ project "msdf-atlas-gen"
 	{
 		"_CRT_SECURE_NO_WARNINGS"
 	}
+	filter "system:windows"
+	systemversion "latest"
+    	links
+	    {
+	    	"msdfgen"
+	    }
 
 filter "configurations:Debug"
 	runtime "Debug"

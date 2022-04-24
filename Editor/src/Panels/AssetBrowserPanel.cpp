@@ -91,7 +91,7 @@ namespace Lithium
 				auto relativePath = std::filesystem::relative(path, "assets");
 
 				const char* itemPath;
-				itemPath = relativePath.c_str();
+				itemPath = (const char*)relativePath.c_str();
 				ImGui::SetDragDropPayload("ASSET_FILE", itemPath, (strlen(itemPath) + 1) * sizeof(char));
 				ImGui::Image(icontexid, { 50,50}, { 0,1 }, { 1,0 });
 				ImGui::Text(relativePath.filename().string().c_str());

@@ -9,8 +9,8 @@ staticruntime "off"
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/".. outputdir .. "/%{prj.name}")
 
---pchheader "lipch.h"
---pchsource "src/lipch.cpp"
+pchheader "lipch.h"
+pchsource "src/lipch.cpp"
 
 files
 {
@@ -88,13 +88,23 @@ defines
        systemversion "latest"
        links
        {
+           "GLFW",
+           "GLAD",
+           "IMGUI",
+           "yaml-cpp",
+           "opengl32.lib",
+           "msdf-atlas-gen",
+           "Box2D",
+           "assimp",
            "%{LibDir.mono}/libmono-static-sgen.lib",
-          "Mswsock.lib",
-          "ws2_32.lib",
-          "psapi.lib",
-          "version.lib",
-          "winmm.lib",
-          "Bcrypt.lib",
+           "Mswsock.lib",
+           "ws2_32.lib",
+           "psapi.lib",
+           "version.lib",
+           "winmm.lib",
+           "Bcrypt.lib",
+           "OpenAl-Soft",
+           "Vorbis",
        }
 
     filter "configurations:Debug"

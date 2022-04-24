@@ -161,6 +161,7 @@ namespace Lithium
 		const char* utf = mono_string_to_utf8(str);
 		return std::string(utf);
 	}
+#ifndef LT_PLATFORM_WINDOWS
 	
 	  template<>
 		void ScriptField::SetValue(int value)
@@ -274,5 +275,6 @@ namespace Lithium
 		{
 			return std::get<uint64_t>(m_Value);
 		}
+#endif
 
 }

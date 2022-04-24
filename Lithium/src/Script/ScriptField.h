@@ -22,23 +22,138 @@ namespace Lithium
 		ScriptField(MonoClassField* field,MonoObject* object);
 		ScriptType GetType();
 
+#ifdef LT_PLATFORM_WINDOWS
 		template<typename T>
-		T GetLocalValue()
+		void SetValue(T value)
 		{
+			ASSERT(false);
 		}
-
 
 		template<typename T>
 		T GetValue()
 		{
-			 T val;
-			 GetMonoValue(&val);
-			 return val;
+			T val;
+			GetMonoValue(&val);
+			return val;
 		}
-		template<typename T>
-		void SetValue(T value)
+
+		template<>
+		std::string GetValue()
 		{
+			std::string val = GetMonoString();
+			return val;
 		}
+
+		template<>
+		uint64_t GetValue()
+		{
+			uint64_t val = GetMonoEntity();
+			return val;
+		}
+
+		template<>
+		UUID GetValue()
+		{
+			uint64_t val = GetMonoAudioClip();
+			return UUID(val);
+		}
+
+
+		template<typename T>
+		T GetLocalValue()
+		{
+			return std::get<T>(m_Value);
+		}
+		template<>
+		std::string GetLocalValue()
+		{
+			return std::get<std::string>(m_Value);
+		}
+		template<>
+		uint64_t GetLocalValue()
+		{
+			return std::get<uint64_t>(m_Value);
+		}
+		template<>
+		UUID GetLocalValue()
+		{
+			return std::get<uint64_t>(m_Value);
+		}
+
+
+		template<>
+		void SetValue(int value)
+		{
+			ASSERT(m_Type == ScriptType::Int);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void SetValue(float value)
+		{
+			ASSERT(m_Type == ScriptType::Float);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void SetValue(bool value)
+		{
+			ASSERT(m_Type == ScriptType::Bool);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void SetValue(glm::vec2 value)
+		{
+			ASSERT(m_Type == ScriptType::Vec2);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void SetValue(glm::vec3 value)
+		{
+			ASSERT(m_Type == ScriptType::Vec3);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void SetValue(glm::vec4 value)
+		{
+			ASSERT(m_Type == ScriptType::Vec4);
+			m_Value = value;
+			SetMonoValue(&value);
+		}
+
+		template<>
+		void SetValue(std::string value)
+		{
+			ASSERT(m_Type == ScriptType::String);
+			m_Value = value;
+			SetMonoString(value);
+		}
+
+		template<>
+		void SetValue(uint64_t value)
+		{
+			ASSERT(m_Type == ScriptType::Entity);
+			m_Value = value;
+			SetMonoEntity(std::get<uint64_t>(m_Value));
+		}
+		template<>
+		void SetValue(UUID assetID)
+		{
+			ASSERT(m_Type == ScriptType::AudioClip);
+			m_Value = assetID;
+			SetMonoAudioClip(std::get<uint64_t>(m_Value));
+		}
+#endif
+
+
 		
 	private:
 

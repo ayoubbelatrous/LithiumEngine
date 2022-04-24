@@ -110,10 +110,12 @@ project "msdfgen"
 		"MSDFGEN_USE_CPP11"
 	}
 
-	links
-	{
-	}
-
+	filter "system:windows"
+		systemversion "latest"
+		links
+		{
+			"freetype"
+		}
 	filter "configurations:Debug"
 	runtime "Debug"
 	symbols "on"
