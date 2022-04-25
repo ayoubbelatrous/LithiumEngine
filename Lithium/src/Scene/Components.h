@@ -69,6 +69,7 @@ namespace Lithium
 		glm::vec4 Color;
 		Asset TextureAsset;
 		int DrawOrder = 0;
+		int TextureIndex = 0;
 		SpriteRendererComponent()
 		{
 			Color = glm::vec4(1);
