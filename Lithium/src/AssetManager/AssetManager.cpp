@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 #include "Audio/Audio.h"
 #include "Core/UUID.h"
+#include "Core/Log.h"
 #include "AssetPacker.h"
 #include "AssetPackReader.h"
 
@@ -188,4 +189,63 @@ namespace Lithium {
 		}
 	}
 
+
+
+	template<>
+	TextureMetaData AssetManager::GetAssetMetaData<TextureMetaData>(Asset asset)
+	{
+		std::filesystem::path Path = GetAssetPath(asset);
+		Path /= ".metadata";
+
+
+		if (m_TextureMetaDataRegistry.find(asset.GetUUID()) != m_TextureMetaDataRegistry.end())
+		{
+			return m_TextureMetaDataRegistry[asset.GetUUID()];
+		}
+
+		if (std::filesystem::exists(Path))
+		{
+			YAML::Node data;
+			try
+			{
+				data = YAML::LoadFile(Path.string());
+			}
+			catch (YAML::ParserException e)
+			{
+				LT_CORE_ERROR("failed to load MetaData");
+				return TextureMetaData();
+			}
+			TextureMetaData::TextureMode mode;
+
+			if (strcmp(data["TextureMode"].as<std::string>().c_str(),"Single") == 0)
+			{
+				mode = TextureMetaData::TextureMode::Single;
+			}
+			else
+			{
+				mode = TextureMetaData::TextureMode::Multiple;
+			}
+			auto CellSizeX = data["CellSizeX"].as<int>();
+			auto CellSizeY = data["CellSizeY"].as<int>();
+			TextureMetaData textureMetaData(mode, TextureMetaData::TextureType::Sprite, CellSizeX, CellSizeY);
+			m_TextureMetaDataRegistry[asset.GetUUID()] = textureMetaData;
+			return textureMetaData;
+		}
+		else
+		{
+			YAML::Emitter emitter;
+			emitter << YAML::BeginMap;
+			emitter << YAML::Key << "TextureMetaData" << YAML::Value;
+			emitter << YAML::Key << "TextureMode" << YAML::Value << "Single";
+			emitter << YAML::Key << "TextureType" << YAML::Value << "Sprite";
+			emitter << YAML::Key << "CellSizeX" << YAML::Value << 0;
+			emitter << YAML::Key << "CellSizeY" << YAML::Value << 0;
+			emitter << YAML::EndMap;
+			std::ofstream output(Path.string());
+			output << emitter.c_str();
+			TextureMetaData textureMetaData(TextureMetaData::TextureMode::Single, TextureMetaData::TextureType::Sprite, 0, 0);
+			m_TextureMetaDataRegistry[asset.GetUUID()] = textureMetaData;
+			return textureMetaData;
+		}
+	}
 }
