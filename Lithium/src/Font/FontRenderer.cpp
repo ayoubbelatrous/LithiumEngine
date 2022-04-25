@@ -141,7 +141,7 @@ namespace Lithium
 		
 			float Width = font->GetAtlasSize().x;
 			float Height = font->GetAtlasSize().y;
-			float aspectRatio = currentChar.PackedSize.x / currentChar.PackedSize.y;
+
 			glm::vec2 textureCoords[] = {
 				{ (index.x * cellsize.x) / Width, (index.y * cellsize.y) / Height},
 				{ ((index.x + 1) * cellsize.x) / Width, (index.y * cellsize.y) / Height},

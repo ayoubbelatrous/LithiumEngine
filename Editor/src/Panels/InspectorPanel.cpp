@@ -335,7 +335,7 @@ namespace Lithium
 
 					ImGui::ColorEdit4("Color", glm::value_ptr(m_Selection.GetComponent<SpriteRendererComponent>().Color));
 					int drawOrder = m_Selection.GetComponent<SpriteRendererComponent>().DrawOrder;
-
+					ImGui::InputInt("TextureIndex", &m_Selection.GetComponent<SpriteRendererComponent>().TextureIndex);
 					if (ImGui::InputInt("Draw Order", &drawOrder))
 					{
 						m_Selection.GetComponent<SpriteRendererComponent>().DrawOrder = drawOrder;
@@ -364,7 +364,7 @@ namespace Lithium
 
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
 						{
-							const char* path = (const char*)payload->Data;
+							const wchar_t* path = (const wchar_t*)payload->Data;
 							std::filesystem::path texturepath = root / std::filesystem::path(path);
 							Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(texturepath.string());
 							m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset = asset;
@@ -721,7 +721,7 @@ namespace Lithium
 
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
 						{
-							const char* path = (const char*)payload->Data;
+							const wchar_t* path = (const wchar_t*)payload->Data;
 							std::filesystem::path audioPath = root / path;
 							if (audioPath.extension() == ".mp3" || audioPath.extension() == ".ogg")
 							{

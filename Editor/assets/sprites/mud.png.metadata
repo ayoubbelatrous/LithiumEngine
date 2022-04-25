@@ -1,0 +1,4 @@
+TextureMode: Multiple
+TextureType: Sprite
+CellSizeX: 5
+CellSizeY: 5

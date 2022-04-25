@@ -107,7 +107,6 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
-		
 	}
 
 	void EditorLayer::OnUpdate()
@@ -625,7 +624,7 @@ namespace Lithium
 			
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
 			{
-				const char* path = (const char*)payload->Data;
+				const wchar_t* path = (const wchar_t*)payload->Data;
 				std::filesystem::path pPath = root / path;
 				if (pPath.extension().compare(".scene") == 0)
 				{

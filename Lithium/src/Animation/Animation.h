@@ -11,18 +11,13 @@ namespace Lithium
 	class TextureIndexKeyFrame
 	{
 	public:
-		/**
-		 * textureIndex: is the texture index to be set when this key frame is executed
-		 * index: is the animation frame index in the track
-		 */
+		
 		TextureIndexKeyFrame(int textureIndex,float timestamp)
 			:m_TextureIndex(textureIndex),TimeStamp(timestamp)
 		{
 
 		}
-		/**
-		 * EntityID: the entity to be affected by the key frame
-		*/
+		
 		void Execute(const UUID& EntityID)
 		{
 			entt::entity e =  Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[EntityID];
@@ -74,9 +69,8 @@ namespace Lithium
 	class TextureIndexTrack : public AnimationTrack
 	{
 	public:
-		void PushKeyFrame(TextureIndexKeyFrame* keyframe)
+		void PushKeyFrame(TextureIndexKeyFrame keyframe)
 		{
-
 			m_KeyFrames.push_back(keyframe);
 		}
 
@@ -84,20 +78,20 @@ namespace Lithium
 		{
 			for (size_t i = 0; i < m_KeyFrames.size(); i++)
 			{
-				if (m_KeyFrames[i]->TimeStamp < currentTime)
+				if (m_KeyFrames[i].TimeStamp < currentTime)
 				{
-					m_KeyFrames[i]->Execute(EntityID);
+					m_KeyFrames[i].Execute(EntityID);
 				}
 			}
 		}
 	protected:
-		std::vector<TextureIndexKeyFrame*> m_KeyFrames;
+		std::vector<TextureIndexKeyFrame> m_KeyFrames;
 	};
 
 	class SpriteColorTrack : public AnimationTrack
 	{
 	public:
-		void PushKeyFrame(SpriteColorKeyFrame* keyframe)
+		void PushKeyFrame(SpriteColorKeyFrame keyframe)
 		{
 
 			m_KeyFrames.push_back(keyframe);
@@ -107,20 +101,22 @@ namespace Lithium
 		{
 			for (size_t i = 0; i < m_KeyFrames.size(); i++)
 			{
-				if (m_KeyFrames[i]->TimeStamp < currentTime)
+				if (m_KeyFrames[i].TimeStamp < currentTime)
 				{
 					if (i >= m_KeyFrames.size())
 					{
-						m_KeyFrames[i]->Interpolate(EntityID, m_KeyFrames[i + 1]->m_Value, currentTime);
+						m_KeyFrames[i].Interpolate(EntityID, m_KeyFrames[i + 1].m_Value, currentTime);
 					}
 					else
 					{
+						m_KeyFrames[i].Interpolate(EntityID, m_KeyFrames[0].m_Value, currentTime);
+
 					}
 				}
 			}
 		}
 	protected:
-		std::vector<SpriteColorKeyFrame*> m_KeyFrames;
+		std::vector<SpriteColorKeyFrame> m_KeyFrames;
 	};
 
 	class Animation
@@ -128,7 +124,6 @@ namespace Lithium
 	public:
 		void Update()
 		{
-			
 			m_CurrentTime += Application::Get().GetDeltaTime();
 			if (m_CurrentTime >= m_Duration)
 			{
@@ -148,7 +143,15 @@ namespace Lithium
 		{
 			m_Tracks.push_back(track);
 		}
+		const std::vector<AnimationTrack*> GetTracks() const
+		{
+			return m_Tracks;
+		}
 		void SetEntityUUID(const UUID& entityID)
+		{
+			EntityID = entityID;
+		}
+		void GetEntityUUID(const UUID& entityID)
 		{
 			EntityID = entityID;
 		}
@@ -156,10 +159,26 @@ namespace Lithium
 		{
 			m_Duration = duration;
 		}
+		float GetDuration()
+		{
+			return m_Duration;
+		}
 		void SetLoop(bool loop)
 		{
 			m_Loop = loop;
 		}
+		bool IsLoop()
+		{
+			return m_Loop;
+		}
+		~Animation()
+		{
+			for (int i = 0;i < m_Tracks.size();i++)
+			{
+				delete m_Tracks[i];
+			}
+		}
+
 	private:
 		UUID EntityID;
 		float m_CurrentTime = 0.0f;

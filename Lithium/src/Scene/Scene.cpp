@@ -206,10 +206,35 @@ namespace Lithium
 				if (sp.TextureAsset.GetUUID() == 0)
 				{
 					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity);
+
 				}
 				else
 				{
-					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset), (uint32_t)entity);
+					Ref<Texture> textureAsset = Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset);;
+
+					TextureMetaData textureMetaData = Application::Get().assetManager->GetAssetMetaData<TextureMetaData>(sp.TextureAsset);
+
+					if (textureMetaData.Mode == TextureMetaData::TextureMode::Multiple)
+					{
+						glm::vec2 cellsize = glm::vec2(textureMetaData.CellsizeX,textureMetaData.CellsizeY);
+						int Width = textureAsset->GetWidth();
+						int Height = textureAsset->GetWidth();
+						int x = sp.TextureIndex / (Width / cellsize.x);
+						int y = sp.TextureIndex % (int)(Width / cellsize.x);
+						glm::vec2 index = glm::vec2(x,y);
+
+						glm::vec2 textureCoords[] = {
+							{ (index.x * cellsize.x) / Width, (index.y * cellsize.y) / Height},
+							{ ((index.x + 1) * cellsize.x) / Width, (index.y * cellsize.y) / Height},
+							{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
+							{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
+						};
+						BatchRenderer::DrawQuadSubTexture(tc.ModelMatrix, sp.GetColor(), textureCoords, textureAsset, (uint32_t)entity);
+					}
+					else if (textureMetaData.Mode == TextureMetaData::TextureMode::Single)
+					{
+						BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), textureAsset, (uint32_t)entity);
+					}
 				}
 			}
 		}

@@ -195,7 +195,7 @@ namespace Lithium {
 	TextureMetaData AssetManager::GetAssetMetaData<TextureMetaData>(Asset asset)
 	{
 		std::filesystem::path Path = GetAssetPath(asset);
-		Path /= ".metadata";
+		Path += ".metadata";
 
 
 		if (m_TextureMetaDataRegistry.find(asset.GetUUID()) != m_TextureMetaDataRegistry.end())
@@ -205,6 +205,7 @@ namespace Lithium {
 
 		if (std::filesystem::exists(Path))
 		{
+
 			YAML::Node data;
 			try
 			{
@@ -235,9 +236,8 @@ namespace Lithium {
 		{
 			YAML::Emitter emitter;
 			emitter << YAML::BeginMap;
-			emitter << YAML::Key << "TextureMetaData" << YAML::Value;
-			emitter << YAML::Key << "TextureMode" << YAML::Value << "Single";
-			emitter << YAML::Key << "TextureType" << YAML::Value << "Sprite";
+			emitter << YAML::Key << "TextureMode" << YAML::Value << std::string("Single");
+			emitter << YAML::Key << "TextureType" << YAML::Value << std::string("Sprite");
 			emitter << YAML::Key << "CellSizeX" << YAML::Value << 0;
 			emitter << YAML::Key << "CellSizeY" << YAML::Value << 0;
 			emitter << YAML::EndMap;
