@@ -1,59 +1,64 @@
 #pragma once
-#include <vector>
 #include "glm/glm.hpp"
-#include "Core/Log.h"
 #include "Core/UUID.h"
-#include "Core/Application.h"
-#include "Scene/Entity.h"
+#include "Core/Base.h"
+#include <vector>
 
+namespace YAML
+{
+	class Emitter;
+}
 namespace Lithium
 {
+	
 	class TextureIndexKeyFrame
 	{
 	public:
+		TextureIndexKeyFrame() = default;
 
 		TextureIndexKeyFrame(int textureIndex, float timestamp)
-			:m_TextureIndex(textureIndex), TimeStamp(timestamp)
+			:TextureIndex(textureIndex), TimeStamp(timestamp)
 		{}
 
 		void Execute(const UUID& EntityID);
 
 		float TimeStamp = 0;
-	private:
-		int m_TextureIndex = 0;
+		int TextureIndex = 0;
 	};
 
 
 	class SpriteColorKeyFrame
 	{
 	public:
+		SpriteColorKeyFrame() = default;
 		SpriteColorKeyFrame(glm::vec4 value, float timestamp)
-			:m_Value(value), TimeStamp(timestamp)
+			:Value(value), TimeStamp(timestamp)
 		{}
 
 		void Interpolate(const UUID& EntityID, glm::vec4 nextFrame, float currentTime);
 
 		float TimeStamp = 0;
-		glm::vec4 m_Value;
+		glm::vec4 Value;
 	};
 
 	class AnimationTrack
 	{
 	public:
-
+		AnimationTrack() = default;
 		virtual void Step(const UUID& EntityID, float currentTime) = 0;
+		virtual void Serialize(YAML::Emitter& emitter) = 0;
 	};
 
 
 	class TextureIndexTrack : public AnimationTrack
 	{
 	public:
+		TextureIndexTrack() = default;
 
 
 		void PushKeyFrame(TextureIndexKeyFrame keyframe);
 		virtual void Step(const UUID& EntityID, float currentTime) override;
-
-
+		virtual void Serialize(YAML::Emitter& emitter) override;
 	protected:
 		std::vector<TextureIndexKeyFrame> m_KeyFrames;
 	};
@@ -61,10 +66,11 @@ namespace Lithium
 	class SpriteColorTrack : public AnimationTrack
 	{
 	public:
-
+		SpriteColorTrack() = default;
 
 		void PushKeyFrame(SpriteColorKeyFrame keyframe);
 		virtual void Step(const UUID& EntityID, float currentTime) override;
+		virtual void Serialize(YAML::Emitter& emitter) override;
 
 
 	protected:
@@ -76,8 +82,8 @@ namespace Lithium
 	class Animation
 	{
 	public:
-
-		void Update();
+		Animation() = default;
+		void Update(const UUID& EntityID,float& Time);
 
 		void PushTrack(AnimationTrack* track)
 		{
@@ -86,14 +92,6 @@ namespace Lithium
 		const std::vector<AnimationTrack*> GetTracks() const
 		{
 			return m_Tracks;
-		}
-		void SetEntityUUID(const UUID& entityID)
-		{
-			EntityID = entityID;
-		}
-		void GetEntityUUID(const UUID& entityID)
-		{
-			EntityID = entityID;
 		}
 		void SetDuration(float duration)
 		{
@@ -111,6 +109,9 @@ namespace Lithium
 		{
 			return m_Loop;
 		}
+
+		static std::string SerializeAnimation(const Ref<Animation>& animation);
+
 		~Animation()
 		{
 			for (int i = 0; i < m_Tracks.size(); i++)
@@ -121,8 +122,6 @@ namespace Lithium
 
 	private:
 
-		UUID EntityID;
-		float m_CurrentTime = 0.0f;
 		std::vector<AnimationTrack*> m_Tracks;
 		float m_Duration = 0.0f;
 		bool m_Loop = false;
