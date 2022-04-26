@@ -23,6 +23,7 @@
 #include "Panels/SceneHierachyPanel.h"
 #include "Panels/InspectorPanel.h"
 #include "Panels/AssetBrowserPanel.h"
+#include "Panels/AnimationPanel.h"
 #include "Panels/SpriteEditor.h"
 #include "Scene/Serializer.h"
 #include "AssetManager/AssetManager.h"
@@ -35,6 +36,7 @@
 #include "Audio/AudioSource.h"
 #include "Font/Font.h"
 #include "Utils/WindowsPlatformUtils.h"
+#include "Animation/Animation.h"
 
 namespace Lithium
 {
@@ -124,11 +126,12 @@ namespace Lithium
 
 		//Panels 
 		Ref<SceneHierachyPanel> m_SceneHierachyPanel;
+		Ref<AnimationPanel> m_AnimationPanel;
 		Ref<InspectorPanel> m_InspectorPanel;
 		std::string m_ScenePath = "assets/scenes/";
 		bool m_OpenStatsPanel = false;
 		bool m_OpenProjectWizard = false;
-
+		bool m_OpenAnimationPanel;
 		glm::vec2 m_InitialMousePosition = { 0.0f,0.0f };
 		glm::vec2 m_CameraDelta = { 0.0f,0.0f };
 		glm::vec3 m_FocalPoint = glm::vec3(0);

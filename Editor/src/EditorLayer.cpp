@@ -13,6 +13,7 @@
 #include "Commands/CommandHistroy.h"
 #include "Commands/FloatCommand.h"
 
+
 static std::atomic_bool canCheckAssembly;
 
 namespace Lithium
@@ -31,6 +32,7 @@ namespace Lithium
 		m_ActiveScene = m_EditorScene;
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		m_SceneHierachyPanel = CreateRef<SceneHierachyPanel>();
+		m_AnimationPanel = CreateRef<AnimationPanel>();
 		m_SceneHierachyPanel->OnCreate();
 
 
@@ -107,6 +109,7 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
+
 	}
 
 	void EditorLayer::OnUpdate()
@@ -517,6 +520,10 @@ namespace Lithium
 				{
 					m_OpenStatsPanel = true;
 				}
+				if (ImGui::MenuItem("Animation"))
+				{
+					m_OpenAnimationPanel = true;
+				}
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Entity"))
@@ -577,6 +584,16 @@ namespace Lithium
 			LT_PROFILE_SCOPE("SceneHierachyPanel()")
 				m_SceneHierachyPanel->OnUpdate();
 			LT_END_SCOPE();
+		}
+
+
+		{
+			if (m_OpenAnimationPanel)
+			{
+				LT_PROFILE_SCOPE("AnimationPanel()")
+					m_AnimationPanel->OnUpdate(&m_OpenAnimationPanel);
+				LT_END_SCOPE();
+			}	
 		}
 	
 		{
