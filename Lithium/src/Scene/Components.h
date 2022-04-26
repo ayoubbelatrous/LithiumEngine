@@ -80,7 +80,6 @@ namespace Lithium
 
 		SpriteRendererComponent(const SpriteRendererComponent& other) = default;
 		glm::vec4 GetColor() const { return Color; }
-	
 	};
 
 
@@ -230,6 +229,29 @@ namespace Lithium
 
 		TextRenderer() = default;
 		TextRenderer(const TextRenderer&) = default;
+	};
+
+	struct Animator
+	{
+		Asset AnimationAsset = Asset(0);
+
+		void Play()
+		{
+			IsPlaying = true;
+		}
+		void Pause()
+		{
+			IsPlaying = false;
+		}
+		void Reset()
+		{
+			CurrentTime = 0.0f;
+		}
+
+		bool IsPlaying;
+		float CurrentTime = 0.0f;
+		Animator() = default;
+		Animator(const Animator&) = default;
 	};
 }
 
