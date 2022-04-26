@@ -84,22 +84,24 @@ namespace YAML {
 }
 
 
-namespace Lithium
+namespace YAML
 {
-	YAML::Emitter& operator <<(YAML::Emitter& emitter, const glm::vec4& vector)
+	inline
+	Emitter& operator <<(YAML::Emitter& emitter, const glm::vec4& vector)
 	{
 		emitter << YAML::Flow;
 		emitter << YAML::BeginSeq << vector.x << vector.y << vector.z << vector.w << YAML::EndSeq;
 		return emitter;
 	}
-	YAML::Emitter& operator <<(YAML::Emitter& emitter, const glm::vec3& vector)
+	inline
+	Emitter& operator <<(YAML::Emitter& emitter, const glm::vec3& vector)
 	{
 		emitter << YAML::Flow;
 		emitter << YAML::BeginSeq << vector.x << vector.y << vector.z << YAML::EndSeq;
 		return emitter;
 	}
-
-	YAML::Emitter& operator <<(YAML::Emitter& emitter, const glm::vec2& vector)
+	inline
+	Emitter& operator <<(YAML::Emitter& emitter, const glm::vec2& vector)
 	{
 		emitter << YAML::Flow;
 		emitter << YAML::BeginSeq << vector.x << vector.y << YAML::EndSeq;
