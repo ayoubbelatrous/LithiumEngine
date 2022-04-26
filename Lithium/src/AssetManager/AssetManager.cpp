@@ -7,6 +7,7 @@
 #include "AssetPackReader.h"
 
 
+
 namespace Lithium {
 
 	template<>
@@ -63,6 +64,26 @@ namespace Lithium {
 			return Asset(m_AssetRegistry[path]);
 		}
 	}
+
+	template<>
+	Asset AssetManager::GetAssetFromPath<Ref<Animation>>(const std::string& path)
+	{
+		if (m_AssetRegistry.find(path) != m_AssetRegistry.end())
+		{
+			return Asset(UUID(m_AssetRegistry[path]));
+		}
+		else
+		{
+			UUID uuid = UUID();
+			Ref<Animation> animation = CreateRef<Animation>();
+			m_AssetRegistry.emplace(path, (uint64_t)uuid);
+			m_PathRegistry.emplace((uint64_t)uuid, path);
+			m_AnimationRegistry.emplace((uint64_t)uuid, animation);
+			SaveAssetRegistry();
+			return Asset(m_AssetRegistry[path]);
+		}
+	}
+
 	template<>
 	Ref<Texture> AssetManager::GetAsset(Asset asset)
 	{
@@ -127,6 +148,25 @@ namespace Lithium {
 		}
 	}
 
+	template<>
+	Ref<Animation> AssetManager::GetAsset(Asset asset)
+	{
+
+		uint64_t ID = (uint64_t)asset.GetUUID();
+
+		if (m_AnimationRegistry.find(ID) != m_AnimationRegistry.end())
+		{
+			return m_AnimationRegistry[ID];
+		}
+		else
+		{
+			std::string path = m_PathRegistry[asset.GetUUID()];
+			Ref<Animation> animation = CreateRef<Animation>();
+			m_AnimationRegistry.emplace(asset.GetUUID(), animation);
+			SaveAssetRegistry();
+			return animation;
+		}
+	}
 
 	std::string AssetManager::GetAssetPath(Asset asset)
 	{

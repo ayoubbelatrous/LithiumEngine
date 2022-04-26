@@ -7,6 +7,7 @@
 #include "AssetPackReader.h"
 #include "Font/Font.h"
 #include "AssetManager/Metadata.h"
+#include "Animation/Animation.h"
 
 namespace Lithium
 {
@@ -30,7 +31,6 @@ namespace Lithium
 		std::string GetAssetPath(Asset asset);
 		void PackAssetRegistry(const std::string& path);
 	private:
-
 		void SaveAssetRegistry();
 		void LoadAssetRegistry();
 		std::unordered_map<std::string, uint64_t> m_AssetRegistry;
@@ -39,6 +39,7 @@ namespace Lithium
 		std::unordered_map<uint64_t, TextureMetaData> m_TextureMetaDataRegistry;
 		std::unordered_map<uint64_t, Ref<AudioSource>> m_AudioRegistry;
 		std::unordered_map<uint64_t, Ref<Font>> m_FontRegistry;
+		std::unordered_map<uint64_t, Ref<Animation>> m_AnimationRegistry;
 		std::string m_AssetRegistryRootPath = "Library/";
 
 	};
