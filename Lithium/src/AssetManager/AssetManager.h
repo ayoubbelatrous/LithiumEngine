@@ -28,6 +28,9 @@ namespace Lithium
 		template<typename T>
 		T GetAssetMetaData(Asset asset);
 
+		template<typename T>
+		bool UpdateAssetMetaData(T metadata,Asset asset);
+
 		std::string GetAssetPath(Asset asset);
 		void PackAssetRegistry(const std::string& path);
 	private:
@@ -43,4 +46,7 @@ namespace Lithium
 		std::string m_AssetRegistryRootPath = "Library/";
 
 	};
+
+	
+
 }
