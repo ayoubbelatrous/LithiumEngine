@@ -30,8 +30,7 @@ namespace Lithium
 		ImGui_ImplOpenGL3_Init("#version 330");
 		
 		ImGuiStyle* style = &ImGui::GetStyle();
-		
-
+	
 		auto& colors = ImGui::GetStyle().Colors;
 		colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
 
@@ -61,6 +60,7 @@ namespace Lithium
 		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
 		style->WindowRounding = 5.0f;
 		style->FrameRounding = 3.0f;
 		io.Fonts->AddFontFromFileTTF("assets/Editor/Fonts/OpenSans-Regular.ttf", 16);

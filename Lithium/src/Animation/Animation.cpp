@@ -93,11 +93,12 @@ namespace Lithium
 
 	void TextureIndexTrack::Step(const UUID& EntityID, float currentTime)
 	{
-		for (size_t i = 0; i < m_KeyFrames.size(); i++)
+		for (size_t i = 0; i < m_KeyFrames.size() - 1; i++)
 		{
-			if (m_KeyFrames[i].TimeStamp < currentTime)
+			if (currentTime < m_KeyFrames[i + 1].TimeStamp)
 			{
-				m_KeyFrames[i].Execute(EntityID);
+				m_KeyFrames[i + 1].Execute(EntityID);
+				break;
 			}
 		}
 	}

@@ -33,12 +33,13 @@ namespace Lithium
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		m_SceneHierachyPanel = CreateRef<SceneHierachyPanel>();
 		m_AnimationPanel = CreateRef<AnimationPanel>();
+		m_AssetPropertiesPanel = CreateRef<AssetPropertiesPanel>();
 		m_SceneHierachyPanel->OnCreate();
 
 
 		m_InspectorPanel = CreateRef<InspectorPanel>();
 		m_InspectorPanel->OnCreate();
-
+		m_InspectorPanel->OnCreate();
 
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 		timer = CreateRef<Timer>();
@@ -524,6 +525,10 @@ namespace Lithium
 				{
 					m_OpenAnimationPanel = true;
 				}
+				if (ImGui::MenuItem("Asset Properties Panel"))
+				{
+					m_OpenAssetPropertiesPanel = true;
+				}
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Entity"))
@@ -594,6 +599,15 @@ namespace Lithium
 					m_AnimationPanel->OnUpdate(&m_OpenAnimationPanel);
 				LT_END_SCOPE();
 			}	
+		}
+
+		{
+			if (m_AssetPropertiesPanel)
+			{
+				LT_PROFILE_SCOPE("AssetPropertiesPanel()")
+					m_AssetPropertiesPanel->OnUpdate(&m_OpenAssetPropertiesPanel);
+				LT_END_SCOPE();
+			}
 		}
 	
 		{
