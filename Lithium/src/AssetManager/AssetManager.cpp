@@ -87,7 +87,7 @@ namespace Lithium {
 	template<>
 	Ref<Texture> AssetManager::GetAsset(Asset asset)
 	{
-		
+
 		uint64_t ID = (uint64_t)asset.GetUUID();
 
 		if (m_TextureRegistry.find(ID) != m_TextureRegistry.end())
@@ -96,10 +96,18 @@ namespace Lithium {
 		}
 		else
 		{
-			
+
 			std::filesystem::path path = m_PathRegistry[asset.GetUUID()];
-			
-			Ref<Texture> texture = CreateRef<Texture>(path.string());
+			TextureMetaData metadata = GetAssetMetaData<TextureMetaData>(asset);
+			Ref<Texture> texture;
+			if (metadata.filteringMode == TextureMetaData::FilteringMode::Linear)
+			{
+				texture = CreateRef<Texture>(path.string(),0);
+			}
+			else if (metadata.filteringMode == TextureMetaData::FilteringMode::Nearest)
+			{
+				texture = CreateRef<Texture>(path.string(), 1);
+			}
 			m_TextureRegistry.emplace(asset.GetUUID(), texture);
 			SaveAssetRegistry();
 
@@ -187,7 +195,7 @@ namespace Lithium {
 	void AssetManager::SaveAssetRegistry()
 	{
 		YAML::Emitter emitter;
-			
+
 		emitter << YAML::BeginMap;
 		emitter << YAML::Key << "PathRegistry" << YAML::Value << YAML::BeginSeq;
 		for (auto& asset : m_PathRegistry)
@@ -259,7 +267,7 @@ namespace Lithium {
 			TextureMetaData::TextureMode mode;
 			TextureMetaData::FilteringMode filteringmode;
 
-			if (strcmp(data["TextureMode"].as<std::string>().c_str(),"Single") == 0)
+			if (strcmp(data["TextureMode"].as<std::string>().c_str(), "Single") == 0)
 			{
 				mode = TextureMetaData::TextureMode::Single;
 			}
@@ -279,7 +287,7 @@ namespace Lithium {
 			{
 				filteringmode = TextureMetaData::FilteringMode::Nearest;
 			}
-			TextureMetaData textureMetaData(mode, TextureMetaData::TextureType::Sprite,filteringmode, CellSizeX, CellSizeY);
+			TextureMetaData textureMetaData(mode, TextureMetaData::TextureType::Sprite, filteringmode, CellSizeX, CellSizeY);
 			m_TextureMetaDataRegistry[asset.GetUUID()] = textureMetaData;
 			return textureMetaData;
 		}
