@@ -409,8 +409,12 @@ namespace Lithium
 
 	void EditorLayer::onEditorEvent(Event& e)
 	{
-		
-
+		if (e.GetEventType() == EventType::AssetBrowserFileOpen)
+		{
+			AssetBrowserFileOpenEvent& assetBrowserfileOpenEvent = (AssetBrowserFileOpenEvent&)e;
+			m_OpenAssetPropertiesPanel = true;
+			m_AssetPropertiesPanel->SetAsset(assetBrowserfileOpenEvent.asset, assetBrowserfileOpenEvent.assettype);
+		}
 	}
 
 	void EditorLayer::OnImguiRender()
@@ -602,7 +606,7 @@ namespace Lithium
 		}
 
 		{
-			if (m_AssetPropertiesPanel)
+			if (m_OpenAssetPropertiesPanel)
 			{
 				LT_PROFILE_SCOPE("AssetPropertiesPanel()")
 					m_AssetPropertiesPanel->OnUpdate(&m_OpenAssetPropertiesPanel);

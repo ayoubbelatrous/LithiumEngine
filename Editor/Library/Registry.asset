@@ -1,13 +1,21 @@
 PathRegistry:
+  - UUID: 14970496017043213961
+    Path: assets\sprites\tree.png
   - UUID: 208079997309819341
     Path: assets/Editor/Fonts/OpenSans-Regular.ttf
   - UUID: 0
     Path: ""
   - UUID: 12190209315446512710
     Path: assets\sprites\man.png
+  - UUID: 9959886764180356068
+    Path: assets\sprites\mud-mid.png
   - UUID: 47851470015559687
     Path: assets\scenes\dung.scene
-  - UUID: 9789785727941787584
-    Path: assets\sprites\mud.png
   - UUID: 17355122378953618587
     Path: assets\sprites\subtex_test.png
+  - UUID: 9789785727941787584
+    Path: assets\sprites\mud.png
+  - UUID: 14293344350110838721
+    Path: assets\sprites\boss.png
+  - UUID: 3569396938255998232
+    Path: assets\sprites\blocks.png
