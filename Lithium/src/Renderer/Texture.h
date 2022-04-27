@@ -25,6 +25,7 @@ namespace Lithium
 		Texture(const std::string& path);
 		Texture(char* data,uint32_t size);
 		Texture(int width, int height,TextureType type = TextureType::RGBA);
+		Texture(const std::string& path,int width, int height,int filtermode);
 		//Texture():_id(0) {}
 		~Texture();
 		void Bind(unsigned int slot = 0) const;
