@@ -1,6 +1,7 @@
 #include "epch.h"
 #include "AssetBrowserPanel.h"
 #include "imgui/imgui.h"
+#include "Core/Application.h"
 
 namespace Lithium
 {
@@ -79,9 +80,9 @@ namespace Lithium
 					//LT_CORE_INFO((currentpath / path.filename()).string());
 					Refresh();
 				}
-				if (path.extension() == ".png"|| path.extension() == ".jpg")
+				if (path.extension() == ".png" || path.extension() == ".jpeg" || path.extension() == ".jpg")
 				{
-					OpenSpriteEditorEvent ev = OpenSpriteEditorEvent(path.string());
+					AssetBrowserFileOpenEvent ev = AssetBrowserFileOpenEvent(Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(path.string()),Asset::AssetType::Texture);
 					callback(ev);
 				}
 			}

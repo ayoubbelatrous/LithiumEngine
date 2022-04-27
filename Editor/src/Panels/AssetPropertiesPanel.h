@@ -11,6 +11,7 @@ namespace Lithium
 		void OnUpdate(bool* open);
 		void SetAsset(Asset asset, Asset::AssetType assettype);
 	private:
+		void DrawTexture();
 		Asset m_CurrentAsset;
 		Asset::AssetType m_AssetType;
 	};

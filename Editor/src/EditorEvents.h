@@ -1,5 +1,7 @@
 #pragma once
 #include "Event/Event.h"
+#include "AssetManager/Asset.h"
+
 namespace Lithium
 {
 
@@ -8,16 +10,22 @@ namespace Lithium
 
 	};
 
-	class AssetBrowserEvent : public EditorEvent
+	class AssetBrowserFileOpenEvent : public EditorEvent
 	{
 	public:
-		AssetBrowserEvent() = default;
+		AssetBrowserFileOpenEvent() = default;
 		const char* GetName() const override {
 
-			return "AssetBrowserEvent";
+			return "AssetBrowserFileOpenEvent";
 		}
-
-		EVENT_TYPE(AssetBrowser);
+		AssetBrowserFileOpenEvent(Asset asset,Asset::AssetType type)
+		{
+			this->asset = asset;
+			assettype = type;
+		}
+		Asset asset;
+		Asset::AssetType assettype;
+		EVENT_TYPE(AssetBrowserFileOpen);
 	};
 	class OpenSpriteEditorEvent : public EditorEvent
 	{
@@ -38,28 +46,6 @@ namespace Lithium
 			return _Path;
 		}		
 		EVENT_TYPE(OpenSpriteEditor);
-
-	};
-
-	class MetaDataChangeEventEditorEvent : public EditorEvent
-	{
-		std::string _Path;
-
-	public:
-		MetaDataChangeEventEditorEvent() = default;
-		MetaDataChangeEventEditorEvent(const std::string& path)
-		{
-			_Path = path;
-		}
-		const char* GetName() const override {
-
-			return "MetaDataChangeEventEditorEvent";
-		}
-		std::string& GetPath()
-		{
-			return _Path;
-		}
-		EVENT_TYPE(MetaDataChanged);
 
 	};
 }
