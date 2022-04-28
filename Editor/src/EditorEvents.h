@@ -33,18 +33,15 @@ namespace Lithium
 
 	public:
 		OpenSpriteEditorEvent() = default;
-		OpenSpriteEditorEvent(const std::string& path)
+		OpenSpriteEditorEvent(Asset asset)
 		{
-			_Path = path;
+			this->asset = asset;
 		}
 		const char* GetName() const override {
 
 			return "OpenSpriteEditorEvent";
 		}
-		std::string& GetPath()
-		{
-			return _Path;
-		}		
+		Asset asset;
 		EVENT_TYPE(OpenSpriteEditor);
 
 	};

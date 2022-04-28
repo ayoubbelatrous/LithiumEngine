@@ -42,6 +42,7 @@ namespace Lithium
 		m_InspectorPanel->OnCreate();
 
 		_AssetBrowerPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
+		m_AssetPropertiesPanel->SetEventCallback(BIND_EVENT(EditorLayer::onEditorEvent));
 		timer = CreateRef<Timer>();
 		m_ActiveScene->SetEventCallback(BIND_EVENT(EditorLayer::SceneEvent));
 		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
