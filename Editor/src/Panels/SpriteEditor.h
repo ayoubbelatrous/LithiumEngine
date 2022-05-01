@@ -1,38 +1,24 @@
 #pragma once
-
-#if 0
-
+#include "AssetManager/Asset.h"
 
 namespace Lithium
 {
-	using EventCallback = std::function<void(Event&)>;
-
 	class SpriteEditor
 	{
 		
 	public:
 		void OnCreate();
-		void SetTexture(const Ref<Texture>& texture);
-		void OnUpdate();
-		void Open()
-		{
-			_Open = true;
-		}
-		void Close()
-		{
-			_Open = false;
-		}
-		void SetEventCallback(const EventCallback& cb)
+		void OnUpdate(bool* open);
+		/*void SetEventCallback(const EventCallback& cb)
 		{
 			callback = cb;
+		}*/
+		void SetAsset(Asset asset)
+		{
+			m_CurrentAsset = asset;
 		}
-	private:
-		bool _Open = false;
-		glm::vec2 cellsize;
-		Ref<Texture> _Texture;
-		
-		bool hasMetadata = false;
-		EventCallback callback;
+	private:	
+		Asset m_CurrentAsset;
+		glm::vec2 cellsize = glm::vec2(1.0f);
 	};
 }
-#endif

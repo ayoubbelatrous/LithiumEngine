@@ -35,7 +35,7 @@ namespace Lithium
 		m_AnimationPanel = CreateRef<AnimationPanel>();
 		m_AssetPropertiesPanel = CreateRef<AssetPropertiesPanel>();
 		m_SceneHierachyPanel->OnCreate();
-
+		m_SpriteEditor = CreateRef<SpriteEditor>();
 
 		m_InspectorPanel = CreateRef<InspectorPanel>();
 		m_InspectorPanel->OnCreate();
@@ -416,6 +416,13 @@ namespace Lithium
 			m_OpenAssetPropertiesPanel = true;
 			m_AssetPropertiesPanel->SetAsset(assetBrowserfileOpenEvent.asset, assetBrowserfileOpenEvent.assettype);
 		}
+		if (e.GetEventType() == EventType::OpenSpriteEditor)
+		{
+			OpenSpriteEditorEvent& openspriteeditorevent = (OpenSpriteEditorEvent&)e;
+			m_OpenSpriteEditor = true;
+			m_SpriteEditor->SetAsset(openspriteeditorevent.asset);
+		}
+
 	}
 
 	void EditorLayer::OnImguiRender()
@@ -614,7 +621,15 @@ namespace Lithium
 				LT_END_SCOPE();
 			}
 		}
-	
+		{
+			if (m_OpenSpriteEditor)
+			{
+				LT_PROFILE_SCOPE("AssetPropertiesPanel()")
+					m_SpriteEditor->OnUpdate(&m_OpenSpriteEditor);
+				LT_END_SCOPE();
+			}
+		}
+
 		{
 
 			LT_PROFILE_SCOPE("inspector()")

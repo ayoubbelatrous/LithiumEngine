@@ -1,4 +1,5 @@
 TextureMode: Multiple
 TextureType: Sprite
-CellSizeX: 5
-CellSizeY: 5
+FilteringMode: Linear
+CellSizeX: 1
+CellSizeY: 1

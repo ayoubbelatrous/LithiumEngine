@@ -44,8 +44,8 @@ namespace Lithium {
 			{
 				mode = TextureMetaData::TextureMode::Multiple;
 			}
-			auto CellSizeX = data["CellSizeX"].as<int>();
-			auto CellSizeY = data["CellSizeY"].as<int>();
+			int CellSizeX = data["CellSizeX"].as<int>();
+			int CellSizeY = data["CellSizeY"].as<int>();
 			auto Filteringmode = data["FilteringMode"].as<std::string>();
 			if (strcmp(Filteringmode.c_str(), "Linear") == 0)
 			{
@@ -67,13 +67,12 @@ namespace Lithium {
 			emitter << YAML::Key << "TextureMode" << YAML::Value << std::string("Single");
 			emitter << YAML::Key << "TextureType" << YAML::Value << std::string("Sprite");
 			emitter << YAML::Key << "FilteringMode" << YAML::Value << std::string("Linear");
-			emitter << YAML::Key << "CellSizeX" << YAML::Value << 0;
-			emitter << YAML::Key << "CellSizeY" << YAML::Value << 0;
-			emitter << YAML::Key << "AssetFilteringMode" << YAML::Value << 0;
+			emitter << YAML::Key << "CellSizeX" << YAML::Value << 1;
+			emitter << YAML::Key << "CellSizeY" << YAML::Value << 1;
 			emitter << YAML::EndMap;
 			std::ofstream output(Path.string());
 			output << emitter.c_str();
-			TextureMetaData textureMetaData(TextureMetaData::TextureMode::Single, TextureMetaData::TextureType::Sprite, 0, 0);
+			TextureMetaData textureMetaData(TextureMetaData::TextureMode::Single, TextureMetaData::TextureType::Sprite, 1, 1);
 			m_TextureMetaDataRegistry[asset.GetUUID()] = textureMetaData;
 			return textureMetaData;
 		}
@@ -86,6 +85,7 @@ namespace Lithium {
 	template<>
 	bool AssetManager::UpdateAssetMetaData<TextureMetaData>(TextureMetaData metadata, Asset asset)
 	{
+
 		std::filesystem::path Path = GetAssetPath(asset);
 		Path += ".metadata";
 

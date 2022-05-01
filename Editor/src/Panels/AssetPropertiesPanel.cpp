@@ -96,8 +96,6 @@ namespace Lithium
 
 			ImGui::EndCombo();
 		}
-
-
 	}
 
 }

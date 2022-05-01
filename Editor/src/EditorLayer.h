@@ -130,11 +130,13 @@ namespace Lithium
 		Ref<AnimationPanel> m_AnimationPanel;
 		Ref<InspectorPanel> m_InspectorPanel;
 		Ref<AssetPropertiesPanel> m_AssetPropertiesPanel;
+		Ref<SpriteEditor> m_SpriteEditor;
 		std::string m_ScenePath = "assets/scenes/";
 		bool m_OpenStatsPanel = false;
 		bool m_OpenProjectWizard = false;
 		bool m_OpenAnimationPanel = false;
 		bool m_OpenAssetPropertiesPanel = false;
+		bool m_OpenSpriteEditor = false;
 		glm::vec2 m_InitialMousePosition = { 0.0f,0.0f };
 		glm::vec2 m_CameraDelta = { 0.0f,0.0f };
 		glm::vec3 m_FocalPoint = glm::vec3(0);
