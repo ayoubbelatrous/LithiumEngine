@@ -1,5 +1,5 @@
-TextureMode: Multiple
+TextureMode: Single
 TextureType: Sprite
-FilteringMode: Linear
+FilteringMode: Nearest
 CellSizeX: 0
 CellSizeY: 0

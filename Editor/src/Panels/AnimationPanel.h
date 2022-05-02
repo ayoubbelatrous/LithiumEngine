@@ -11,5 +11,7 @@ namespace Lithium
 		void OnUpdate(bool* open);
 
 		Asset CurrentAnimation;
+	private:
+		int TimeLineScale = 5;
 	};
 }

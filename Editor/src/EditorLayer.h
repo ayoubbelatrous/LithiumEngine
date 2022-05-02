@@ -134,7 +134,7 @@ namespace Lithium
 		std::string m_ScenePath = "assets/scenes/";
 		bool m_OpenStatsPanel = false;
 		bool m_OpenProjectWizard = false;
-		bool m_OpenAnimationPanel = false;
+		bool m_OpenAnimationPanel = true;
 		bool m_OpenAssetPropertiesPanel = false;
 		bool m_OpenSpriteEditor = false;
 		glm::vec2 m_InitialMousePosition = { 0.0f,0.0f };
