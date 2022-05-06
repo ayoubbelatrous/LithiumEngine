@@ -12,6 +12,7 @@ namespace Lithium
 
 		Asset CurrentAnimation;
 	private:
+		void DrawTimeLine();
 		int TimeLineScale = 5;
 	};
 }

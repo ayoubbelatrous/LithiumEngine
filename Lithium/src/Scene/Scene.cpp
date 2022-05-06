@@ -403,7 +403,7 @@ namespace Lithium
 			const int32_t velocityIterations = 6;
 			const int32_t positionIterations = 2;
 			float TimeStep = 1.0f / 60.0f;
-			m_PhysicsWorld->GetPtr()->Step(TimeStep, velocityIterations, positionIterations);
+			m_PhysicsWorld->GetPtr()->Step(Application::Get().GetDeltaTime(), velocityIterations, positionIterations);
 			
 			
 			auto view = GetRegistry().view<Rigidbody2DComponent>();
