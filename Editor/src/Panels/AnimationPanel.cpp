@@ -40,14 +40,22 @@ namespace Lithium
 
 
 		ImGui::Button("##timelinebutton", { (TimeLineWidth / zoomPercentage),60 });
+
 		float dragDelta = ImGui::GetIO().MouseDelta.x;
 		float ScaledDelta = dragDelta / windowWidth;
+
 		if (Input::IsMouseKeyPressed(0)&&ImGui::IsItemHovered())
 		{
+			
 			m_ScrollBarMin -= ScaledDelta;
 			m_ScrollBarMax -= ScaledDelta;
+			
 		}
-
+		if (int mousewheel = ImGui::GetIO().MouseWheel)
+		{
+			m_ScrollBarMin -= mousewheel * 0.10;
+			m_ScrollBarMax -= mousewheel * 0.10;
+		}
 		ImDrawList* drawlist = ImGui::GetWindowDrawList();
 		ImU32 lineColor = ImColor(ImVec4(1, 1, 1, 1));
 		
