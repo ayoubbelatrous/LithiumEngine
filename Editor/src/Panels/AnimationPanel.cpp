@@ -13,7 +13,7 @@ namespace Lithium
 
 	void AnimationPanel::OnUpdate(bool* open)
 	{
-		ImGui::Begin("Animation",open);
+		ImGui::Begin("Animation", open);
 		DrawTimeLine();
 		ImGui::End();
 	}
@@ -21,30 +21,56 @@ namespace Lithium
 	void AnimationPanel::DrawTimeLine()
 	{
 		float windowWidth = ImGui::GetWindowSize().x;
-		static float vMin = 0.4f, vMax = 0.6f;
+		float windowHeight = ImGui::GetWindowSize().y;
+		ImVec2 windowPos = ImGui::GetWindowPos();
 
-		float zoomPercentage = vMax - vMin;
+		float zoomPercentage = scroolBarMax - scroolBarMin;
 
-		float posFromLeft = vMin;
+		float posFromLeft = scroolBarMin * windowWidth;
 		float TimeLineWidth = 500;
+
+
 		if (windowWidth <= TimeLineWidth)
 		{
 			TimeLineWidth = windowWidth;
 		}
-
-		ImGui::SetCursorPos(ImVec2(0, 0));
-
 		
+		ImGui::SetCursorPos(ImVec2(-posFromLeft, 0));
+
+
 		ImGui::Button("##timelinebutton", { (TimeLineWidth / zoomPercentage),60 });
 
+		ImDrawList* drawlist = ImGui::GetWindowDrawList();
+		ImU32 lineColor = ImColor(ImVec4(1, 1, 1, 1));
+		ImGui::Text("slider size %i", (int)(TimeLineWidth / zoomPercentage));
+		ImGui::Text("posFromLeft %f", posFromLeft);
+	
+		for (size_t i = 0; i < (int)(TimeLineWidth/ zoomPercentage) / 50; i++)
 		{
-			ImGui::PushID(18);
-			ImZoomSlider::ImZoomSlider(0.f, 1.0f, vMin, vMax, 0.01f, ImZoomSlider::ImGuiZoomSliderFlags_None);
-			ImGui::PopID();
+			drawlist->AddLine({ windowPos.x + (i * 50) + -posFromLeft,windowPos.y  + 50}, { windowPos.x + (i * 50) + -posFromLeft,windowPos.y + 59 }, lineColor);
+		
+			if (i % 5 == 0)
+			{
+				if (i > 9)
+				{
+					drawlist->AddText({ windowPos.x + (i * 50) + -posFromLeft + 5 ,windowPos.y + 25 }, lineColor, std::format("0:{}", i).c_str());
+				}
+				else
+				{
+					drawlist->AddText({ windowPos.x + (i * 50) + -posFromLeft + 5 ,windowPos.y + 25 }, lineColor, std::format("0:0{}", i).c_str());
+				}
+				drawlist->AddLine({ windowPos.x + (i * 50) + -posFromLeft,windowPos.y + 45 }, { windowPos.x + (i * 50) + -posFromLeft,windowPos.y + 59 }, lineColor);
+
+			}
 		}
 
-		ImGui::Text("slider size %f", (TimeLineWidth / zoomPercentage));
-		ImGui::Text("posFromLeft %f", posFromLeft);
+		{
+			
+			ImGui::PushID(18);
+			ImGui::SetCursorPos(ImVec2(5, windowHeight - 25));
+			ImZoomSlider::ImZoomSlider(0.f, 1.0f, scroolBarMin, scroolBarMax, 0.01f, ImZoomSlider::ImGuiZoomSliderFlags_None);
+			ImGui::PopID();
+		}
 
 	}
 
