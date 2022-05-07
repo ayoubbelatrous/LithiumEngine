@@ -25,7 +25,7 @@ namespace Lithium
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 		//io.ConfigViewportsNoAutoMerge = true;
 		//io.ConfigViewportsNoTaskBarIcon = true;
-
+		io.ConfigWindowsMoveFromTitleBarOnly = true;
 		ImGui_ImplGlfw_InitForOpenGL(app.GetWindow().GetglfwWindowptr(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
 		
