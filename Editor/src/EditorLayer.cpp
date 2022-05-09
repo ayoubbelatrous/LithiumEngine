@@ -36,7 +36,7 @@ namespace Lithium
 		m_AssetPropertiesPanel = CreateRef<AssetPropertiesPanel>();
 		m_SceneHierachyPanel->OnCreate();
 		m_SpriteEditor = CreateRef<SpriteEditor>();
-
+		m_AnimationPanel->OnCreate();
 		m_InspectorPanel = CreateRef<InspectorPanel>();
 		m_InspectorPanel->OnCreate();
 		m_InspectorPanel->OnCreate();

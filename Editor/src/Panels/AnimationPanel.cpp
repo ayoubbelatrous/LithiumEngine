@@ -1,6 +1,6 @@
 #include "epch.h"
 #include "Panels/AnimationPanel.h"
-
+#include "Core/Log.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
 #include "ImZoomSlider.h"
@@ -10,7 +10,9 @@ namespace Lithium
 {
 
 	void AnimationPanel::OnCreate()
-	{}
+	{
+		m_KeyFrameIcon = CreateRef<Texture>("assets/Editor/icons/keyframe_128.png");
+	}
 
 	void AnimationPanel::OnUpdate(bool* open)
 	{
@@ -35,7 +37,7 @@ namespace Lithium
 		{
 			TimeLineWidth = windowWidth;
 		}
-		
+
 		ImGui::SetCursorPos(ImVec2(-posFromLeft, 0));
 
 
@@ -44,12 +46,12 @@ namespace Lithium
 		float dragDelta = ImGui::GetIO().MouseDelta.x;
 		float ScaledDelta = dragDelta / windowWidth;
 
-		if (Input::IsMouseKeyPressed(0)&&ImGui::IsItemHovered())
+		if (Input::IsMouseKeyPressed(0) && ImGui::IsItemHovered())
 		{
-			
+
 			m_ScrollBarMin -= ScaledDelta;
 			m_ScrollBarMax -= ScaledDelta;
-			
+
 		}
 		if (int mousewheel = ImGui::GetIO().MouseWheel)
 		{
@@ -58,11 +60,16 @@ namespace Lithium
 		}
 		ImDrawList* drawlist = ImGui::GetWindowDrawList();
 		ImU32 lineColor = ImColor(ImVec4(1, 1, 1, 1));
-		
-		for (size_t i = 0; i < (int)(TimeLineWidth/ zoomPercentage) / 50; i++)
+
+		float KeyTime = 0.01f;
+
+
+
+
+		for (size_t i = 0; i < (int)(TimeLineWidth / zoomPercentage) / 50; i++)
 		{
-			drawlist->AddLine({ windowPos.x + (i * 50) + -posFromLeft,windowPos.y  + 50}, { windowPos.x + (i * 50) + -posFromLeft,windowPos.y + 59 }, lineColor);
-		
+			drawlist->AddLine({ windowPos.x + (i * 50) + -posFromLeft,windowPos.y + 50 }, { windowPos.x + (i * 50) + -posFromLeft,windowPos.y + 59 }, lineColor);
+
 			if (i % 5 == 0)
 			{
 				if (i > 9)
@@ -77,9 +84,20 @@ namespace Lithium
 
 			}
 		}
+	
+		ImVec2 KeyPos = ImVec2(50, 20);
+		ImGui::SetCursorPos(ImVec2(KeyPos.x - posFromLeft, ImGui::GetCursorPos().y + KeyPos.y));
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+
+		if (ImGui::ImageButton((ImTextureID*)m_KeyFrameIcon->GetID(), { 30,30}))
+		{
+			LT_CORE_INFO("keyframe pressed");
+		}
+		ImGui::PopStyleColor();
 
 		{
-			
+
 			ImGui::PushID(18);
 			ImGui::SetCursorPos(ImVec2(5, windowHeight - 25));
 			ImZoomSlider::ImZoomSlider(0.f, 1.0f, m_ScrollBarMin, m_ScrollBarMax, 0.01f, ImZoomSlider::ImGuiZoomSliderFlags_None);
