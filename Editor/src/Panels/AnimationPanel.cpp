@@ -90,14 +90,13 @@ namespace Lithium
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 
-		if (ImGui::ImageButton((ImTextureID*)m_KeyFrameIcon->GetID(), { 30,30}))
+		if (ImGui::ImageButton((ImTextureID*)m_KeyFrameIcon->GetID(), { 25,25}))
 		{
 			LT_CORE_INFO("keyframe pressed");
 		}
-		ImGui::PopStyleColor();
+
 
 		{
-
 			ImGui::PushID(18);
 			ImGui::SetCursorPos(ImVec2(5, windowHeight - 25));
 			ImZoomSlider::ImZoomSlider(0.f, 1.0f, m_ScrollBarMin, m_ScrollBarMax, 0.01f, ImZoomSlider::ImGuiZoomSliderFlags_None);
