@@ -89,13 +89,14 @@ namespace Lithium
 		ImGui::SetCursorPos(ImVec2(KeyPos.x - posFromLeft, ImGui::GetCursorPos().y + KeyPos.y));
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 
 		if (ImGui::ImageButton((ImTextureID*)m_KeyFrameIcon->GetID(), { 25,25}))
 		{
 			LT_CORE_INFO("keyframe pressed");
 		}
-
-
+		ImGui::PopStyleColor(3);
 		{
 			ImGui::PushID(18);
 			ImGui::SetCursorPos(ImVec2(5, windowHeight - 25));

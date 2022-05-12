@@ -421,6 +421,12 @@ namespace Lithium
 			m_OpenSpriteEditor = true;
 			m_SpriteEditor->SetAsset(openspriteeditorevent.asset);
 		}
+		if (e.GetEventType() == EventType::EditAnimation)
+		{
+			EditAnimationEvent& editanimationEvent = (EditAnimationEvent&)e;
+			m_OpenAnimationPanel = true;
+			m_AnimationPanel->SetCurrentAnimation(editanimationEvent.asset);
+		}
 
 	}
 

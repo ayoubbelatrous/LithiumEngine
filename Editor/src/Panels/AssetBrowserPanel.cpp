@@ -19,7 +19,7 @@ namespace Lithium
 
 		float itemwidth = 78;
 		
-		ImGui::Begin("Project");
+		ImGui::Begin("Asset Browser");
 
 
 		float width = ImGui::GetContentRegionAvail().x;
@@ -83,6 +83,11 @@ namespace Lithium
 				if (path.extension() == ".png" || path.extension() == ".jpeg" || path.extension() == ".jpg")
 				{
 					AssetBrowserFileOpenEvent ev = AssetBrowserFileOpenEvent(Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(path.string()),Asset::AssetType::Texture);
+					callback(ev);
+				}
+				if (path.extension() == ".anim")
+				{
+					EditAnimationEvent ev = EditAnimationEvent(Application::Get().assetManager->GetAssetFromPath<Ref<Animation>>(path.string()));
 					callback(ev);
 				}
 			}

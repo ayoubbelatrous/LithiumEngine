@@ -45,4 +45,21 @@ namespace Lithium
 		EVENT_TYPE(OpenSpriteEditor);
 
 	};
+
+	class EditAnimationEvent : public EditorEvent
+	{
+	public:
+		EditAnimationEvent() = default;
+		EditAnimationEvent(Asset asset)
+		{
+			this->asset = asset;
+		}
+		const char* GetName() const override {
+
+			return "EditAnimationEvent";
+		}
+		Asset asset;
+		EVENT_TYPE(EditAnimation);
+
+	};
 }

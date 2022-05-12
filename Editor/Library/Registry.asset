@@ -1,10 +1,10 @@
 PathRegistry:
-  - UUID: 208079997309819341
-    Path: assets/Editor/Fonts/OpenSans-Regular.ttf
   - UUID: 15605008061835871237
     Path: assets\sprites\gliadiator.png
   - UUID: 14970496017043213961
     Path: assets\sprites\tree.png
+  - UUID: 208079997309819341
+    Path: assets/Editor/Fonts/OpenSans-Regular.ttf
   - UUID: 0
     Path: ""
   - UUID: 12190209315446512710
@@ -21,3 +21,5 @@ PathRegistry:
     Path: assets\sprites\boss.png
   - UUID: 3569396938255998232
     Path: assets\sprites\blocks.png
+  - UUID: 7958646564317160429
+    Path: assets\light-brick.png
