@@ -111,6 +111,23 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
+
+		Ref<Animation> anim = CreateRef<Animation>();
+		TextureIndexTrack* track = new TextureIndexTrack();
+		SpriteColorTrack* strack = new SpriteColorTrack();
+
+		track->PushKeyFrame(TextureIndexKeyFrame(1,0.2f));
+		track->PushKeyFrame(TextureIndexKeyFrame(2,0.4f));
+		track->PushKeyFrame(TextureIndexKeyFrame(3,0.6f));
+		strack->PushKeyFrame(SpriteColorKeyFrame(glm::vec4(1.0f),1.0f));
+		strack->PushKeyFrame(SpriteColorKeyFrame(glm::vec4(1.0f),1.0f));
+		strack->PushKeyFrame(SpriteColorKeyFrame(glm::vec4(1.0f),1.0f));
+		anim->PushTrack(track);
+		anim->PushTrack(strack);
+		std::string animYaml = Animation::SerializeAnimation(anim);
+		LT_CORE_INFO("{}", animYaml.c_str());
+		std::ofstream Stream("assets/anim.anim");
+		Stream << animYaml;
 	}
 
 	void EditorLayer::OnUpdate()

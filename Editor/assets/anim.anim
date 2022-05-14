@@ -1,0 +1,18 @@
+Animation: NONE
+Tracks:
+  - Type: TextureIndexTrack
+    KeyFrames:
+      - TimeStamp: 0.200000003
+        Value: 1
+      - TimeStamp: 0.400000006
+        Value: 2
+      - TimeStamp: 0.600000024
+        Value: 3
+  - Type: SpriteColorTrack
+    KeyFrames:
+      - TimeStamp: 1
+        Value: [1, 1, 1, 1]
+      - TimeStamp: 1
+        Value: [1, 1, 1, 1]
+      - TimeStamp: 1
+        Value: [1, 1, 1, 1]

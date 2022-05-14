@@ -7,10 +7,12 @@
 namespace YAML
 {
 	class Emitter;
+	class Node;
 }
+
 namespace Lithium
 {
-	
+	class Animation;
 	class TextureIndexKeyFrame
 	{
 	public:
@@ -47,6 +49,7 @@ namespace Lithium
 		AnimationTrack() = default;
 		virtual void Step(const UUID& EntityID, float currentTime) = 0;
 		virtual void Serialize(YAML::Emitter& emitter) = 0;
+		virtual void Deserialize(const Ref<Animation>& animation) = 0;
 	};
 
 
@@ -59,6 +62,8 @@ namespace Lithium
 		void PushKeyFrame(TextureIndexKeyFrame keyframe);
 		virtual void Step(const UUID& EntityID, float currentTime) override;
 		virtual void Serialize(YAML::Emitter& emitter) override;
+		virtual void Deserialize(const Ref<Animation>& animation) override;
+
 	protected:
 		std::vector<TextureIndexKeyFrame> m_KeyFrames;
 	};
@@ -71,6 +76,7 @@ namespace Lithium
 		void PushKeyFrame(SpriteColorKeyFrame keyframe);
 		virtual void Step(const UUID& EntityID, float currentTime) override;
 		virtual void Serialize(YAML::Emitter& emitter) override;
+		virtual void Deserialize(const Ref<Animation>& animation) override;
 
 
 	protected:
@@ -111,6 +117,7 @@ namespace Lithium
 		}
 
 		static std::string SerializeAnimation(const Ref<Animation>& animation);
+		static Ref<Animation> DeserializeAnimation(const std::string& path);
 
 		~Animation()
 		{

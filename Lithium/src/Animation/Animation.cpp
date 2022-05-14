@@ -76,8 +76,9 @@ namespace Lithium
 
 	void SpriteColorTrack::Serialize(YAML::Emitter& emitter)
 	{
-		emitter << YAML::Key << "TrackType" << YAML::Value << "SpriteColorTrack";
-		emitter << YAML::Key << YAML::Value << YAML::BeginSeq;
+		emitter << YAML::BeginMap;
+		emitter << YAML::Key << "Type" << YAML::Value << "SpriteColorTrack";
+		emitter << YAML::Key << "KeyFrames" << YAML::Value << YAML::BeginSeq;
 
 		for (int i = 0; i < m_KeyFrames.size(); i++)
 		{
@@ -87,8 +88,13 @@ namespace Lithium
 			emitter << YAML::Key << "Value" << YAML::Value << KeyFrame.Value;
 			emitter << YAML::EndMap;
 		}
-
+		emitter << YAML::EndMap;
 		emitter << YAML::EndSeq;
+	}
+
+	void SpriteColorTrack::Deserialize(const Ref<Animation>& animation)
+	{
+
 	}
 
 	void TextureIndexTrack::Step(const UUID& EntityID, float currentTime)
@@ -105,9 +111,9 @@ namespace Lithium
 
 	void TextureIndexTrack::Serialize(YAML::Emitter& emitter)
 	{
-		emitter << YAML::Key << "TrackType" << YAML::Value << "TextureIndexTrack";
-		emitter << YAML::Key << YAML::Value << YAML::BeginSeq;
-
+		emitter << YAML::BeginMap;
+		emitter << YAML::Key << "Type" << YAML::Value << "TextureIndexTrack";
+		emitter << YAML::Key << "KeyFrames" << YAML::Value << YAML::BeginSeq;
 		for (int i = 0; i < m_KeyFrames.size(); i++)
 		{
 			auto KeyFrame = m_KeyFrames[i];
@@ -116,8 +122,12 @@ namespace Lithium
 			emitter << YAML::Key << "Value" << YAML::Value << KeyFrame.TextureIndex;
 			emitter << YAML::EndMap;
 		}
-
 		emitter << YAML::EndSeq;
+		emitter << YAML::EndMap;
+	}
+	void TextureIndexTrack::Deserialize(const Ref<Animation>& animation)
+	{
+
 	}
 
 	void TextureIndexTrack::PushKeyFrame(TextureIndexKeyFrame keyframe)
@@ -125,24 +135,43 @@ namespace Lithium
 		m_KeyFrames.push_back(keyframe);
 	}
 
-
-
-
 	std::string Animation::SerializeAnimation(const Ref<Animation>& animation)
 	{
 		YAML::Emitter emitter;
 		emitter << YAML::BeginMap;
+		emitter << YAML::Key << "Animation" << YAML::Value << "NONE";
 		emitter << YAML::Key << "Tracks" << YAML::Value << YAML::BeginSeq;
 		for (int i = 0; i < animation->GetTracks().size(); i++)
 		{
 			auto Track = animation->GetTracks()[i];
-			emitter << YAML::BeginMap;
 			Track->Serialize(emitter);
-			emitter << YAML::EndMap;
 		}
 		emitter << YAML::EndSeq;
 		emitter << YAML::EndMap;
 		return std::string(emitter.c_str());
+	}
+
+	Ref<Animation> Animation::DeserializeAnimation(const std::string& path)
+	{
+		YAML::Node data;
+		try
+		{
+			data = YAML::LoadFile(path);
+		}
+		catch (YAML::ParserException e)
+		{
+			CORE_LOG("failed to load scene");
+			return nullptr;
+		}
+		auto Tracks = data["Tracks"];
+		for (auto track : Tracks)
+		{
+			if (strcmp(track["TrackType"].as<std::string>().c_str(), "TextureIndexTrack") == 0)
+			{
+
+			}
+		}
+		return CreateRef<Animation>();
 	}
 
 }

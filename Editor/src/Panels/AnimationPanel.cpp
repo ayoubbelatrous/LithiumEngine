@@ -5,6 +5,8 @@
 #include "imgui/imgui_internal.h"
 #include "ImZoomSlider.h"
 #include "Input/Input.h"
+#include "Core/Application.h"
+#include "Animation/Animation.h"
 
 namespace Lithium
 {
@@ -23,6 +25,9 @@ namespace Lithium
 
 	void AnimationPanel::DrawTimeLine()
 	{
+
+		Ref<Animation> animation = Application::Get().assetManager->GetAsset<Ref<Animation>>(m_CurrentAnimation);
+
 		float windowWidth = ImGui::GetWindowSize().x;
 		float windowHeight = ImGui::GetWindowSize().y;
 		ImVec2 windowPos = ImGui::GetWindowPos();
@@ -84,8 +89,12 @@ namespace Lithium
 
 			}
 		}
-	
+		
 		ImVec2 KeyPos = ImVec2(50, 20);
+		for (size_t i = 0; i < animation->GetTracks().size(); i++)
+		{
+
+		}
 		ImGui::SetCursorPos(ImVec2(KeyPos.x - posFromLeft, ImGui::GetCursorPos().y + KeyPos.y));
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
