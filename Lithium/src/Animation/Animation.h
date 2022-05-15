@@ -12,6 +12,12 @@ namespace YAML
 
 namespace Lithium
 {
+	enum class AnimationType
+	{
+		TextureIndex,SpriteColor
+	};
+#define ANIMATION_TYPE(t) static AnimationType GetType() { return AnimationType::t; }\
+								virtual AnimationType GetAnimationType() const override { return GetType(); }
 	class Animation;
 	class TextureIndexKeyFrame
 	{
@@ -50,6 +56,8 @@ namespace Lithium
 		virtual void Step(const UUID& EntityID, float currentTime) = 0;
 		virtual void Serialize(YAML::Emitter& emitter) = 0;
 		virtual void Deserialize(const Ref<Animation>& animation) = 0;
+		virtual AnimationType GetAnimationType() const = 0;
+
 	};
 
 
@@ -63,7 +71,7 @@ namespace Lithium
 		virtual void Step(const UUID& EntityID, float currentTime) override;
 		virtual void Serialize(YAML::Emitter& emitter) override;
 		virtual void Deserialize(const Ref<Animation>& animation) override;
-
+		ANIMATION_TYPE(TextureIndex);
 	protected:
 		std::vector<TextureIndexKeyFrame> m_KeyFrames;
 	};
@@ -77,7 +85,7 @@ namespace Lithium
 		virtual void Step(const UUID& EntityID, float currentTime) override;
 		virtual void Serialize(YAML::Emitter& emitter) override;
 		virtual void Deserialize(const Ref<Animation>& animation) override;
-
+		ANIMATION_TYPE(SpriteColor);
 
 	protected:
 		std::vector<SpriteColorKeyFrame> m_KeyFrames;
@@ -88,6 +96,7 @@ namespace Lithium
 	class Animation
 	{
 	public:
+
 		Animation() = default;
 		void Update(const UUID& EntityID,float& Time);
 

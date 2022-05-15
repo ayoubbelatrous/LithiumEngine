@@ -27,7 +27,11 @@ namespace Lithium
 	{
 
 		Ref<Animation> animation = Application::Get().assetManager->GetAsset<Ref<Animation>>(m_CurrentAnimation);
-
+		if (animation == nullptr)
+		{
+			ImGui::Text("No Animation Set");
+			return;
+		}
 		float windowWidth = ImGui::GetWindowSize().x;
 		float windowHeight = ImGui::GetWindowSize().y;
 		ImVec2 windowPos = ImGui::GetWindowPos();
@@ -93,7 +97,15 @@ namespace Lithium
 		ImVec2 KeyPos = ImVec2(50, 20);
 		for (size_t i = 0; i < animation->GetTracks().size(); i++)
 		{
-
+			
+			if (animation->GetTracks()[i]->GetAnimationType() == AnimationType::TextureIndex)
+			{
+				ImGui::Text("TextureIndexTrack");
+			}
+			if (animation->GetTracks()[i]->GetAnimationType() == AnimationType::TextureIndex)
+			{
+				ImGui::Text("SpriteColorTrack");
+			}
 		}
 		ImGui::SetCursorPos(ImVec2(KeyPos.x - posFromLeft, ImGui::GetCursorPos().y + KeyPos.y));
 
