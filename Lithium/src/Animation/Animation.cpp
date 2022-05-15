@@ -153,6 +153,7 @@ namespace Lithium
 
 	Ref<Animation> Animation::DeserializeAnimation(const std::string& path)
 	{
+		Ref<Animation> animation =  CreateRef<Animation>();
 		YAML::Node data;
 		try
 		{
@@ -166,12 +167,33 @@ namespace Lithium
 		auto Tracks = data["Tracks"];
 		for (auto track : Tracks)
 		{
-			if (strcmp(track["TrackType"].as<std::string>().c_str(), "TextureIndexTrack") == 0)
+			if (strcmp(track["Type"].as<std::string>().c_str(), "TextureIndexTrack") == 0)
 			{
+				TextureIndexTrack* pTrack = new TextureIndexTrack();
+				auto KeyFrames = track["KeyFrames"];
+				for (auto keyframe : KeyFrames)
+				{
+					float TimeStamp = keyframe["TimeStamp"].as<float>();
+					int Value = keyframe["Value"].as<int>();
+					pTrack->PushKeyFrame(TextureIndexKeyFrame(Value, TimeStamp));
+				}
+				animation->PushTrack(pTrack);
+			}
+			if (strcmp(track["Type"].as<std::string>().c_str(), "SpriteColorTrack") == 0)
+			{
+				SpriteColorTrack* pTrack = new SpriteColorTrack();
+				auto KeyFrames = track["KeyFrames"];
+				for (auto keyframe : KeyFrames)
+				{
+					float TimeStamp = keyframe["TimeStamp"].as<float>();
+					glm::vec4 Value = keyframe["Value"].as<glm::vec4>();
+					pTrack->PushKeyFrame(SpriteColorKeyFrame(Value, TimeStamp));
+				}
+				animation->PushTrack(pTrack);
 
 			}
 		}
-		return CreateRef<Animation>();
+		return animation;
 	}
 
 }
