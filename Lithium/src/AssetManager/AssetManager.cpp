@@ -207,7 +207,11 @@ namespace Lithium {
 	{
 
 		uint64_t ID = (uint64_t)asset.GetUUID();
-
+		if (ID == 0)
+		{
+			LT_CORE_INFO("[AssetManager].Texture Doesn't Exist");
+			return nullptr;
+		}
 		if (m_TextureRegistry.find(ID) != m_TextureRegistry.end())
 		{
 			return m_TextureRegistry[ID];
@@ -237,7 +241,11 @@ namespace Lithium {
 	{
 
 		uint64_t ID = (uint64_t)asset.GetUUID();
-
+		if (ID == 0)
+		{
+			LT_CORE_INFO("[AssetManager].AudioSource Doesn't Exist");
+			return nullptr;
+		}
 		if (m_AudioRegistry.find(ID) != m_AudioRegistry.end())
 		{
 			return m_AudioRegistry[ID];
@@ -258,7 +266,11 @@ namespace Lithium {
 	{
 
 		uint64_t ID = (uint64_t)asset.GetUUID();
-
+		if (ID == 0)
+		{
+			LT_CORE_INFO("[AssetManager].Font Doesn't Exist");
+			return nullptr;
+		}
 		if (m_FontRegistry.find(ID) != m_FontRegistry.end())
 		{
 			return m_FontRegistry[ID];
@@ -279,7 +291,11 @@ namespace Lithium {
 	{
 
 		uint64_t ID = (uint64_t)asset.GetUUID();
-
+		if (ID == 0)
+		{
+			LT_CORE_INFO("[AssetManager].Animation Doesn't Exist");
+			return nullptr;
+		}
 		if (m_AnimationRegistry.find(ID) != m_AnimationRegistry.end())
 		{
 			return m_AnimationRegistry[ID];
@@ -287,7 +303,7 @@ namespace Lithium {
 		else
 		{
 			std::string path = m_PathRegistry[asset.GetUUID()];
-			Ref<Animation> animation = CreateRef<Animation>();
+			Ref<Animation> animation = Animation::DeserializeAnimation(path);
 			m_AnimationRegistry.emplace(asset.GetUUID(), animation);
 			SaveAssetRegistry();
 			return animation;
