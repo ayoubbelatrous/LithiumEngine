@@ -231,7 +231,7 @@ namespace Lithium
 		TextRenderer(const TextRenderer&) = default;
 	};
 
-	struct Animator
+	struct AnimatorComponent
 	{
 		Asset AnimationAsset = Asset(0);
 
@@ -250,8 +250,8 @@ namespace Lithium
 
 		bool IsPlaying;
 		float CurrentTime = 0.0f;
-		Animator() = default;
-		Animator(const Animator&) = default;
+		AnimatorComponent() = default;
+		AnimatorComponent(const AnimatorComponent&) = default;
 	};
 }
 

@@ -190,10 +190,19 @@ namespace Lithium
 					UpdateTransform(entity);
 				}
 			}
-		}
 
 		
 
+		}
+		{
+			auto view = GetRegistry().view<AnimatorComponent>();
+
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+				entity.GetComponent<AnimatorComponent>();
+			}
+		}
 		{
 			auto view = GetRegistry().view<SpriteRendererComponent, TransformComponent>();
 
@@ -753,6 +762,10 @@ namespace Lithium
 	}
 	template<>
 	void Scene::OnComponentAdded<TextRenderer>(Entity entity, TextRenderer& component)
+	{
+	}
+	template<>
+	void Scene::OnComponentAdded<AnimatorComponent>(Entity entity, AnimatorComponent& component)
 	{
 	}
 

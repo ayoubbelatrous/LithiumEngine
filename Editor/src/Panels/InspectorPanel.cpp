@@ -93,7 +93,7 @@ namespace Lithium
 		if (error)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.8f, 0.3f, 0.3f, 1.0f));
-			
+
 		}
 		if (ImGui::InputText("Module", buffer, 256))
 		{
@@ -105,11 +105,11 @@ namespace Lithium
 		return modified;
 	}
 
-	static bool Property(const std::string& name,int* value)
+	static bool Property(const std::string& name, int* value)
 	{
 		bool modified = false;
-		
-		if (ImGui::DragInt(name.c_str(), value,0.1f))
+
+		if (ImGui::DragInt(name.c_str(), value, 0.1f))
 		{
 			modified = true;
 		}
@@ -196,10 +196,10 @@ namespace Lithium
 			Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[id], Application::Get().sceneManager->GetActiveScene().get());
 			EntityName = entity.GetComponent<NameComponent>().GetName();
 		}
-		
-	
-		
-		ImGui::Button(EntityName.c_str(), {125,20});
+
+
+
+		ImGui::Button(EntityName.c_str(), { 125,20 });
 		if (ImGui::BeginDragDropTarget())
 		{
 
@@ -220,7 +220,7 @@ namespace Lithium
 		return modified;
 	}
 
-	static bool Property(const std::string& name, UUID& id,bool audioclip)
+	static bool Property(const std::string& name, UUID& id, bool audioclip)
 	{
 
 		bool modified = false;
@@ -252,7 +252,7 @@ namespace Lithium
 		}
 		ImGui::SameLine();
 		ImGui::Text("%s", name.c_str());
-		
+
 		return modified;
 	}
 
@@ -267,7 +267,7 @@ namespace Lithium
 
 		if (m_Selection.GetHandle() != entt::null && m_Selection.getScene() != nullptr)
 		{
-			
+
 			if (m_Selection.HasComponent<NameComponent>())
 			{
 				NameComponent& namec = m_Selection.GetComponent<NameComponent>();
@@ -307,7 +307,7 @@ namespace Lithium
 					ImGui::TreePop();
 				}
 
-				
+
 			}
 
 			if (m_Selection.HasComponent<SpriteRendererComponent>())
@@ -348,7 +348,7 @@ namespace Lithium
 					{
 						ImGui::Image((ImTextureID)m_Selection.GetComponent<SpriteRendererComponent>().tex->GetID(), { 75,75 });
 					}*/
-					if(m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset.GetUUID() == 0)
+					if (m_Selection.GetComponent<SpriteRendererComponent>().TextureAsset.GetUUID() == 0)
 					{
 						ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,20 });
 					}
@@ -377,7 +377,7 @@ namespace Lithium
 				{
 					m_Selection.RemoveComponent<SpriteRendererComponent>();
 				}
-				
+
 			}
 
 			if (m_Selection.HasComponent<Rigidbody2DComponent>())
@@ -422,7 +422,7 @@ namespace Lithium
 					ImGui::Checkbox("Fixed Rotation", &rb2d.FixedRotation);
 					ImGui::TreePop();
 				}
-				
+
 				if (remove == true)
 				{
 					m_Selection.RemoveComponent<Rigidbody2DComponent>();
@@ -451,7 +451,7 @@ namespace Lithium
 				{
 					BoxCollider2DComponent& rb2d = m_Selection.GetComponent<BoxCollider2DComponent>();
 					ImGui::PushItemWidth(125);
-					ImGui::DragFloat2("Offset", glm::value_ptr(rb2d.Offset),0.01f);
+					ImGui::DragFloat2("Offset", glm::value_ptr(rb2d.Offset), 0.01f);
 					ImGui::DragFloat2("Size", glm::value_ptr(rb2d.Size), 0.01f);
 					ImGui::DragFloat("Density", &rb2d.Density, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Friction", &rb2d.Friction, 0.01f, 0.0f, 1.0f);
@@ -469,7 +469,7 @@ namespace Lithium
 			}
 			if (m_Selection.HasComponent<ScriptGroupeComponent>())
 			{
-			
+
 				ScriptGroupeComponent& scriptGroupe = m_Selection.GetComponent<ScriptGroupeComponent>();
 				for (auto& script : scriptGroupe.Scripts)
 				{
@@ -477,7 +477,7 @@ namespace Lithium
 
 					ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 					bool open = ImGui::TreeNodeEx((void*)(std::hash<uint64_t>{}(script.uuid)), treeNodeFlags, script.Name.c_str());
-					
+
 					ImGui::PopStyleVar();
 					bool remove = false;
 					if (ImGui::BeginPopupContextItem())
@@ -491,7 +491,7 @@ namespace Lithium
 					if (open)
 					{
 						std::string ModuleName = script.Name;
-						if (Property("Module",ModuleName,!script.Loaded))
+						if (Property("Module", ModuleName, !script.Loaded))
 						{
 							script.Name = ModuleName;
 							script.Loaded = false;
@@ -515,7 +515,7 @@ namespace Lithium
 								}
 								case (ScriptType::Float):
 								{
-									
+
 									float val = 0;
 									val = field.second->GetValue<float>();
 									if (Property(field.first, &val))
@@ -595,9 +595,9 @@ namespace Lithium
 								{
 
 									UUID val = field.second->GetValue<UUID>();
-									if (Property(field.first, val,true))
+									if (Property(field.first, val, true))
 									{
-										
+
 										field.second->SetValue<UUID>((UUID)val);
 									}
 									break;
@@ -608,12 +608,12 @@ namespace Lithium
 							}
 
 						}
-					  ImGui::TreePop();
+						ImGui::TreePop();
 					}
 				}
-			
-				
-			
+
+
+
 			}
 			if (m_Selection.HasComponent<CameraComponent>())
 			{
@@ -638,7 +638,7 @@ namespace Lithium
 
 					ImGui::Checkbox("Fixed Aspect Ration", &camera.FixedAspectRatio);
 					ImGui::Checkbox("Primary", &camera.Primary);
-					const char* ProjectionTypeString[] = { "Orthographic", "Perspective"};
+					const char* ProjectionTypeString[] = { "Orthographic", "Perspective" };
 
 					const char* CurrentProjectionString = ProjectionTypeString[(int)camera.Camera.GetProjectionType()];
 					if (ImGui::BeginCombo("Projection", CurrentProjectionString))
@@ -650,7 +650,7 @@ namespace Lithium
 							{
 								CurrentProjectionString = ProjectionTypeString[i];
 								camera.Camera.SetProjectionType((SceneCamera::ProjectionType)i);
-								
+
 							}
 
 							if (isSelected)
@@ -662,7 +662,7 @@ namespace Lithium
 					if (camera.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
 					{
 						float orthosize = camera.Camera.GetOrthographicSize();
-						if (LiGui::UndoDragFloat("Orthographic Size",&orthosize,0.1f))
+						if (LiGui::UndoDragFloat("Orthographic Size", &orthosize, 0.1f))
 						{
 							camera.Camera.SetOrthographicSize(orthosize);
 						}
@@ -735,7 +735,7 @@ namespace Lithium
 					ImGui::Checkbox("Play On Awake", &audiosourcecomp.PlayOnAwake);
 					ImGui::Checkbox("Spatial", &audiosourcecomp.Spatial);
 					ImGui::Checkbox("Loop", &audiosourcecomp.Loop);
-					ImGui::SliderFloat("Gain", &audiosourcecomp.Gain,0.0f,1.0f);
+					ImGui::SliderFloat("Gain", &audiosourcecomp.Gain, 0.0f, 1.0f);
 					ImGui::SliderFloat("Pitch", &audiosourcecomp.Pitch, 0.0f, 1.0f);
 					ImGui::TreePop();
 				}
@@ -772,7 +772,7 @@ namespace Lithium
 					{
 						txr.Text = buffer;
 					}
-					ImGui::ColorEdit4("Color",glm::value_ptr(txr.color));
+					ImGui::ColorEdit4("Color", glm::value_ptr(txr.color));
 					if (txr.FontAsset.GetUUID() == 0)
 					{
 						ImGui::Button("Font File", { ImGui::GetContentRegionAvail().x,20 });
@@ -799,8 +799,8 @@ namespace Lithium
 						ImGui::EndDragDropTarget();
 					}
 
-					ImGui::DragFloat("Spacing", &txr.Spacing,0.01f);
-					ImGui::DragFloat("Line Spacing", &txr.LineSpacing,0.01f);
+					ImGui::DragFloat("Spacing", &txr.Spacing, 0.01f);
+					ImGui::DragFloat("Line Spacing", &txr.LineSpacing, 0.01f);
 					ImGui::Checkbox("Screen Space", &txr.ScreenSpace);
 
 					ImGui::TreePop();
@@ -834,7 +834,7 @@ namespace Lithium
 					}
 				}
 
-			
+
 				if (ImGui::MenuItem("Script"))
 				{
 					if (!m_Selection.HasComponent<ScriptGroupeComponent>())
@@ -843,7 +843,7 @@ namespace Lithium
 					m_Selection.GetComponent<ScriptGroupeComponent>().AddScript("");
 					ImGui::CloseCurrentPopup();
 				}
-				
+
 				if (!m_Selection.HasComponent<Rigidbody2DComponent>())
 				{
 					if (ImGui::MenuItem("RigidBody 2D"))
@@ -878,11 +878,19 @@ namespace Lithium
 						ImGui::CloseCurrentPopup();
 					}
 				}
+				if (!m_Selection.HasComponent<AnimatorComponent>())
+				{
+					if (ImGui::MenuItem("Animator"))
+					{
+						m_Selection.AddComponent<AnimatorComponent>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
 
 
 				ImGui::EndPopup();
 			}
-			
+
 		}
 		ImGui::End();
 	}
