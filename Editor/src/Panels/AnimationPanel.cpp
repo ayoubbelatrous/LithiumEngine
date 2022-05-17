@@ -93,29 +93,30 @@ namespace Lithium
 
 			}
 		}
-		
-		ImVec2 KeyPos = ImVec2(50, 20);
-		for (size_t i = 0; i < animation->GetTracks().size(); i++)
-		{
-			
-			if (animation->GetTracks()[i]->GetAnimationType() == AnimationType::TextureIndex)
-			{
-				ImGui::Text("TextureIndexTrack");
-			}
-			if (animation->GetTracks()[i]->GetAnimationType() == AnimationType::TextureIndex)
-			{
-				ImGui::Text("SpriteColorTrack");
-			}
-		}
-		ImGui::SetCursorPos(ImVec2(KeyPos.x - posFromLeft, ImGui::GetCursorPos().y + KeyPos.y));
 
+		ImVec2 KeyPos = ImVec2(50, 20);
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-
-		if (ImGui::ImageButton((ImTextureID*)m_KeyFrameIcon->GetID(), { 25,25}))
+		for (size_t i = 0; i < animation->GetTracks().size(); i++)
 		{
-			LT_CORE_INFO("keyframe pressed");
+
+			if (animation->GetTracks()[i]->GetAnimationType() == AnimationType::TextureIndex)
+			{
+				TextureIndexTrack* pTrack = (TextureIndexTrack*)animation->GetTracks()[i];
+
+				for (size_t i = 0; i < pTrack->GetKeyFrames().size(); i++)
+				{
+
+					KeyPos.x += pTrack->GetKeyFrames()[i].TimeStamp * (TimeLineWidth / zoomPercentage);
+					ImGui::SetCursorPos(ImVec2(KeyPos.x - posFromLeft, KeyPos.y));
+
+					if (ImGui::ImageButton((ImTextureID*)m_KeyFrameIcon->GetID(), { 25,25 }))
+					{
+						LT_CORE_INFO("keyframe pressed");
+					}
+				}
+			}
 		}
 		ImGui::PopStyleColor(3);
 		{

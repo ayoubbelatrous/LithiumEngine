@@ -2,11 +2,11 @@ Animation: NONE
 Tracks:
   - Type: TextureIndexTrack
     KeyFrames:
-      - TimeStamp: 0.200000003
+      - TimeStamp: 0.5
         Value: 1
-      - TimeStamp: 0.400000006
+      - TimeStamp: 1.5
         Value: 2
-      - TimeStamp: 0.600000024
+      - TimeStamp: 2.0
         Value: 3
   - Type: SpriteColorTrack
     KeyFrames:
