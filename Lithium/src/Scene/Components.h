@@ -247,8 +247,13 @@ namespace Lithium
 		{
 			CurrentTime = 0.0f;
 		}
-
+		void SetLoop(bool loop)
+		{
+			Loop = loop;
+		}
 		bool IsPlaying;
+		bool Loop;
+
 		float CurrentTime = 0.0f;
 		AnimatorComponent() = default;
 		AnimatorComponent(const AnimatorComponent&) = default;

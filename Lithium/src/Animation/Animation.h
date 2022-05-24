@@ -143,6 +143,6 @@ namespace Lithium
 
 		std::vector<AnimationTrack*> m_Tracks;
 		float m_Duration = 0.0f;
-		bool m_Loop = false;
+		bool m_Loop = true;
 	};
 }

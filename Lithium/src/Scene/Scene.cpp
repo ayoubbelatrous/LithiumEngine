@@ -33,14 +33,14 @@ namespace Lithium
 
 				for (auto& script : scriptgroupeA.Scripts)
 				{
-					
+
 					void* Args[1];
 					Args[0] = Application::Get().Monoserver->CreateMonoCollsion2D(*IDB);
 					script.Scriptobject->InvokeMethod("OnCollisionEnter", Args);
 				}
 			}
-			
-			
+
+
 			if (entityB.HasComponent<ScriptGroupeComponent>())
 			{
 				ScriptGroupeComponent& scriptgroupeB = entityB.GetComponent<ScriptGroupeComponent>();
@@ -102,7 +102,7 @@ namespace Lithium
 		:m_Registry(entt::registry())
 	{
 	}
-	
+
 
 	template<typename Component>
 	void Scene::CopyComponentAll(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
@@ -111,16 +111,16 @@ namespace Lithium
 		for (auto e : view)
 		{
 			UUID uuid = src.get<IDComponent>(e).ID;
-			
+
 			entt::entity dstEnttID = enttMap.at(uuid);
 
 			auto component = src.get<Component>(e);
 			dst.emplace_or_replace<Component>(dstEnttID, component);
-			
+
 
 		}
 	}
-	
+
 	Entity Scene::CreateEntity(const std::string& name)
 	{
 		Entity ent(m_Registry.create(), this);
@@ -147,12 +147,12 @@ namespace Lithium
 		RelationShipComponent& rc = entity.GetComponent<RelationShipComponent>();
 		for (auto& child : rc.Children)
 		{
-			DeleteEntity(Entity(GetUUIDMap()[child],this));
+			DeleteEntity(Entity(GetUUIDMap()[child], this));
 		}
 		m_Registry.destroy(entity.GetHandle());
 	}
 
-	
+
 	void Scene::UpdateTransform(Entity entity)
 	{
 		RelationShipComponent& rc = entity.GetComponent<RelationShipComponent>();
@@ -162,11 +162,11 @@ namespace Lithium
 		{
 			Entity childEntity(GetUUIDMap()[child], this);
 			TransformComponent& ChildTransform = childEntity.GetComponent<TransformComponent>();
-// 			glm::mat4 mat = ParentTransform.ModelMatrix * ChildTransform.GetMatrix();
-// 			glm::vec3 pos;
-// 			glm::vec3 rot;
-// 			glm::vec3 sca;
-// 			Math::DecomposeTransform(mat, pos, rot, sca);
+			// 			glm::mat4 mat = ParentTransform.ModelMatrix * ChildTransform.GetMatrix();
+			// 			glm::vec3 pos;
+			// 			glm::vec3 rot;
+			// 			glm::vec3 sca;
+			// 			Math::DecomposeTransform(mat, pos, rot, sca);
 
 			ChildTransform.Position = ParentTransform.Position + ChildTransform.LocalPosition;
 			ChildTransform.ModelMatrix = ChildTransform.GetMatrix();
@@ -175,7 +175,7 @@ namespace Lithium
 	}
 	void Scene::onEditorUpdate()
 	{
-		
+
 		{
 			auto view = GetRegistry().view<RelationShipComponent>();
 
@@ -186,13 +186,10 @@ namespace Lithium
 				{
 					TransformComponent& tc = entity.GetComponent<TransformComponent>();
 					tc.ModelMatrix = tc.GetMatrix();
-					
+
 					UpdateTransform(entity);
 				}
 			}
-
-		
-
 		}
 		{
 			auto view = GetRegistry().view<AnimatorComponent>();
@@ -225,12 +222,12 @@ namespace Lithium
 
 					if (textureMetaData.Mode == TextureMetaData::TextureMode::Multiple)
 					{
-						glm::vec2 cellsize = glm::vec2(textureMetaData.CellsizeX,textureMetaData.CellsizeY);
+						glm::vec2 cellsize = glm::vec2(textureMetaData.CellsizeX, textureMetaData.CellsizeY);
 						int Width = textureAsset->GetWidth();
 						int Height = textureAsset->GetWidth();
 						int x = sp.TextureIndex / (Width / cellsize.x);
 						int y = sp.TextureIndex % (int)(Width / cellsize.x);
-						glm::vec2 index = glm::vec2(x,y);
+						glm::vec2 index = glm::vec2(x, y);
 
 						glm::vec2 textureCoords[] = {
 							{ (index.x * cellsize.x) / Width, (index.y * cellsize.y) / Height},
@@ -247,9 +244,9 @@ namespace Lithium
 				}
 			}
 		}
-		if(m_RenderEditorUI)
+		if (m_RenderEditorUI)
 		{
-		
+
 			auto view = GetRegistry().view<TextRenderer, TransformComponent>();
 
 			for (auto entity : view)
@@ -258,7 +255,7 @@ namespace Lithium
 
 				if (txr.FontAsset.GetUUID() != 0)
 				{
-					FontRenderer::DrawString((glm::vec2)tc.Position, tc.Scale.x, txr.Text, Application::Get().assetManager->GetAsset<Ref<Font>>(txr.FontAsset),txr.color,txr.Spacing,txr.LineSpacing,(int)entity);
+					FontRenderer::DrawString((glm::vec2)tc.Position, tc.Scale.x, txr.Text, Application::Get().assetManager->GetAsset<Ref<Font>>(txr.FontAsset), txr.color, txr.Spacing, txr.LineSpacing, (int)entity);
 				}
 
 			}
@@ -284,10 +281,10 @@ namespace Lithium
 						{
 							script.Loaded = false;
 						}
-						
+
 					}
 				}
-				
+
 
 			}
 		}
@@ -296,7 +293,7 @@ namespace Lithium
 
 	void Scene::OnStart()
 	{
-		m_PhysicsWorld = CreateScope<PhysicsWorld>(glm::vec2(0.0f,-9.8f));
+		m_PhysicsWorld = CreateScope<PhysicsWorld>(glm::vec2(0.0f, -9.8f));
 		CListener = new ContactListener();
 		m_PhysicsWorld->GetPtr()->SetContactListener(CListener);
 		SortScene();
@@ -323,6 +320,22 @@ namespace Lithium
 
 	void Scene::onUpdate()
 	{
+
+		
+		{
+			auto view = GetRegistry().view<AnimatorComponent>();
+
+			for (auto e : view)
+			{
+				Entity entity(e, this);
+				AnimatorComponent& animator = entity.GetComponent<AnimatorComponent>();
+				if (animator.IsPlaying)
+				{
+					Ref<Animation> animation = Application::Get().assetManager->GetAsset<Ref<Animation>>(animator.AnimationAsset);
+					animation->Update(UUID((uint64_t)e), animator.CurrentTime);
+				}
+			}
+		}
 
 		{
 			auto view = GetRegistry().view<RelationShipComponent>();
@@ -363,7 +376,7 @@ namespace Lithium
 
 			}
 		}
-		
+
 		{
 			RendererCommand::ClearColor(GetPrimaryCameraEntity().GetComponent<CameraComponent>().ClearColor);
 			RendererCommand::Clear();
@@ -372,17 +385,42 @@ namespace Lithium
 
 			for (auto entity : view)
 			{
-				
+
 
 				auto [sp, tc] = view.get<SpriteRendererComponent, TransformComponent>(entity);
 
 				if (sp.TextureAsset.GetUUID() == 0)
 				{
 					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity);
+
 				}
 				else
 				{
-					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset), (uint32_t)entity);
+					Ref<Texture> textureAsset = Application::Get().assetManager->GetAsset<Ref<Texture>>(sp.TextureAsset);;
+
+					TextureMetaData textureMetaData = Application::Get().assetManager->GetAssetMetaData<TextureMetaData>(sp.TextureAsset);
+
+					if (textureMetaData.Mode == TextureMetaData::TextureMode::Multiple)
+					{
+						glm::vec2 cellsize = glm::vec2(textureMetaData.CellsizeX, textureMetaData.CellsizeY);
+						int Width = textureAsset->GetWidth();
+						int Height = textureAsset->GetWidth();
+						int x = sp.TextureIndex / (Width / cellsize.x);
+						int y = sp.TextureIndex % (int)(Width / cellsize.x);
+						glm::vec2 index = glm::vec2(x, y);
+
+						glm::vec2 textureCoords[] = {
+							{ (index.x * cellsize.x) / Width, (index.y * cellsize.y) / Height},
+							{ ((index.x + 1) * cellsize.x) / Width, (index.y * cellsize.y) / Height},
+							{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
+							{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
+						};
+						BatchRenderer::DrawQuadSubTexture(tc.ModelMatrix, sp.GetColor(), textureCoords, textureAsset, (uint32_t)entity);
+					}
+					else if (textureMetaData.Mode == TextureMetaData::TextureMode::Single)
+					{
+						BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), textureAsset, (uint32_t)entity);
+					}
 				}
 			}
 			BatchRenderer::End();
@@ -413,8 +451,8 @@ namespace Lithium
 			const int32_t positionIterations = 2;
 			float TimeStep = 1.0f / 60.0f;
 			m_PhysicsWorld->GetPtr()->Step(Application::Get().GetDeltaTime(), velocityIterations, positionIterations);
-			
-			
+
+
 			auto view = GetRegistry().view<Rigidbody2DComponent>();
 
 			for (auto e : view)
@@ -437,7 +475,7 @@ namespace Lithium
 					rb2d.Created = true;
 				}
 				b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				
+
 				//body->SetTransform({ transform.Position.x ,transform.Position.y }, glm::radians(transform.Rotation.z));
 				const auto& position = body->GetPosition();
 				transform.Position.x = position.x;
@@ -460,18 +498,18 @@ namespace Lithium
 						fixtureDef.restitution = bc2d.Restitution;
 						fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
 						bc2d.RuntimeFixture = body->CreateFixture(&fixtureDef);
-						
+
 
 						bc2d.Created = true;
 					}
 
-					
+
 					b2Fixture* fx = (b2Fixture*)bc2d.RuntimeFixture;
 					fx->SetDensity(bc2d.Density);
 					fx->SetFriction(bc2d.Friction);
 					fx->SetRestitution(bc2d.Restitution);
 					fx->SetRestitutionThreshold(bc2d.RestitutionThreshold);
-					
+
 				}
 
 			}
@@ -484,7 +522,7 @@ namespace Lithium
 			{
 				Entity ent = { entity,this };
 
-				for (auto& script:ent.GetComponent<ScriptGroupeComponent>().Scripts )
+				for (auto& script : ent.GetComponent<ScriptGroupeComponent>().Scripts)
 				{
 
 					if (!script.Loaded)
@@ -535,7 +573,7 @@ namespace Lithium
 			{
 				Entity entity(e, this);
 				AudioSourceComponent& source = entity.GetComponent<AudioSourceComponent>();
-			
+
 				if (source.AudioAsset.GetUUID() != 0)
 				{
 					Ref<AudioSource> audioSource = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(source.AudioAsset);
@@ -560,13 +598,13 @@ namespace Lithium
 		}
 		return enttMap;
 	}
-	
+
 	template<typename T>
 	void Scene::CopyComponent(Entity src, Entity dst)
-    { 
-	if (src.HasComponent<T>())
-		dst.AddOrReplaceComponent<T>(src.GetComponent<T>());
-    }
+	{
+		if (src.HasComponent<T>())
+			dst.AddOrReplaceComponent<T>(src.GetComponent<T>());
+	}
 
 
 	Ref<Scene> Scene::Copy(const Ref<Scene>& src)
@@ -576,7 +614,7 @@ namespace Lithium
 		Ref<Scene> newscene = CreateRef<Scene>();
 		auto view = src->GetRegistry().view<NameComponent>();
 		entt::registry& srcSceneRegistry = src->GetRegistry();
-		
+
 		for (auto e : view)
 		{
 			UUID uuid = srcSceneRegistry.get<IDComponent>(e).ID;
@@ -594,6 +632,8 @@ namespace Lithium
 		CopyComponentAll<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<AudioSourceComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<TextRenderer>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<AnimatorComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+
 		return newscene;
 	}
 
@@ -608,18 +648,15 @@ namespace Lithium
 		if (src.HasComponent<RelationShipComponent>())
 		{
 			CopyComponent<RelationShipComponent>(src, entity);
-			
 		}
 
 		if (src.HasComponent<SpriteRendererComponent>())
 		{
 			CopyComponent<SpriteRendererComponent>(src, entity);
-
 		}
 		if (src.HasComponent<NameComponent>())
 		{
 			CopyComponent<NameComponent>(src, entity);
-
 		}
 
 		if (src.HasComponent<ScriptComponent>())
@@ -651,7 +688,7 @@ namespace Lithium
 
 		}
 
-		
+
 
 		return entity;
 	}
@@ -696,7 +733,7 @@ namespace Lithium
 	Entity Scene::GetPrimaryCameraEntity()
 	{
 		auto view = m_Registry.view<CameraComponent>();
-		for (auto e: view)
+		for (auto e : view)
 		{
 			Entity entity(e, this);
 			if (entity.GetComponent<CameraComponent>().Primary == true)
@@ -728,7 +765,7 @@ namespace Lithium
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{
-		
+
 	}
 
 	template<>
@@ -770,4 +807,4 @@ namespace Lithium
 	}
 
 }
-            
+

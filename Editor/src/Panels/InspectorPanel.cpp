@@ -811,6 +811,51 @@ namespace Lithium
 				}
 
 			}
+			if (m_Selection.HasComponent<AnimatorComponent>())
+			{
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("AnimatorComponent")), treeNodeFlags, "Animator");
+				ImGui::PopStyleVar();
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
+
+				if (open)
+				{
+					AnimatorComponent& animator = m_Selection.GetComponent<AnimatorComponent>();
+					ImGui::Button("Animation Clip");
+					if (ImGui::BeginDragDropTarget())
+					{
+
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							std::filesystem::path animationPath = root / path;
+							if (animationPath.extension() == ".anim")
+							{
+								Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Animation>>(animationPath.string());
+								animator.AnimationAsset = asset;
+							}
+
+						}
+						ImGui::EndDragDropTarget();
+					}
+					ImGui::TreePop();
+				}
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<AnimatorComponent>();
+				}
+
+			}
 			if (ImGui::Button("Add Component"))
 				ImGui::OpenPopup("AddComponent");
 

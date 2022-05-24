@@ -1,0 +1,5 @@
+TextureMode: Multiple
+TextureType: Sprite
+FilteringMode: Nearest
+CellSizeX: 16
+CellSizeY: 16

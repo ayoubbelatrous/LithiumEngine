@@ -3,7 +3,7 @@
 #include "Core/Application.h"
 #include "Scene/Entity.h"
 #include "Utils/YamlUtils.h"
-
+#include "Core/Log.h"
 namespace Lithium
 {
 	void Animation::Update(const UUID& EntityID, float& Time)
@@ -45,6 +45,7 @@ namespace Lithium
 	{
 		entt::entity e = Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[EntityID];
 		Entity entity(e, Application::Get().sceneManager->GetActiveScene().get());
+		LT_CORE_INFO(TextureIndex);
 		entity.GetComponent<SpriteRendererComponent>().TextureIndex = TextureIndex;
 	}
 
@@ -193,6 +194,7 @@ namespace Lithium
 
 			}
 		}
+		animation->SetDuration(1.00f);
 		return animation;
 	}
 
