@@ -411,6 +411,21 @@ namespace Lithium
 		return Application::Get().GetDeltaTime();
 	}
 
+	uint32_t MonoServer::CreateTexture_Internal(int width, int height, int format)
+	{
+		return Application::Get().assetManager->CreateUserTexture(width, height, format);
+	}
+
+	void MonoServer::DeleteTexture_Internal(int id)
+	{
+		Application::Get().assetManager->DeleteUserTexture(id);
+	}
+
+	void MonoServer::SetTextureData_Internal(uint32_t id, glm::vec4* data,int size)
+	{
+		Application::Get().assetManager->SetUserTextureData(id, data);
+	}
+
 	void MonoServer::ForwardMonoException(MonoObject* object)
 	{
 		void* Args[1];
@@ -475,6 +490,9 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.TextRenderer::SetTextRendererText_Internal", (const void*)MonoServer::SetTextRendererText_Internal);
 		mono_add_internal_call("Lithium.Core.TextRenderer::GetTextRendererText_Internal", (const void*)MonoServer::GetTextRendererText_Internal);
 
+		mono_add_internal_call("Lithium.Core.Texture::CreateTexture_Internal", (const void*)MonoServer::CreateTexture_Internal);
+		mono_add_internal_call("Lithium.Core.Texture::DeleteTexture_Internal", (const void*)MonoServer::DeleteTexture_Internal);
+		mono_add_internal_call("Lithium.Core.Texture::SetTextureData_Internal", (const void*)MonoServer::SetTextureData_Internal);
 
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyPressed", (const void*)MonoServer::MouseKey_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MouseKeyDown", (const void*)MonoServer::MouseKeyDown_Internal);
