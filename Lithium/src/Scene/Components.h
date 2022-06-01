@@ -14,6 +14,7 @@
 #include "Core/Math.h"
 #include "physics/PhysicsTypes.h"
 #include "AssetManager/Asset.h"
+#include "Mesh/Mesh.h"
 
 namespace Lithium
 {
@@ -118,8 +119,8 @@ namespace Lithium
 
 	struct Rigidbody2DComponent
 	{
-		
-		
+
+
 		bool FixedRotation = false;
 		void* RuntimeBody = nullptr;
 		bool Created = false;
@@ -159,7 +160,7 @@ namespace Lithium
 		ScriptComponent() = default;
 		ScriptComponent(const ScriptComponent& other) = default;
 		ScriptComponent(const std::string& name)
-			:Name(name),uuid(UUID())
+			:Name(name), uuid(UUID())
 		{}
 	};
 
@@ -168,7 +169,7 @@ namespace Lithium
 		std::vector<ScriptComponent> Scripts;
 		void AddScript(const std::string& name)
 		{
-		
+
 			Scripts.emplace_back(name);
 		}
 		void AddScript(ScriptComponent& script)
@@ -177,7 +178,7 @@ namespace Lithium
 		}
 		ScriptGroupeComponent() = default;
 		ScriptGroupeComponent(const ScriptGroupeComponent& other) = default;
-		
+
 	};
 
 	struct CameraComponent
@@ -203,7 +204,7 @@ namespace Lithium
 		}
 		void Play()
 		{
-		
+
 		}
 		void Stop()
 		{
@@ -257,6 +258,14 @@ namespace Lithium
 		float CurrentTime = 0.0f;
 		AnimatorComponent() = default;
 		AnimatorComponent(const AnimatorComponent&) = default;
+	};
+	struct MeshRenderer
+	{
+		Asset ShaderAsset;
+		std::vector<Ref<Mesh>> Meshes;
+		bool hasModelFile;
+		std::string ModelPath;
+		//Material
 	};
 }
 
