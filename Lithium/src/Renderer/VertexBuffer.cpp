@@ -23,7 +23,7 @@ namespace Lithium
 
 	void VertexBuffer::SetData(const void* data, uint32_t size)
 	{
-		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0,size, data);
 	}
 
 	void VertexBuffer::Bind()
