@@ -550,7 +550,9 @@ namespace Lithium
 	void MonoServer::InitMono()
 	{
 		
-		mono_set_dirs("Library/assemblies", ".");
+		mono_set_dirs("Library/assemblies", "."); 
+
+
 		_MonoRootDomain = mono_jit_init("RootDomain");
 		_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
 

@@ -480,6 +480,8 @@ namespace Lithium
 				root = projectPath;
 				_AssetBrowerPanel->OnProjectChange();
 				Application::Get().Monoserver->ForceReload();
+				Application::Get().GetWindow().SetWindowName("Lithium - " + projectPath.filename().string());
+
 			}
 		}
 		if (ImGui::BeginMenuBar())
@@ -513,6 +515,15 @@ namespace Lithium
 				if (ImGui::MenuItem("Create Project", ""))
 				{
 					m_OpenProjectWizard = true;
+				}
+				if (ImGui::MenuItem("Open Project", ""))
+				{
+					std::filesystem::path ProjectPath = FileDialogs::OpenFolder("");
+					root = ProjectPath;
+					_AssetBrowerPanel->OnProjectChange();
+					Application::Get().Monoserver->ForceReload();
+					Application::Get().GetWindow().SetWindowName("Lithium - " + ProjectPath.filename().string());
+					LT_CORE_INFO("Opened Project Named {}", ProjectPath.string().c_str());
 				}
 				ImGui::EndMenu();
 			}

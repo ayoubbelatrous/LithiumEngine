@@ -326,6 +326,33 @@ namespace Lithium {
 	{
 	}
 
+	uint32_t AssetManager::CreateUserTexture(int width, int height, int format)
+	{
+		Ref<Texture> texture;
+		if (format == 0)
+		{
+			texture = CreateRef<Texture>(width, height, Texture::TextureType::RGB);
+
+		}
+		if (format == 1)
+		{
+			texture = CreateRef<Texture>(width, height, Texture::TextureType::RGBA);
+		}
+		uint32_t textureID = texture->GetID();
+		m_UserTextures.emplace(textureID, texture);
+		return textureID;
+	}
+
+	void AssetManager::DeleteUserTexture(uint32_t id)
+	{
+		m_UserTextures.erase(id);
+	}
+
+	void AssetManager::SetUserTextureData(uint32_t id, void* data)
+	{
+		m_UserTextures[id]->SetData(data);
+	}
+
 	void AssetManager::SaveAssetRegistry()
 	{
 		YAML::Emitter emitter;

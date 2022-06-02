@@ -9,7 +9,7 @@ namespace Lithium
 	void AssetBrowserPanel::OnCreate()
 	{
 		_FolderIcon = CreateRef<Texture>("assets/Editor/icons/folder.png");
-		 _FileIcon = CreateRef<Texture>("assets/Editor/icons/file.png");
+		_FileIcon = CreateRef<Texture>("assets/Editor/icons/file.png");
 		currentpath = root;
 		Refresh();
 	}
@@ -47,7 +47,6 @@ namespace Lithium
 			{
 				currentpath = currentpath.parent_path();
 				Refresh();
-				
 			}
 			ImGui::SameLine();
 		}

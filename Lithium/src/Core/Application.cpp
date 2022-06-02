@@ -22,6 +22,7 @@ namespace Lithium
 		assetManager = CreateRef<AssetManager>();
 		sceneManager = CreateRef<SceneManager>();
 		Monoserver = CreateRef<MonoServer>();
+
 	}
 	Application::~Application()
 	{

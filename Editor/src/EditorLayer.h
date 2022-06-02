@@ -49,10 +49,11 @@ namespace Lithium
 		RUNTIME
 	};
 
-	struct Data
+	struct Project
 	{
-		std::string name = "entity";
+		std::filesystem::path CurrentProjectPath;
 	};
+
 	class EditorLayer : public Lithium::Layer
 	{
 	public:

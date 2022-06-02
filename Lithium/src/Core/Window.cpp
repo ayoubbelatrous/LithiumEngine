@@ -109,4 +109,9 @@ namespace Lithium
 		return m_Vsync;
 	}
 
+	void Window::SetWindowName(const std::string& name)
+	{
+		glfwSetWindowTitle(window, name.c_str());
+	}
+
 }

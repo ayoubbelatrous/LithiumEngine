@@ -47,7 +47,7 @@ namespace Lithium
 
 
 		void SetAppEventCallback(const EventCallback& e)  { _Data.callback = e; }
-
+		void SetWindowName(const std::string& name);
 		void* GetNativeWindow() const { return window; }
 	private:
 		GLFWwindow* window;

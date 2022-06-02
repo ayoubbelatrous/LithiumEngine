@@ -4,6 +4,7 @@
 #include "Scene/Entity.h"
 #include "Utils/YamlUtils.h"
 #include "Core/Log.h"
+
 namespace Lithium
 {
 	void Animation::Update(const UUID& EntityID, float& Time)
@@ -195,7 +196,7 @@ namespace Lithium
 			}
 		}
 		animation->SetDuration(1.00f);
-		return animation;
+		return animation;  
 	}
 
 }

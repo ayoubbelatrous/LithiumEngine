@@ -26,7 +26,7 @@ namespace Lithium
 	void AnimationPanel::DrawTimeLine()
 	{
 
-		Ref<Animation> animation = Application::Get().assetManager->GetAsset<Ref<Animation>>(m_CurrentAnimation);
+		Ref<Animation> animation;// Application::Get().assetManager->GetAsset<Ref<Animation>>(m_CurrentAnimation);
 		if (animation == nullptr)
 		{
 			ImGui::Text("No Animation Set");

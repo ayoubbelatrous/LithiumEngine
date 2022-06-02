@@ -33,6 +33,9 @@ namespace Lithium
 
 		std::string GetAssetPath(Asset asset);
 		void PackAssetRegistry(const std::string& path);
+		uint32_t CreateUserTexture(int width,int height,int format);
+		void DeleteUserTexture(uint32_t id);
+		void SetUserTextureData(uint32_t id,void* data);
 	private:
 		void SaveAssetRegistry();
 		void LoadAssetRegistry();
@@ -43,6 +46,7 @@ namespace Lithium
 		std::unordered_map<uint64_t, Ref<AudioSource>> m_AudioRegistry;
 		std::unordered_map<uint64_t, Ref<Font>> m_FontRegistry;
 		std::unordered_map<uint64_t, Ref<Animation>> m_AnimationRegistry;
+		std::unordered_map<uint32_t, Ref<Texture>> m_UserTextures;
 		std::string m_AssetRegistryRootPath = "Library/";
 
 	};
