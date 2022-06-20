@@ -321,7 +321,7 @@ namespace Lithium
 	void Scene::onUpdate()
 	{
 
-		
+
 		{
 			auto view = GetRegistry().view<AnimatorComponent>();
 
@@ -423,6 +423,19 @@ namespace Lithium
 					}
 				}
 			}
+			{
+				auto view = GetRegistry().view<ParticleSystemRenderer, TransformComponent>();
+
+				for (auto entity : view)
+				{
+
+					auto [psr, tc] = view.get<ParticleSystemRenderer, TransformComponent>(entity);
+					psr.OnUpdate(tc.Position);
+					psr.OnRender();
+				}
+			}
+
+
 			BatchRenderer::End();
 
 
@@ -633,6 +646,7 @@ namespace Lithium
 		CopyComponentAll<AudioSourceComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<TextRenderer>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<AnimatorComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<ParticleSystemRenderer>(dstSceneRegistry, srcSceneRegistry, enttMap);
 
 		return newscene;
 	}
@@ -803,6 +817,10 @@ namespace Lithium
 	}
 	template<>
 	void Scene::OnComponentAdded<AnimatorComponent>(Entity entity, AnimatorComponent& component)
+	{
+	}
+	template<>
+	void Scene::OnComponentAdded<ParticleSystemRenderer>(Entity entity, ParticleSystemRenderer& component)
 	{
 	}
 

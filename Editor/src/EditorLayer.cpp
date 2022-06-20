@@ -111,10 +111,6 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
-		AnimatorComponent& animator = entity.AddComponent<AnimatorComponent>();
-		animator.AnimationAsset = Application::Get().assetManager->GetAssetFromPath<Ref<Animation>>("assets/anim.anim");
-		animator.Play();
-		animator.SetLoop(true);
 	}
 
 	void EditorLayer::OnUpdate()

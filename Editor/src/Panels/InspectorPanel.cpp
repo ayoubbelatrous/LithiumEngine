@@ -856,6 +856,68 @@ namespace Lithium
 				}
 
 			}
+
+			if (m_Selection.HasComponent<ParticleSystemRenderer>())
+			{
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("ParticleSystemRendererComponent")), treeNodeFlags, "Particle System Renderer");
+				ImGui::PopStyleVar();
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
+
+				if (open)
+				{
+					ParticleSystemRenderer& particleSystem = m_Selection.GetComponent<ParticleSystemRenderer>();
+
+					ImGui::ColorEdit4("Begin Color", glm::value_ptr(particleSystem.Properties.ColorBegin));
+					ImGui::ColorEdit4("Begin End", glm::value_ptr(particleSystem.Properties.ColorEnd));
+					ImGui::DragFloat("Particles Per Frame", &particleSystem.ParticlesPerFrame);
+					ImGui::DragFloat("Life Time", &particleSystem.Properties.LifeTime);
+					ImGui::DragFloat("Size Begin", &particleSystem.Properties.SizeBegin);
+					ImGui::DragFloat("Size End", &particleSystem.Properties.SizeEnd);
+					ImGui::DragFloat("Size Variation", &particleSystem.Properties.SizeVariation);
+					ImGui::DragFloat3("Velocity", glm::value_ptr(particleSystem.Properties.Velocity));
+					ImGui::DragFloat3("Velocity Variation", glm::value_ptr(particleSystem.Properties.VelocityVariation));
+					if (particleSystem.pParticleSystem.GetTextureAsset().GetUUID() == 0)
+					{
+						ImGui::Button("Texture", { ImGui::GetContentRegionAvail().x,20 });
+					}
+					else
+					{
+						std::filesystem::path path = Application::Get().assetManager->GetAssetPath(particleSystem.pParticleSystem.GetTextureAsset());
+						ImGui::Button(path.filename().string().c_str(), { ImGui::GetContentRegionAvail().x,20 });
+					}
+
+
+					if (ImGui::BeginDragDropTarget())
+					{
+
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							std::filesystem::path texturepath = root / std::filesystem::path(path);
+							Asset asset = Application::Get().assetManager->GetAssetFromPath<Ref<Texture>>(texturepath.string());
+							particleSystem.pParticleSystem.SetTextureAsset(asset);
+						}
+						ImGui::EndDragDropTarget();
+					}
+					ImGui::TreePop();
+				}
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<ParticleSystemRenderer>();
+				}
+
+			}
 			if (ImGui::Button("Add Component"))
 				ImGui::OpenPopup("AddComponent");
 
@@ -931,7 +993,14 @@ namespace Lithium
 						ImGui::CloseCurrentPopup();
 					}
 				}
-
+				if (!m_Selection.HasComponent<ParticleSystemRenderer>())
+				{
+					if (ImGui::MenuItem("Particle System Renderer"))
+					{
+						m_Selection.AddComponent<ParticleSystemRenderer>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
 
 				ImGui::EndPopup();
 			}

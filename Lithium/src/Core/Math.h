@@ -8,6 +8,9 @@ namespace Lithium::Math
 	//converts mouse coordinates to normalized device coordinates("opengl")
 	glm::vec3 GetNormalizedDeviceCoords(const glm::vec2& mouse,const glm::vec2& viewportsize);
 
+	glm::vec4 Lerp(const glm::vec4& a, const glm::vec4& b, float t);
+
+	glm::vec3 Lerp(const glm::vec3& a, const glm::vec3& b, float t);
 }
 
 namespace Lithium::Math

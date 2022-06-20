@@ -88,4 +88,9 @@ namespace Lithium::Math
 		return glm::vec3(x,-y,z);
 	}
 
+	glm::vec4 Lerp(const glm::vec4& a, const glm::vec4& b, float t) { return glm::vec4(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t, a.w + (b.w - a.w) * t); };
+
+	glm::vec3 Lerp(const glm::vec3& a, const glm::vec3& b, float t) { return glm::vec3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t); };
+
+
 }

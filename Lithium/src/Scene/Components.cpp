@@ -1,6 +1,7 @@
 #include "lipch.h"
 #include "Components.h"
 #include "box2d/box2d.h"
+#include "Core/Application.h"
 
 namespace Lithium
 {
@@ -17,6 +18,18 @@ namespace Lithium
 		b2Body* body = (b2Body*)RuntimeBody;
 		b2Vec2 vel = body->GetLinearVelocity();
 		return glm::vec2({ vel.x, vel.y});
+	}
+
+	void ParticleSystemRenderer::OnUpdate(const glm::vec3& Position)
+	{
+		for (size_t i = 0; i < ParticlesPerFrame; i++)
+		{
+
+			ParticleProps tProps = Properties;
+			tProps.Position += Position;
+			pParticleSystem.Emit(tProps);
+		}
+		pParticleSystem.OnUpdate((float)Application::Get().GetDeltaTime());
 	}
 
 }

@@ -15,6 +15,7 @@
 #include "physics/PhysicsTypes.h"
 #include "AssetManager/Asset.h"
 #include "Mesh/Mesh.h"
+#include "Renderer/ParticleSystem.h"
 
 namespace Lithium
 {
@@ -266,6 +267,20 @@ namespace Lithium
 		bool hasModelFile;
 		std::string ModelPath;
 		//Material
+	};
+
+	struct ParticleSystemRenderer
+	{
+		ParticleSystem pParticleSystem;
+		ParticleProps Properties;
+		float ParticlesPerFrame = 5;
+		void OnUpdate(const glm::vec3& Position);
+		void OnRender()
+		{
+			pParticleSystem.OnRender();
+		}
+		ParticleSystemRenderer() = default;
+		ParticleSystemRenderer(const ParticleSystemRenderer&) = default;
 	};
 }
 
