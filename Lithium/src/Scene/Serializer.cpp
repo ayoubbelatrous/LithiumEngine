@@ -222,6 +222,20 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<CircleCollider2DComponent>())
+		{
+			CircleCollider2DComponent& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+			emitter << YAML::Key << "CircleCollider2D" << YAML::BeginMap;
+			emitter << YAML::Key << "Radius" << YAML::Value << cc2d.Radius;
+			emitter << YAML::Key << "Offset" << YAML::Value << cc2d.Offset;
+			emitter << YAML::Key << "Density" << YAML::Value << cc2d.Density;
+			emitter << YAML::Key << "Friction" << YAML::Value << cc2d.Friction;
+			emitter << YAML::Key << "Restitution" << YAML::Value << cc2d.Restitution;
+			emitter << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2d.RestitutionThreshold;
+			emitter << YAML::Key << "IsSensor" << YAML::Value << cc2d.IsSensor;
+			emitter << YAML::EndMap;
+		}
+
 		if (entity.HasComponent<CameraComponent>())
 		{
 			CameraComponent& camera = entity.GetComponent<CameraComponent>();
@@ -531,6 +545,21 @@ namespace Lithium
 
 			}
 
+			auto circleCollider2d = entity["CircleCollider2D"];
+			if (circleCollider2d)
+			{
+				deserEntity.AddComponent<CircleCollider2DComponent>();
+				CircleCollider2DComponent& cc2d = deserEntity.GetComponent<CircleCollider2DComponent>();
+				cc2d.Radius = boxcollider2d["Radius"].as<float>();
+				cc2d.Offset = boxcollider2d["Offset"].as<glm::vec2>();
+				cc2d.Density = boxcollider2d["Density"].as<float>();
+				cc2d.Friction = boxcollider2d["Friction"].as<float>();
+				cc2d.Restitution = boxcollider2d["Restitution"].as<float>();
+				cc2d.RestitutionThreshold = boxcollider2d["RestitutionThreshold"].as<float>();
+				cc2d.IsSensor = boxcollider2d["IsSensor"].as<bool>();
+
+			}
+
 			auto cameraComponent = entity["CameraComponent"];
 			if (cameraComponent)
 			{
@@ -574,6 +603,7 @@ namespace Lithium
 				textrendcomp.Spacing = textRenderer["Spacing"].as<float>();
 				textrendcomp.Text = textRenderer["Text"].as <std::string> ();
 			}
+
 		}
 	}
 }
