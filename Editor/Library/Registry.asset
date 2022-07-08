@@ -33,3 +33,5 @@ PathRegistry:
     Path: assets\light-brick.png
   - UUID: 9322330067321194530
     Path: assets\blackSmoke18.png
+  - UUID: 1083328644614145586
+    Path: assets\fonts\pixelated.ttf

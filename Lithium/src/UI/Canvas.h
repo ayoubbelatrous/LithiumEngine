@@ -7,10 +7,9 @@ namespace Lithium
 	class Canvas
 	{
 	public:
-
+		void OnUpdate();
+		void OnRender();
 	private:
-		bool m_ScreenSpace = true;
-		std::vector<UUID> m_Children;
-		glm::vec2 m_Size;
+
 	};
 }

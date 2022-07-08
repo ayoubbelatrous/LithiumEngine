@@ -12,6 +12,8 @@
 #include "AssetManager/AssetManager.h"
 #include "Audio/Audio.h"
 #include "Font/FontRenderer.h"
+#include "Renderer/UIRenderer.h"
+#include "Input/Input.h"
 
 
 namespace Lithium
@@ -131,6 +133,16 @@ namespace Lithium
 		return ent;
 	}
 
+	Entity Scene::CreateUIEntity(const std::string& name)
+	{
+		Entity ent(m_Registry.create(), this);
+		ent.AddComponent<IDComponent>(UUID());
+		ent.AddComponent<NameComponent>(name);
+		ent.AddComponent<RelationShipComponent>();
+		ent.AddComponent<RectTrasnformComponent>();
+		return ent;
+	}
+
 	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
 	{
 		Entity ent(m_Registry.create(), this);
@@ -177,7 +189,7 @@ namespace Lithium
 	{
 
 		{
-			auto view = GetRegistry().view<RelationShipComponent>();
+			auto view = GetRegistry().view<RelationShipComponent, TransformComponent>();
 
 			for (auto e : view)
 			{
@@ -247,18 +259,31 @@ namespace Lithium
 		if (m_RenderEditorUI)
 		{
 
-			auto view = GetRegistry().view<TextRenderer, TransformComponent>();
-
-			for (auto entity : view)
 			{
-				auto [txr, tc] = view.get<TextRenderer, TransformComponent>(entity);
+				auto view = GetRegistry().view<TextRenderer, TransformComponent>();
 
-				if (txr.FontAsset.GetUUID() != 0)
+				for (auto entity : view)
 				{
-					FontRenderer::DrawString((glm::vec2)tc.Position, tc.Scale.x, txr.Text, Application::Get().assetManager->GetAsset<Ref<Font>>(txr.FontAsset), txr.color, txr.Spacing, txr.LineSpacing, (int)entity);
-				}
+					auto [txr, tc] = view.get<TextRenderer, TransformComponent>(entity);
 
+					if (txr.FontAsset.GetUUID() != 0)
+					{
+						FontRenderer::DrawString((glm::vec2)tc.Position, tc.Scale.x, txr.Text, Application::Get().assetManager->GetAsset<Ref<Font>>(txr.FontAsset), txr.color, txr.Spacing, txr.LineSpacing, (int)entity);
+					}
+
+				}
 			}
+
+			{
+				auto view = GetRegistry().view<ButtonComponent, TransformComponent>();
+
+				for (auto entity : view)
+				{
+					auto [btn, tc] = view.get<ButtonComponent, TransformComponent>(entity);
+					UIRenderer::DrawQuad(tc.ModelMatrix, btn.CurrentColor, (int)entity);
+				}
+			}
+
 		}
 		{
 			auto view = GetRegistry().view<ScriptGroupeComponent>();
@@ -441,7 +466,7 @@ namespace Lithium
 
 		}
 		{
-			FontRenderer::BeginScene(glm::ortho(0.0f, (float)ViewportWidth, 0.0f, (float)ViewportHeight));
+			FontRenderer::BeginScene(glm::ortho(0.0f, (float)m_ViewportWidth, 0.0f, (float)m_ViewportHeight));
 
 			auto view = GetRegistry().view<TextRenderer, TransformComponent>();
 
@@ -456,6 +481,46 @@ namespace Lithium
 
 			}
 			FontRenderer::EndScene();
+			UIRenderer::BeginScene(glm::ortho(0.0f, (float)m_ViewportWidth, 0.0f, (float)m_ViewportHeight));
+			{
+				auto view = GetRegistry().view<ButtonComponent, TransformComponent>();
+
+				for (auto entity : view)
+				{
+					auto [btn, tc] = view.get<ButtonComponent, TransformComponent>(entity);
+					UIRenderer::DrawQuad(tc.ModelMatrix, btn.CurrentColor, (int)entity);
+					glm::vec2 Max = { tc.Position.y + (tc.Scale.y / 2),tc.Position.x + (tc.Scale.x / 2) };
+					glm::vec2 Min = { tc.Position.y - (tc.Scale.y / 2),tc.Position.x - (tc.Scale.x / 2) };
+					float MouseX, MouseY;
+					float mx, my;
+					mx = ImGui::GetMousePos().x;
+					my = ImGui::GetMousePos().y;
+					mx -= m_Bounds[0].x;
+					my -= m_Bounds[0].y;
+					glm::vec2 vs = m_Bounds[1] - m_Bounds[0];
+					my = vs.y - my;
+					MouseX = (int)mx;
+					MouseY = (int)my;
+
+					if (btn.CheckIntersection({ MouseY,MouseX }, Min, Max))
+					{
+						if (Input::IsMouseKeyPressed(0))
+						{
+							btn.CurrentColor = btn.PressColor;
+						}
+						else
+						{
+							btn.CurrentColor = btn.HoveredColor;
+						}
+					}
+					else
+					{
+						btn.CurrentColor = btn.Color;
+					}
+
+				}
+			}
+			UIRenderer::EndScene();
 		}
 
 
@@ -522,6 +587,36 @@ namespace Lithium
 					fx->SetFriction(bc2d.Friction);
 					fx->SetRestitution(bc2d.Restitution);
 					fx->SetRestitutionThreshold(bc2d.RestitutionThreshold);
+
+				}
+
+				if (entity.HasComponent<CircleCollider2DComponent>())
+				{
+					auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+					if (cc2d.Created == false)
+					{
+
+						b2CircleShape circleShape;
+						circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
+						circleShape.m_radius = transform.Scale.x * cc2d.Radius;
+
+						b2FixtureDef fixtureDef;
+						fixtureDef.shape = &circleShape;
+						fixtureDef.density = cc2d.Density;
+						fixtureDef.friction = cc2d.Friction;
+						fixtureDef.restitution = cc2d.Restitution;
+						fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+						cc2d.RuntimeFixture = body->CreateFixture(&fixtureDef);
+
+						cc2d.Created = true;
+					}
+
+
+					b2Fixture* fx = (b2Fixture*)cc2d.RuntimeFixture;
+					fx->SetDensity(cc2d.Density);
+					fx->SetFriction(cc2d.Friction);
+					fx->SetRestitution(cc2d.Restitution);
+					fx->SetRestitutionThreshold(cc2d.RestitutionThreshold);
 
 				}
 
@@ -647,6 +742,8 @@ namespace Lithium
 		CopyComponentAll<TextRenderer>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<AnimatorComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponentAll<ParticleSystemRenderer>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<CircleCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponentAll<ButtonComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 
 		return newscene;
 	}
@@ -713,11 +810,12 @@ namespace Lithium
 			});
 	}
 
-
-	void Scene::OnViewportResize(uint32_t width, uint32_t height)
+	void Scene::OnViewportResize(uint32_t width, uint32_t height, glm::vec2 Bounds[2])
 	{
-		ViewportWidth = width;
-		ViewportHeight = height;
+		m_ViewportWidth = width;
+		m_ViewportHeight = height;
+		m_Bounds[0] = Bounds[0];
+		m_Bounds[1] = Bounds[1];
 		auto view = m_Registry.view<CameraComponent>();
 		for (auto entity : view)
 		{
@@ -821,6 +919,19 @@ namespace Lithium
 	}
 	template<>
 	void Scene::OnComponentAdded<ParticleSystemRenderer>(Entity entity, ParticleSystemRenderer& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CircleCollider2DComponent>(Entity entity, CircleCollider2DComponent& component)
+	{
+	}
+	template<>
+	void Scene::OnComponentAdded<RectTrasnformComponent>(Entity entity, RectTrasnformComponent& component)
+	{
+	}
+	template<>
+	void Scene::OnComponentAdded<ButtonComponent>(Entity entity, ButtonComponent& component)
 	{
 	}
 

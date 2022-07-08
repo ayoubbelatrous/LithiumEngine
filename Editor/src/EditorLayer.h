@@ -80,6 +80,7 @@ namespace Lithium
 		void OpenScene(const std::string& path);
 	private:
 		glm::mat4 proj;
+		glm::mat4 UIProjection;
 		glm::mat4 view;
 		glm::mat4 model;
 		glm::vec3 pos;
@@ -133,7 +134,7 @@ namespace Lithium
 		Ref<AssetPropertiesPanel> m_AssetPropertiesPanel;
 		Ref<SpriteEditor> m_SpriteEditor;
 		std::string m_ScenePath = "assets/scenes/";
-		bool m_OpenStatsPanel = false;
+		bool m_OpenStatsPanel = true;
 		bool m_OpenProjectWizard = false;
 		bool m_OpenAnimationPanel = true;
 		bool m_OpenAssetPropertiesPanel = false;

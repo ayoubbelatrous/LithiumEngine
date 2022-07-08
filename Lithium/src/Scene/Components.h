@@ -150,6 +150,21 @@ namespace Lithium
 		bool IsSensor = false;
 		void* RuntimeFixture = nullptr;
 	};
+
+	struct CircleCollider2DComponent
+	{
+		CircleCollider2DComponent() = default;
+		CircleCollider2DComponent(const CircleCollider2DComponent&) = default;
+		bool Created = false;
+		glm::vec2 Offset = {0,0};
+		float Radius = 0.5f;
+		float Density = 1.0f;
+		float Friction = 0.5f;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f;
+		bool IsSensor = false;
+		void* RuntimeFixture = nullptr;
+	};
 	struct ScriptComponent
 	{
 		Ref<ScriptObject> Scriptobject = nullptr;
@@ -282,5 +297,27 @@ namespace Lithium
 		ParticleSystemRenderer() = default;
 		ParticleSystemRenderer(const ParticleSystemRenderer&) = default;
 	};
+	struct RectTrasnformComponent
+	{
+		glm::vec3 Position;
+		glm::vec3 Rotation;
+		glm::vec2 Scale;
+	};
+	struct ButtonComponent
+	{
+		glm::vec4 Color = {1.0,1.0,1.0,1.0};
+		glm::vec4 HoveredColor = { 0.8,0.8,0.8,1.0 };
+		glm::vec4 PressColor = { 0.5,0.5,0.5,1.0 };
+		glm::vec4 CurrentColor = { 1.0,1.0,1.0,1.0 };;
+
+		std::string BoundFunction;
+		bool CheckIntersection(const glm::vec2& Position, const glm::vec2& Min,const glm::vec2& Max)
+		{
+			bool intersected = Position.x > Min.x && Position.x < Max.x&&
+				Position.y > Min.y && Position.y < Max.y;
+			return intersected;
+		}
+	};
+
 }
 

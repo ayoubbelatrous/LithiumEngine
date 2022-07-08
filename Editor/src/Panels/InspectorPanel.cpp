@@ -309,6 +309,24 @@ namespace Lithium
 
 
 			}
+			if (m_Selection.HasComponent<RectTrasnformComponent>())
+			{
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("TransformComponent")), treeNodeFlags, "RectTransformComponent");
+				ImGui::PopStyleVar();
+
+				if (open)
+				{
+				
+					DrawVec3Control("Position", m_Selection.GetComponent<RectTrasnformComponent>().Position);
+					DrawVec3Control("Rotation", m_Selection.GetComponent<RectTrasnformComponent>().Rotation);
+					ImGui::TreePop();
+				}
+
+
+			}
 
 			if (m_Selection.HasComponent<SpriteRendererComponent>())
 			{
@@ -464,6 +482,43 @@ namespace Lithium
 				if (remove == true)
 				{
 					m_Selection.RemoveComponent<BoxCollider2DComponent>();
+				}
+
+			}
+			if (m_Selection.HasComponent<CircleCollider2DComponent>())
+			{
+
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("BoxCollider 2D")), treeNodeFlags, "BoxCollider 2D");
+				ImGui::PopStyleVar();
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
+				if (open)
+				{
+					CircleCollider2DComponent& cc2d = m_Selection.GetComponent<CircleCollider2DComponent>();
+					ImGui::PushItemWidth(125);
+					ImGui::DragFloat("Radius", &cc2d.Radius, 0.01f);
+					ImGui::DragFloat2("Offset", glm::value_ptr(cc2d.Offset), 0.01f);
+					ImGui::DragFloat("Density", &cc2d.Density, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Friction", &cc2d.Friction, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Restitution", &cc2d.Restitution, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Restitution Threshold", &cc2d.RestitutionThreshold, 0.01f, 0.0f);
+					ImGui::Checkbox("IsSensor", &cc2d.IsSensor);
+					ImGui::PopItemWidth();
+					ImGui::TreePop();
+				}
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<CircleCollider2DComponent>();
 				}
 
 			}
@@ -918,6 +973,39 @@ namespace Lithium
 				}
 
 			}
+
+			if (m_Selection.HasComponent<ButtonComponent>())
+			{
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+				bool open = ImGui::TreeNodeEx((void*)(std::hash<std::string>{}("ButtonComponent")), treeNodeFlags, "Button");
+				ImGui::PopStyleVar();
+				bool remove = false;
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						remove = true;
+					}
+					ImGui::EndPopup();
+				}
+
+				if (open)
+				{
+					ButtonComponent& button = m_Selection.GetComponent<ButtonComponent>();
+		
+					ImGui::ColorEdit4("Color", glm::value_ptr(button.Color));
+					ImGui::ColorEdit4("Hover Color", glm::value_ptr(button.HoveredColor));
+					ImGui::ColorEdit4("Press Color", glm::value_ptr(button.PressColor));
+					ImGui::TreePop();
+				}
+				if (remove == true)
+				{
+					m_Selection.RemoveComponent<ButtonComponent>();
+				}
+
+			}
 			if (ImGui::Button("Add Component"))
 				ImGui::OpenPopup("AddComponent");
 
@@ -968,6 +1056,14 @@ namespace Lithium
 						ImGui::CloseCurrentPopup();
 					}
 				}
+				if (!m_Selection.HasComponent<CircleCollider2DComponent>())
+				{
+					if (ImGui::MenuItem("Circle Collider 2D"))
+					{
+						m_Selection.AddComponent<CircleCollider2DComponent>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
 
 				if (!m_Selection.HasComponent<AudioSourceComponent>())
 				{
@@ -998,6 +1094,14 @@ namespace Lithium
 					if (ImGui::MenuItem("Particle System Renderer"))
 					{
 						m_Selection.AddComponent<ParticleSystemRenderer>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
+				if (!m_Selection.HasComponent<ButtonComponent>())
+				{
+					if (ImGui::MenuItem("Button"))
+					{
+						m_Selection.AddComponent<ButtonComponent>();
 						ImGui::CloseCurrentPopup();
 					}
 				}

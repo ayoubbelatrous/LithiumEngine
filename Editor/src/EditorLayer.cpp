@@ -12,6 +12,7 @@
 #include "Font/FontRenderer.h"
 #include "Commands/CommandHistroy.h"
 #include "Commands/FloatCommand.h"
+#include "Renderer/UIRenderer.h"
 
 
 static std::atomic_bool canCheckAssembly;
@@ -52,7 +53,7 @@ namespace Lithium
 		FrameBufferAttachmentDescriptor mainframebufferspec(
 			{
 				FramebufferTextureFormat::RGBA8,
-			   FramebufferTextureFormat::RED_INTEGER,
+				FramebufferTextureFormat::RED_INTEGER
 			}
 		,false,4);
 
@@ -76,10 +77,12 @@ namespace Lithium
 		view = glm::translate(glm::mat4(1), glm::vec3(0));
 
 		proj = glm::ortho(-2.0, 2.0, -2.0, 2.0);
+		UIProjection = glm::ortho(-2.0, 2.0, -2.0, 2.0);;
 		model = glm::translate(glm::mat4(1), pos);
 		_AssetBrowerPanel->OnCreate();
 		BatchRenderer::Init();
 		FontRenderer::Init();
+
 		shader = CreateRef<Shader>("assets/shaders/test.shader");
 		frameshader = CreateRef<Shader>("assets/shaders/frame.shader");
 
@@ -111,6 +114,7 @@ namespace Lithium
 		}, std::chrono::milliseconds(100));
 
 		Font::Init();
+		UIRenderer::Init();
 	}
 
 	void EditorLayer::OnUpdate()
@@ -171,11 +175,13 @@ namespace Lithium
 			framebuffer->ClearAttachment(1, -1);
 			BatchRenderer::Begin(view, proj);
 			FontRenderer::BeginScene(glm::ortho(0.0f, viewportSize[0], 0.0f, viewportSize[1]));
+			UIRenderer::BeginScene(glm::ortho(0.0f, viewportSize[0], 0.0f, viewportSize[1]));
+
 			m_ActiveScene->onEditorUpdate();
 			BatchRenderer::End();
-			FontRenderer::EndScene();
-		
-			
+			FontRenderer::EndScene();		
+			UIRenderer::EndScene();
+
 			if (canCheckAssembly)
 			{
 				if (Application::Get().Monoserver->CheckForChange())
@@ -191,7 +197,7 @@ namespace Lithium
 		{
 			framebuffer->ClearAttachment(1, -1);
 
-			m_ActiveScene->OnViewportResize(viewportSize[0], viewportSize[1]);
+			m_ActiveScene->OnViewportResize(viewportSize[0], viewportSize[1],_ViewportBounds);
 			m_ActiveScene->onUpdate();
 			break;
 
@@ -565,6 +571,10 @@ namespace Lithium
 				{
 					m_ActiveScene->CreateEntity("New Entity");
 				}
+				if (ImGui::MenuItem("Create UI Empty"))
+				{
+					m_ActiveScene->CreateUIEntity("New Entity");
+				}
 				if (ImGui::MenuItem("Sprite"))
 				{
 					Entity entity = m_ActiveScene->CreateEntity("New Entity");
@@ -745,7 +755,7 @@ namespace Lithium
 				snapValue = 45.0f;
 
 			float snapValues[3] = { snapValue, snapValue, snapValue };
-			if (selected.HasComponent<TextRenderer>())
+			if (selected.HasComponent<TextRenderer>() || selected.HasComponent<ButtonComponent>())
 			{
 				glm::mat4 screenProj = glm::ortho(0.0f, viewportSize[0], 0.0f, viewportSize[1]);
 			ImGuizmo::Manipulate(glm::value_ptr(glm::inverse(_view)), glm::value_ptr(screenProj), (ImGuizmo::OPERATION)_GizmoMode, ImGuizmo::WORLD, glm::value_ptr(matri), nullptr, snap ? snapValues : nullptr, NULL, m_UseBoundsGizmo ? bounds : NULL);
@@ -870,6 +880,27 @@ namespace Lithium
 							* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
 							* glm::scale(glm::mat4(1.0f), scale);
 						BatchRenderer::DrawRect(transform, glm::vec4(0, 1, 0, 1));
+					}
+				}
+			}
+
+			{
+				auto view = m_ActiveScene->GetRegistry().view<CircleCollider2DComponent, TransformComponent>();
+				for (auto e : view)
+				{
+					if (m_SceneHierachyPanel->GetSelection().GetHandle() == e)
+					{
+
+
+						auto [cc2d, tc] = view.get<CircleCollider2DComponent, TransformComponent>(e);
+
+						glm::vec3 translation = tc.Position + glm::vec3(cc2d.Offset, 0.001f);
+						glm::vec3 scale = tc.Scale * glm::vec3(cc2d.Radius * 2.0f);
+
+						glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
+							* glm::scale(glm::mat4(1.0f), scale);
+						BatchRenderer::DrawCircle(transform, glm::vec4(0, 1, 0, 1), 0.01f);
+
 					}
 				}
 			}
