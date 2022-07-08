@@ -13,7 +13,7 @@
 
 namespace Lithium
 {
-	static void SerializeScript(YAML::Emitter& emitter,const ScriptComponent& script)
+	static void SerializeScript(YAML::Emitter& emitter, const ScriptComponent& script)
 	{
 		emitter << YAML::BeginMap;
 		emitter << YAML::Key << "ClassName" << YAML::Value << script.Name;
@@ -150,7 +150,7 @@ namespace Lithium
 			emitter << YAML::Key << "Children" << YAML::Value << YAML::BeginSeq;
 			for (auto& id : rc.Children)
 			{
-				emitter << YAML::Key <<  (uint64_t)id;
+				emitter << YAML::Key << (uint64_t)id;
 			}
 
 			emitter << YAML::EndSeq;
@@ -172,7 +172,7 @@ namespace Lithium
 				{
 					SerializeScript(emitter, scc);
 				}
-				
+
 			}
 
 			emitter << YAML::EndSeq;
@@ -188,10 +188,10 @@ namespace Lithium
 			switch (rb2d.Type)
 			{
 			case (PhysicsBodyType::Static):
-				{
+			{
 				emitter << YAML::Key << "Type" << YAML::Value << "Static";
-					break;
-				}
+				break;
+			}
 			case (PhysicsBodyType::Dynamic):
 			{
 				emitter << YAML::Key << "Type" << YAML::Value << "Dynamic";
@@ -244,8 +244,8 @@ namespace Lithium
 			emitter << YAML::Key << "NearPlane" << YAML::Value << camera.Camera.GetOrthographicNearClip();
 			emitter << YAML::Key << "FarPlane" << YAML::Value << camera.Camera.GetOrthographicFarClip();
 			emitter << YAML::Key << "Primary" << YAML::Value << camera.Primary;
-			emitter << YAML::Key << "FixedAspectRatio" << YAML::Value << camera.FixedAspectRatio;			
-			emitter << YAML::Key << "ClearColor" << YAML::Value << camera.ClearColor;			
+			emitter << YAML::Key << "FixedAspectRatio" << YAML::Value << camera.FixedAspectRatio;
+			emitter << YAML::Key << "ClearColor" << YAML::Value << camera.ClearColor;
 			emitter << YAML::EndMap;
 		}
 
@@ -274,6 +274,15 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<ButtonComponent>())
+		{
+			ButtonComponent& Button = entity.GetComponent<ButtonComponent>();
+			emitter << YAML::Key << "ButtonComponent" << YAML::BeginMap;
+			emitter << YAML::Key << "Color" << YAML::Value << Button.Color;
+			emitter << YAML::Key << "Hover Color" << YAML::Value << Button.HoveredColor;
+			emitter << YAML::Key << "Press Color" << YAML::Value << Button.PressColor;
+			emitter << YAML::EndMap;
+		}
 
 		emitter << YAML::EndMap;
 	}
@@ -332,7 +341,7 @@ namespace Lithium
 				tc.LocalScale = transform["LocalScale"].as<glm::vec3>();
 
 			}
-		
+
 			auto relationshipcomp = entity["RelationShipComponent"];
 			if (relationshipcomp)
 			{
@@ -357,7 +366,7 @@ namespace Lithium
 				sp.Color = color;
 			}
 
-			
+
 			auto ScriptGroupe = entity["ScriptGroupe"];
 			if (ScriptGroupe)
 			{
@@ -366,7 +375,7 @@ namespace Lithium
 				auto Scripts = ScriptGroupe["Scripts"];
 				for (auto script : Scripts)
 				{
-					
+
 					ScriptComponent scc = ScriptComponent();
 					std::string ScriptName = script["ClassName"].as<std::string>();
 					scc.Name = ScriptName;
@@ -500,7 +509,7 @@ namespace Lithium
 						}
 
 					}
-				   scriptgroupe.AddScript(scc);
+					scriptgroupe.AddScript(scc);
 				}
 
 			}
@@ -601,7 +610,17 @@ namespace Lithium
 				textrendcomp.color = textRenderer["Color"].as<glm::vec4>();
 				textrendcomp.LineSpacing = textRenderer["LineSpacing"].as<float>();
 				textrendcomp.Spacing = textRenderer["Spacing"].as<float>();
-				textrendcomp.Text = textRenderer["Text"].as <std::string> ();
+				textrendcomp.Text = textRenderer["Text"].as <std::string>();
+			}
+
+			auto Button = entity["ButtonComponent"];
+			if (textRenderer)
+			{
+				deserEntity.AddComponent<ButtonComponent>();
+				ButtonComponent& ButtonComp = deserEntity.GetComponent<ButtonComponent>();
+				ButtonComp.Color = textRenderer["Color"].as<glm::vec4>();
+				ButtonComp.HoveredColor = textRenderer["Hover Color"].as<glm::vec4>();
+				ButtonComp.PressColor = textRenderer["Press Color"].as<glm::vec4>();
 			}
 
 		}

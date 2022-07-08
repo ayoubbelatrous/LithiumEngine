@@ -995,9 +995,11 @@ namespace Lithium
 				{
 					ButtonComponent& button = m_Selection.GetComponent<ButtonComponent>();
 		
-					ImGui::ColorEdit4("Color", glm::value_ptr(button.Color));
-					ImGui::ColorEdit4("Hover Color", glm::value_ptr(button.HoveredColor));
-					ImGui::ColorEdit4("Press Color", glm::value_ptr(button.PressColor));
+					ImGui::ColorEdit4("Color", glm::value_ptr(button.Color), ImGuiColorEditFlags_NoInputs);
+					ImGui::ColorEdit4("Hover Color", glm::value_ptr(button.HoveredColor), ImGuiColorEditFlags_NoInputs);
+					ImGui::ColorEdit4("Press Color", glm::value_ptr(button.PressColor), ImGuiColorEditFlags_NoInputs);
+					
+					
 					ImGui::TreePop();
 				}
 				if (remove == true)
