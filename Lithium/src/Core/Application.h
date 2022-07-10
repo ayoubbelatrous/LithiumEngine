@@ -12,13 +12,18 @@
 
 namespace Lithium
 {
+	struct PhysicsProperties
+	{
+		glm::vec2 Gravity = { 0,-9.8 };
+	};
 	struct ProjectSettings
 	{
-
+		PhysicsProperties PhysicsProps;
 	};
 	struct ApplicationProperties
 	{
 		std::string WorkingDirectory;
+		ProjectSettings ProjSettings;
 	};
 	class Application
 	{
@@ -36,8 +41,8 @@ namespace Lithium
 	public:
 		Application();
 		~Application();
-	
-		double GetDeltaTime() const {return m_DeltaTime; }
+
+		double GetDeltaTime() const { return m_DeltaTime; }
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
 		void Run();
@@ -55,7 +60,7 @@ namespace Lithium
 		void SetApplicationProperties(ApplicationProperties props);
 		ApplicationProperties GetApplicationProperties();
 	};
-	
+
 	//gets defined in the editor
 	Application* CreateApp();
 }
