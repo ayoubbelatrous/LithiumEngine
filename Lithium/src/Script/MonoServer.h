@@ -25,7 +25,7 @@ namespace Lithium
 		char* _assemblyData;
 
 
-		std::string AssemblyPath = "assets/TestProject/Library/Assembly.dll";
+		std::string AssemblyPath = "Library/Assembly.dll";
 		std::filesystem::file_time_type m_LastAssemblyTime;
 		std::unordered_map<std::string, std::string> m_AllClassesInImage;
 		std::unordered_map<std::string, Ref<ScriptClass>> m_ScriptClassMap;

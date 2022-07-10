@@ -12,6 +12,14 @@
 
 namespace Lithium
 {
+	struct ProjectSettings
+	{
+
+	};
+	struct ApplicationProperties
+	{
+		std::string WorkingDirectory;
+	};
 	class Application
 	{
 	private:
@@ -22,6 +30,9 @@ namespace Lithium
 		double m_PreviousTime = 0;
 		double m_DeltaTime = 0;
 		bool m_Minimized = false;
+
+		ApplicationProperties m_ApplicationProps;
+		void OnProjectPropertiesChanged();
 	public:
 		Application();
 		~Application();
@@ -41,6 +52,8 @@ namespace Lithium
 		Ref<MonoServer> Monoserver;
 		static Application& Get() { return *instance; };
 		static Application* instance;
+		void SetApplicationProperties(ApplicationProperties props);
+		ApplicationProperties GetApplicationProperties();
 	};
 	
 	//gets defined in the editor

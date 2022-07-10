@@ -319,5 +319,14 @@ namespace Lithium
 		}
 	};
 
+	struct UIAnchorComponent
+	{
+		enum class AnchorType
+		{
+			Center,Right,Left,TopLeft,BottomLeft,TopRight,BottomRight
+		};
+		float width, height;
+	};
+
 }
 

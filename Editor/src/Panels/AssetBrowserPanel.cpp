@@ -116,7 +116,7 @@ namespace Lithium
 
 	void AssetBrowserPanel::OnProjectChange()
 	{
-		root = root / "assets";
+		root = "assets";
 		currentpath = root;
 		Refresh();
 	}

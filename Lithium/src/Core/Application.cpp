@@ -8,6 +8,26 @@
 namespace Lithium
 {
 	Application* Application::instance = nullptr;
+
+	void Application::SetApplicationProperties(ApplicationProperties props)
+	{
+		m_ApplicationProps = props;
+		OnProjectPropertiesChanged();
+	}
+
+	ApplicationProperties Application::GetApplicationProperties()
+	{
+		return m_ApplicationProps;
+	}
+
+	void Application::OnProjectPropertiesChanged()
+	{
+		if (!m_ApplicationProps.WorkingDirectory.empty())
+		{
+			std::filesystem::current_path(m_ApplicationProps.WorkingDirectory);
+		}
+	}
+
 	Application::Application()
 	{
 		Log::Init();
@@ -30,7 +50,7 @@ namespace Lithium
 		{
 			layer->OnDestroy();
 		}
-		
+
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -49,7 +69,7 @@ namespace Lithium
 
 	void Application::Run()
 	{
-		
+
 
 		while (_running)
 		{
@@ -71,7 +91,7 @@ namespace Lithium
 				_ImguiLayer->End();
 			}
 			_Window->OnUpdate();
-			
+
 		}
 	}
 
@@ -103,7 +123,7 @@ namespace Lithium
 			{
 				m_Minimized = false;
 			}
-			
+
 		}
 	}
 

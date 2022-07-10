@@ -799,8 +799,6 @@ namespace Lithium
 
 		}
 
-
-
 		return entity;
 	}
 	void Scene::SortScene()

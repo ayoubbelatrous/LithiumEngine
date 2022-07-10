@@ -5,14 +5,14 @@ PathRegistry:
     Path: assets\smoke1.png
   - UUID: 3475509751674974423
     Path: assets\anim.anim
-  - UUID: 2043887174357636164
-    Path: assets\sprites\subtex_test.png
   - UUID: 17862928348554956606
     Path: assets\sprites\Player.png
-  - UUID: 14047078065660172597
-    Path: assets\sprites\tree.png
+  - UUID: 2043887174357636164
+    Path: assets\sprites\subtex_test.png
   - UUID: 9482585391840537689
     Path: assets\spinning-coin.png
+  - UUID: 14047078065660172597
+    Path: assets\sprites\tree.png
   - UUID: 15358546378941181148
     Path: assets\sprites\gliadiator.png
   - UUID: 17573109883574795524
@@ -27,6 +27,8 @@ PathRegistry:
     Path: assets\sprites\man.png
   - UUID: 2525163432490369859
     Path: assets/flash04.png
+  - UUID: 14117257555512411088
+    Path: assets\fonts\RubikWetPaint-Regular.ttf
   - UUID: 7596351625705546190
     Path: assets\flash04.png
   - UUID: 642059306603687120

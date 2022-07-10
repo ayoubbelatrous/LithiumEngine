@@ -479,7 +479,9 @@ namespace Lithium
 			std::filesystem::path projectPath = "";
 			if (ProjectWizard::Update(&m_OpenProjectWizard, projectPath))
 			{
-				root = projectPath;
+				ApplicationProperties appprops = Application::Get().GetApplicationProperties();
+				appprops.WorkingDirectory = projectPath.string();
+				Application::Get().SetApplicationProperties(appprops);
 				_AssetBrowerPanel->OnProjectChange();
 				Application::Get().Monoserver->ForceReload();
 				Application::Get().GetWindow().SetWindowName("Lithium - " + projectPath.filename().string());
@@ -521,7 +523,9 @@ namespace Lithium
 				if (ImGui::MenuItem("Open Project", ""))
 				{
 					std::filesystem::path ProjectPath = FileDialogs::OpenFolder("");
-					root = ProjectPath;
+					ApplicationProperties appprops = Application::Get().GetApplicationProperties();
+					appprops.WorkingDirectory = ProjectPath.string();
+					Application::Get().SetApplicationProperties(appprops);
 					_AssetBrowerPanel->OnProjectChange();
 					Application::Get().Monoserver->ForceReload();
 					Application::Get().GetWindow().SetWindowName("Lithium - " + ProjectPath.filename().string());
