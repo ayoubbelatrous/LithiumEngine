@@ -508,6 +508,7 @@ namespace Lithium
 						if (Input::IsMouseKeyPressed(0))
 						{
 							btn.CurrentColor = btn.PressColor;
+							btn.InvokeFunction();
 						}
 						else
 						{

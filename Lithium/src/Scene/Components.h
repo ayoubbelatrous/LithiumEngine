@@ -313,7 +313,7 @@ namespace Lithium
 		UUID BoundEntity = 0;
 		std::string BoundScript;
 		std::string BoundFunction;
-
+		void InvokeFunction();
 		bool CheckIntersection(const glm::vec2& Position, const glm::vec2& Min,const glm::vec2& Max)
 		{
 			bool intersected = Position.x > Min.x && Position.x < Max.x&&
