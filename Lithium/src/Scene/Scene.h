@@ -51,7 +51,7 @@ namespace Lithium
 		void OnViewportResize(uint32_t width, uint32_t height,glm::vec2 Bounds[2]);
 		void SetRenderEditorUi(bool render);
 		bool GetRenderEditorUi();
-		
+		uint64_t GetSceneID();
 	private:
 		bool m_RenderEditorUI = false;
 		uint32_t m_ViewportWidth = 1.0f;
@@ -60,6 +60,7 @@ namespace Lithium
 		Scope<PhysicsWorld> m_PhysicsWorld;
 		entt::registry m_Registry;
 		EventCallback m_Callback;
+		uint64_t m_SceneID;
 	};
 
 	

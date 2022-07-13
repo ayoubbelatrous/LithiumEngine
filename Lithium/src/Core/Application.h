@@ -23,7 +23,7 @@ namespace Lithium
 	struct ApplicationProperties
 	{
 		std::string WorkingDirectory;
-		ProjectSettings ProjSettings;
+		ProjectSettings ProjSettings; 
 	};
 	class Application
 	{

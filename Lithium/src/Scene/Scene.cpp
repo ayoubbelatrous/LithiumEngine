@@ -103,6 +103,7 @@ namespace Lithium
 	Scene::Scene()
 		:m_Registry(entt::registry())
 	{
+		m_SceneID = UUID();
 	}
 
 
@@ -831,6 +832,11 @@ namespace Lithium
 	bool Scene::GetRenderEditorUi()
 	{
 		return m_RenderEditorUI;
+	}
+
+	uint64_t Scene::GetSceneID()
+	{
+		return m_SceneID;
 	}
 
 	template<typename T>

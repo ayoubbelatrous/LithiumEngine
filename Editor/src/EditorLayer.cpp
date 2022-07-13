@@ -31,6 +31,7 @@ namespace Lithium
 		LastMousePosiition = glm::vec2(0);
 		m_EditorScene = CreateRef<Scene>();
 		m_ActiveScene = m_EditorScene;
+		Application::Get().sceneManager->PushScene(m_ActiveScene);
 		_AssetBrowerPanel = CreateRef<AssetBrowserPanel>();
 		m_SceneHierachyPanel = CreateRef<SceneHierachyPanel>();
 		m_AnimationPanel = CreateRef<AnimationPanel>();
@@ -1008,9 +1009,11 @@ namespace Lithium
 		Serializer sz = Serializer(scene);
 		sz.DeserializeScene(path);
 		m_EditorScene = scene;
+		Application::Get().sceneManager->PopScene(m_ActiveScene->GetSceneID());
 		m_ActiveScene = m_EditorScene;
 		m_SceneHierachyPanel->SetScene(m_ActiveScene);
 		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
+		Application::Get().sceneManager->PushScene(m_ActiveScene);
 		ReloadMonoServer();
 	}
 

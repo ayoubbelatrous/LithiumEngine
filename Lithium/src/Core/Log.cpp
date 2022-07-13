@@ -1,5 +1,6 @@
 #include "lipch.h"
-#include "Log.h"
+#include "Core/Log.h"
+
 #include <spdlog/sinks/stdout_sinks.h>
 #include <spdlog/spdlog.h>
 
