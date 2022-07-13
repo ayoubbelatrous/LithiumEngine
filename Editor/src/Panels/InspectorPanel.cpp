@@ -319,7 +319,7 @@ namespace Lithium
 
 				if (open)
 				{
-				
+
 					DrawVec3Control("Position", m_Selection.GetComponent<RectTrasnformComponent>().Position);
 					DrawVec3Control("Rotation", m_Selection.GetComponent<RectTrasnformComponent>().Rotation);
 					ImGui::TreePop();
@@ -994,12 +994,115 @@ namespace Lithium
 				if (open)
 				{
 					ButtonComponent& button = m_Selection.GetComponent<ButtonComponent>();
-		
+
 					ImGui::ColorEdit4("Color", glm::value_ptr(button.Color), ImGuiColorEditFlags_NoInputs);
 					ImGui::ColorEdit4("Hover Color", glm::value_ptr(button.HoveredColor), ImGuiColorEditFlags_NoInputs);
 					ImGui::ColorEdit4("Press Color", glm::value_ptr(button.PressColor), ImGuiColorEditFlags_NoInputs);
-					
-					
+
+					std::string EntityName;
+					UUID EntityID = button.BoundEntity;
+
+					if (EntityID != 0)
+					{
+						Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[EntityID], Application::Get().sceneManager->GetActiveScene().get());
+						EntityName = entity.GetComponent<NameComponent>().GetName();
+					}
+
+
+					ImGui::Text("%s", "Entity");
+					ImGui::SameLine();
+					ImGui::Button(EntityName.c_str(), { 75,20 });
+					if (ImGui::BeginDragDropTarget())
+					{
+
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+						{
+							const UUID* uuid = (UUID*)payload->Data;
+							EntityID = *uuid;
+						}
+						ImGui::EndDragDropTarget();
+					}
+					button.BoundEntity = EntityID;
+
+
+					Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[EntityID], Application::Get().sceneManager->GetActiveScene().get());
+					if (EntityID != 0 && entity.HasComponent<ScriptGroupeComponent>())
+					{
+						ImGui::SameLine();
+						ImGui::Text("Script");
+						ImGui::SameLine();
+						ScriptGroupeComponent& sgc = entity.GetComponent<ScriptGroupeComponent>();
+						std::vector<std::string> Scripts;
+
+						for (int i = 0; i < sgc.Scripts.size(); i++)
+						{
+							Scripts.push_back(sgc.Scripts[i].Name);
+						}
+
+						const char* currentScript = button.BoundScript.c_str();
+
+
+						if (strlen(currentScript) != 0)
+						{
+							int itemwidth = ImGui::CalcTextSize(currentScript).x;
+							ImGui::SetNextItemWidth(itemwidth + 35);
+						}
+						else
+						{
+							ImGui::SetNextItemWidth(75);
+						}
+
+						if (ImGui::BeginCombo("##combo", currentScript))
+						{
+							for (int n = 0; n < Scripts.size(); n++)
+							{
+								bool is_selected = (currentScript == Scripts[n]);
+								if (ImGui::Selectable(Scripts[n].c_str(), is_selected))
+									currentScript = Scripts[n].c_str();
+
+								if (is_selected)
+									ImGui::SetItemDefaultFocus();
+							}
+							ImGui::EndCombo();
+						}
+						if (strlen(currentScript) != 0)
+						{
+							button.BoundScript = currentScript;
+
+							std::vector<std::string> Functions;
+							const char* currentFunction = button.BoundFunction.c_str();
+
+							for (int i = 0; i < sgc.Scripts.size(); i++)
+							{
+								if (strcmp(sgc.Scripts[i].Name.c_str(), currentScript) == 0)
+								{
+									for (auto function : sgc.Scripts[i].Scriptobject->GetMethods())
+									{
+										Functions.push_back(function.first);
+									}
+
+								}
+							}
+
+							if (ImGui::BeginCombo("##funccombo", currentFunction))
+							{
+								for (int n = 0; n < Functions.size(); n++)
+								{
+									bool is_selected = (currentFunction == Functions[n]);
+									if (ImGui::Selectable(Functions[n].c_str(), is_selected))
+										currentFunction = Functions[n].c_str();
+
+									if (is_selected)
+										ImGui::SetItemDefaultFocus();
+								}
+								ImGui::EndCombo();
+							}
+							if (currentFunction != 0)
+							{
+								button.BoundFunction = currentFunction;
+							}
+						}
+					}
 					ImGui::TreePop();
 				}
 				if (remove == true)
