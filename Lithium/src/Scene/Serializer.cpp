@@ -281,6 +281,9 @@ namespace Lithium
 			emitter << YAML::Key << "Color" << YAML::Value << Button.Color;
 			emitter << YAML::Key << "Hover Color" << YAML::Value << Button.HoveredColor;
 			emitter << YAML::Key << "Press Color" << YAML::Value << Button.PressColor;
+			emitter << YAML::Key << "BoundEntity" << YAML::Value << (uint64_t)Button.BoundEntity;
+			emitter << YAML::Key << "BoundScript" << YAML::Value << Button.BoundScript;
+			emitter << YAML::Key << "BoundFunction" << YAML::Value << Button.BoundFunction;
 			emitter << YAML::EndMap;
 		}
 
@@ -614,13 +617,16 @@ namespace Lithium
 			}
 
 			auto Button = entity["ButtonComponent"];
-			if (textRenderer)
+			if (Button)
 			{
 				deserEntity.AddComponent<ButtonComponent>();
 				ButtonComponent& ButtonComp = deserEntity.GetComponent<ButtonComponent>();
-				ButtonComp.Color = textRenderer["Color"].as<glm::vec4>();
-				ButtonComp.HoveredColor = textRenderer["Hover Color"].as<glm::vec4>();
-				ButtonComp.PressColor = textRenderer["Press Color"].as<glm::vec4>();
+				ButtonComp.Color = Button["Color"].as<glm::vec4>();
+				ButtonComp.HoveredColor = Button["Hover Color"].as<glm::vec4>();
+				ButtonComp.PressColor = Button["Press Color"].as<glm::vec4>();
+				ButtonComp.BoundEntity = UUID(Button["BoundEntity"].as<uint64_t>());
+				ButtonComp.BoundScript = Button["BoundScript"].as<std::string>();
+				ButtonComp.BoundFunction = Button["BoundFunction"].as<std::string>();
 			}
 
 		}
