@@ -36,6 +36,10 @@ namespace Lithium
 		{
 			return m_MonoObject;
 		}
+		std::unordered_map<std::string, Ref<ScriptMethod>>& GetMethods()
+		{
+			return m_MethodMap;
+		}
 	private:
 		MonoObject* m_MonoObject = nullptr;
 		std::unordered_map<std::string, Ref<ScriptField>> m_FieldMap;
