@@ -310,7 +310,10 @@ namespace Lithium
 		glm::vec4 PressColor = { 0.5,0.5,0.5,1.0 };
 		glm::vec4 CurrentColor = { 1.0,1.0,1.0,1.0 };;
 
+		UUID BoundEntity = 0;
+		std::string BoundScript;
 		std::string BoundFunction;
+
 		bool CheckIntersection(const glm::vec2& Position, const glm::vec2& Min,const glm::vec2& Max)
 		{
 			bool intersected = Position.x > Min.x && Position.x < Max.x&&
