@@ -16,16 +16,19 @@ namespace Lithium
 	class Scene;
 	class MonoServer
 	{
-		MonoDomain* _MonoRootDomain = nullptr;
-		MonoDomain* _MonoAppDomain = nullptr;
-		MonoAssembly* _MonoAssembly = nullptr;
-		MonoImage* _MonoImage = nullptr;
-		MonoClass* _ScriptBaseClass;
+		MonoDomain* m_MonoRootDomain = nullptr;
+		MonoDomain* m_MonoAppDomain = nullptr;
+		MonoAssembly* m_MonoAssembly = nullptr;
+		MonoAssembly* m_MonoCoreAssembly = nullptr;
+		MonoImage* m_MonoImage = nullptr;
+		MonoImage* m_MonoCoreImage = nullptr;
+		MonoClass* m_ScriptBaseClass;
 		MonoMethod* m_ExceptionMethod;
-		char* _assemblyData;
+		char* m_assemblyData;
 
 
 		std::string AssemblyPath = "Library/Assembly.dll";
+		std::string CoreAssemblyPath = "Library/LithiumScript-Core.dll";
 		std::filesystem::file_time_type m_LastAssemblyTime;
 		std::unordered_map<std::string, std::string> m_AllClassesInImage;
 		std::unordered_map<std::string, Ref<ScriptClass>> m_ScriptClassMap;

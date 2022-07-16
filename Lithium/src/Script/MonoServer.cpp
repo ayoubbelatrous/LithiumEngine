@@ -508,10 +508,10 @@ namespace Lithium
 		MonoClass* klass;
 		int i;
 
-		int rows = mono_image_get_table_rows(_MonoImage, MONO_TABLE_TYPEDEF);
+		int rows = mono_image_get_table_rows(m_MonoImage, MONO_TABLE_TYPEDEF);
 
 		for (i = 1; i < rows; ++i) {
-			klass = mono_class_get(_MonoImage, (i + 1) | MONO_TOKEN_TYPE_DEF);
+			klass = mono_class_get(m_MonoImage, (i + 1) | MONO_TOKEN_TYPE_DEF);
 			std::string _Nspace = mono_class_get_namespace(klass);
 			std::string name = mono_class_get_name(klass);
 			MonoClass* BaseClass = nullptr;
@@ -542,7 +542,7 @@ namespace Lithium
 	}
 	MonoServer::~MonoServer()
 	{
-		mono_jit_cleanup(_MonoRootDomain);
+		mono_jit_cleanup(m_MonoRootDomain);
 	}
 
 	
@@ -552,14 +552,13 @@ namespace Lithium
 		
 		mono_set_dirs("Library/assemblies", "."); 
 
-
-		_MonoRootDomain = mono_jit_init("RootDomain");
-		_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
+		m_MonoRootDomain = mono_jit_init("RootDomain");
+		m_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
 
 		
-		if (_MonoAppDomain)
+		if (m_MonoAppDomain)
 		{
-			mono_domain_set(_MonoAppDomain, 0);
+			mono_domain_set(m_MonoAppDomain, 0);
 		}
 		else
 		{
@@ -568,28 +567,28 @@ namespace Lithium
 		MonoImageOpenStatus OpenStatus;
 		uint32_t size = 0;
 		char* assemblyData = LoadAssemblyFile(AssemblyPath.c_str(), &size);
-		_MonoImage = mono_image_open_from_data(assemblyData, size, false, &OpenStatus);
-		if (_MonoImage)
+		m_MonoImage = mono_image_open_from_data(assemblyData, size, false, &OpenStatus);
+		if (m_MonoImage)
 		{
-			_MonoAssembly = mono_assembly_load_from(_MonoImage, "", &OpenStatus);
+			m_MonoAssembly = mono_assembly_load_from(m_MonoImage, "", &OpenStatus);
 		}
 		else
 		{
 			CORE_LOG("[ERROR] : mono domain failed to create!")
 		}
 
-		_ScriptBaseClass =  mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
+		m_ScriptBaseClass =  mono_class_from_name(m_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException(object)", true);
-		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
+		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, m_MonoImage);
 		LoadAllClassesInImage();
 	}
 
 
 	void MonoServer::Reload()
 	{
-		_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
-		if (_MonoAppDomain)
-		mono_domain_set(_MonoAppDomain, 0);
+		m_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
+		if (m_MonoAppDomain)
+		mono_domain_set(m_MonoAppDomain, 0);
 		else
 		{
 			CORE_LOG("error domain");
@@ -597,25 +596,25 @@ namespace Lithium
 		MonoImageOpenStatus OpenStatus;
 		uint32_t size = 0;
 		char* assemblyData = LoadAssemblyFile(AssemblyPath.c_str(), &size);
-		_MonoImage = mono_image_open_from_data(assemblyData, size, false, &OpenStatus);
-		_MonoAssembly = mono_assembly_load_from(_MonoImage, "", &OpenStatus);
+		m_MonoImage = mono_image_open_from_data(assemblyData, size, false, &OpenStatus);
+		m_MonoAssembly = mono_assembly_load_from(m_MonoImage, "", &OpenStatus);
 
 
 		Bindinternals();
 
 
-		_ScriptBaseClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Script");
+		m_ScriptBaseClass = mono_class_from_name(m_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException", true);
 
-		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, _MonoImage);
+		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, m_MonoImage);
 		m_ScriptClassMap.clear();
 		
 		LoadAllClassesInImage();
 	}
 	void MonoServer::DeleteAssemblies()
 	{
-			mono_domain_set(_MonoRootDomain, 0);
-			mono_domain_unload(_MonoAppDomain);
+			mono_domain_set(m_MonoRootDomain, 0);
+			mono_domain_unload(m_MonoAppDomain);
 	}
 	bool MonoServer::CheckForChange()
 	{
@@ -668,7 +667,7 @@ namespace Lithium
 		if (m_ScriptClassMap.find(name) == m_ScriptClassMap.end())
 		{
 
-			monoklass = mono_class_from_name(_MonoImage, "", name.c_str());
+			monoklass = mono_class_from_name(m_MonoImage, "", name.c_str());
 			if (monoklass == nullptr)
 			{
 				CORE_LOG("mono class not found");
@@ -686,7 +685,7 @@ namespace Lithium
 		}
 
 
-		MonoObject* monoobject = mono_object_new(_MonoAppDomain, scriptClass->GetClassPtr());
+		MonoObject* monoobject = mono_object_new(m_MonoAppDomain, scriptClass->GetClassPtr());
 		mono_runtime_object_init(monoobject);
 		scriptObject = CreateRef<ScriptObject>(monoobject);
 		return scriptObject;
@@ -760,21 +759,19 @@ namespace Lithium
 
 	void* MonoServer::CreateMonoEntity(UUID id)
 	{
-		MonoClass* EntityClass = mono_class_from_name(_MonoImage, "Lithium.Core", "Entity");
-		MonoObject*  EntityObject = mono_object_new(_MonoAppDomain, EntityClass);
+		MonoClass* EntityClass = mono_class_from_name(m_MonoImage, "Lithium.Core", "Entity");
+		MonoObject*  EntityObject = mono_object_new(m_MonoAppDomain, EntityClass);
 		mono_runtime_object_init(EntityObject);
 		MonoClassField* IDfield = mono_class_get_field_from_name(EntityClass, "ID");
 		uint64_t EntityID = (uint64_t)id;
 		mono_field_set_value(EntityObject, IDfield, &EntityID);
-
-
 		return EntityObject;
 	}
 
 	void* MonoServer::CreateMonoCollsion2D(UUID EntityID)
 	{
-		MonoClass* CollisionClass = mono_class_from_name(_MonoImage, "Lithium.Physics", "Collision2D");
-		MonoObject* CollisionObject = mono_object_new(_MonoAppDomain, CollisionClass);
+		MonoClass* CollisionClass = mono_class_from_name(m_MonoImage, "Lithium.Physics", "Collision2D");
+		MonoObject* CollisionObject = mono_object_new(m_MonoAppDomain, CollisionClass);
 		mono_runtime_object_init(CollisionObject);
 
 		MonoObject* entity = (MonoObject*)CreateMonoEntity(EntityID);
@@ -786,8 +783,8 @@ namespace Lithium
 
 	void* MonoServer::CreateMonoAudioClip(UUID assetID)
 	{
-		MonoClass* AudioClipClass = mono_class_from_name(_MonoImage, "Lithium.Core", "AudioClip");
-		MonoObject* AudioClipObject = mono_object_new(_MonoAppDomain, AudioClipClass);
+		MonoClass* AudioClipClass = mono_class_from_name(m_MonoImage, "Lithium.Core", "AudioClip");
+		MonoObject* AudioClipObject = mono_object_new(m_MonoAppDomain, AudioClipClass);
 		mono_runtime_object_init(AudioClipObject);
 		MonoClassField* AssetIDfield = mono_class_get_field_from_name(AudioClipClass, "AssetId");
 
@@ -797,7 +794,7 @@ namespace Lithium
 
 	void* MonoServer::CreateMonoString(const char* str)
 	{
-		return mono_string_new(_MonoAppDomain, str);
+		return mono_string_new(m_MonoAppDomain, str);
 	}
 
 	char* MonoServer::LoadAssemblyFile(const std::string& path, uint32_t* size)

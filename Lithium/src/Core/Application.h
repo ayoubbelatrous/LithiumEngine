@@ -59,6 +59,7 @@ namespace Lithium
 		static Application* instance;
 		void SetApplicationProperties(ApplicationProperties props);
 		ApplicationProperties GetApplicationProperties();
+		void ReloadAssetManager();
 	};
 
 	//gets defined in the editor

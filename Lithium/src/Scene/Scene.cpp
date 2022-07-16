@@ -578,8 +578,6 @@ namespace Lithium
 						fixtureDef.restitution = bc2d.Restitution;
 						fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
 						bc2d.RuntimeFixture = body->CreateFixture(&fixtureDef);
-
-
 						bc2d.Created = true;
 					}
 
@@ -607,6 +605,7 @@ namespace Lithium
 						fixtureDef.density = cc2d.Density;
 						fixtureDef.friction = cc2d.Friction;
 						fixtureDef.restitution = cc2d.Restitution;
+						fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
 						fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
 						cc2d.RuntimeFixture = body->CreateFixture(&fixtureDef);
 
