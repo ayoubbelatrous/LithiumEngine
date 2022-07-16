@@ -3,6 +3,7 @@
 
 #include "ProjectWizard.h"
 #include "Core/Base.h"
+#include "Core/Log.h"
 #include "Utils/WindowsPlatformUtils.h"
 
 
@@ -63,16 +64,18 @@ namespace Lithium
 	bool ProjectWizard::CreateProject(const std::filesystem::path& path,const std::string& name)
 	{
 		const std::filesystem::path ProjectTemplatePath = "assets/Editor/templates/ProjectTemplate";
+		const std::filesystem::path ProjectScriptModulePath = "assets/Editor/Library/Csharp";
 		if (std::filesystem::exists(path))
 		{
 			const auto copyOptions = std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive;
 			std::filesystem::create_directory(path / name);
 			std::filesystem::copy(ProjectTemplatePath, path / name, copyOptions);
+			std::filesystem::copy(ProjectScriptModulePath, path / name, copyOptions);
 			return true;
 		}
 		else
 		{
-			CORE_LOG("Project Path invalid!")
+			LT_CORE_INFO("[Project] : Project Path invalid!");
 				return false;
 		}
 	}

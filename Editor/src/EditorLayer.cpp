@@ -484,6 +484,7 @@ namespace Lithium
 				appprops.WorkingDirectory = projectPath.string();
 				Application::Get().SetApplicationProperties(appprops);
 				_AssetBrowerPanel->OnProjectChange();
+				Application::Get().ReloadAssetManager();
 				Application::Get().Monoserver->ForceReload();
 				Application::Get().GetWindow().SetWindowName("Lithium - " + projectPath.filename().string());
 
@@ -528,6 +529,7 @@ namespace Lithium
 					appprops.WorkingDirectory = ProjectPath.string();
 					Application::Get().SetApplicationProperties(appprops);
 					_AssetBrowerPanel->OnProjectChange();
+					Application::Get().ReloadAssetManager();
 					Application::Get().Monoserver->ForceReload();
 					Application::Get().GetWindow().SetWindowName("Lithium - " + ProjectPath.filename().string());
 					LT_CORE_INFO("Opened Project Named {}", ProjectPath.string().c_str());

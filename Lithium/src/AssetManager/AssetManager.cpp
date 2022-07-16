@@ -103,7 +103,7 @@ namespace Lithium {
 		{
 			mode = "Single";
 		}
-		else if((metadata.Mode == TextureMetaData::TextureMode::Multiple))
+		else if ((metadata.Mode == TextureMetaData::TextureMode::Multiple))
 		{
 			mode = "Multiple";
 		}
@@ -293,7 +293,7 @@ namespace Lithium {
 		uint64_t ID = (uint64_t)asset.GetUUID();
 		if (ID == 0)
 		{
-			LT_CORE_INFO("[AssetManager].Animation Doesn't Exist");
+			LT_CORE_INFO("[AssetManager] : Animation Doesn't Exist");
 			return nullptr;
 		}
 		if (m_AnimationRegistry.find(ID) != m_AnimationRegistry.end())
@@ -363,10 +363,13 @@ namespace Lithium {
 		{
 			uint64_t uuid = asset.first;
 			std::string path = asset.second;
-			emitter << YAML::BeginMap;
-			emitter << YAML::Key << "UUID" << YAML::Value << uuid;
-			emitter << YAML::Key << "Path" << YAML::Value << path;
-			emitter << YAML::EndMap;
+			if (std::filesystem::exists(path))
+			{
+				emitter << YAML::BeginMap;
+				emitter << YAML::Key << "UUID" << YAML::Value << uuid;
+				emitter << YAML::Key << "Path" << YAML::Value << path;
+				emitter << YAML::EndMap;
+			}
 		}
 		emitter << YAML::EndSeq;
 		emitter << YAML::EndMap;

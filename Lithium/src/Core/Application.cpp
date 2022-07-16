@@ -20,6 +20,11 @@ namespace Lithium
 		return m_ApplicationProps;
 	}
 
+	void Application::ReloadAssetManager()
+	{
+		assetManager = CreateRef<AssetManager>();
+	}
+
 	void Application::OnProjectPropertiesChanged()
 	{
 		if (!m_ApplicationProps.WorkingDirectory.empty())
