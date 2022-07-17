@@ -92,5 +92,9 @@ namespace Lithium::Math
 
 	glm::vec3 Lerp(const glm::vec3& a, const glm::vec3& b, float t) { return glm::vec3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t); };
 
+	glm::vec3 QuaternionToEulerAngles(const glm::quat& quaterion)
+	{
+		return glm::degrees(glm::eulerAngles(quaterion));
+	}
 
 }

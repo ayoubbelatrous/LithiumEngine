@@ -1,5 +1,7 @@
 #pragma once
+#define GLM_ENABLE_EXPERIMENTAL
 #include "glm/glm.hpp"
+#include "glm/gtx/quaternion.hpp"
 #include <random>
 
 namespace Lithium::Math
@@ -11,6 +13,7 @@ namespace Lithium::Math
 	glm::vec4 Lerp(const glm::vec4& a, const glm::vec4& b, float t);
 
 	glm::vec3 Lerp(const glm::vec3& a, const glm::vec3& b, float t);
+	glm::vec3 QuaternionToEulerAngles(const glm::quat& quaterion);
 }
 
 namespace Lithium::Math

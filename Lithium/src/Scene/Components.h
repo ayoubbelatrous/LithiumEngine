@@ -60,7 +60,11 @@ namespace Lithium
 			glm::mat4 rotation = glm::toMat4(glm::quat(glm::radians(Rotation)));
 			return glm::translate(glm::mat4(1), Position) * rotation * glm::scale(glm::mat4(1), Scale);
 		}
-
+		glm::quat GetRotation()
+		{
+			glm::quat Quat;
+			return glm::quat(glm::radians(Rotation));
+		}
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent& other) = default;
 	};
@@ -120,16 +124,14 @@ namespace Lithium
 
 	struct Rigidbody2DComponent
 	{
-
-
 		bool FixedRotation = false;
 		void* RuntimeBody = nullptr;
 		bool Created = false;
-		void SetVelocity(const glm::vec2 vel);
+		void SetVelocity(const glm::vec2& vel);
+		void ApplyForce(const glm::vec2& Force);
+		void ApplyAngularForce(float torque);
 		glm::vec2 GetVelocity() const;
 		PhysicsBodyType Type = PhysicsBodyType::Dynamic;
-
-
 		Rigidbody2DComponent() = default;
 		Rigidbody2DComponent(const Rigidbody2DComponent& other) = default;
 	};

@@ -471,7 +471,7 @@ namespace Lithium
 					ImGui::PushItemWidth(125);
 					ImGui::DragFloat2("Offset", glm::value_ptr(rb2d.Offset), 0.01f);
 					ImGui::DragFloat2("Size", glm::value_ptr(rb2d.Size), 0.01f);
-					ImGui::DragFloat("Density", &rb2d.Density, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Density", &rb2d.Density, 0.01f, 0.01f);
 					ImGui::DragFloat("Friction", &rb2d.Friction, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution", &rb2d.Restitution, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution Threshold", &rb2d.RestitutionThreshold, 0.01f, 0.0f);
@@ -508,7 +508,7 @@ namespace Lithium
 					ImGui::PushItemWidth(125);
 					ImGui::DragFloat("Radius", &cc2d.Radius, 0.01f);
 					ImGui::DragFloat2("Offset", glm::value_ptr(cc2d.Offset), 0.01f);
-					ImGui::DragFloat("Density", &cc2d.Density, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Density", &cc2d.Density, 0.01f,0.01f);
 					ImGui::DragFloat("Friction", &cc2d.Friction, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution", &cc2d.Restitution, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Restitution Threshold", &cc2d.RestitutionThreshold, 0.01f, 0.0f);

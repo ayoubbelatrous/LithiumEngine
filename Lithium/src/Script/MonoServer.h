@@ -10,6 +10,8 @@
 #include <mono/metadata/debug-helpers.h>
 #include <mono/metadata/environment.h>
 #include <mono/metadata/attrdefs.h>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 namespace Lithium
 {
@@ -58,8 +60,8 @@ namespace Lithium
 		//transform component
 		static void SetPosition_Internal(uint64_t entityID, glm::vec3* vector);
 		static void GetPosition_Internal(uint64_t entityID, glm::vec3* vector);
-		static void SetRotation_Internal(uint64_t entityID, glm::vec3* vector);
-		static void GetRotation_Internal(uint64_t entityID, glm::vec3* vector);
+		static void SetRotation_Internal(uint64_t entityID, glm::quat* quat);
+		static void GetRotation_Internal(uint64_t entityID, glm::quat* quat);
 		static void SetScale_Internal(uint64_t entityID, glm::vec3* vector);
 		static void GetScale_Internal(uint64_t entityID, glm::vec3* vector);
 
@@ -75,6 +77,8 @@ namespace Lithium
 		static void SetRigidbodyVelocity_Internal(uint64_t entityID, glm::vec2* velocity);
 		static void GetRigidbodyVelocity_Internal(uint64_t entityID, glm::vec2* velocity);
 
+		static void RigidBodyApplyForce_Internal(uint64_t entityID, glm::vec2* Force);
+		static void RigidBodyApplyAngularForce_Internal(uint64_t entityID, float Force);
 		//camera component
 		static void SetCameraProjection_Internal(uint64_t entityID, int* projection);
 		static int GetCameraProjection_Internal(uint64_t entityID);

@@ -6,10 +6,22 @@
 namespace Lithium
 {
 
-	void Rigidbody2DComponent::SetVelocity(const glm::vec2 vel)
+	void Rigidbody2DComponent::SetVelocity(const glm::vec2& vel)
 	{
 		b2Body* body = (b2Body*)RuntimeBody;
 		body->SetLinearVelocity({ vel.x,vel.y });
+	}
+
+	void Rigidbody2DComponent::ApplyForce(const glm::vec2& Force)
+	{
+		b2Body* body = (b2Body*)RuntimeBody;
+		body->ApplyForceToCenter({Force.x,Force.y}, true);
+	}
+
+	void Rigidbody2DComponent::ApplyAngularForce(float torque)
+	{
+		b2Body* body = (b2Body*)RuntimeBody;
+		body->ApplyAngularImpulse(torque, true);
 	}
 
 	glm::vec2 Rigidbody2DComponent::GetVelocity()

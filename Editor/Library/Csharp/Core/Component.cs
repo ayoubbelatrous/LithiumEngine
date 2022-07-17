@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace Lithium.Core
 {
 
-    
+
     public abstract class Component
     {
         public Entity Entity { get; set; }
@@ -31,7 +31,7 @@ namespace Lithium.Core
     }
     public class Transform : Component
     {
-        
+
         public Vector3 Position
         {
             get
@@ -43,17 +43,18 @@ namespace Lithium.Core
             set => SetPosition_Internal(Entity.ID, ref value);
 
         }
-        public Vector3 Rotation
+        public Quaternion Rotation
         {
             get
             {
-                Vector3 res;
+                Quaternion res;
                 GetRotation_Internal(Entity.ID, out res);
                 return res;
             }
             set => SetRotation_Internal(Entity.ID, ref value);
         }
-        public Vector3 Scale {
+        public Vector3 Scale
+        {
             get
             {
                 Vector3 res;
@@ -64,20 +65,20 @@ namespace Lithium.Core
         }
         //Transform Comp
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void SetPosition_Internal(UInt64 entityID,ref Vector3 pos);
+        extern public static void SetPosition_Internal(UInt64 entityID, ref Vector3 pos);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void GetPosition_Internal(UInt64 entityID,out Vector3 pos);
+        extern public static void GetPosition_Internal(UInt64 entityID, out Vector3 pos);
 
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void SetRotation_Internal(UInt64 entityID, ref Vector3 pos);
+        extern public static void SetRotation_Internal(UInt64 entityID, ref Quaternion rot);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static Vector3 GetRotation_Internal(UInt64 entityID, out Vector3 pos);
+        extern public static void GetRotation_Internal(UInt64 entityID, out Quaternion rot);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void SetScale_Internal(UInt64 entityID, ref Vector3 pos);
+        extern public static void SetScale_Internal(UInt64 entityID, ref Vector3 sca);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static Vector3 GetScale_Internal(UInt64 entityID, out Vector3 pos);
+        extern public static Vector3 GetScale_Internal(UInt64 entityID, out Vector3 sca);
 
 
     }
@@ -103,7 +104,7 @@ namespace Lithium.Core
     public class Rigidbody2D : Component
     {
 
-     
+
         public bool FixedRotation
         {
             get
@@ -118,17 +119,20 @@ namespace Lithium.Core
             get
             {
                 Vector2 res;
-                GetRigidbodyVelocity_Internal(Entity.ID,out res);
+                GetRigidbodyVelocity_Internal(Entity.ID, out res);
                 return res;
             }
             set => SetRigidbodyVelocity_Internal(Entity.ID, ref value);
         }
+        public void ApplyForce(Vector2 Force)
+        {
+            RigidBodyApplyForce_Internal(Entity.ID, ref Force);
+        }
 
-
-
-     
-
-
+        public void ApplyAngularForce(float force)
+        {
+            RigidBodyApplyAngularForce_Internal(Entity.ID,force);
+        }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static void SetRigidbodyFixedRotation_Internal(UInt64 entityID, ref bool fixedRotation);
@@ -139,7 +143,12 @@ namespace Lithium.Core
         extern public static void SetRigidbodyVelocity_Internal(UInt64 entityID, ref Vector2 velocity);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void GetRigidbodyVelocity_Internal(UInt64 entityID,out Vector2 velocity);
+        extern public static void GetRigidbodyVelocity_Internal(UInt64 entityID, out Vector2 velocity);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void RigidBodyApplyForce_Internal(UInt64 entityID, ref Vector2 force);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void RigidBodyApplyAngularForce_Internal(UInt64 entityID, float force);
     }
 
     public class Camera : Component
@@ -162,7 +171,7 @@ namespace Lithium.Core
         {
             get
             {
-                
+
                 return GetCameraOrthographicSize_Internal(Entity.ID);
             }
             set => SetCameraOrthographicSize_Internal(Entity.ID, ref value);
@@ -227,7 +236,7 @@ namespace Lithium.Core
 
         public void Play(AudioClip clip)
         {
-            AudioSourcePlayClip_Internal(Entity.ID,clip.AssetId);
+            AudioSourcePlayClip_Internal(Entity.ID, clip.AssetId);
         }
 
         public bool Loop
@@ -250,7 +259,7 @@ namespace Lithium.Core
         extern public static void SetAudioSourcePlay_Internal(UInt64 entityID);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void SetAudioSourceLoop_Internal(UInt64 entityID,bool gain);
+        extern public static void SetAudioSourceLoop_Internal(UInt64 entityID, bool gain);
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static bool GetAudioSourceLoop_Internal(UInt64 entityID);
 
@@ -260,7 +269,7 @@ namespace Lithium.Core
         extern public static float GetAudioSourceGain_Internal(UInt64 entityID);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern public static void AudioSourcePlayClip_Internal(UInt64 entityID,UInt64 assetid);
+        extern public static void AudioSourcePlayClip_Internal(UInt64 entityID, UInt64 assetid);
 
     }
 
@@ -271,7 +280,7 @@ namespace Lithium.Core
             get
             {
                 String Stringval;
-                GetTextRendererText_Internal(Entity.ID,out Stringval);
+                GetTextRendererText_Internal(Entity.ID, out Stringval);
                 return Stringval;
             }
             set => SetTextRendererText_Internal(Entity.ID, value);

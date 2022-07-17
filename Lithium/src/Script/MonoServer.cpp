@@ -27,7 +27,7 @@ namespace Lithium
 
 	bool MonoServer::HasComponent_Interal(uint64_t entityID, MonoObject* type)
 	{
-		
+
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 
 
@@ -68,7 +68,7 @@ namespace Lithium
 
 	bool MonoServer::AddComponent_Interal(uint64_t entityID, MonoObject* type)
 	{
-		
+
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 
 		MonoClass* klass = mono_object_get_class(type);
@@ -165,7 +165,7 @@ namespace Lithium
 
 	void MonoServer::SetPosition_Internal(uint64_t entityID, glm::vec3* vector)
 	{
-		
+
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		entity.GetComponent<TransformComponent>().Position = *vector;
 	}
@@ -174,20 +174,22 @@ namespace Lithium
 	{
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		TransformComponent& trans = entity.GetComponent<TransformComponent>();
-		memcpy(vector, &trans.Position,sizeof(glm::vec3));
+		memcpy(vector, &trans.Position, sizeof(glm::vec3));
 	}
 
-	void MonoServer::SetRotation_Internal(uint64_t entityID, glm::vec3* vector)
+	void MonoServer::SetRotation_Internal(uint64_t entityID, glm::quat* quat)
 	{
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
-		entity.GetComponent<TransformComponent>().Rotation = *vector;
+		entity.GetComponent<TransformComponent>().Rotation = Math::QuaternionToEulerAngles(*quat);
+		glm::vec3 Rot = Math::QuaternionToEulerAngles(*quat);
 	}
 
-	void MonoServer::GetRotation_Internal(uint64_t entityID, glm::vec3* vector)
+	void MonoServer::GetRotation_Internal(uint64_t entityID, glm::quat* quat)
 	{
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		TransformComponent& trans = entity.GetComponent<TransformComponent>();
-		memcpy(vector, &trans.Rotation, sizeof(glm::vec3));
+		glm::quat q = trans.GetRotation();
+		memcpy(quat, &q, sizeof(glm::quat));
 	}
 
 	void MonoServer::SetScale_Internal(uint64_t entityID, glm::vec3* vector)
@@ -207,7 +209,7 @@ namespace Lithium
 	{
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		entity.GetComponent<SpriteRendererComponent>().Color = *color;
-	
+
 	}
 
 	void MonoServer::GetColor_Internal(uint64_t entityID, glm::vec4* color)
@@ -244,6 +246,18 @@ namespace Lithium
 		Rigidbody2DComponent& b2bd = entity.GetComponent<Rigidbody2DComponent>();
 		glm::vec2 b2velocity = b2bd.GetVelocity();
 		memcpy(velocity, &b2velocity, sizeof(glm::vec2));
+	}
+
+	void MonoServer::RigidBodyApplyForce_Internal(uint64_t entityID, glm::vec2* Force)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<Rigidbody2DComponent>().ApplyForce(*Force);
+	}
+
+	void MonoServer::RigidBodyApplyAngularForce_Internal(uint64_t entityID, float Force)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		entity.GetComponent<Rigidbody2DComponent>().ApplyAngularForce(Force);
 	}
 
 	void MonoServer::SetCameraProjection_Internal(uint64_t entityID, int* projection)
@@ -307,7 +321,7 @@ namespace Lithium
 		}
 		Ref<AudioSource> source = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(audiosource.AudioAsset);
 		Audio::Play(source);
-		
+
 	}
 
 	void MonoServer::SetAudioSourceLoop_Internal(uint64_t entityID, bool loop)
@@ -344,7 +358,7 @@ namespace Lithium
 		{
 			return;
 		}
-		Ref<AudioSource> audioclip  = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(Asset(assetID));
+		Ref<AudioSource> audioclip = Application::Get().assetManager->GetAsset<Ref<AudioSource>>(Asset(assetID));
 		audioclip->SetPosition(glm::value_ptr(transform.Position));
 		Audio::Play(audioclip);
 	}
@@ -365,7 +379,7 @@ namespace Lithium
 
 	MonoString* MonoServer::GetName_Internal(uint64_t entityID)
 	{
-		
+
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		NameComponent& namecomp = entity.GetComponent<NameComponent>();
 		return (MonoString*)Application::Get().Monoserver->CreateMonoString(namecomp.GetName().c_str());
@@ -392,7 +406,7 @@ namespace Lithium
 	void MonoServer::MousePosition_Internal(glm::vec2* pos)
 	{
 		glm::vec2 MousePosition = Input::MousePosition();
-		memcpy(pos,&MousePosition , sizeof(glm::vec2));
+		memcpy(pos, &MousePosition, sizeof(glm::vec2));
 	}
 
 	bool MonoServer::KeyPressed_Internal(uint16_t button)
@@ -421,7 +435,7 @@ namespace Lithium
 		Application::Get().assetManager->DeleteUserTexture(id);
 	}
 
-	void MonoServer::SetTextureData_Internal(uint32_t id, glm::vec4* data,int size)
+	void MonoServer::SetTextureData_Internal(uint32_t id, glm::vec4* data, int size)
 	{
 		Application::Get().assetManager->SetUserTextureData(id, data);
 	}
@@ -430,7 +444,7 @@ namespace Lithium
 	{
 		void* Args[1];
 		Args[0] = object;
-		mono_runtime_invoke(m_ExceptionMethod, nullptr,Args, nullptr);
+		mono_runtime_invoke(m_ExceptionMethod, nullptr, Args, nullptr);
 	}
 
 	void MonoServer::Bindinternals()
@@ -457,13 +471,16 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.NameComponent::GetName_Internal", (const void*)MonoServer::GetName_Internal);
 
 		mono_add_internal_call("Lithium.Core.SpriteRenderer::SetColor_Internal", (const void*)MonoServer::SetColor_Internal);
-		mono_add_internal_call("Lithium.Core.SpriteRenderer::GetColor_Internal",(const void*) MonoServer::GetColor_Internal);
+		mono_add_internal_call("Lithium.Core.SpriteRenderer::GetColor_Internal", (const void*)MonoServer::GetColor_Internal);
 
 		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyFixedRotation_Internal", (const void*)MonoServer::SetRigidbodyFixedRotation_Internal);
-		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyFixedRotation_Internal",(const void*) MonoServer::GetRigidbodyFixedRotation_Internal);
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyFixedRotation_Internal", (const void*)MonoServer::GetRigidbodyFixedRotation_Internal);
 
 		mono_add_internal_call("Lithium.Core.Rigidbody2D::SetRigidbodyVelocity_Internal", (const void*)MonoServer::SetRigidbodyVelocity_Internal);
 		mono_add_internal_call("Lithium.Core.Rigidbody2D::GetRigidbodyVelocity_Internal", (const void*)MonoServer::GetRigidbodyVelocity_Internal);
+
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::RigidBodyApplyForce_Internal", (const void*)MonoServer::RigidBodyApplyForce_Internal);
+		mono_add_internal_call("Lithium.Core.Rigidbody2D::RigidBodyApplyAngularForce_Internal", (const void*)MonoServer::RigidBodyApplyAngularForce_Internal);
 
 		mono_add_internal_call("Lithium.Core.Camera::SetCameraProjection_Internal", (const void*)MonoServer::SetCameraProjection_Internal);
 		mono_add_internal_call("Lithium.Core.Camera::GetCameraProjection_Internal", (const void*)MonoServer::GetCameraProjection_Internal);
@@ -526,10 +543,10 @@ namespace Lithium
 				}
 
 			}
-			
+
 		}
 
-		
+
 	}
 
 	MonoServer::MonoServer()
@@ -538,24 +555,24 @@ namespace Lithium
 
 		InitMono();
 		Bindinternals();
-	
+
 	}
 	MonoServer::~MonoServer()
 	{
 		mono_jit_cleanup(m_MonoRootDomain);
 	}
 
-	
+
 
 	void MonoServer::InitMono()
 	{
-		
-		mono_set_dirs("Library/assemblies", "."); 
+
+		mono_set_dirs("Library/assemblies", ".");
 
 		m_MonoRootDomain = mono_jit_init("RootDomain");
 		m_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
 
-		
+
 		if (m_MonoAppDomain)
 		{
 			mono_domain_set(m_MonoAppDomain, 0);
@@ -577,7 +594,7 @@ namespace Lithium
 			CORE_LOG("[ERROR] : mono domain failed to create!")
 		}
 
-		m_ScriptBaseClass =  mono_class_from_name(m_MonoImage, "Lithium.Core", "Script");
+		m_ScriptBaseClass = mono_class_from_name(m_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException(object)", true);
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, m_MonoImage);
 		LoadAllClassesInImage();
@@ -588,7 +605,7 @@ namespace Lithium
 	{
 		m_MonoAppDomain = mono_domain_create_appdomain("CsharpAssembly", NULL);
 		if (m_MonoAppDomain)
-		mono_domain_set(m_MonoAppDomain, 0);
+			mono_domain_set(m_MonoAppDomain, 0);
 		else
 		{
 			CORE_LOG("error domain");
@@ -608,13 +625,13 @@ namespace Lithium
 
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, m_MonoImage);
 		m_ScriptClassMap.clear();
-		
+
 		LoadAllClassesInImage();
 	}
 	void MonoServer::DeleteAssemblies()
 	{
-			mono_domain_set(m_MonoRootDomain, 0);
-			mono_domain_unload(m_MonoAppDomain);
+		mono_domain_set(m_MonoRootDomain, 0);
+		mono_domain_unload(m_MonoAppDomain);
 	}
 	bool MonoServer::CheckForChange()
 	{
@@ -760,7 +777,7 @@ namespace Lithium
 	void* MonoServer::CreateMonoEntity(UUID id)
 	{
 		MonoClass* EntityClass = mono_class_from_name(m_MonoImage, "Lithium.Core", "Entity");
-		MonoObject*  EntityObject = mono_object_new(m_MonoAppDomain, EntityClass);
+		MonoObject* EntityObject = mono_object_new(m_MonoAppDomain, EntityClass);
 		mono_runtime_object_init(EntityObject);
 		MonoClassField* IDfield = mono_class_get_field_from_name(EntityClass, "ID");
 		uint64_t EntityID = (uint64_t)id;
