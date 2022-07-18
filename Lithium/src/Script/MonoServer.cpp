@@ -449,6 +449,7 @@ namespace Lithium
 		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
 		ParticleSystemRenderer& psr = entity.GetComponent<ParticleSystemRenderer>();
 		psr.Play = play;
+		psr.pParticleSystem.Reset();
 	}
 
 	bool MonoServer::ParticleSystemRendererGetPlay_Internal(uint64_t entityID)

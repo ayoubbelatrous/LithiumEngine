@@ -42,6 +42,7 @@ namespace Lithium
 		void OnRender();
 		void SetTextureAsset(Asset textureAsset);
 		Asset GetTextureAsset();
+		void Reset();
 	private:
 		void Init();
 		std::vector<Particle> m_ParticlePool;

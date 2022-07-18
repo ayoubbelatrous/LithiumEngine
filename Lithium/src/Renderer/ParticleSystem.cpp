@@ -104,6 +104,13 @@ namespace Lithium
 		return m_TextureAsset;
 	}
 
+	void ParticleSystem::Reset()
+	{
+		m_ParticlePool.clear();
+		m_ParticlePool.resize(1000);
+		m_PoolIndex = 999;
+	}
+
 	ParticleSystem::~ParticleSystem()
 	{
 
