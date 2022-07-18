@@ -62,7 +62,6 @@ namespace Lithium
 		}
 		glm::quat GetRotation()
 		{
-			glm::quat Quat;
 			return glm::quat(glm::radians(Rotation));
 		}
 		TransformComponent() = default;

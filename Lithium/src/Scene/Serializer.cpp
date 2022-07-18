@@ -287,6 +287,23 @@ namespace Lithium
 			emitter << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<ParticleSystemRenderer>())
+		{
+			ParticleSystemRenderer& psr = entity.GetComponent<ParticleSystemRenderer>();
+			emitter << YAML::Key << "ParticleSystemRenderer" << YAML::BeginMap;
+			emitter << YAML::Key << "ColorBegin" << YAML::Value << psr.Properties.ColorBegin;
+			emitter << YAML::Key << "ColorEnd" << YAML::Value << psr.Properties.ColorEnd;
+			emitter << YAML::Key << "SizeBegin" << YAML::Value << psr.Properties.SizeBegin;
+			emitter << YAML::Key << "SizeEnd" << YAML::Value << psr.Properties.SizeEnd;
+			emitter << YAML::Key << "SizeVariation" << YAML::Value << psr.Properties.SizeVariation;
+			emitter << YAML::Key << "Velocity" << YAML::Value << psr.Properties.Velocity;
+			emitter << YAML::Key << "VelocityVariation" << YAML::Value << psr.Properties.VelocityVariation;
+			emitter << YAML::Key << "LifeTime" << YAML::Value << psr.Properties.LifeTime;
+			emitter << YAML::Key << "ParticlesPerFrame" << YAML::Value << psr.ParticlesPerFrame;
+			emitter << YAML::Key << "TextureAsset" << YAML::Value << (uint64_t)psr.pParticleSystem.GetTextureAsset().GetUUID();
+			emitter << YAML::EndMap;
+		}
+
 		emitter << YAML::EndMap;
 	}
 
@@ -627,6 +644,23 @@ namespace Lithium
 				ButtonComp.BoundEntity = UUID(Button["BoundEntity"].as<uint64_t>());
 				ButtonComp.BoundScript = Button["BoundScript"].as<std::string>();
 				ButtonComp.BoundFunction = Button["BoundFunction"].as<std::string>();
+			}
+
+			auto Psr = entity["ParticleSystemRenderer"];
+			if (Psr)
+			{
+				deserEntity.AddComponent<ParticleSystemRenderer>();
+				ParticleSystemRenderer& PsrComp = deserEntity.GetComponent<ParticleSystemRenderer>();
+				PsrComp.Properties.ColorBegin = Psr["ColorBegin"].as<glm::vec4>();
+				PsrComp.Properties.ColorEnd = Psr["ColorEnd"].as<glm::vec4>();
+				PsrComp.Properties.SizeBegin = Psr["SizeBegin"].as<float>();
+				PsrComp.Properties.SizeEnd = Psr["SizeEnd"].as<float>();
+				PsrComp.Properties.SizeVariation = Psr["SizeVariation"].as<float>();
+				PsrComp.Properties.Velocity = Psr["Velocity"].as<glm::vec3>();
+				PsrComp.Properties.VelocityVariation = Psr["VelocityVariation"].as<glm::vec3>();
+				PsrComp.Properties.LifeTime = Psr["LifeTime"].as<float>();
+				PsrComp.ParticlesPerFrame = Psr["ParticlesPerFrame"].as<float>();
+				PsrComp.pParticleSystem.SetTextureAsset(Asset(UUID(Psr["TextureAsset"].as<uint64_t>())));
 			}
 
 		}
