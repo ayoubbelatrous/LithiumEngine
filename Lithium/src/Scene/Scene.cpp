@@ -456,8 +456,12 @@ namespace Lithium
 				{
 
 					auto [psr, tc] = view.get<ParticleSystemRenderer, TransformComponent>(entity);
-					psr.OnUpdate(tc.Position);
-					psr.OnRender();
+					if (psr.Play)
+					{
+						psr.OnUpdate(tc.Position);
+						psr.OnRender();
+					}
+
 				}
 			}
 

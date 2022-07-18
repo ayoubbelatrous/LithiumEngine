@@ -113,6 +113,10 @@ namespace Lithium
 		static uint32_t CreateTexture_Internal(int width, int height, int format);
 		static void DeleteTexture_Internal(int id);
 		static void SetTextureData_Internal(uint32_t id, glm::vec4* data, int size);
+		//particel system
+		static void ParticleSystemRendererSetPlay_Internal(uint64_t entityID,bool play);
+		static bool ParticleSystemRendererGetPlay_Internal(uint64_t entityID);
+
 		//--------------------------------------------------------------------------
 		void ForwardMonoException(MonoObject* object);
 		static std::vector<const char*> _BufferLog;

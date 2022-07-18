@@ -291,6 +291,7 @@ namespace Lithium
 		ParticleSystem pParticleSystem;
 		ParticleProps Properties;
 		float ParticlesPerFrame = 5;
+		bool Play = true;
 		void OnUpdate(const glm::vec3& Position);
 		void OnRender()
 		{

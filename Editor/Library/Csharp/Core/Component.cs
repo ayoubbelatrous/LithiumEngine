@@ -131,7 +131,7 @@ namespace Lithium.Core
 
         public void ApplyAngularForce(float force)
         {
-            RigidBodyApplyAngularForce_Internal(Entity.ID,force);
+            RigidBodyApplyAngularForce_Internal(Entity.ID, force);
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -290,5 +290,20 @@ namespace Lithium.Core
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern public static void GetTextRendererText_Internal(UInt64 entityID, out String text);
+    }
+    public class ParticleSystemRenderer : Component
+    {
+        public bool Play
+        {
+            get
+            {
+                return ParticleSystemRendererGetPlay_Internal(Entity.ID);
+            }
+            set => ParticleSystemRendererSetPlay_Internal(Entity.ID, value);
+        }
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static void ParticleSystemRendererSetPlay_Internal(UInt64 entityID, bool play);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public static bool ParticleSystemRendererGetPlay_Internal(UInt64 entityID);
     }
 }

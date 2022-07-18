@@ -63,6 +63,10 @@ namespace Lithium
 		{
 			return entity.HasComponent<TextRenderer>();
 		}
+		else if (strcmp(name, "ParticleSystemRenderer") == 0)
+		{
+			return entity.HasComponent<ParticleSystemRenderer>();
+		}
 		return false;
 	}
 
@@ -440,6 +444,19 @@ namespace Lithium
 		Application::Get().assetManager->SetUserTextureData(id, data);
 	}
 
+	void MonoServer::ParticleSystemRendererSetPlay_Internal(uint64_t entityID, bool play)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		ParticleSystemRenderer& psr = entity.GetComponent<ParticleSystemRenderer>();
+		psr.Play = play;
+	}
+
+	bool MonoServer::ParticleSystemRendererGetPlay_Internal(uint64_t entityID)
+	{
+		Entity entity(Application::Get().sceneManager->GetActiveScene()->GetUUIDMap()[entityID], Application::Get().sceneManager->GetActiveScene().get());
+		return entity.GetComponent<ParticleSystemRenderer>().Play;
+	}
+
 	void MonoServer::ForwardMonoException(MonoObject* object)
 	{
 		void* Args[1];
@@ -517,6 +534,9 @@ namespace Lithium
 		mono_add_internal_call("Lithium.Core.Input::IsKeyDown", (const void*)MonoServer::KeyPressedDown_Internal);
 		mono_add_internal_call("Lithium.Core.Input::MousePosition_Internal", (const void*)MonoServer::MousePosition_Internal);
 		mono_add_internal_call("Lithium.Core.Time::DeltaTime_Internal", (const void*)MonoServer::DeltaTime_Internal);
+
+		mono_add_internal_call("Lithium.Core.ParticleSystemRenderer::ParticleSystemRendererSetPlay_Internal", (const void*)MonoServer::ParticleSystemRendererSetPlay_Internal);
+		mono_add_internal_call("Lithium.Core.ParticleSystemRenderer::ParticleSystemRendererGetPlay_Internal", (const void*)MonoServer::ParticleSystemRendererGetPlay_Internal);
 	}
 
 	void MonoServer::LoadAllClassesInImage()
