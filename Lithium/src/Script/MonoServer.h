@@ -21,16 +21,16 @@ namespace Lithium
 		MonoDomain* m_MonoRootDomain = nullptr;
 		MonoDomain* m_MonoAppDomain = nullptr;
 		MonoAssembly* m_MonoAssembly = nullptr;
-		MonoAssembly* m_MonoCoreAssembly = nullptr;
+		MonoAssembly* m_MonoProjectAssembly = nullptr;
 		MonoImage* m_MonoImage = nullptr;
-		MonoImage* m_MonoCoreImage = nullptr;
+		MonoImage* m_MonoProjectImage = nullptr;
 		MonoClass* m_ScriptBaseClass;
 		MonoMethod* m_ExceptionMethod;
 		char* m_assemblyData;
 
 
-		std::string AssemblyPath = "Library/Assembly.dll";
-		std::string CoreAssemblyPath = "Library/LithiumScript-Core.dll";
+		std::string AssemblyPath = "Library/LithiumScript-Core.dll";
+		std::string ProjectAssemblyPath = "Library/Project.dll";
 		std::filesystem::file_time_type m_LastAssemblyTime;
 		std::unordered_map<std::string, std::string> m_AllClassesInImage;
 		std::unordered_map<std::string, Ref<ScriptClass>> m_ScriptClassMap;

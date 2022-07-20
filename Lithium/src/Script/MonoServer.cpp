@@ -546,10 +546,10 @@ namespace Lithium
 		MonoClass* klass;
 		int i;
 
-		int rows = mono_image_get_table_rows(m_MonoImage, MONO_TABLE_TYPEDEF);
+		int rows = mono_image_get_table_rows(m_MonoProjectImage, MONO_TABLE_TYPEDEF);
 
 		for (i = 1; i < rows; ++i) {
-			klass = mono_class_get(m_MonoImage, (i + 1) | MONO_TOKEN_TYPE_DEF);
+			klass = mono_class_get(m_MonoProjectImage, (i + 1) | MONO_TOKEN_TYPE_DEF);
 			std::string _Nspace = mono_class_get_namespace(klass);
 			std::string name = mono_class_get_name(klass);
 			MonoClass* BaseClass = nullptr;
@@ -560,7 +560,6 @@ namespace Lithium
 				if (strcmp(BaseClassName, "Script") == 0)
 				{
 					m_AllClassesInImage.emplace(name, _Nspace + "." + name);
-
 				}
 
 			}
@@ -572,8 +571,8 @@ namespace Lithium
 
 	MonoServer::MonoServer()
 	{
-		m_LastAssemblyTime = std::filesystem::last_write_time(AssemblyPath);
-
+		m_LastAssemblyTime = std::filesystem::last_write_time(ProjectAssemblyPath);
+		AssemblyPath = std::filesystem::absolute(AssemblyPath).string();
 		InitMono();
 		Bindinternals();
 
@@ -604,16 +603,15 @@ namespace Lithium
 		}
 		MonoImageOpenStatus OpenStatus;
 		uint32_t size = 0;
+		uint32_t Projectsize = 0;
 		char* assemblyData = LoadAssemblyFile(AssemblyPath.c_str(), &size);
+		char* projectassemblyData = LoadAssemblyFile(ProjectAssemblyPath.c_str(), &Projectsize);
+
 		m_MonoImage = mono_image_open_from_data(assemblyData, size, false, &OpenStatus);
-		if (m_MonoImage)
-		{
-			m_MonoAssembly = mono_assembly_load_from(m_MonoImage, "", &OpenStatus);
-		}
-		else
-		{
-			CORE_LOG("[ERROR] : mono domain failed to create!")
-		}
+		m_MonoAssembly = mono_assembly_load_from(m_MonoImage, "", &OpenStatus);
+
+		m_MonoProjectImage = mono_image_open_from_data(projectassemblyData, Projectsize, false, &OpenStatus);
+		m_MonoProjectAssembly = mono_assembly_load_from(m_MonoProjectImage, "", &OpenStatus);
 
 		m_ScriptBaseClass = mono_class_from_name(m_MonoImage, "Lithium.Core", "Script");
 		MonoMethodDesc* excDesc = mono_method_desc_new("Lithium.Core.Debug::OnException(object)", true);
@@ -633,10 +631,15 @@ namespace Lithium
 		}
 		MonoImageOpenStatus OpenStatus;
 		uint32_t size = 0;
+		uint32_t Projectsize = 0;
 		char* assemblyData = LoadAssemblyFile(AssemblyPath.c_str(), &size);
+		char* projectassemblyData = LoadAssemblyFile(ProjectAssemblyPath.c_str(), &Projectsize);
+
 		m_MonoImage = mono_image_open_from_data(assemblyData, size, false, &OpenStatus);
 		m_MonoAssembly = mono_assembly_load_from(m_MonoImage, "", &OpenStatus);
 
+		m_MonoProjectImage = mono_image_open_from_data(projectassemblyData, Projectsize, false, &OpenStatus);
+		m_MonoProjectAssembly = mono_assembly_load_from(m_MonoProjectImage, "", &OpenStatus);
 
 		Bindinternals();
 
@@ -646,7 +649,6 @@ namespace Lithium
 
 		m_ExceptionMethod = mono_method_desc_search_in_image(excDesc, m_MonoImage);
 		m_ScriptClassMap.clear();
-
 		LoadAllClassesInImage();
 	}
 	void MonoServer::DeleteAssemblies()
@@ -657,9 +659,9 @@ namespace Lithium
 	bool MonoServer::CheckForChange()
 	{
 
-		if (std::filesystem::last_write_time(AssemblyPath) != m_LastAssemblyTime)
+		if (std::filesystem::last_write_time(ProjectAssemblyPath) != m_LastAssemblyTime)
 		{
-			m_LastAssemblyTime = std::filesystem::last_write_time(AssemblyPath);
+			m_LastAssemblyTime = std::filesystem::last_write_time(ProjectAssemblyPath);
 			std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 			return true;
 		}
@@ -705,7 +707,7 @@ namespace Lithium
 		if (m_ScriptClassMap.find(name) == m_ScriptClassMap.end())
 		{
 
-			monoklass = mono_class_from_name(m_MonoImage, "", name.c_str());
+			monoklass = mono_class_from_name(m_MonoProjectImage, "", name.c_str());
 			if (monoklass == nullptr)
 			{
 				CORE_LOG("mono class not found");
@@ -724,8 +726,8 @@ namespace Lithium
 
 
 		MonoObject* monoobject = mono_object_new(m_MonoAppDomain, scriptClass->GetClassPtr());
-		mono_runtime_object_init(monoobject);
 		scriptObject = CreateRef<ScriptObject>(monoobject);
+		mono_runtime_object_init(monoobject);
 		return scriptObject;
 	}
 	static void CopyFieldValue(Ref<ScriptField>& Dst, const Ref<ScriptField>& Src)
