@@ -257,7 +257,10 @@ namespace Lithium
 
 	void FontRenderer::DrawData()
 	{
-
+		if (!s_Data.IndexCount)
+		{
+			return;
+		}
 		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.VertexBufferPtr - (uint8_t*)s_Data.VertexBufferBase);
 
 

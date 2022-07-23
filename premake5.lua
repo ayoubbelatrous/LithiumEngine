@@ -60,3 +60,4 @@ group ""
 
 include "Lithium"
 include "Editor"
+include "LithiumScript-Core"

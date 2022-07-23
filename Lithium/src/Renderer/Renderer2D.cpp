@@ -358,6 +358,7 @@ namespace Lithium
 			RendererCommand::DrawIndexed(s_Data._IndexCount);
 		}
 		
+		
 
 		if (s_Data.LineVertexCount)
 		{
@@ -375,14 +376,16 @@ namespace Lithium
 
 		if (s_Data.CircleIndexCount)
 		{
+			s_Data.TextureSlots[0]->UnBind();
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
-			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
-
-			s_Data.CircleVertexArray->Bind();
-			s_Data.CircleVertexBuffer->Bind();
-			s_Data._IndexBuffer->Bind();
 			s_Data.CircleShader->Bind();
 			s_Data.CircleShader->SetUniformMat4f("u_projection", s_Data.projection);
+			s_Data._IndexBuffer->Bind();
+			s_Data.CircleVertexArray->Bind();
+			s_Data.CircleVertexBuffer->Bind();
+			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
+			
+			
 			RendererCommand::DrawIndexed(s_Data.CircleIndexCount);
 		}
 		

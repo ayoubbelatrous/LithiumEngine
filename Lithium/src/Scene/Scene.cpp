@@ -319,7 +319,7 @@ namespace Lithium
 
 	void Scene::OnStart()
 	{
-		m_PhysicsWorld = CreateScope<PhysicsWorld>(glm::vec2(0.0f, -9.8f));
+		m_PhysicsWorld = CreateScope<PhysicsWorld>(Application::Get().GetApplicationProperties().ProjSettings.PhysicsProps.Gravity);
 		CListener = new ContactListener();
 		m_PhysicsWorld->GetPtr()->SetContactListener(CListener);
 		SortScene();
