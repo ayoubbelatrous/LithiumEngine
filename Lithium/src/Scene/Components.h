@@ -333,5 +333,12 @@ namespace Lithium
 		float width, height;
 	};
 
+	struct PointLight2D
+	{
+		float Radius = 1.0f;
+		float Intensity = 1.0f;
+		glm::vec4 Color = glm::vec4(1.0f);
+	};
+
 }
 

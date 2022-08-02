@@ -53,7 +53,7 @@ namespace Lithium
 
 		FrameBufferAttachmentDescriptor mainframebufferspec(
 			{
-				FramebufferTextureFormat::RGBA8,
+				FramebufferTextureFormat::RGBA16F,
 				FramebufferTextureFormat::RED_INTEGER
 			}
 		,false,4);
@@ -116,6 +116,7 @@ namespace Lithium
 
 		Font::Init();
 		UIRenderer::Init();
+		m_Bloom = CreateRef<Bloom>();
 	}
 
 	void EditorLayer::OnUpdate()
@@ -159,6 +160,7 @@ namespace Lithium
 		if (m_ViewportSizeChanged)
 		{
 			framebuffer->resize(viewportSize[0], viewportSize[1]);
+			DisplayBuffer->resize(viewportSize[0], viewportSize[1]);
 			m_ViewportSizeChanged = false;
 		}
 		
@@ -171,7 +173,7 @@ namespace Lithium
 		{
 		case (SceneState::EDITOR):
 			{
-			RendererCommand::ClearColor(glm::vec4(0.1f, 0.105f, 0.11f, 1.0f));
+			RendererCommand::ClearColor(glm::vec4(0, 0, 0, 0));
 			RendererCommand::Clear();
 			framebuffer->ClearAttachment(1, -1);
 			BatchRenderer::Begin(view, proj);
@@ -242,19 +244,18 @@ namespace Lithium
 		}
 
 		framebuffer->UnBind();
+		DisplayBuffer->Bind();
 		
+		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
+		RendererCommand::Clear();
+		vertarray->Bind();
+ 		frameshader->Bind();
+		framebuffer->BindTexture(0,0);
+		frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID(0));
+		frameshader->SetUniform1f("exposure", Exposure);
+		RendererCommand::Draw(6);
 
-// 		DisplayBuffer->Bind();
-// 		
-// 		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
-// 		RendererCommand::Clear();
-// 		vertarray->Bind();
-// 		frameshader->Bind();
-// 		framebuffer->BindTexture(0,0);
-// 		frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID());
-// 		RendererCommand::Draw(6);
-// 
-// 		DisplayBuffer->UnBind();
+		DisplayBuffer->UnBind();
 
 	}
 
@@ -700,7 +701,7 @@ namespace Lithium
 			viewportSize[1] = ImGui::GetContentRegionAvail().y;
 			m_ViewportSizeChanged = true;
 		}
-		ImGui::Image(reinterpret_cast<void*>(framebuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
+		ImGui::Image(reinterpret_cast<void*>(DisplayBuffer->GetColorAttachmentID(0)), ImGui::GetContentRegionAvail(), ImVec2{0, 1 }, ImVec2{ 1, 0 });
 
 		//Drag And Drop
 		if (ImGui::BeginDragDropTarget())
@@ -834,7 +835,7 @@ namespace Lithium
 				m_ActiveScene->SetRenderEditorUi(renderUi);
 
 			}
-
+			ImGui::DragFloat("Exposure", &Exposure);
 			ImGui::End();
 		}
 

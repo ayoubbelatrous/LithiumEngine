@@ -78,6 +78,20 @@ namespace Lithium
 					glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textureIds[i], 0);
 					glBindTexture(GL_TEXTURE_2D, 0);
 				}
+
+				else if (descriptor.Attachments[i].format == FramebufferTextureFormat::RGBA16F)
+				{
+					textureIds.push_back(0);
+					glGenTextures(1, &textureIds[i]);
+					glBindTexture(GL_TEXTURE_2D, textureIds[i]);
+					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+					glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textureIds[i], 0);
+					glBindTexture(GL_TEXTURE_2D, 0);
+				}
 			}
 		}
 		else
@@ -113,6 +127,15 @@ namespace Lithium
 					glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &textureIds[i]);
 					glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textureIds[i]);
 					glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, descriptor.Samples, GL_R32I, width, height, GL_FALSE);
+					glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D_MULTISAMPLE, textureIds[i], 0);
+				}
+
+				else if (descriptor.Attachments[i].format == FramebufferTextureFormat::RGBA16F)
+				{
+					textureIds.push_back(0);
+					glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &textureIds[i]);
+					glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textureIds[i]);
+					glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, descriptor.Samples, GL_RGBA16F, width, height, GL_FALSE);
 					glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D_MULTISAMPLE, textureIds[i], 0);
 				}
 			}

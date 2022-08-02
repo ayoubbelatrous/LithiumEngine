@@ -52,6 +52,7 @@ namespace Lithium
 		void SetRenderEditorUi(bool render);
 		bool GetRenderEditorUi();
 		uint64_t GetSceneID();
+		
 	private:
 		bool m_RenderEditorUI = false;
 		uint32_t m_ViewportWidth = 1.0f;

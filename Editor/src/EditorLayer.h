@@ -38,6 +38,7 @@
 #include "Font/Font.h"
 #include "Utils/WindowsPlatformUtils.h"
 #include "Animation/Animation.h"
+#include "Renderer/PostProcessing.h"
 
 namespace Lithium
 {
@@ -144,5 +145,8 @@ namespace Lithium
 		glm::vec3 m_FocalPoint = glm::vec3(0);
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		AudioSource* source;
+		float Exposure = 1.0f;
+
+		Ref<Bloom> m_Bloom;
 	};
 }

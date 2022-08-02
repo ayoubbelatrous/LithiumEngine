@@ -10,6 +10,7 @@ namespace Lithium
 		RED_INTEGER,
 		DEPTH24STENCIL8,
 		Depth = DEPTH24STENCIL8,
+		RGBA16F,
 	};
 	struct FrameBufferTexture
 	{

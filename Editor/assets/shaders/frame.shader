@@ -20,10 +20,12 @@ layout(location = 0) out vec4 color;
 in vec2 vtex;
 
 uniform sampler2D utex;
-
+uniform float exposure;
 void main()
 {
-    color = texture(utex, vtex);
-    //float gamma = 2.0;
-   // color = vec4(pow(fragColor.rgb, vec3(1.0 / gamma)),1.0);
+    const float gamma = 2.2;
+    vec3 hdrColor = texture(utex, vtex).rgb;
+    vec3 mapped = vec3(1.0) - exp(-hdrColor * exposure);
+    mapped = pow(mapped, vec3(1.0 / gamma));
+    color = vec4(mapped, 1.0);
 }
