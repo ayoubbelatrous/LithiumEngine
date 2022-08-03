@@ -144,5 +144,6 @@ namespace Lithium
 		glm::vec3 m_FocalPoint = glm::vec3(0);
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		AudioSource* source;
+		bool m_StoppedUsingGizmos;
 	};
 }

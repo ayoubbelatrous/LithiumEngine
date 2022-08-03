@@ -716,23 +716,9 @@ namespace Lithium
 					}
 					if (camera.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
 					{
-						float orthosize = camera.Camera.GetOrthographicSize();
-						if (LiGui::UndoDragFloat("Orthographic Size", &orthosize, 0.1f))
-						{
-							camera.Camera.SetOrthographicSize(orthosize);
-						}
-
-						float NearClipPlane = camera.Camera.GetOrthographicNearClip();
-						if (LiGui::UndoDragFloat("Near Plane", &NearClipPlane, 0.1f))
-						{
-							camera.Camera.SetOrthographicNearClip(NearClipPlane);
-						}
-
-						float FarClipPlane = camera.Camera.GetOrthographicFarClip();
-						if (LiGui::UndoDragFloat("Far Plane", &FarClipPlane, 0.1f))
-						{
-							camera.Camera.SetOrthographicFarClip(FarClipPlane);
-						}
+						LiGui::UndoDragFloat("Orthographic Size", &camera.Camera.m_OrthographicSize, 0.1f);
+						LiGui::UndoDragFloat("Near Plane", &camera.Camera.m_OrthographicNear, 0.1f);
+						LiGui::UndoDragFloat("Far Plane", &camera.Camera.m_OrthographicFar, 0.1f);
 					}
 					ImGui::ColorEdit4("Clear Color", glm::value_ptr(camera.ClearColor));
 					ImGui::TreePop();

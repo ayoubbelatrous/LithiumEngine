@@ -12,6 +12,7 @@
 #include "Font/FontRenderer.h"
 #include "Commands/CommandHistroy.h"
 #include "Commands/FloatCommand.h"
+#include "Commands/Vec3Command.h"
 #include "Renderer/UIRenderer.h"
 
 
@@ -774,6 +775,7 @@ namespace Lithium
 
 			if (ImGuizmo::IsUsing())
 			{
+				m_StoppedUsingGizmos = false;
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(matri, translation, rotation, scale);
 				glm::vec3 deltaRotation = rotation - selected.GetComponent<TransformComponent>().Rotation;
@@ -790,17 +792,27 @@ namespace Lithium
 				else
 				{
 					selected.GetComponent<TransformComponent>().Position = translation;
+					CommandHistory::AddCommand(new Vec3Command(selected.GetComponent<TransformComponent>().Position, translation));
 				}
  				selected.GetComponent<TransformComponent>().Rotation = glm::degrees(rotation);
  				selected.GetComponent<TransformComponent>().Scale = scale;
+				//CommandHistory::AddCommand(new Vec3Command(selected.GetComponent<TransformComponent>().Rotation, glm::degrees(rotation)));
+				//CommandHistory::AddCommand(new Vec3Command(selected.GetComponent<TransformComponent>().Scale, scale));
 
 				UsingGizmos = true;
 			}
 			else
 			{
 				UsingGizmos = false;
+				if (m_StoppedUsingGizmos == false)
+				{
+					m_StoppedUsingGizmos = true;
+				}
 			}
-
+			if (m_StoppedUsingGizmos)
+			{
+				CommandHistory::SetNoMergeMostRecent();
+			}
 		}
 
 

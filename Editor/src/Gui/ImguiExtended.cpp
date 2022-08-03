@@ -15,7 +15,7 @@ namespace Lithium
 		bool result = ImGui::DragFloat(label, &tmp,speed);
 		if (result)
 		{
-		CommandHistory::AddCommand(new FloatCommand(*Value, tmp));
+		    CommandHistory::AddCommand(new FloatCommand(*Value, tmp));
 		}
 		if (ImGui::IsItemDeactivatedAfterEdit())
 		{
