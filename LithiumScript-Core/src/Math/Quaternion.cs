@@ -1,7 +1,7 @@
 ﻿
 using System.Runtime.InteropServices;
 
-namespace Lithium.Math
+namespace Lithium.Mathf
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct Quaternion

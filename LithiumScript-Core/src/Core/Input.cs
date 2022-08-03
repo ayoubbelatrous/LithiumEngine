@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-using Lithium.Math;
+using Lithium.Mathf;
 namespace Lithium.Core
 {
     public class Input

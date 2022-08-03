@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Core\Audio\AudioClip.cs" />
+    <Compile Include="src\Core\Random.cs" />
     <Compile Include="src\Core\Component.cs" />
     <Compile Include="src\Core\Debug.cs" />
     <Compile Include="src\Core\Entity.cs" />

@@ -1,5 +1,5 @@
 ﻿using System;
-using Lithium.Math;
+using Lithium.Mathf;
 
 namespace Lithium.Core
 {
