@@ -34,6 +34,7 @@ namespace Lithium
 		glm::vec3 Position;
 		glm::vec4 Color;
 		glm::vec2 TextureCoords;
+		float TillingFactor;
 		float TextureIndex;
 		float EntityID;
 	};
@@ -102,6 +103,7 @@ namespace Lithium
 		Layout->Push<float>(3);
 		Layout->Push<float>(4);
 		Layout->Push<float>(2);
+		Layout->Push<float>(1);
 		Layout->Push<float>(1);
 		Layout->Push<float>(1);
 		s_Data._VertexArray->AddBuffer(s_Data._VertexBuffer, Layout);
@@ -181,7 +183,7 @@ namespace Lithium
 		DrawData();
 	}
 
-	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<Texture>& texture, int entityID)
+	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<Texture>& texture, int entityID, float tillingFactor)
 	{
 		LT_PROFILE_FUNCTION("Renderer Draw Quad");
 		constexpr int VertexCount = 4;
@@ -211,6 +213,7 @@ namespace Lithium
 			s_Data._VertexBufferPtr->Position = transform * s_Data._VertexPositions[i];
 			s_Data._VertexBufferPtr->Color = color;
 			s_Data._VertexBufferPtr->TextureCoords = textureCoords[i];
+			s_Data._VertexBufferPtr->TillingFactor = tillingFactor;
 			s_Data._VertexBufferPtr->TextureIndex = textureIndex;
 			s_Data._VertexBufferPtr->EntityID = (float)entityID;
 			s_Data._VertexBufferPtr++;
@@ -218,7 +221,7 @@ namespace Lithium
 
 		s_Data._IndexCount += 6;
 	}
-	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color,int entityID)
+	void BatchRenderer::DrawQuad(const glm::mat4& transform, const glm::vec4 color,int entityID, float tillingFactor)
 	{
 		LT_PROFILE_FUNCTION("Renderer Draw Quad");
 		constexpr int VertexCount = 4;
@@ -231,6 +234,7 @@ namespace Lithium
 			s_Data._VertexBufferPtr->Position = transform * s_Data._VertexPositions[i];
 			s_Data._VertexBufferPtr->Color = color;
 			s_Data._VertexBufferPtr->TextureCoords = textureCoords[i];
+			s_Data._VertexBufferPtr->TillingFactor = tillingFactor;
 			s_Data._VertexBufferPtr->TextureIndex = textureIndex;
 			s_Data._VertexBufferPtr->EntityID = (float)entityID;
 			s_Data._VertexBufferPtr++;
@@ -239,7 +243,7 @@ namespace Lithium
 		s_Data._IndexCount += 6;
 	}
 
-	void BatchRenderer::DrawQuadSubTexture(const glm::mat4& transform, const glm::vec4 color, const glm::vec2 coords[], const Ref<Texture>& texture, int entityID)
+	void BatchRenderer::DrawQuadSubTexture(const glm::mat4& transform, const glm::vec4 color, const glm::vec2 coords[], const Ref<Texture>& texture, int entityID, float tillingFactor)
 	{
 		constexpr int VertexCount = 4;
 
@@ -267,6 +271,7 @@ namespace Lithium
 			s_Data._VertexBufferPtr->Position = transform * s_Data._VertexPositions[i];
 			s_Data._VertexBufferPtr->Color = color;
 			s_Data._VertexBufferPtr->TextureCoords = coords[i];
+			s_Data._VertexBufferPtr->TillingFactor = tillingFactor;
 			s_Data._VertexBufferPtr->TextureIndex = textureIndex;
 			s_Data._VertexBufferPtr->EntityID = (float)entityID;
 			s_Data._VertexBufferPtr++;

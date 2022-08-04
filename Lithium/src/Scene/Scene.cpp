@@ -224,7 +224,7 @@ namespace Lithium
 
 				if (sp.TextureAsset.GetUUID() == 0)
 				{
-					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity);
+					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity, sp.TillingFactor);
 
 				}
 				else
@@ -248,11 +248,11 @@ namespace Lithium
 							{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 							{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 						};
-						BatchRenderer::DrawQuadSubTexture(tc.ModelMatrix, sp.GetColor(), textureCoords, textureAsset, (uint32_t)entity);
+						BatchRenderer::DrawQuadSubTexture(tc.ModelMatrix, sp.GetColor(), textureCoords, textureAsset, (uint32_t)entity, sp.TillingFactor);
 					}
 					else if (textureMetaData.Mode == TextureMetaData::TextureMode::Single)
 					{
-						BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), textureAsset, (uint32_t)entity);
+						BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), textureAsset, (uint32_t)entity, sp.TillingFactor);
 					}
 				}
 			}
@@ -417,7 +417,7 @@ namespace Lithium
 
 				if (sp.TextureAsset.GetUUID() == 0)
 				{
-					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity);
+					BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), (uint32_t)entity, sp.TillingFactor);
 
 				}
 				else
@@ -441,11 +441,11 @@ namespace Lithium
 							{ ((index.x + 1) * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 							{ (index.x * cellsize.x) / Width, ((index.y + 1) * cellsize.y) / Height},
 						};
-						BatchRenderer::DrawQuadSubTexture(tc.ModelMatrix, sp.GetColor(), textureCoords, textureAsset, (uint32_t)entity);
+						BatchRenderer::DrawQuadSubTexture(tc.ModelMatrix, sp.GetColor(), textureCoords, textureAsset, (uint32_t)entity, sp.TillingFactor);
 					}
 					else if (textureMetaData.Mode == TextureMetaData::TextureMode::Single)
 					{
-						BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), textureAsset, (uint32_t)entity);
+						BatchRenderer::DrawQuad(tc.ModelMatrix, sp.GetColor(), textureAsset, (uint32_t)entity,sp.TillingFactor);
 					}
 				}
 			}

@@ -75,6 +75,7 @@ namespace Lithium
 		Asset TextureAsset;
 		int DrawOrder = 0;
 		int TextureIndex = 0;
+		float TillingFactor = 1.0f;
 		SpriteRendererComponent()
 		{
 			Color = glm::vec4(1);

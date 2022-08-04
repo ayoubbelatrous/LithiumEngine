@@ -389,6 +389,7 @@ namespace Lithium
 						}
 						ImGui::EndDragDropTarget();
 					}
+					ImGui::DragFloat("Tilling Factor", &m_Selection.GetComponent<SpriteRendererComponent>().TillingFactor);
 					ImGui::TreePop();
 				}
 				if (remove == true)
