@@ -14,7 +14,6 @@
 #include "Core/Math.h"
 #include "physics/PhysicsTypes.h"
 #include "AssetManager/Asset.h"
-#include "Mesh/Mesh.h"
 #include "Renderer/ParticleSystem.h"
 
 namespace Lithium
@@ -276,14 +275,6 @@ namespace Lithium
 		float CurrentTime = 0.0f;
 		AnimatorComponent() = default;
 		AnimatorComponent(const AnimatorComponent&) = default;
-	};
-	struct MeshRenderer
-	{
-		Asset ShaderAsset;
-		std::vector<Ref<Mesh>> Meshes;
-		bool hasModelFile;
-		std::string ModelPath;
-		//Material
 	};
 
 	struct ParticleSystemRenderer

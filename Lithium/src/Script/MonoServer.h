@@ -27,10 +27,10 @@ namespace Lithium
 		MonoClass* m_ScriptBaseClass;
 		MonoMethod* m_ExceptionMethod;
 		char* m_assemblyData;
-
-
+		std::string BaseAssemblyPath;
 		std::string AssemblyPath = "Library/LithiumScript-Core.dll";
 		std::string ProjectAssemblyPath = "Library/Project.dll";
+
 		std::filesystem::file_time_type m_LastAssemblyTime;
 		std::unordered_map<std::string, std::string> m_AllClassesInImage;
 		std::unordered_map<std::string, Ref<ScriptClass>> m_ScriptClassMap;

@@ -38,6 +38,10 @@
 #include "Font/Font.h"
 #include "Utils/WindowsPlatformUtils.h"
 #include "Animation/Animation.h"
+#include "SceneRenderer/Mesh/Mesh.h"
+#include "SceneRenderer/Mesh/MeshLoader.h"
+
+#include "Core/RecentProjectManager.h"
 
 namespace Lithium
 {
@@ -78,6 +82,8 @@ namespace Lithium
 		void StopRuntime();
 		void ReloadMonoServer();
 		void OpenScene(const std::string& path);
+		void OpenProjectDialog();
+		void OpenProject(std::string path);
 	private:
 		glm::mat4 proj;
 		glm::mat4 UIProjection;
@@ -89,7 +95,7 @@ namespace Lithium
 		Ref<FrameBuffer> DisplayBuffer;
 		Ref<Scene> m_ActiveScene;
 		Ref<Scene> m_EditorScene;
-		
+
 		bool m_ViewportHovered = false;
 		bool m_ViewportFocus = false;
 		bool m_ActiveSceneSaved = false;
@@ -102,7 +108,7 @@ namespace Lithium
 		Ref<AssetBrowserPanel> _AssetBrowerPanel;
 		int mouseX = 0;
 		int mouseY = 0;
-		int pixelData; 
+		int pixelData;
 		float pixelData2;
 		bool UsingGizmos;
 		std::string text;
@@ -123,7 +129,7 @@ namespace Lithium
 		Ref<Texture> m_CameraGizmo;
 		SceneState _sceneState = SceneState::EDITOR;
 		Serializer m_SceneSerilizer = Serializer(m_ActiveScene);
-		
+
 		Ref<Timer> timer;
 
 
@@ -145,5 +151,8 @@ namespace Lithium
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		AudioSource* source;
 		bool m_StoppedUsingGizmos;
+		Ref<Rendering::Loaders::MeshLoader> m_MeshLoader;
+
+		Ref<Core::RecentProjectManager> m_RecentProjectManager;
 	};
 }

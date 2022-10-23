@@ -586,7 +586,6 @@ namespace Lithium
 
 	void MonoServer::InitMono()
 	{
-
 		mono_set_dirs("Library/assemblies", ".");
 
 		m_MonoRootDomain = mono_jit_init("RootDomain");

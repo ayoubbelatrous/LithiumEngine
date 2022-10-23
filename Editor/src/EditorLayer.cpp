@@ -117,6 +117,9 @@ namespace Lithium
 
 		Font::Init();
 		UIRenderer::Init();
+
+
+		m_RecentProjectManager = CreateRef<Core::RecentProjectManager>();;
 	}
 
 	void EditorLayer::OnUpdate()
@@ -202,7 +205,6 @@ namespace Lithium
 			m_ActiveScene->OnViewportResize(viewportSize[0], viewportSize[1],_ViewportBounds);
 			m_ActiveScene->onUpdate();
 			break;
-
 		}
 		}
 		DebugRender();
@@ -243,20 +245,6 @@ namespace Lithium
 		}
 
 		framebuffer->UnBind();
-		
-
-// 		DisplayBuffer->Bind();
-// 		
-// 		RendererCommand::ClearColor(glm::vec4(0.00, 0.00, 0.00, 0));
-// 		RendererCommand::Clear();
-// 		vertarray->Bind();
-// 		frameshader->Bind();
-// 		framebuffer->BindTexture(0,0);
-// 		frameshader->SetUniform1i("u_tex", framebuffer->GetColorAttachmentID());
-// 		RendererCommand::Draw(6);
-// 
-// 		DisplayBuffer->UnBind();
-
 	}
 
 	void EditorLayer::OnDestroy()
@@ -525,16 +513,18 @@ namespace Lithium
 				}
 				if (ImGui::MenuItem("Open Project", ""))
 				{
-					std::filesystem::path ProjectPath = FileDialogs::OpenFolder("");
-					ApplicationProperties appprops = Application::Get().GetApplicationProperties();
-					appprops.WorkingDirectory = ProjectPath.string();
-					Application::Get().SetApplicationProperties(appprops);
-					_AssetBrowerPanel->OnProjectChange();
-					Application::Get().ReloadAssetManager();
-					Application::Get().Monoserver->ForceReload();
-					Application::Get().GetWindow().SetWindowName("Lithium - " + ProjectPath.filename().string());
-					LT_CORE_INFO("Opened Project Named {}", ProjectPath.string().c_str());
+					OpenProjectDialog();
 				}
+
+				for (auto project : m_RecentProjectManager->GetRecentProjects())
+				{
+					if (ImGui::MenuItem(project.c_str()))
+					{
+						OpenProject(project);
+						break;
+					}
+				}
+
 				ImGui::EndMenu();
 			}
 			if (_sceneState == SceneState::RUNTIME) {
@@ -1029,6 +1019,25 @@ namespace Lithium
 		Application::Get().sceneManager->SetActiveScene(m_ActiveScene);
 		Application::Get().sceneManager->PushScene(m_ActiveScene);
 		ReloadMonoServer();
+	}
+
+	void EditorLayer::OpenProjectDialog()
+	{
+		OpenProject(FileDialogs::OpenFolder(""));
+	}
+
+	void EditorLayer::OpenProject(std::string path)
+	{
+		std::filesystem::path ProjectPath = path;
+		ApplicationProperties appprops = Application::Get().GetApplicationProperties();
+		m_RecentProjectManager->AddProject(ProjectPath.string());
+		appprops.WorkingDirectory = ProjectPath.string();
+		Application::Get().SetApplicationProperties(appprops);
+		_AssetBrowerPanel->OnProjectChange();
+		Application::Get().ReloadAssetManager();
+		Application::Get().Monoserver->ForceReload();
+		Application::Get().GetWindow().SetWindowName("Lithium - " + ProjectPath.filename().string());
+		LT_CORE_INFO("Opened Project Named {}", ProjectPath.string().c_str());
 	}
 
 }

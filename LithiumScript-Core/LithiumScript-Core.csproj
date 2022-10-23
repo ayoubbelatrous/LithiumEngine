@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Core\Audio\AudioClip.cs" />
-    <Compile Include="src\Core\Random.cs" />
     <Compile Include="src\Core\Component.cs" />
     <Compile Include="src\Core\Debug.cs" />
     <Compile Include="src\Core\Entity.cs" />
@@ -52,6 +51,7 @@
     <Compile Include="src\Core\Input.cs" />
     <Compile Include="src\Core\KeyCode.cs" />
     <Compile Include="src\Core\Physics\Physics.cs" />
+    <Compile Include="src\Core\Random.cs" />
     <Compile Include="src\Core\Scene.cs" />
     <Compile Include="src\Core\Script.cs" />
     <Compile Include="src\Core\Time.cs" />
