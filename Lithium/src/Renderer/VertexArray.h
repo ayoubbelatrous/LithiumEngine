@@ -15,6 +15,7 @@ namespace Lithium
 		void UnBind() const;
 		void Bind() const;
 		void AddBuffer(Ref<VertexBuffer> vb, Ref<VertexBufferLayout> layout);
+		void AddBuffer(VertexBuffer vb, VertexBufferLayout layout);
 	private:
 		unsigned int _id;
 	};

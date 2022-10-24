@@ -5,7 +5,7 @@ namespace Lithium
 	class VertexBuffer
 	{
 	public:
-		//VertexBuffer();
+		VertexBuffer() = default;
 		VertexBuffer(uint32_t size);
 		VertexBuffer(const void* data, uint32_t size);
 		void SetData(const void* data,uint32_t size);

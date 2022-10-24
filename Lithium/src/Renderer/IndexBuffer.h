@@ -4,6 +4,7 @@ namespace Lithium
 	class IndexBuffer
 	{
 	public:
+		IndexBuffer() = default;
 		IndexBuffer(uint32_t size);
 		IndexBuffer(uint32_t size,const void* data);
 		~IndexBuffer();
